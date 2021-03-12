@@ -93,6 +93,6 @@ if(length(dir("tests/testthat")) > 0) {
 
 ### Install
 divider("INSTALLING")
-write_sha1_DESC(pkg_dir = ".", git_dir = ".")
+## write_sha1_DESC(pkg_dir = ".", git_dir = ".")
 devtools::install(upgrade = "never")# devtools::install(build_vignettes = TRUE)
-clean_sha1_DESC(pkg_dir = ".")
+## clean_sha1_DESC(pkg_dir = ".")
