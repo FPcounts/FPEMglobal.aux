@@ -1,1 +1,8 @@
 ^LICENSE\.md$
+^package\.Rproj$
+^\.Rproj\.user$
+^R/_obsolete\.R$
+
+# Local install
+^__install-WINDOWS.bat$
+^__install.R$
