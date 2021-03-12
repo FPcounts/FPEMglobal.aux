@@ -1,8 +1,8 @@
 
-#' cuawaux: Auxillary functions for cuaw
+#' FPEMglobal.aux: Auxillary functions for FPEMglobal
 #'
 #' @docType package
-#' @name cuawaux
+#' @name FPEMglobal.aux
 #'
 #' @importFrom magrittr %>%
 NULL

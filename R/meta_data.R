@@ -7,7 +7,7 @@
 ##' contains all sorts of information about the model run.
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_cuaw_csv_res}}.
+##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @param output_dir Output directory, e.g., like that returned by
 ##'     \code{\link{get_output_dir}}.

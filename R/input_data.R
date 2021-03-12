@@ -15,7 +15,7 @@
 ##' @seealso \code{\link{get_used_input_data}.
 ##' @export
 get_main_input_file <- function(age_group = c("15-49", "15-19"),
-                                folder_path = system.file("extdata", package = "cuaw"),
+                                folder_path = system.file("extdata", package = "FPEMglobal"),
                                 filename = paste0("data_cp_model_all_women_", age_group, ".csv")) {
     age_group <- match.arg(age_group)
     read.csv(file.path(folder_path, filename))
@@ -27,8 +27,8 @@ get_main_input_file <- function(age_group = c("15-49", "15-19"),
 ##' Reads the '.csv' file containing the prevalence data used in the run.
 ##'
 ##' @param data_dir_name  Name of subdirectory of \code{output_dir} holding input data files. If \code{processed} is \code{TRUE} this is set to \dQuote{data} by default, otherwise \dQuote{.}.
-##' @param processed Get the input data after processing by \pkg{\link{cuaw}}?
-##' @inheritParams get_cuaw_csv_res
+##' @param processed Get the input data after processing by \pkg{\link{FPEMglobal}}?
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}.
@@ -62,7 +62,7 @@ get_used_input_data <-
 ##'
 ##' @param data_dir_name  Name of subdirectory of \code{output_dir} holding input data files.
 ##' @param filename Name of file with the counts (including extension).
-##' @inheritParams get_cuaw_csv_res
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}.
@@ -85,12 +85,12 @@ get_used_denominators <-
         if(any(marital_group %in% c("married", "all women"))) {
             denom_counts <-
                 rbind(denom_counts,
-                      cuaw:::extractDenominators(fpath, in_union = 1))
+                      FPEMglobal:::extractDenominators(fpath, in_union = 1))
             denom_counts$marital_group <- "married"
         }
         if(any(marital_group %in% c("unmarried", "all women"))) {
             denom_counts1 <-
-                cuaw:::extractDenominators(fpath, in_union = 0)
+                FPEMglobal:::extractDenominators(fpath, in_union = 0)
             denom_counts1$marital_group <- "unmarried"
             denom_counts <- rbind(denom_counts, denom_counts1)
         }

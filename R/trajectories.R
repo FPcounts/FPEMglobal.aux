@@ -15,7 +15,7 @@
 ##' @family trajectory functions
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_cuaw_csv_res}}.
+##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @param output_dir Output directory, e.g., like that returned by
 ##'     \code{\link{get_output_dir}}. Note that \code{root_dir} is
@@ -98,7 +98,7 @@ get_model_param_names <- function(mcmc_array) {
 ##' @family trajectory functions
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_cuaw_csv_res}}.
+##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @param country_name Name of country to get trajectories for; only one of
 ##'     \code{iso_code} and \code{country_name} should be given.
@@ -209,7 +209,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' \dQuote{unmet.intercept.c}.
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_cuaw_csv_res}}.
+##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_country_traj
@@ -264,7 +264,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##'     the same as for country trajectories.
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_cuaw_csv_res}}.
+##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @family trajectory functions
 ##' @param run_name

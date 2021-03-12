@@ -28,13 +28,13 @@
 ##'     will work if the \code{run_name} contains one (and only one)
 ##'     of the regular expressions \dQuote{married}, \dQuote{unmarried},
 ##'     or \dQuote{all[_. ]women}.
-##' @inheritParams get_cuaw_csv_res
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_model_traj
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @export
-get_cuaw_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                     aggregate = "Country",
                                     clean_indicator_names = TRUE,
                                     table_dir_name = "table", verbose = FALSE,
@@ -146,7 +146,7 @@ get_cuaw_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir
 
 ##' Read results csv files containing changes for all three marital groups
 ##'
-##' Calls \code{\link{get_cuaw_csv_change_res}} sequentially on first
+##' Calls \code{\link{get_FPEMglobal_csv_change_res}} sequentially on first
 ##' elements of \code{run_name_list} and \code{output_dir_list}, second
 ##' elements of \code{run_name_list} and \code{output_dir_list}, etc.,
 ##' to load \emph{all} results for all marital groups. Binds the three
@@ -154,14 +154,14 @@ get_cuaw_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir
 ##'
 ##' @family csv results functions
 ##'
-##' @inheritParams get_cuaw_csv_all_marr_res
+##' @inheritParams get_FPEMglobal_csv_all_marr_res
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_model_traj
-##' @inheritParams get_cuaw_csv_res
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @export
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
-get_cuaw_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
+get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
                                             root_dir = ".",
                                             aggregate = "Country",
                                             clean_indicator_names = TRUE,
@@ -180,7 +180,7 @@ get_cuaw_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_lis
     out <- data.frame()
 
     for(i in seq_along(output_dir_list)) {
-        x <- get_cuaw_csv_change_res(run_name = run_name_list[[i]],
+        x <- get_FPEMglobal_csv_change_res(run_name = run_name_list[[i]],
                          output_dir = output_dir_list[[i]], root_dir = root_dir,
                          aggregate = aggregate,
                          clean_indicator_names = clean_indicator_names,
@@ -203,11 +203,11 @@ get_cuaw_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_lis
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_model_traj
-##' @inheritParams read_cuaw_csv_res
+##' @inheritParams read_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @export
-get_cuaw_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                          aggregate = "Country", adj = FALSE, clean_indicator_names = TRUE,
                                         table_dir_name = "table", verbose = FALSE,
                                          ...) {

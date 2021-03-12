@@ -38,24 +38,24 @@ x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian 
 ##' Match UN locations country names
 ##'
 ##' Converts between the country names in
-##' \code{\link[wpp2019]{UNlocations}} and those in the \pkg{\link{cuaw}} outputs.
+##' \code{\link[wpp2019]{UNlocations}} and those in the \pkg{\link{FPEMglobal}} outputs.
 ##'
 ##' @param x Vector of names, factor or character.
 ##' @param return_names If \dQuote{UNlocations}, converts \emph{from}
-##'     \pkg{\link{cuaw}} names to \code{\link[wpp2019]{UNlocations}}
-##'     names. Converts the other way if \dQuote{cuaw}. Note that this
+##'     \pkg{\link{FPEMglobal}} names to \code{\link[wpp2019]{UNlocations}}
+##'     names. Converts the other way if \dQuote{FPEMglobal}. Note that this
 ##'     means \code{x} should be in the opposite format.
 ##' @return Vector of converted country names, character or factor
 ##'     following the class of \code{x}.
 ##' @author Mark Wheldon
 ##' @export
-match_UNlocations <- function(x, return_names = c("UNlocations", "cuaw")) {
+match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) {
 
     x_fac <- is.factor(x)
     if(x_fac) x <- as.character(x)
 
     return_names <- match.arg(return_names)
-    from_names <- c("UNlocations", "cuaw")
+    from_names <- c("UNlocations", "FPEMglobal")
 
     names_df <-
         data.frame(UNlocations = c("Reunion",
@@ -73,7 +73,7 @@ match_UNlocations <- function(x, return_names = c("UNlocations", "cuaw")) {
                                    "North Macedonia",
                                    NA
                                    ),
-                   cuaw = c("R.+union",
+                   FPEMglobal = c("R.+union",
                             "Swaziland",
                             "C.+te d.+Ivoire",
                             "China, Hong Kong Special Administrative Region",
@@ -91,14 +91,14 @@ match_UNlocations <- function(x, return_names = c("UNlocations", "cuaw")) {
 
     if(identical(return_names, "UNlocations")) {
         for(i in 1:nrow(names_df)) {
-            if(!is.na(names_df[i, "cuaw"])) {
-                x[grep(paste0("^", names_df[i, "cuaw"], "$"), x)] <- names_df[i, "UNlocations"]
+            if(!is.na(names_df[i, "FPEMglobal"])) {
+                x[grep(paste0("^", names_df[i, "FPEMglobal"], "$"), x)] <- names_df[i, "UNlocations"]
             }
         }
-    } else if(identical(return_names, "cuaw")) {
+    } else if(identical(return_names, "FPEMglobal")) {
         for(i in 1:nrow(names_df)) {
             if(!is.na(names_df[i, "UNlocations"])) {
-                x[grep(paste0("^", names_df[i, "UNlocations"], "$"), x)] <- names_df[i, "cuaw"]
+                x[grep(paste0("^", names_df[i, "UNlocations"], "$"), x)] <- names_df[i, "FPEMglobal"]
             }
         }
     }
