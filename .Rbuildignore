@@ -1,1 +1,4 @@
 ^LICENSE\.md$
+^package\.Rproj$
+^\.Rproj\.user$
+^R/_obsolete\.R$
