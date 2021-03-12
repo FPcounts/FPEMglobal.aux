@@ -1,0 +1,15 @@
+Package: FPEMglobal.aux
+Title: Auxillary Functions for FPEMglobal
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Mark",
+           family = "Wheldon",
+           role = c("aut", "cre"),
+           email = "wheldon@un.org",
+           comment = c(ORCID = "0000-0002-6897-9644"))
+Description: Provides functions for working with files and objects associated with FPEMglobal. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
