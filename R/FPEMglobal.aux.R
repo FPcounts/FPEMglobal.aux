@@ -3,9 +3,22 @@
 #'
 #' @docType package
 #' @name FPEMglobal.aux
-#'
+
 #' @importFrom magrittr %>%
 NULL
+
+#' @import dplyr
+NULL
+
+#' @import readr
+NULL
+
+#' @import tibble
+NULL
+
+#' @import tidyr
+NULL
+
 
 
 .onAttach <- function(libname, pkgname) {

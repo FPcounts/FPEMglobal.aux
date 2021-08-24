@@ -102,16 +102,16 @@ get_used_denominators <-
                           grep("^(M|U)W_[0-9]{4}_[0-9]{4}$",
                                colnames(denom_counts), value = TRUE),
                           key = "key", value = "count") %>%
-            mutate(year = as.numeric(sapply(strsplit(key, "_", fixed = TRUE), "[[", 3)),
+            dplyr::mutate(year = as.numeric(sapply(strsplit(key, "_", fixed = TRUE), "[[", 3)),
                    age_group = sapply(strsplit(key, "_", fixed = TRUE), "[[", 2),
                    age_group = paste(substr(age_group, 1, 2), "-", substr(age_group, 3, 4), sep = "")) %>%
-            select(-key)
+            dplyr::select(-key)
 
         if("all women" %in% marital_group) {
             denom_counts_aw <-
                 denom_counts %>% group_by(ISO.code, Country, year, age_group) %>%
-                summarize_at("count", sum, na.rm = TRUE) %>%
-                mutate(marital_group = "all women")
+                dplyr::summarize_at("count", sum, na.rm = TRUE) %>%
+                dplyr::mutate(marital_group = "all women")
             denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_aw)
         }
         denom_counts <-

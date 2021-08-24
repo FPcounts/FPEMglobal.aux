@@ -17,4 +17,6 @@ Imports:
   readr,
   dplyr,
   tibble,
+  tidyr,
+  magrittr,
   FPEMglobal
