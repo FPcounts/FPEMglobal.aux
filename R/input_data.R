@@ -95,7 +95,7 @@ get_used_denominators <-
             denom_counts <- rbind(denom_counts, denom_counts1)
         }
 
-        denom_counts <- as_tibble(denom_counts)
+        denom_counts <- tibble::as_tibble(denom_counts)
 
         denom_counts <-
             tidyr::gather(denom_counts,
