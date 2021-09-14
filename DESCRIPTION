@@ -1,6 +1,6 @@
 Package: FPEMglobal.aux
 Title: Auxillary Functions for FPEMglobal
-Version: 0.0.1
+Version: 0.0.1.9000
 Authors@R: 
     person(given = "Mark",
            family = "Wheldon",
@@ -14,6 +14,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports:
+  magrittr,
   readr,
   dplyr,
   tibble,
