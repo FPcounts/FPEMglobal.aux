@@ -11,6 +11,7 @@ get_used_denominators(
   data_dir_name = "data",
   filename,
   marital_group = c("married", "unmarried", "all women"),
+  age_group = "unknown",
   verbose = FALSE,
   ...
 )
@@ -25,9 +26,16 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{data_dir_name}{Name of subdirectory of \code{output_dir} holding input data files.}
+\item{data_dir_name}{Name of subdirectory of \code{output_dir}
+holding input data files.}
 
-\item{filename}{Name of file with the counts (including extension).}
+\item{filename}{Name of file with the counts (including
+extension).}
+
+\item{age_group}{Age group of the counts for the output data
+frame. If the column names are of the form 'U/MW_\link{aabb}_year'
+this is ignored and the age group is taken from the column
+names.}
 
 \item{verbose}{Print lots of messages?}
 

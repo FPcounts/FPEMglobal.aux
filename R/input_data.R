@@ -60,8 +60,14 @@ get_used_input_data <-
 ##'
 ##' Reads the '.csv' file containing the married and unmarried denominator counts used in the run.
 ##'
-##' @param data_dir_name  Name of subdirectory of \code{output_dir} holding input data files.
-##' @param filename Name of file with the counts (including extension).
+##' @param data_dir_name Name of subdirectory of \code{output_dir}
+##'     holding input data files.
+##' @param filename Name of file with the counts (including
+##'     extension).
+##' @param age_group Age group of the counts for the output data
+##'     frame. If the column names are of the form 'U/MW_[aabb]_year'
+##'     this is ignored and the age group is taken from the column
+##'     names.
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
@@ -71,6 +77,7 @@ get_used_denominators <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",
              data_dir_name = "data", filename,
              marital_group = c("married", "unmarried", "all women"),
+             age_group = "unknown",
              verbose = FALSE, ...) {
 
         marital_group <- match.arg(marital_group, several.ok = TRUE)
@@ -92,20 +99,24 @@ get_used_denominators <-
             denom_counts1 <-
                 FPEMglobal:::extractDenominators(fpath, in_union = 0)
             denom_counts1$marital_group <- "unmarried"
-            denom_counts <- rbind(denom_counts, denom_counts1)
+            denom_counts <- dplyr::bind_rows(denom_counts, denom_counts1)
         }
 
         denom_counts <- tibble::as_tibble(denom_counts)
 
         denom_counts <-
             tidyr::gather(denom_counts,
-                          grep("^(M|U)W_[0-9]{4}_[0-9]{4}$",
+                          grep("^[^0-9]+(19|20)[0-9]{2}$",
                                colnames(denom_counts), value = TRUE),
                           key = "key", value = "count") %>%
-            dplyr::mutate(year = as.numeric(sapply(strsplit(key, "_", fixed = TRUE), "[[", 3)),
+            dplyr::mutate(year = substr(key, start = nchar(key) - 3, stop = nchar(key)))
+        if (all(grepl("^(M|U)W_[0-9]{4}_[0-9]{4}$", colnames(denom_counts)))) {
+            denom_counts <-
+                dplyr::mutate(denom_counts,
                    age_group = sapply(strsplit(key, "_", fixed = TRUE), "[[", 2),
-                   age_group = paste(substr(age_group, 1, 2), "-", substr(age_group, 3, 4), sep = "")) %>%
-            dplyr::select(-key)
+                   age_group = paste(substr(age_group, 1, 2), "-", substr(age_group, 3, 4), sep = ""))
+        } else denom_counts$age_group <- age_group
+        denom_counts <- dplyr::select(denom_counts, -key)
 
         if("all women" %in% marital_group) {
             denom_counts_aw <-
