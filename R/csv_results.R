@@ -40,7 +40,7 @@
 ##' drive.
 ##'
 ##' @param aggregate Name of the 'aggregate' to load. Note: use
-##'     \code{aggregated = "Country"} to load country results.
+##'     \code{aggregate = "Country"} to load country results.
 ##' @param stat Which statistics should be loaded? Allowable values
 ##'     are \code{c("orig", "adj", "sub_adj")}. A column
 ##'     \dQuote{stat} is added to the output with value \code{stat}.
