@@ -17,14 +17,17 @@ get_used_special_aggregates(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{data_dir_name}{Name of subdirectory of \code{output_dir} holding input data files. If \code{processed} is \code{TRUE} this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
+\item{data_dir_name}{Name of subdirectory of \code{output_dir}
+holding input data files. If \code{processed} is \code{TRUE}
+this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 
 \item{verbose}{Print lots of messages?}
 

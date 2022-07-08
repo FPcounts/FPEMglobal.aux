@@ -5,7 +5,7 @@
 ##'
 ##' This is 'Figure 4' in the Appendix to Alkema at al. (2013).
 ##' @param CP_data Data frame like that returned by
-##'     \code{\link{read_country_CP_data}}.
+##'     \code{\link{get_used_input_data}}.
 ##' @return
 ##' @author Mark Wheldon
 ##' @export

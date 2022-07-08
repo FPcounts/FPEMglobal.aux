@@ -25,19 +25,20 @@ get_FPEMglobal_csv_res(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregated = "Country"} to load country results.}
+\code{aggregate = "Country"} to load country results.}
 
 \item{stat}{Which statistics should be loaded? Allowable values
-are \code{c("orig", "adj", "sub_adj")}. A column
-\dQuote{stat} is added to the output with value \code{stat}.}
+are \code{c("orig", "adj", "sub_adj")}. A column \dQuote{stat}
+is added to the output with value \code{stat}.}
 
 \item{adj}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
@@ -60,6 +61,10 @@ classifications? If \dQuote{TRUE}, then
 the mappings from ISO codes to classifications. In the first
 and third case, these are loaded from \code{data_input_dir}.}
 
+\item{data_dir_name}{Name of subdirectory of \code{output_dir}
+holding input data files. If \code{processed} is \code{TRUE}
+this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
+
 \item{long_format}{Logical. Should the table be returned in long
 format?}
 
@@ -73,43 +78,10 @@ format?}
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Reads \emph{all} results \file{.csv} files from a results directory for a
-given aggregate (\dQuote{Country}, \dQuote{UNPD_aggregate}, etc.)
-that contain percentages, counts, and ratios. This means files
-named
-\file{\code{run_name}/_\code{stat}/_\var{indicator}\var{adj}.csv}.
+Reads \emph{all} results \file{.csv} files from a results
+directory for a given country or region that contain percentages,
+counts, and ratios.
 }
-\details{
-\var{indicator} is
-\dQuote{Total}, \dQuote{Modern}, \dQuote{TotalPlusUnmet},
-\dQuote{Traditional}, \dQuote{TradPlusUnmet}, and
-\dQuote{Unmet}.
-
-\var{adj} is resolved to \dQuote{""} (i.e., empty string) if
-\code{adj} is \dQuote{orig}. It is resolved to \dQuote{_Adj} if
-\code{adj} is \dQuote{adj}. When \code{adj} is \dQuote{sub_adj},
-both adjusted and original results are loaded and the adjusted
-medians are substituted for the original ones.
-}
-\section{Specifying results directory}{
-
-There are two recommended ways to specify the results directory:
-\enumerate{
-\item Provide \code{root_dir} and \code{run_name}
-\item Provide \code{output_dir}
-}
-
-In the first method, the outputs are searched for in
-\file{\code{root_dir}/output/\code{run_name}}. This method works
-well when you have done the run on your own machine.
-
-In the second method, the outputs are searched for in
-\file{\code{output_dir}}. Note that \code{run_name} is still
-required for finding the output files themselves. This method
-works well when you are accessing results copied to the \file{V:/}
-drive.
-}
-
 \seealso{
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},

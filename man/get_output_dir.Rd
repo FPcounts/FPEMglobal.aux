@@ -17,8 +17,49 @@ the directory called \dQuote{output}.}
 }
 \description{
 Constructs the path to an output directory for a given model run
-name and a root directory.
+name and a root directory. This output directory structure is now
+obsolete, but the function is retained for backward
+compatibility. The section \dQuote{Specifying the results
+directory from other functions} below constains further
+information, in particular for users who arrived here from the
+help file of another function.
 }
+\section{Specifying the results directory from other functions}{
+
+
+Several functions, e.g., \code{\link{get_FPEMglobal_csv_res}},
+require the output directory to be specified via arguments
+\code{run_name}, \code{root_dir}, and \code{output_dir}. There are
+two ways to do this:
+
+\enumerate{
+\item Provide only \code{output_dir}
+\item Provide \code{root_dir} and \code{run_name}
+}
+
+The first method is recommended. Using this approach,
+\code{output_dir} specifies the location of the main MCMC results
+\file{.rda} file, and the \file{fig} and \file{table} directories
+that hold the plots and \file{.csv} tables. \code{run_name} is
+still required for finding the output files themselves, but it
+only specifies the tag at the start of the plot and table
+filenames. It does not specify the name of any directory.
+
+Using the first method, if \code{output_dir} = \dQuote{myOutputs}
+and \code{run_name} = \dQuote{myRun}, the \file{.pdf} file holding
+the main output plots has file path:
+\file{myOutputs/fig/myRunCIs.pdf}.
+
+The second method is now obsolete. It only works when the
+outputs are all contained in the directory
+\file{\code{root_dir}/output/\code{run_name}}, \emph{and} the tag at the start
+of the plot and table filenames is also \code{run_name}.
+
+Under the second method, if \code{root_dir} = \dQuote{myRootDir}
+and \code{run_name} = \dQuote{myRun}, the \file{.pdf} file holding the main
+output plots has file path: \file{myRootDir/output/myRun/fig/myRunCIs.pdf}.
+}
+
 \author{
 Mark Wheldon
 }

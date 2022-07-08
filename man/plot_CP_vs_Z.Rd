@@ -22,7 +22,7 @@ plot_CP_vs_Z(
 }
 \arguments{
 \item{CP_data}{Data frame like that returned by
-\code{\link{read_country_CP_data}}.}
+\code{\link{get_used_input_data}}.}
 }
 \value{
 

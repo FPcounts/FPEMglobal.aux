@@ -6,6 +6,9 @@
 \usage{
 guess_marital_group(run_name)
 }
+\arguments{
+\item{run_name}{The run name.}
+}
 \value{
 Returns \dQuote{married}, \dQuote{unmarried}, or
 \dQuote{all_women} if only one of them was found in

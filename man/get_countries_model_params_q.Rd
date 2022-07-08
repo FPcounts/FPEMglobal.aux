@@ -14,15 +14,15 @@ get_countries_model_params_q(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{verbose}{Logical; report the path, filename, and object name
-in a message?}
+\item{verbose}{Print lots of messages?}
 }
 \value{
 The loaded object.

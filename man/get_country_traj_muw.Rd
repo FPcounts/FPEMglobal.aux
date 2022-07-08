@@ -16,8 +16,9 @@ get_country_traj_muw(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of

@@ -19,15 +19,16 @@ get_FPEMglobal_csv_change_res(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregated = "Country"} to load country results.}
+\code{aggregate = "Country"} to load country results.}
 
 \item{clean_indicator_names}{Logical. Make indicator names lowe
 case and remove spaces?}
@@ -41,8 +42,8 @@ that contains the \file{.csv} files.}
 because the ratio indicators for all women are different from
 those for married and unmarried. \dQuote{guess}, the default,
 will work if the \code{run_name} contains one (and only one)
-of the regular expressions \dQuote{married}, \dQuote{unmarried},
-or \dQuote{all\link{_. }women}.}
+of the regular expressions \code{married}, \code{unmarried},
+or \code{all[_. ]women}.}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

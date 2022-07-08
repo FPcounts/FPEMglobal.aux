@@ -28,7 +28,7 @@ unmarried, and all women. See \code{run_name_list}.}
 the directory called \dQuote{output}.}
 
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregated = "Country"} to load country results.}
+\code{aggregate = "Country"} to load country results.}
 
 \item{clean_indicator_names}{Logical. Make indicator names lowe
 case and remove spaces?}
@@ -36,8 +36,7 @@ case and remove spaces?}
 \item{table_dir_name}{Name of subdirectory of \code{output_dir}
 that contains the \file{.csv} files.}
 
-\item{verbose}{Logical; report the path, filename, and object name
-in a message?}
+\item{verbose}{Print lots of messages?}
 
 \item{index_col_name}{Character. Name of column added to output
 that identifies observations for each marital group.}

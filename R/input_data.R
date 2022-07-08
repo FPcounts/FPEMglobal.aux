@@ -12,7 +12,7 @@
 ##' @param filename Filename of input file.
 ##' @return Data frame with input data.
 ##' @author Mark Wheldon
-##' @seealso \code{\link{get_used_input_data}.
+##' @seealso \code{\link{get_used_input_data}}.
 ##' @export
 get_main_input_file <- function(age_group = c("15-49", "15-19"),
                                 folder_path = system.file("extdata", package = "FPEMglobal"),
@@ -26,12 +26,15 @@ get_main_input_file <- function(age_group = c("15-49", "15-19"),
 ##'
 ##' Reads the '.csv' file containing the prevalence data used in the run.
 ##'
-##' @param data_dir_name  Name of subdirectory of \code{output_dir} holding input data files. If \code{processed} is \code{TRUE} this is set to \dQuote{data} by default, otherwise \dQuote{.}.
-##' @param processed Get the input data after processing by \pkg{\link{FPEMglobal}}?
+##' @param data_dir_name Name of subdirectory of \code{output_dir}
+##'     holding input data files. If \code{processed} is \code{TRUE}
+##'     this is set to \dQuote{data} by default, otherwise \dQuote{.}.
+##' @param processed Get the input data after processing by
+##'     \pkg{\link{FPEMglobal}}?
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
-##' @seealso \code{\link{get_main_input_file}.
+##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
 get_used_input_data <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -58,20 +61,21 @@ get_used_input_data <-
 
 ##' Get denominator counts actually used
 ##'
-##' Reads the '.csv' file containing the married and unmarried denominator counts used in the run.
+##' Reads the '.csv' file containing the married and unmarried
+##' denominator counts used in the run.
 ##'
 ##' @param data_dir_name Name of subdirectory of \code{output_dir}
 ##'     holding input data files.
 ##' @param filename Name of file with the counts (including
 ##'     extension).
 ##' @param age_group Age group of the counts for the output data
-##'     frame. If the column names are of the form 'U/MW_[aabb]_year'
+##'     frame. If the column names are of the form 'U/MW_\[aabb\]_year'
 ##'     this is ignored and the age group is taken from the column
 ##'     names.
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
-##' @seealso \code{\link{get_main_input_file}.
+##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                   data_dir_name = "data", filename,

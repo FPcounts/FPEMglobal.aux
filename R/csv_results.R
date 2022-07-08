@@ -3,47 +3,23 @@
 
 ##' Read results csv files containing percentages, counts, and ratios
 ##'
-##' Reads \emph{all} results \file{.csv} files from a results directory for a
-##' given aggregate (\dQuote{Country}, \dQuote{UNPD_aggregate}, etc.)
-##' that contain percentages, counts, and ratios. This means files
-##' named
-##' \file{\code{run_name}/_\code{stat}/_\var{indicator}\var{adj}.csv}.
-##'
-##' \var{indicator} is
-##' \dQuote{Total}, \dQuote{Modern}, \dQuote{TotalPlusUnmet},
-##' \dQuote{Traditional}, \dQuote{TradPlusUnmet}, and
-##' \dQuote{Unmet}.
-##'
-##' \var{adj} is resolved to \dQuote{""} (i.e., empty string) if
-##' \code{adj} is \dQuote{orig}. It is resolved to \dQuote{_Adj} if
-##' \code{adj} is \dQuote{adj}. When \code{adj} is \dQuote{sub_adj},
-##' both adjusted and original results are loaded and the adjusted
-##' medians are substituted for the original ones.
+##' Reads \emph{all} results \file{.csv} files from a results
+##' directory for a given country or region that contain percentages,
+##' counts, and ratios.
 ##'
 ##' @family csv results functions
 ##'
-##' @section Specifying results directory:
-##' There are two recommended ways to specify the results directory:
-##' \enumerate{
-##'     \item Provide \code{root_dir} and \code{run_name}
-##'     \item Provide \code{output_dir}
-##' }
-##'
-##' In the first method, the outputs are searched for in
-##' \file{\code{root_dir}/output/\code{run_name}}. This method works
-##' well when you have done the run on your own machine.
-##'
-##' In the second method, the outputs are searched for in
-##' \file{\code{output_dir}}. Note that \code{run_name} is still
-##' required for finding the output files themselves. This method
-##' works well when you are accessing results copied to the \file{V:/}
-##' drive.
-##'
+##' @param output_dir Path to directory containing outputs. See
+##'     Section \dQuote{Specifying results directory} in the help file
+##'     for \code{\link{get_output_dir}}. Note that \code{root_dir} is
+##'     ignored if \code{output_dir} is supplied.
+##' @param verbose Logical; report the path, filename, and object name
+##'     in a message?
 ##' @param aggregate Name of the 'aggregate' to load. Note: use
 ##'     \code{aggregate = "Country"} to load country results.
 ##' @param stat Which statistics should be loaded? Allowable values
-##'     are \code{c("orig", "adj", "sub_adj")}. A column
-##'     \dQuote{stat} is added to the output with value \code{stat}.
+##'     are \code{c("orig", "adj", "sub_adj")}. A column \dQuote{stat}
+##'     is added to the output with value \code{stat}.
 ##' @param adj Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
@@ -66,8 +42,7 @@
 ##' @param verbose Print lots of messages?
 ##' @param ... passed to \code{\link{read_csv}}.
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
-##' @inheritParamsget_used_input_data
+##' @inheritParams get_used_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @export
@@ -334,7 +309,7 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
 ##'     that identifies observations for each marital group.
 ##' @param sort Logical. Sort by marital status, stat, name, year, percentile?
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @export
 ##' @return A \code{\link[tibble]{tibble}}.

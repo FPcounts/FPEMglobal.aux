@@ -4,9 +4,11 @@
 
 ##' Get model parameter trajectory array
 ##'
-##' This function \code{\link{load}}s \file{mcmc.array.rda} from the output directory. This
-##' contains MCMC trajectories for the model parameters. If you want
-##' country trajectories, use \code{\link{get_country_traj}}.
+##' This function \code{\link{load}}s \file{mcmc.array.rda} from the
+##' output directory. This contains MCMC trajectories for the model
+##' parameters. If you want country trajectories, use
+##' \code{\link{get_country_traj_muw}} or
+##' \code{\link{get_country_traj_aw}}.
 ##'
 ##' The dimensions are not named by the esimtation software. If
 ##' \code{name_dims} is \code{TRUE} they are given the names
@@ -17,14 +19,10 @@
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
-##' @param output_dir Output directory, e.g., like that returned by
-##'     \code{\link{get_output_dir}}. Note that \code{root_dir} is
-##'     ignored if \code{output_dir} is supplied.
-##' @param verbose Logical; report the path, filename, and object name
-##'     in a message?
 ##' @param name_dims Logical; should the dimensions be given informative names? See \dQuote{Details}.
 ##' @return The loaded object.
 ##' @inheritParams get_output_dir
+##'
 ##' @author Mark Wheldon
 ##' @export
 get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -53,7 +51,7 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 ##' Lists unique parameter names in mcmc array
 ##'
 ##' Parameters in the mcmc.array object are named with country and
-##' region indices, e.g., \dQuote{theta.ci[98,7]}. This function
+##' region indices, e.g., \code{theta.ci[98,7]}. This function
 ##' strips the indices in the square brackets, and the square brackets
 ##' themselves, and returns the unique strings in what's left. This is
 ##' helpful for listing the \emph{names} of the parameters.
@@ -107,7 +105,7 @@ get_model_param_names <- function(mcmc_array) {
 ##' @param verbose Logical; report the path, filename, and object name in a
 ##'     message?
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
@@ -174,7 +172,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @family trajectory functions
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_country_traj_muw
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
@@ -215,7 +213,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @inheritParams get_country_traj
 ##' @return The loaded object.
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @author Mark Wheldon
 ##' @export
 get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -267,9 +265,6 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
 ##'
 ##' @family trajectory functions
-##' @param run_name
-##' @param output_dir
-##' @param root_dir
 ##' @param agg_family_name Name of the aggregate family for which to
 ##'     retrieve trajectories. This must match the name of the
 ##'     subdirectory of \code{file.path(output_dir,
@@ -280,7 +275,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##' @param verbose Logical; report the path, filename, and object name
 ##'     in a message?
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return The loaded aggregate trajectory object.
 ##' @author Mark Wheldon
 ##' @export

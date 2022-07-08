@@ -19,15 +19,30 @@ get_FPEMglobal_csv_res_age_ratios(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{verbose}{Logical; report the path, filename, and object name
-in a message?}
+\item{aggregate}{Name of the 'aggregate' to load. Note: use
+\code{aggregate = "Country"} to load country results.}
+
+\item{adj}{Loads original results (\dQuote{orig}), adjusted
+medians only (\dQuote{adj}), or original results with medians
+substituted with adjusted medians (\dQuote{sub_adj}).}
+
+\item{clean_indicator_names}{Logical. Make indicator names lowe
+case and remove spaces?}
+
+\item{table_dir_name}{Name of subdirectory of \code{output_dir}
+that contains the \file{.csv} files.}
+
+\item{verbose}{Print lots of messages?}
+
+\item{...}{passed to \code{\link{read_csv}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

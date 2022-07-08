@@ -26,7 +26,7 @@ This is the \file{.csv} file with \emph{raw survey observations}
 of CP, Unmet need, etc. observations.
 }
 \seealso{
-\code{\link{get_used_input_data}.
+\code{\link{get_used_input_data}}.
 }
 \author{
 Mark Wheldon

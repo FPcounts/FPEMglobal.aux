@@ -214,10 +214,8 @@ get_used_special_aggregates <-
 ##' internal country index corresponds to the country's row number in
 ##' this data frame.
 ##'
-##' @param run_name
-##' @param output_dir
-##' @param root_dir
-##' @param verbose
+##' @inheritParams get_output_dir
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with country ISO codes, names, and trajectory
 ##'     file names, where row number corresponds to the internal index
 ##'     number.

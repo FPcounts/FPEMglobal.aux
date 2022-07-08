@@ -6,11 +6,8 @@
 ##' \code{\link{load}}s the file \dQuote{par.ciq.rda} which contains
 ##' posterior quantiles of model parameters.
 ##'
-##' @param run_name
-##' @param output_dir
-##' @param root_dir
-##' @param verbose
 ##' @inheritParams get_output_dir
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return The \code{\link{load}}ed object.
 ##' @author Mark Wheldon
 ##' @export

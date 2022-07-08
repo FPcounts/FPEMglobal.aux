@@ -26,11 +26,11 @@
 ##'     because the ratio indicators for all women are different from
 ##'     those for married and unmarried. \dQuote{guess}, the default,
 ##'     will work if the \code{run_name} contains one (and only one)
-##'     of the regular expressions \dQuote{married}, \dQuote{unmarried},
-##'     or \dQuote{all[_. ]women}.
+##'     of the regular expressions \code{married}, \code{unmarried},
+##'     or \code{all[_. ]women}.
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @export
@@ -156,7 +156,7 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
 ##'
 ##' @inheritParams get_FPEMglobal_csv_all_marr_res
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @export
 ##' @return A \code{\link[tibble]{tibble}}.
@@ -202,7 +202,7 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
 ##' @family csv results functions
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_model_traj
+##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams read_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon

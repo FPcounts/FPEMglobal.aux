@@ -15,7 +15,7 @@ Character vector of unique names.
 }
 \description{
 Parameters in the mcmc.array object are named with country and
-region indices, e.g., \dQuote{theta.ci\link{98,7}}. This function
+region indices, e.g., \code{theta.ci[98,7]}. This function
 strips the indices in the square brackets, and the square brackets
 themselves, and returns the unique strings in what's left. This is
 helpful for listing the \emph{names} of the parameters.

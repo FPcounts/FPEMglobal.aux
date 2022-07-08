@@ -15,15 +15,8 @@ get_model_traj(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
-ignored if \code{output_dir} is supplied.}
-
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
-
-\item{verbose}{Logical; report the path, filename, and object name
-in a message?}
 
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
 }
@@ -31,9 +24,11 @@ in a message?}
 The loaded object.
 }
 \description{
-This function \code{\link{load}}s \file{mcmc.array.rda} from the output directory. This
-contains MCMC trajectories for the model parameters. If you want
-country trajectories, use \code{\link{get_country_traj}}.
+This function \code{\link{load}}s \file{mcmc.array.rda} from the
+output directory. This contains MCMC trajectories for the model
+parameters. If you want country trajectories, use
+\code{\link{get_country_traj_muw}} or
+\code{\link{get_country_traj_aw}}.
 }
 \details{
 The dimensions are not named by the esimtation software. If

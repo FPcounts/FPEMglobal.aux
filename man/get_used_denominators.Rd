@@ -19,8 +19,9 @@ get_used_denominators(
 \arguments{
 \item{run_name}{The run name.}
 
-\item{output_dir}{Output directory, e.g., like that returned by
-\code{\link{get_output_dir}}. Note that \code{root_dir} is
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
@@ -33,7 +34,7 @@ holding input data files.}
 extension).}
 
 \item{age_group}{Age group of the counts for the output data
-frame. If the column names are of the form 'U/MW_\link{aabb}_year'
+frame. If the column names are of the form 'U/MW_[aabb]_year'
 this is ignored and the age group is taken from the column
 names.}
 
@@ -45,10 +46,11 @@ names.}
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Reads the '.csv' file containing the married and unmarried denominator counts used in the run.
+Reads the '.csv' file containing the married and unmarried
+denominator counts used in the run.
 }
 \seealso{
-\code{\link{get_main_input_file}.
+\code{\link{get_main_input_file}}.
 }
 \author{
 Mark Wheldon

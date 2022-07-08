@@ -4,7 +4,7 @@
 
 ##' Attempt to guess marital group from run name
 ##'
-##' @param run_name
+##' @inheritParams get_output_dir
 ##' @return Returns \dQuote{married}, \dQuote{unmarried}, or
 ##'     \dQuote{all_women} if only one of them was found in
 ##'     \code{run_name}. Otherwise returns \code{NULL}.
