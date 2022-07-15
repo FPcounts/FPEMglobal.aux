@@ -326,12 +326,14 @@ get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_lis
                              ...) {
 
     stopifnot(is.list(run_name_list))
-    stopifnot(identical(length(setdiff(names(run_name_list),
-                                       c("married", "unmarried", "all_women"))), 0L))
+    stopifnot(!is.null(names(run_name_list)))
+    stopifnot(identical(sort(names(run_name_list)),
+                             sort(c("married", "unmarried", "all_women"))))
 
     stopifnot(is.list(output_dir_list))
-    stopifnot(identical(length(setdiff(names(output_dir_list),
-                                       c("married", "unmarried", "all_women"))), 0L))
+    stopifnot(!is.null(names(output_dir_list)))
+    stopifnot(identical(sort(names(output_dir_list)),
+                             sort(c("married", "unmarried", "all_women"))))
 
     out <- data.frame()
 
