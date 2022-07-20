@@ -48,8 +48,7 @@ Loads the country classifications actually used in a model run.
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_world_bank_regions}()}
+\code{\link{get_used_special_aggregates}()}
 }
 \author{
 Mark Wheldon

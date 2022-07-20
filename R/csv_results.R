@@ -268,8 +268,6 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
                                   data_dir_name = data_dir_name, clean_col_names = TRUE,
                                   verbose = verbose)
 
-        class_wb <- get_used_world_bank_regions()
-
         class_spec <-
             get_used_special_aggregates(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                         data_dir_name = data_dir_name, clean_col_names = TRUE,
@@ -277,7 +275,7 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
 
         res <- res %>%
             dplyr::left_join(dplyr::select(class_unpd_agg, -name), by = "iso") %>%
-            dplyr::left_join(class_wb, by = "iso") %>% dplyr::left_join(class_spec, by = "iso")
+            dplyr::left_join(class_spec, by = "iso")
     }
 
     ## Sort

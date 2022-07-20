@@ -21,8 +21,7 @@ These are the 185 countries for which estimates are released by UNPD.
 Other countries, regions and aggregates functions: 
 \code{\link{get_195_countries}()},
 \code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()},
-\code{\link{get_used_world_bank_regions}()}
+\code{\link{get_used_unpd_regions}()}
 }
 \author{
 Mark Wheldon

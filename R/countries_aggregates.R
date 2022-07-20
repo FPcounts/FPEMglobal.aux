@@ -91,41 +91,15 @@ list_world_bank_aggregates_names <- function() {
       "lower middle income countries",
       "low income countries",
       "no income group")
-    }
-
-
-##' Get countries in World Bank Income Groups
-##'
-##' The World Bank Income groups are hard-coded in \pkg{\link{FPEMglobal}}
-##' so must be extracted from that package.
-##'
-##' @family countries, regions and aggregates functions
-##'
-##' @return A \code{\link[tibble]{tibble}} with the requested results.
-##' @author Mark Wheldon
-##' @export
-##' @param exclude_middle_income Logical. Exclude the category
-##'     \dQuote{Middle Income} countries. This is a super-category for
-##'     \dQuote{Upper Middle Income} and \dQuote{Lower Middle Income}
-##'     countries.
-get_used_world_bank_regions <- function(exclude_middle_income = TRUE) {
-    wb_names <- FPEMglobal:::get_aggregate_names(family = "World Bank")
-    if(exclude_middle_income) wb_names <- wb_names[!wb_names == "middle income countries"]
-    out <- tibble::tibble()
-    for(i in seq_along(wb_names)) {
-        out <- dplyr::bind_rows(out,
-                         tibble::tibble(iso = FPEMglobal:::get_aggregate_ISOs(name = wb_names[i],
-                                                                  family = "World Bank"),
-                                world_bank_income_group = names(wb_names)[i]))
-    }
-    out$iso <- as.numeric(out$iso)
-    out
-    }
+}
 
 
 ## List of special aggregates
 list_special_aggregates_csv_filenames <- function() {
-    c("SDG_regions_LDCs.csv",
+    ## This just has to be a hard-coded list of all possible special aggregate csv file names.
+    c("WB_Income_2020-w_middle.csv",
+      "WB_IncomeGroup_8June2022-w_middle.csv",
+      "SDG_regions_LDCs.csv",
       "SDG_regions_LLDCs_SIDS.csv",
       "SDG_regions_level_1.csv",
       "SDG_regions_level_2.csv",

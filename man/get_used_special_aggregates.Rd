@@ -43,8 +43,7 @@ Loads the special country classifications actually used to produce the results.
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
-\code{\link{get_used_unpd_regions}()},
-\code{\link{get_used_world_bank_regions}()}
+\code{\link{get_used_unpd_regions}()}
 }
 \author{
 Mark Wheldon

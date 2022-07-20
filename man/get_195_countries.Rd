@@ -21,8 +21,7 @@ These are the 195 countries in the original married women model.
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
 \code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()},
-\code{\link{get_used_world_bank_regions}()}
+\code{\link{get_used_unpd_regions}()}
 }
 \author{
 Mark Wheldon
