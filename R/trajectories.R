@@ -102,8 +102,6 @@ get_model_param_names <- function(mcmc_array) {
 ##'     \code{iso_code} and \code{country_name} should be given.
 ##' @param iso_code Alternative way of selecting country to get trajectories
 ##'     for; only one of \code{iso_code} and \code{country_name} should be given.
-##' @param verbose Logical; report the path, filename, and object name in a
-##'     message?
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @return The loaded country trajectory object.

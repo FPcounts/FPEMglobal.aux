@@ -30,7 +30,7 @@ the directory called \dQuote{output}.}
 holding input data files. If \code{processed} is \code{TRUE}
 this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{UNlocations_names}{Logical; should
 \code{match_UNlocations(..., return_names = "UNlocations")} be

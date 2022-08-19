@@ -29,7 +29,7 @@ the directory called \dQuote{output}.}
 holding input data files. If \code{processed} is \code{TRUE}
 this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

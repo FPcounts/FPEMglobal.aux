@@ -1,31 +1,44 @@
 ###-----------------------------------------------------------------------------
 ### * Work With Output Meta Data
 
-##' Get model meta data
+###-----------------------------------------------------------------------------
+### ** Load/Return Meta Data
+
+## RULES:
+## - 'load_...' functions load the objects into the environment
+##   'envir' (.GlobalEnv by default) and invisibly return the object
+##   name.
+## - 'get_...' functions load the objects and return it. The loaded
+##   object is not stored in any persistent environment, i.e., the
+##   global workspace is not modified.
+
+
+##' Load and return model meta data
 ##'
-##' This function \code{\link{load}}s \file{mcmc.meta.rda} from the output directory. This
-##' contains all sorts of information about the model run.
+##' \code{load_model_meta} \code{\link{load}}s \file{mcmc.meta.rda}
+##' from the output directory. This contains all sorts of information
+##' about the model run. \code{get_model_meta} calls
+##' \code{load_model_meta} and, additionally, returns the loaded
+##' object. This will cause the printing of a large amount of output;
+##' it is usually much better to assign the result to a variable name.
 ##'
-##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
-##'
-##' @param output_dir Output directory, e.g., like that returned by
-##'     \code{\link{get_output_dir}}.
-##' @param verbose Logical; report the path, filename, and object name in a
-##'     message?
-##' @return The loaded object.
 ##' @inheritParams get_output_dir
+##' @inheritParams get_FPEMglobal_csv_res
+##'
+##' @return Either the name of the loaded object, invisibly
+##'     (\code{load_model_meta}), or the loaded object itself
+##'     (\code{get_model_meta}).
+##'
 ##' @author Mark Wheldon
 ##' @export
-get_model_meta <-
-    function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             verbose = FALSE) {
+load_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+             verbose = FALSE, envir = parent.frame()) {
 
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
 
-    ob_name <- load(file = file.path(res_dir, "mcmc.meta.rda"))
+    ob_name <- load(file = file.path(res_dir, "mcmc.meta.rda"), envir = envir)
 
     if(verbose) {
         message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'. \n.. Object is '",
@@ -33,5 +46,63 @@ get_model_meta <-
                 "'.")
     }
 
-    return(get(ob_name[1]))
+    return(invisible(ob_name))
+    }
+
+##' @rdname load_model_meta
+##' @export
+get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+                           verbose = FALSE) {
+    tmp_env <- new.env()
+    if (verbose) message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'.")
+    return(get(load_model_meta(run_name = run_name, output_dir = output_dir,
+                               root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
 }
+
+
+##' Load and return global arguments used to generate the run
+##'
+##' \code{load_global_mcmc_args} \code{\link{load}}s \file{mcmc.meta.rda}
+##' from the output directory. This contains all sorts of information
+##' about the model run. \code{get_global_mcmc_args} calls
+##' \code{load_global_mcmc_args} and, additionally, returns the loaded
+##' object. This will cause the printing of a large amount of output;
+##' it is usually much better to assign the result to a variable name.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_FPEMglobal_csv_res
+##'
+##' @return Either the name of the loaded object, invisibly
+##'     (\code{load_global_mcmc_args}), or the loaded object itself
+##'     (\code{get_global_mcmc_args}).
+##'
+##' @author Mark Wheldon
+##' @export
+load_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+             verbose = FALSE, envir = parent.frame()) {
+
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+
+    ob_name <- load(file = file.path(res_dir, "global_mcmc_args.RData"), envir = envir)
+
+    if(verbose) {
+        message("Loaded '", file.path(res_dir, "global_mcmc_args.RData"), "'. \n.. Object is '",
+                paste(ob_name, collapse = " "), "'. \n.. Returning '", ob_name[1],
+                "'.")
+    }
+
+    return(invisible(ob_name))
+}
+
+##' @rdname load_global_mcmc_args
+##' @export
+get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+                                 verbose = FALSE) {
+    tmp_env <- new.env()
+    if (verbose) message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'.")
+    return(get(load_global_mcmc_args(run_name = run_name, output_dir = output_dir,
+                               root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
+}
+

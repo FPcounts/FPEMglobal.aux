@@ -39,11 +39,16 @@
 ##' @param long_format Logical. Should the table be returned in long
 ##'     format?
 ##' @param sort Logical. Sort by stat, name, year, percentile?
-##' @param verbose Print lots of messages?
+##' @param verbose Logical. Print lots of messages?
 ##' @param ... passed to \code{\link{read_csv}}.
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_used_input_data
+##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
+##'
+##' @seealso \code{\link{get_output_dir}} for instructions on how to
+##'     specify output directories and run names.
+##'
 ##' @author Mark Wheldon
 ##' @export
 get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",

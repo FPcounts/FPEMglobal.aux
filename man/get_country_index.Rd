@@ -22,7 +22,7 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with country ISO codes, names, and trajectory

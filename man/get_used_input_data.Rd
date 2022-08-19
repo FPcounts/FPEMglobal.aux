@@ -32,7 +32,7 @@ this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 \item{processed}{Get the input data after processing by
 \pkg{\link{FPEMglobal}}?}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

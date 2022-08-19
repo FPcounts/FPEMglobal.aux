@@ -70,7 +70,7 @@ format?}
 
 \item{sort}{Logical. Sort by stat, name, year, percentile?}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }
@@ -83,6 +83,9 @@ directory for a given country or region that contain percentages,
 counts, and ratios.
 }
 \seealso{
+\code{\link{get_output_dir}} for instructions on how to
+specify output directories and run names.
+
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},
 \code{\link{get_FPEMglobal_csv_all_marr_res}()},

@@ -40,7 +40,7 @@ case and remove spaces?}
 \item{table_dir_name}{Name of subdirectory of \code{output_dir}
 that contains the \file{.csv} files.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

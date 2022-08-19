@@ -38,7 +38,7 @@ frame. If the column names are of the form 'U/MW_[aabb]_year'
 this is ignored and the age group is taken from the column
 names.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

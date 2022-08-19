@@ -36,7 +36,7 @@ case and remove spaces?}
 \item{table_dir_name}{Name of subdirectory of \code{output_dir}
 that contains the \file{.csv} files.}
 
-\item{verbose}{Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages?}
 
 \item{marital_group}{Marital group being loaded. This is needed
 because the ratio indicators for all women are different from

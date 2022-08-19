@@ -1,6 +1,6 @@
 Package: FPEMglobal.aux
 Title: Auxillary Functions for FPEMglobal
-Version: 0.0.1.9000
+Version: 0.0.1.9001
 Authors@R: 
     person(given = "Mark",
            family = "Wheldon",
@@ -20,4 +20,4 @@ Imports:
   tibble,
   tidyr,
   magrittr,
-  FPEMglobal
+  FPEMglobal (>= 1.3.0)
