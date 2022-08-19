@@ -47,7 +47,7 @@ get_used_input_data <-
 
         if(processed) {
             data_dir <- file.path(output_dir)
-            fname <- "dataCPmodel_input_processed.csv"
+            fname <- "dataCPmodel_input_preprocessed.csv"
         } else {
             fname <- "dataCPmodel_input.csv"
             if(is.null(data_dir_name)) data_dir_name  <- "data"
