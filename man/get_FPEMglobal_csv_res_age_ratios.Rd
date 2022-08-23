@@ -34,7 +34,7 @@ the directory called \dQuote{output}.}
 medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
 
-\item{clean_indicator_names}{Logical. Make indicator names lowe
+\item{clean_indicator_names}{Logical. Make indicator names lower
 case and remove spaces?}
 
 \item{table_dir_name}{Name of subdirectory of \code{output_dir}

@@ -96,6 +96,7 @@ load_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir =
     return(invisible(ob_name))
 }
 
+
 ##' @rdname load_global_mcmc_args
 ##' @export
 get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -105,4 +106,53 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
     return(get(load_global_mcmc_args(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
 }
+
+
+##' Attempt to get the run name of an FPEM run from output files
+##'
+##' Search the meta info and output files of an FPEM run and attempt
+##' to determine the run name. If the run name is saved in
+##' \file{\code{output_dir}/global_mcmc_args.RData} it will be
+##' returned. Otherwise, the names of certain output files will be
+##' used.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_FPEMglobal_csv_res
+##'
+##' @return The run name as a character string.
+##' @author Mark Wheldon
+##' @export
+get_run_name <- function(output_dir = NULL, verbose = FALSE) {
+
+    args <- get_global_mcmc_args(output_dir = output_dir, verbose = verbose)
+    if ("run_name" %in% names(args))
+        return(args$run_name)
+
+    else {
+        res_dir <-
+            output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                               root_dir = root_dir, verbose = verbose)
+
+        file_name <- grep("CIs\\.pdf$", dir(res_dir, "fig", "CI"), value = TRUE)
+        if (length(file_name) && nchar(file_name))
+            return(gsub("CIs\\.pdf$", "", file_name))
+
+        else {
+            file_name <- grep("CIs_nopar\\.pdf$", dir(res_dir, "fig", "CI"), value = TRUE)
+            if (length(file_name) && nchar(file_name))
+                return(gsub("CIs_nopar\\.pdf$", "", file_name))
+
+            else {
+                file_name <- grep("datainfo_total\\.pdf$", dir(res_dir, "fig", "data_info"), value = TRUE)
+                if (length(file_name) && nchar(file_name))
+                    return(gsub("datainfo_total\\.pdf$", "", file_name))
+
+                else stop("Cannot determine run name.")
+
+            }
+        }
+    }
+}
+
+
 

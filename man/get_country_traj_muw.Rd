@@ -30,8 +30,7 @@ the directory called \dQuote{output}.}
 \item{iso_code}{Alternative way of selecting country to get trajectories
 for; only one of \code{iso_code} and \code{country_name} should be given.}
 
-\item{verbose}{Logical; report the path, filename, and object name in a
-message?}
+\item{verbose}{Logical. Print lots of messages?}
 }
 \value{
 The loaded country trajectory object.

@@ -36,8 +36,7 @@ get_main_input_file <- function(age_group = c("15-49", "15-19"),
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
-get_used_input_data <-
-    function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
              data_dir_name = NULL, processed = TRUE,
              verbose = FALSE, ...) {
 
@@ -54,9 +53,8 @@ get_used_input_data <-
             data_dir <- file.path(output_dir, data_dir_name)
         }
 
-        readr::read_csv(file.path(data_dir, fname))
-
-    }
+        readr::read_csv(file.path(data_dir, fname), show_col_types = verbose)
+}
 
 
 ##' Get denominator counts actually used
@@ -73,12 +71,13 @@ get_used_input_data <-
 ##'     this is ignored and the age group is taken from the column
 ##'     names.
 ##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_output_dir
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-                                  data_dir_name = "data", filename,
+                                  data_dir_name = "data", filename = NULL,
                                   marital_group = c("married", "unmarried", "all women"),
                                   age_group = "unknown",
                                   verbose = FALSE, ...) {
@@ -89,6 +88,15 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
     data_dir <- file.path(output_dir, data_dir_name)
+
+    if (is.null(filename)) {
+        args <- get_global_mcmc_args(run_name = run_name, output_dir = output_dir,
+                                     root_dir = root_dir)
+        if (length(args$data_csv_filename) && nchar(args$data_csv_filename))
+            filename <- basename(args$data_csv_filename)
+        else stop("'filename' could not be determined from meta data; must be supplied.")
+    }
+
     fpath <- file.path(data_dir, filename)
 
     denom_counts <- data.frame()
@@ -157,5 +165,27 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 }
 
 
-
-
+##' Read contents of a named .csv file
+##'
+##' A thin wrapper to \code{\link[readr]{read_csv}} to read the
+##' contents of an arbitrary \file{.csv} file in the output directory
+##' of an FPEM run.
+##'
+##' The file will be searched for in the output directory, so add any
+##' subdirectories to \code{file_name} (e.g., \code{file_name =
+##' "table/obj/myFile.csv"}).
+##'
+##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_output_dir
+##' @param file_name Name of file to read, \emph{including} any
+##'     subdirectory and file extension; see \dQuote{Details}.
+##' @return A \code{\link[tibble]{tibble}} with the file contents.
+##' @author Mark Wheldon
+##' @export
+read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+                                file_name, verbose = FALSE, ...) {
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+    readr::read_csv(file = file.path(output_dir, file_name), show_col_types = verbose)
+}

@@ -23,7 +23,7 @@
 ##' @param adj Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
-##' @param clean_indicator_names Logical. Make indicator names lowe
+##' @param clean_indicator_names Logical. Make indicator names lower
 ##'     case and remove spaces?
 ##' @param clean_col_names Logical. Make column names lower snake
 ##'     case?
@@ -42,7 +42,6 @@
 ##' @param verbose Logical. Print lots of messages?
 ##' @param ... passed to \code{\link{read_csv}}.
 ##' @inheritParams get_output_dir
-##' @inheritParams get_used_input_data
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##'
@@ -77,6 +76,8 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
     tbl_dir0 <- file.path(output_dir, table_dir_name)
+
+    if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir, verbose = verbose)
     fname <- paste(run_name, aggregate, sep = "_")
 
     adj <- match.arg(adj)

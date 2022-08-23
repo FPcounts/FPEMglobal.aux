@@ -30,7 +30,7 @@ the directory called \dQuote{output}.}
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
 \code{aggregate = "Country"} to load country results.}
 
-\item{clean_indicator_names}{Logical. Make indicator names lowe
+\item{clean_indicator_names}{Logical. Make indicator names lower
 case and remove spaces?}
 
 \item{table_dir_name}{Name of subdirectory of \code{output_dir}

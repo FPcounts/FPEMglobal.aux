@@ -17,5 +17,6 @@ get_model_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = "
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
-    return(get(load(file.path(output_dir, "par.ciq.rda"))[1]))
+    tmp_env <- new.env()
+    return(get(load(file.path(output_dir, "par.ciq.rda"), envir = tmp_env)[1], envir = tmp_env))
 }

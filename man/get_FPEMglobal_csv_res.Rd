@@ -44,7 +44,7 @@ is added to the output with value \code{stat}.}
 medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
 
-\item{clean_indicator_names}{Logical. Make indicator names lowe
+\item{clean_indicator_names}{Logical. Make indicator names lower
 case and remove spaces?}
 
 \item{clean_col_names}{Logical. Make column names lower snake
@@ -60,10 +60,6 @@ classifications? If \dQuote{TRUE}, then
 \code{\link{get_used_special_aggregates}} are called to load
 the mappings from ISO codes to classifications. In the first
 and third case, these are loaded from \code{data_input_dir}.}
-
-\item{data_dir_name}{Name of subdirectory of \code{output_dir}
-holding input data files. If \code{processed} is \code{TRUE}
-this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 
 \item{long_format}{Logical. Should the table be returned in long
 format?}
