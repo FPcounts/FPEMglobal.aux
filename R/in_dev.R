@@ -37,12 +37,13 @@
 get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                     aggregate = "Country",
                                     clean_indicator_names = TRUE,
-                                    table_dir_name = "table", verbose = FALSE,
+                                    verbose = FALSE,
                                     marital_group = c("guess", "married", "unmarried" , "all_women"),
                                     ...) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
+    table_dir_name <- "table"
     tbl_dir0 <- file.path(output_dir, table_dir_name)
     fname <- paste(run_name, aggregate, sep = "_")
 
@@ -165,7 +166,7 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
                                             root_dir = ".",
                                             aggregate = "Country",
                                             clean_indicator_names = TRUE,
-                                            table_dir_name = "table", verbose = FALSE,
+                                            verbose = FALSE,
                                             index_col_name = "marital_group",
                                             ...) {
 
@@ -184,7 +185,7 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
                          output_dir = output_dir_list[[i]], root_dir = root_dir,
                          aggregate = aggregate,
                          clean_indicator_names = clean_indicator_names,
-                         table_dir_name = table_dir_name, verbose = FALSE, ...)
+                         verbose = FALSE, ...)
         x[, index_col_name] <- names(output_dir_list)[[i]]
         out <- dplyr::bind_rows(out, x)
     }
@@ -209,13 +210,13 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
 ##' @export
 get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                          aggregate = "Country", adj = FALSE, clean_indicator_names = TRUE,
-                                        table_dir_name = "table", verbose = FALSE,
+                                        verbose = FALSE,
                                          ...) {
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = FALSE)
-
+    table_dir_name <- "table"
     tbl_dir <- file.path(output_dir, table_dir_name)
 
     if(adj) {

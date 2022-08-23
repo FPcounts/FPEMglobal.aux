@@ -27,8 +27,6 @@
 ##'     case and remove spaces?
 ##' @param clean_col_names Logical. Make column names lower snake
 ##'     case?
-##' @param table_dir_name Name of subdirectory of \code{output_dir}
-##'     that contains the \file{.csv} files.
 ##' @param add_country_classifications Add on columns giving country
 ##'     classifications? If \dQuote{TRUE}, then
 ##'     \code{\link{get_used_unpd_regions}},
@@ -56,9 +54,7 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
                              adj = c("orig", "adj", "sub_adj"),
                              clean_indicator_names = TRUE,
                              clean_col_names = TRUE,
-                             table_dir_name = "table",
                              add_country_classifications = TRUE,
-                             data_dir_name = "data",
                              long_format = FALSE,
                              sort = TRUE,
                              verbose = FALSE,
@@ -75,6 +71,10 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
+
+    data_dir_name <- "data"
+    table_dir_name <- "table"
+
     tbl_dir0 <- file.path(output_dir, table_dir_name)
 
     if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir, verbose = verbose)
@@ -271,12 +271,12 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
     if(c_add_class) {           #add classifications?
         class_unpd_agg <-
             get_used_unpd_regions(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                  data_dir_name = data_dir_name, clean_col_names = TRUE,
+                                  clean_col_names = TRUE,
                                   verbose = verbose)
 
         class_spec <-
             get_used_special_aggregates(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                        data_dir_name = data_dir_name, clean_col_names = TRUE,
+                                        clean_col_names = TRUE,
                                         verbose = verbose)
 
         res <- res %>%
@@ -323,7 +323,7 @@ get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_lis
                              aggregate = "Country", stat = "perc",
                              adj = c("orig", "adj", "sub_adj"),
                              clean_indicator_names = TRUE,
-                             table_dir_name = "table", verbose = FALSE,
+                             verbose = FALSE,
                              index_col_name = "marital_group",
                              long_format = FALSE,
                              sort = TRUE,
@@ -347,7 +347,7 @@ get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_lis
                          aggregate = aggregate, stat = stat, adj = adj,
                          clean_indicator_names = clean_indicator_names,
                          long_format = long_format,
-                         table_dir_name = table_dir_name, verbose = FALSE,
+                         verbose = FALSE,
                          sort = FALSE, #< Don't sort twice
                          ...)
         x[, index_col_name] <- names(output_dir_list)[[i]]

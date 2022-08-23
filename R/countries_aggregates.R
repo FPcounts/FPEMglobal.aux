@@ -49,12 +49,14 @@ get_185_countries <-
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             data_dir_name = "data", clean_col_names = TRUE,
+             clean_col_names = TRUE,
              verbose = FALSE, UNlocations_names = TRUE, ...) {
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
+
+        data_dir_name <- "data"
 
         data_dir <- file.path(output_dir, data_dir_name)
 
@@ -124,12 +126,13 @@ list_special_aggregates_names <- function() {
 ##' @export
 get_used_special_aggregates <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             data_dir_name = "data", clean_col_names = TRUE,
+             clean_col_names = TRUE,
              verbose = FALSE, ...) {
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
+        data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
         out <- tibble::tibble(iso = as.numeric(NA))

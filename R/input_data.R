@@ -26,18 +26,15 @@ get_main_input_file <- function(age_group = c("15-49", "15-19"),
 ##'
 ##' Reads the '.csv' file containing the prevalence data used in the run.
 ##'
-##' @param data_dir_name Name of subdirectory of \code{output_dir}
-##'     holding input data files. If \code{processed} is \code{TRUE}
-##'     this is set to \dQuote{data} by default, otherwise \dQuote{.}.
-##' @param processed Get the input data after processing by
-##'     \pkg{\link{FPEMglobal}}?
+##' @param processed Logical; get the input data after processing by
+##'     \pkg{\link{FPEMglobal}}, or the raw input data?
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
 get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             data_dir_name = NULL, processed = TRUE,
+             processed = TRUE,
              verbose = FALSE, ...) {
 
         output_dir <-
@@ -49,7 +46,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
             fname <- "dataCPmodel_input_preprocessed.csv"
         } else {
             fname <- "dataCPmodel_input.csv"
-            if(is.null(data_dir_name)) data_dir_name  <- "data"
+            data_dir_name  <- "data"
             data_dir <- file.path(output_dir, data_dir_name)
         }
 
@@ -62,8 +59,6 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' Reads the '.csv' file containing the married and unmarried
 ##' denominator counts used in the run.
 ##'
-##' @param data_dir_name Name of subdirectory of \code{output_dir}
-##'     holding input data files.
 ##' @param filename Name of file with the counts (including
 ##'     extension).
 ##' @param age_group Age group of the counts for the output data
@@ -77,7 +72,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @seealso \code{\link{get_main_input_file}}.
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-                                  data_dir_name = "data", filename = NULL,
+                                  filename = NULL,
                                   marital_group = c("married", "unmarried", "all women"),
                                   age_group = "unknown",
                                   verbose = FALSE, ...) {
@@ -87,6 +82,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
+    data_dir_name <- "data"
     data_dir <- file.path(output_dir, data_dir_name)
 
     if (is.null(filename)) {
