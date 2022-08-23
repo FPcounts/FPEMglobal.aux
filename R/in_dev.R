@@ -265,3 +265,24 @@ get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL
     return(res)
 
 }
+
+
+
+## Get results from the RDA files
+get_indicator_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+                             aggregate = "Country",
+                             adj = c("orig", "adj", "sub_adj"),
+                             verbose = FALSE) {
+    adj <- match.arg(adj)
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+
+    if (identical(adj, "orig")) {
+        if (identical(aggregate, "Country")) fname <- "res.country.rda"
+        else if (identical(aggregate, "UNPDaggregate")) fname <- "res.aggregate.rda"
+    }
+
+    tmp_env <- new.env()
+    return(get(load(file.path(output_dir, fname), envir = tmp_env)[1], envir = tmp_env))
+}
