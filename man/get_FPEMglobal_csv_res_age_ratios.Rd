@@ -11,7 +11,6 @@ get_FPEMglobal_csv_res_age_ratios(
   aggregate = "Country",
   adj = FALSE,
   clean_indicator_names = TRUE,
-  table_dir_name = "table",
   verbose = FALSE,
   ...
 )
@@ -36,9 +35,6 @@ substituted with adjusted medians (\dQuote{sub_adj}).}
 
 \item{clean_indicator_names}{Logical. Make indicator names lower
 case and remove spaces?}
-
-\item{table_dir_name}{Name of subdirectory of \code{output_dir}
-that contains the \file{.csv} files.}
 
 \item{verbose}{Logical. Print lots of messages?}
 

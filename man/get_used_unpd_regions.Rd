@@ -8,7 +8,6 @@ get_used_unpd_regions(
   run_name = NULL,
   output_dir = NULL,
   root_dir = ".",
-  data_dir_name = "data",
   clean_col_names = TRUE,
   verbose = FALSE,
   UNlocations_names = TRUE,
@@ -25,10 +24,6 @@ ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
-
-\item{data_dir_name}{Name of subdirectory of \code{output_dir}
-holding input data files. If \code{processed} is \code{TRUE}
-this is set to \dQuote{data} by default, otherwise \dQuote{.}.}
 
 \item{verbose}{Logical. Print lots of messages?}
 

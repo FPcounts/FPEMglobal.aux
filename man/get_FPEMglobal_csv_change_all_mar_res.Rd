@@ -10,7 +10,6 @@ get_FPEMglobal_csv_change_all_mar_res(
   root_dir = ".",
   aggregate = "Country",
   clean_indicator_names = TRUE,
-  table_dir_name = "table",
   verbose = FALSE,
   index_col_name = "marital_group",
   ...
@@ -32,9 +31,6 @@ the directory called \dQuote{output}.}
 
 \item{clean_indicator_names}{Logical. Make indicator names lower
 case and remove spaces?}
-
-\item{table_dir_name}{Name of subdirectory of \code{output_dir}
-that contains the \file{.csv} files.}
 
 \item{verbose}{Logical. Print lots of messages?}
 

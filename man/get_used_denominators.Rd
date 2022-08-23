@@ -8,8 +8,7 @@ get_used_denominators(
   run_name = NULL,
   output_dir = NULL,
   root_dir = ".",
-  data_dir_name = "data",
-  filename,
+  filename = NULL,
   marital_group = c("married", "unmarried", "all women"),
   age_group = "unknown",
   verbose = FALSE,
@@ -26,9 +25,6 @@ ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
-
-\item{data_dir_name}{Name of subdirectory of \code{output_dir}
-holding input data files.}
 
 \item{filename}{Name of file with the counts (including
 extension).}

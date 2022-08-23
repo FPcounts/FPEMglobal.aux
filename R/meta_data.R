@@ -130,20 +130,19 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 
     else {
         res_dir <-
-            output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = verbose)
+            output_dir_wrapper(output_dir = output_dir, verbose = verbose)
 
-        file_name <- grep("CIs\\.pdf$", dir(res_dir, "fig", "CI"), value = TRUE)
+        file_name <- grep("CIs\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
         if (length(file_name) && nchar(file_name))
             return(gsub("CIs\\.pdf$", "", file_name))
 
         else {
-            file_name <- grep("CIs_nopar\\.pdf$", dir(res_dir, "fig", "CI"), value = TRUE)
+            file_name <- grep("CIs_nopar\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
             if (length(file_name) && nchar(file_name))
                 return(gsub("CIs_nopar\\.pdf$", "", file_name))
 
             else {
-                file_name <- grep("datainfo_total\\.pdf$", dir(res_dir, "fig", "data_info"), value = TRUE)
+                file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
                 if (length(file_name) && nchar(file_name))
                     return(gsub("datainfo_total\\.pdf$", "", file_name))
 

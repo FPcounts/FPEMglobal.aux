@@ -24,7 +24,8 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{file_name}{Name of file to read, \emph{including} the extension.}
+\item{file_name}{Name of file to read, \emph{including} any
+subdirectory and file extension; see \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages?}
 
@@ -37,6 +38,11 @@ A \code{\link[tibble]{tibble}} with the file contents.
 A thin wrapper to \code{\link[readr]{read_csv}} to read the
 contents of an arbitrary \file{.csv} file in the output directory
 of an FPEM run.
+}
+\details{
+The file will be searched for in the output directory, so add any
+subdirectories to \code{file_name} (e.g., \code{file_name =
+"table/obj/myFile.csv"}).
 }
 \author{
 Mark Wheldon

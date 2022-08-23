@@ -13,9 +13,7 @@ get_FPEMglobal_csv_res(
   adj = c("orig", "adj", "sub_adj"),
   clean_indicator_names = TRUE,
   clean_col_names = TRUE,
-  table_dir_name = "table",
   add_country_classifications = TRUE,
-  data_dir_name = "data",
   long_format = FALSE,
   sort = TRUE,
   verbose = FALSE,
@@ -49,9 +47,6 @@ case and remove spaces?}
 
 \item{clean_col_names}{Logical. Make column names lower snake
 case?}
-
-\item{table_dir_name}{Name of subdirectory of \code{output_dir}
-that contains the \file{.csv} files.}
 
 \item{add_country_classifications}{Add on columns giving country
 classifications? If \dQuote{TRUE}, then
