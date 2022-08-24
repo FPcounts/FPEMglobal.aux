@@ -25,9 +25,6 @@ can be read via \code{get_FPEMglobal_csv_res(..., stat = "perc",
 \seealso{
 Other csv results functions: 
 \code{\link{get_FPEMglobal_csv_all_marr_res}()},
-\code{\link{get_FPEMglobal_csv_change_all_mar_res}()},
-\code{\link{get_FPEMglobal_csv_change_res}()},
-\code{\link{get_FPEMglobal_csv_res_age_ratios}()},
 \code{\link{get_FPEMglobal_csv_res}()}
 }
 \author{

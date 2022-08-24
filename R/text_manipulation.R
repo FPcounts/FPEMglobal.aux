@@ -244,13 +244,13 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon
 ##' @export
-clean_col_names <- function(x, use_make.names = TRUE) {
+clean_col_names <- function(x, use_make.names = FALSE) {
     UseMethod("clean_col_names")
 }
 
 ##' @rdname clean_col_names
 ##' @export
-clean_col_names.character <- function(x, use_make.names = TRUE) {
+clean_col_names.character <- function(x, use_make.names = FALSE) {
     x <- lower_snake_casify(x, use_make.names = use_make.names)
     x[x == "iso_code"] <- "iso"
     x[x %in% c("country", "country_or_area")] <- "name"
@@ -259,7 +259,7 @@ clean_col_names.character <- function(x, use_make.names = TRUE) {
 
 ##' @rdname clean_col_names
 ##' @export
-clean_col_names.data.frame <- function(x, use_make.names = TRUE) {
+clean_col_names.data.frame <- function(x, use_make.names = FALSE) {
     colnames(x) <- clean_col_names(colnames(x), use_make.names = use_make.names)
     return(x)
 }

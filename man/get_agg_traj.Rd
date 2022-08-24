@@ -10,7 +10,7 @@ get_agg_traj(
   root_dir = ".",
   agg_family_name,
   agg_name,
-  marital_group = c("married", "unmarried", "all women"),
+  marital_group = c("married", "unmarried", "all_women"),
   verbose = FALSE
 )
 }

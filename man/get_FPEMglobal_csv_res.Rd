@@ -10,11 +10,14 @@ get_FPEMglobal_csv_res(
   root_dir = ".",
   aggregate = "Country",
   stat = c("perc", "count", "ratio"),
-  adj = c("orig", "adj", "sub_adj"),
+  add_stat_column = FALSE,
+  adjusted = c("orig", "adj", "sub_adj"),
+  add_adjusted_column = identical(adjusted, "sub_adj"),
+  years_1_jan = TRUE,
   clean_indicator_names = TRUE,
   clean_col_names = TRUE,
-  add_country_classifications = TRUE,
-  long_format = FALSE,
+  add_country_classifications = FALSE,
+  long_format = NULL,
   sort = TRUE,
   verbose = FALSE,
   ...
@@ -35,29 +38,33 @@ the directory called \dQuote{output}.}
 \code{aggregate = "Country"} to load country results.}
 
 \item{stat}{Which statistics should be loaded? Allowable values
-are \code{c("orig", "adj", "sub_adj")}. A column \dQuote{stat}
-is added to the output with value \code{stat}.}
+are \code{c("orig", "adj", "sub_adj")}.}
 
-\item{adj}{Loads original results (\dQuote{orig}), adjusted
+\item{add_stat_column}{Logical. Add a column \dQuote{\code{stat}}
+with value \code{stat} to the result?}
+
+\item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
 
-\item{clean_indicator_names}{Logical. Make indicator names lower
-case and remove spaces?}
+\item{add_adjusted_column}{Add a column \dQuote{\code{adjusted}}?
+Cells indicate which rows are adjusted (\code{TRUE}) and which
+are not (\code{FALSE}).}
 
-\item{clean_col_names}{Logical. Make column names lower snake
-case?}
+\item{years_1_jan}{Should years in \dQuote{yyyy.5} format be
+rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
-\item{add_country_classifications}{Add on columns giving country
-classifications? If \dQuote{TRUE}, then
-\code{\link{get_used_unpd_regions}},
-\code{\link{get_used_world_bank_regions}}, and
-\code{\link{get_used_special_aggregates}} are called to load
-the mappings from ISO codes to classifications. In the first
-and third case, these are loaded from \code{data_input_dir}.}
+\item{clean_indicator_names}{Logical. When \code{TRUE}, the column
+names of the result are \sQuote{cleaned} by applying
+\code{\link{clean_col_names}}.}
 
-\item{long_format}{Logical. Should the table be returned in long
-format?}
+\item{clean_col_names}{Logical. See \dQuote{Details}.}
+
+\item{add_country_classifications}{Add on columns with geographic
+country classifications? See \dQuote{Details}.}
+
+\item{long_format}{Logical or character. Should the table be
+returned in long format? See \dQuote{Details}.}
 
 \item{sort}{Logical. Sort by stat, name, year, percentile?}
 
@@ -73,16 +80,41 @@ Reads \emph{all} results \file{.csv} files from a results
 directory for a given country or region that contain percentages,
 counts, and ratios.
 }
+\details{
+If \code{clean_indicator_names} is \code{TRUE}, the names of the
+family planning indicators are made all lower case and spaces (and
+other non-letter characters) are removed. \emph{Note} this is not
+quite the same as lower snake case as spaces are not replaced with
+underscored, rather they are just removed resulting in a single
+unbroken string.
+
+Country classifications are loaded via
+\code{\link{get_used_unpd_regions}},
+\code{\link{get_used_world_bank_regions}}, and
+\code{\link{get_used_special_aggregates}}.
+
+\code{long_format} determines the \dQuote{shape} of the output
+table. If it is character it must be in c("raw", "wide", "long"),
+which have the following effects:
+
+\describe{
+\item{\code{"raw"}}{No reshaping of the input file is done. This
+format has a column for each year and an ID column for indicator
+(\code{"indicator"}).}
+\item{\code{"wide"}}{The output has a column for each indicator
+and an ID column for years (\code{"year"}).}
+\item{\code{"long"}}{Like \code{"wide"} but the indicators are
+also transposed. It has a single \code{"value"} colum for all
+indicators and an ID column for indicator (\code{"indicator"})}
+}
+}
 \seealso{
 \code{\link{get_output_dir}} for instructions on how to
 specify output directories and run names.
 
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},
-\code{\link{get_FPEMglobal_csv_all_marr_res}()},
-\code{\link{get_FPEMglobal_csv_change_all_mar_res}()},
-\code{\link{get_FPEMglobal_csv_change_res}()},
-\code{\link{get_FPEMglobal_csv_res_age_ratios}()}
+\code{\link{get_FPEMglobal_csv_all_marr_res}()}
 }
 \author{
 Mark Wheldon

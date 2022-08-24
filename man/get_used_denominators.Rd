@@ -9,8 +9,12 @@ get_used_denominators(
   output_dir = NULL,
   root_dir = ".",
   filename = NULL,
-  marital_group = c("married", "unmarried", "all women"),
-  age_group = "unknown",
+  marital_group = c("default", "married", "unmarried", "all_women"),
+  add_marital_group = TRUE,
+  add_age_group = TRUE,
+  age_group = NULL,
+  clean_col_names = TRUE,
+  long_format = TRUE,
   verbose = FALSE,
   ...
 )
@@ -27,23 +31,60 @@ ignored if \code{output_dir} is supplied.}
 the directory called \dQuote{output}.}
 
 \item{filename}{Name of file with the counts (including
-extension).}
+extension). If \code{NULL}, this will be inferred from the
+meta data (see \code{\link{get_global_mcmc_args}}.}
+
+\item{marital_group}{Marital group to load denominators for. Can
+be more than one; see \dQuote{Details}. The default is the
+length 1 vector \code{"default"}.}
+
+\item{add_marital_group}{Logical. Should a column
+\dQuote{\code{marital_group}} be added to the output to
+indicate the marital group? Such a column is always added if
+\code{marital_group} has more than one element.}
 
 \item{age_group}{Age group of the counts for the output data
-frame. If the column names are of the form 'U/MW_[aabb]_year'
-this is ignored and the age group is taken from the column
-names.}
+frame. If the column names are of the form
+'U/MW_[aabb]_year' this is ignored and the age group is
+taken from the column names.}
+
+\item{clean_col_names}{Logical. See \dQuote{Details}.}
+
+\item{long_format}{Logical or character. Should the table be
+returned in long format? See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages?}
 
 \item{...}{passed to \code{\link{read_csv}}.}
+
+\item{sort}{Logical. Sort by stat, name, year, percentile?}
 }
 \value{
-A \code{\link[tibble]{tibble}} with the requested results.
+A \code{\link[tibble]{tibble}} with the requested results
+in \dQuote{long} format; see \dQuote{Details}.
 }
 \description{
 Reads the '.csv' file containing the married and unmarried
 denominator counts used in the run.
+}
+\details{
+One or more marital groups can be requested via argument
+\code{marital_group}. If more than one, a column
+\dQuote{\code{marital_group}} will be present in the output to
+identify records accordingly (regardless the value of
+\code{add_marital_group}). Value \code{"default"} will read the
+the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
+the marital group matching that of the output is included. If
+\code{"all_women"} is included, values will be constructed by
+summing the married and unmarried denominators.
+
+If \code{long_format} is \code{TRUE}, the counts are in a single
+column called \dQuote{\code{value}}, with the necessary
+identifying columns added. Otherwise the result is in the same
+format as the original counts files, which have one year per row.
+}
+\examples{
+
 }
 \seealso{
 \code{\link{get_main_input_file}}.

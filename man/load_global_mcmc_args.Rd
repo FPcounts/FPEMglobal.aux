@@ -3,6 +3,7 @@
 \name{load_global_mcmc_args}
 \alias{load_global_mcmc_args}
 \alias{get_global_mcmc_args}
+\alias{get_global_post_process_args}
 \title{Load and return global arguments used to generate the run}
 \usage{
 load_global_mcmc_args(
@@ -14,6 +15,13 @@ load_global_mcmc_args(
 )
 
 get_global_mcmc_args(
+  run_name = NULL,
+  output_dir = NULL,
+  root_dir = ".",
+  verbose = FALSE
+)
+
+get_global_post_process_args(
   run_name = NULL,
   output_dir = NULL,
   root_dir = ".",

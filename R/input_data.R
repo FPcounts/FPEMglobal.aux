@@ -57,12 +57,6 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' identifying columns added. Otherwise the result is in the same
 ##' format as the original counts files, which have one year per row.
 ##'
-##' Note that if \code{long_format} is \code{FALSE}, the column names
-##' of the year columns will be prefixed with an
-##' \dQuote{\code{X}}. This is a result of the existing code in
-##' \pkg{FPEMglobal} and cannot be undone with the
-##' \code{clean_col_names} argument.
-##'
 ##' @param filename Name of file with the counts (including
 ##'     extension). If \code{NULL}, this will be inferred from the
 ##'     meta data (see \code{\link{get_global_mcmc_args}}.
@@ -80,6 +74,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @param sort Logical. Sort by stat, name, year, percentile?
 ##' @inheritParams get_FPEMglobal_csv_res
 ##' @inheritParams get_output_dir
+##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results
 ##'     in \dQuote{long} format; see \dQuote{Details}.
 ##' @author Mark Wheldon
@@ -234,11 +229,20 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     if (add_marital_group && !("marital_group" %in% colnames(denom_counts)) && identical(length(marital_group), 1L))
         denom_counts$marital_group <- marital_group
 
-    if (clean_col_names) denom_counts <- clean_col_names(denom_counts)
+    if (clean_col_names) {
+        denom_counts <- clean_col_names(denom_counts)
+        if (!long_format) {
+            xyr_cols_idx <- grep("(x|X)[0-9]{4}", colnames(denom_counts))
+            if (length(xyr_cols_idx)) {
+                colnames(denom_counts)[xyr_cols_idx] <-
+                    gsub("x|X", "", colnames(denom_counts)[xyr_cols_idx])
+            }
+        }
+    }
 
     ## -------* END
 
-   return(denom_counts)
+   return(tibble::as_tibble(denom_counts))
 }
 
 

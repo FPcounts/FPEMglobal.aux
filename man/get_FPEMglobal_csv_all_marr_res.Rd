@@ -8,13 +8,7 @@ get_FPEMglobal_csv_all_marr_res(
   run_name_list = NULL,
   output_dir_list = NULL,
   root_dir = ".",
-  aggregate = "Country",
-  stat = "perc",
-  adj = c("orig", "adj", "sub_adj"),
-  clean_indicator_names = TRUE,
-  verbose = FALSE,
   index_col_name = "marital_group",
-  long_format = FALSE,
   sort = TRUE,
   ...
 )
@@ -30,31 +24,12 @@ unmarried, and all women. See \code{run_name_list}.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregate = "Country"} to load country results.}
-
-\item{stat}{Which statistics should be loaded? Allowable values
-are \code{c("orig", "adj", "sub_adj")}. A column \dQuote{stat}
-is added to the output with value \code{stat}.}
-
-\item{adj}{Loads original results (\dQuote{orig}), adjusted
-medians only (\dQuote{adj}), or original results with medians
-substituted with adjusted medians (\dQuote{sub_adj}).}
-
-\item{clean_indicator_names}{Logical. Make indicator names lower
-case and remove spaces?}
-
-\item{verbose}{Logical. Print lots of messages?}
-
 \item{index_col_name}{Character. Name of column added to output
 that identifies observations for each marital group.}
 
-\item{long_format}{Logical. Should the table be returned in long
-format?}
+\item{sort}{Logical. Sort by stat, name, year, percentile?}
 
-\item{sort}{Logical. Sort by marital status, stat, name, year, percentile?}
-
-\item{...}{passed to \code{\link{read_csv}}.}
+\item{...}{Passed to \code{\link{get_FPEMglobal_csv_res}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.
@@ -74,9 +49,6 @@ See the section in \code{\link{get_FPEMglobal_csv_res}}.
 \seealso{
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},
-\code{\link{get_FPEMglobal_csv_change_all_mar_res}()},
-\code{\link{get_FPEMglobal_csv_change_res}()},
-\code{\link{get_FPEMglobal_csv_res_age_ratios}()},
 \code{\link{get_FPEMglobal_csv_res}()}
 }
 \author{
