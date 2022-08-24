@@ -1,31 +1,6 @@
 ###-----------------------------------------------------------------------------
 ### * Work with Input Data
 
-##' Read main input file
-##'
-##' This is the \file{.csv} file with \emph{raw survey observations}
-##' of CP, Unmet need, etc. observations.
-##'
-##' @param age_group Age group of interest. Only 15-49 and 15-19 are
-##'     supported so far.
-##' @param folder_path Path to input file.
-##' @param filename Filename of input file.
-##' @return Data frame with input data.
-##' @author Mark Wheldon
-##' @seealso \code{\link{get_used_input_data}}.
-##' @export
-get_FPEMglobal_package_input_file <- function(age_group = c("15-49", "15-19"),
-                                folder_path = system.file("extdata", package = "FPEMglobal"),
-                                filename = paste0("data_cp_model_all_women_", age_group, ".csv"),
-                                verbose = FALSE) {
-
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
-
-    age_group <- match.arg(age_group)
-    readr::read_csv(file.path(folder_path, filename))
-}
-
 
 ##' Get country input data actually used
 ##'
