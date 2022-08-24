@@ -40,6 +40,10 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
                                     verbose = FALSE,
                                     marital_group = c("guess", "married", "unmarried" , "all_women"),
                                     ...) {
+
+    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE)
+
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
@@ -53,13 +57,13 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
 
     marital_group <- match.arg(marital_group)
 
-    if(identical(marital_group, "guess")) {
+    if (identical(marital_group, "guess")) {
         marital_group  <- guess_marital_group(run_name)
     }
 
     ## Read the 'perc_Total' file first
     fname1 <- paste0(fname, "_changes_perc_Total.csv")
-    if(verbose) {
+    if (verbose) {
         res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
     } else {
         suppressMessages({
@@ -71,7 +75,7 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
 
     ## Read the 'count_Total' file
     fname1 <- paste0(fname, "_changes_count_Total.csv")
-    if(verbose) {
+    if (verbose) {
         res2 <- readr::read_csv(file.path(tbl_dir, fname1), ...)
     } else {
         suppressMessages({
@@ -84,11 +88,11 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
     res <- rbind(res, res2)
 
     ## Read in 'count' and 'perc'
-    for(stat in c("count", "perc")) {
-        for(indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
+    for (stat in c("count", "perc")) {
+        for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
                            "Unmet")) {
             fname_ind <- paste0(fname, "_changes_", stat, "_", indicator, ".csv")
-            if(verbose) {
+            if (verbose) {
                 res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
             } else {
                 suppressMessages({
@@ -96,24 +100,24 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
                 })
             }
             res_ind$stat <- stat
-            if(clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
+            if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
             res <- dplyr::bind_rows(res, res_ind)
         }
     }
 
     ## Read in 'ratio'
-    if(marital_group %in% c("married", "unmarried")) {
+    if (marital_group %in% c("married", "unmarried")) {
         ind_values <- c("MetDemand", "MetDemModMeth", "ModernOverTotal", "Z")
-    } else if(identical(marital_group, "all_women")) {
+    } else if (identical(marital_group, "all_women")) {
         ind_values <- c("Met Demand", "MetDemModMeth", "ModernOverTotal",
                         "Mod-MarriedOverAll", "Mod-UnmarriedOverAll",
                         "Trad-MarriedOverAll", "Trad-UnmarriedOverAll",
                         "Unmet-MarriedOverAll", "Unmet-UnmarriedOverAll",
                         "Z")
     }
-    for(indicator in ind_values) {
+    for (indicator in ind_values) {
         fname_ind <- paste0(fname, "_changes_", "ratio", "_", indicator, ".csv")
-        if(verbose) {
+        if (verbose) {
             res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
         } else {
             suppressMessages({
@@ -121,7 +125,7 @@ get_FPEMglobal_csv_change_res <- function(run_name = NULL, output_dir = NULL, ro
             })
         }
         res_ind$stat <- "ratio"
-        if(clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
+        if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
         res <- dplyr::bind_rows(res, res_ind)
     }
 
@@ -180,7 +184,7 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
 
     out <- data.frame()
 
-    for(i in seq_along(output_dir_list)) {
+    for (i in seq_along(output_dir_list)) {
         x <- get_FPEMglobal_csv_change_res(run_name = run_name_list[[i]],
                          output_dir = output_dir_list[[i]], root_dir = root_dir,
                          aggregate = aggregate,
@@ -211,7 +215,10 @@ get_FPEMglobal_csv_change_all_mar_res <- function(run_name_list = NULL, output_d
 get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                          aggregate = "Country", adj = FALSE, clean_indicator_names = TRUE,
                                         verbose = FALSE,
-                                         ...) {
+                                        ...) {
+
+    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE)
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -219,7 +226,7 @@ get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL
     table_dir_name <- "table"
     tbl_dir <- file.path(output_dir, table_dir_name)
 
-    if(adj) {
+    if (adj) {
         warning("'adj = TRUE' not yet implemented. 'adj' set to 'FALSE'.")
         adj <- FALSE
     }
@@ -232,7 +239,7 @@ get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL
     ## Read the 'age_ratio_Total' file first
     fname1 <- paste0(fname, "_age_ratio_Total.csv")
 
-    if(verbose) {
+    if (verbose) {
         res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
     } else {
         suppressMessages({
@@ -242,9 +249,9 @@ get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL
     res$stat <- "age_ratio"
     res$indicator <- "total"
 
-    for(indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet", "Unmet")) {
+    for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet", "Unmet")) {
         fname_ind <- paste0(fname, "_", "age_ratio", "_", indicator, ".csv")
-        if(verbose) {
+        if (verbose) {
             res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
         } else {
             suppressMessages({
@@ -252,7 +259,7 @@ get_FPEMglobal_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL
             })
         }
             res_ind$stat <- "age_ratio"
-            if(clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
+            if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
             res <- dplyr::bind_rows(res, res_ind)
         }
 

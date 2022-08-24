@@ -40,7 +40,7 @@ load_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 
     ob_name <- load(file = file.path(res_dir, "mcmc.meta.rda"), envir = envir)
 
-    if(verbose) {
+    if (verbose) {
         message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'. \n.. Object is '",
                 paste(ob_name, collapse = " "), "'. \n.. Returning '", ob_name[1],
                 "'.")
@@ -88,7 +88,7 @@ load_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir =
 
     ob_name <- load(file = file.path(res_dir, "global_mcmc_args.RData"), envir = envir)
 
-    if(verbose) {
+    if (verbose) {
         message("Loaded '", file.path(res_dir, "global_mcmc_args.RData"), "'. \n.. Object is '",
                 paste(ob_name, collapse = " "), "'. \n.. Returning '", ob_name[1],
                 "'.")
@@ -110,6 +110,20 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
                          add = TRUE, after = FALSE)
     return(get(load_global_mcmc_args(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
+}
+
+
+##' @rdname load_global_mcmc_args
+##' @export
+get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+                                 verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+    tmp_env <- new.env()
+    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "post_process_args.RData"), "'."),
+                         add = TRUE, after = FALSE)
+    return(get(load(file = file.path(res_dir, "post_process_args.RData"), envir = tmp_env), envir = tmp_env))
 }
 
 

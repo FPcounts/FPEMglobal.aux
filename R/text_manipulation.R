@@ -52,7 +52,7 @@ x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian 
 match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) {
 
     x_fac <- is.factor(x)
-    if(x_fac) x <- as.character(x)
+    if (x_fac) x <- as.character(x)
 
     return_names <- match.arg(return_names)
     from_names <- c("UNlocations", "FPEMglobal")
@@ -89,21 +89,21 @@ match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) 
                             "Other non-specified areas"),
                    stringsAsFactors = FALSE)
 
-    if(identical(return_names, "UNlocations")) {
-        for(i in 1:nrow(names_df)) {
-            if(!is.na(names_df[i, "FPEMglobal"])) {
+    if (identical(return_names, "UNlocations")) {
+        for (i in 1:nrow(names_df)) {
+            if (!is.na(names_df[i, "FPEMglobal"])) {
                 x[grep(paste0("^", names_df[i, "FPEMglobal"], "$"), x)] <- names_df[i, "UNlocations"]
             }
         }
-    } else if(identical(return_names, "FPEMglobal")) {
-        for(i in 1:nrow(names_df)) {
-            if(!is.na(names_df[i, "UNlocations"])) {
+    } else if (identical(return_names, "FPEMglobal")) {
+        for (i in 1:nrow(names_df)) {
+            if (!is.na(names_df[i, "UNlocations"])) {
                 x[grep(paste0("^", names_df[i, "UNlocations"], "$"), x)] <- names_df[i, "FPEMglobal"]
             }
         }
     }
 
-    if(x_fac) x <- factor(x)
+    if (x_fac) x <- factor(x)
     return(x)
 }
 
@@ -154,10 +154,10 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
 
     family <- match.arg(family)
 
-    if(identical(family, "geom_maj")) {
+    if (identical(family, "geom_maj")) {
 
         c("Africa", "Asia", "Europe", "Latin America and the Caribbean", "Northern America", "Oceania")
-    } else if(identical(family, "geog_subr")) {
+    } else if (identical(family, "geog_subr")) {
         c("Northern Africa", "Eastern Africa", "Middle Africa", "Western Africa",
       "Southern Africa",
       "Central Asia", "Eastern Asia", "South-eastern Asia", "Western Asia", "Southern Asia",
@@ -166,7 +166,7 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
       "Northern America",
       "Mela-Micro-Polynesia", "Australia and New Zealand")
 
-    } else if(identical(family, "sdg1")) {
+    } else if (identical(family, "sdg1")) {
     c("Sub-Saharan Africa",
       "Western Asia and Northern Africa",
       "Central Asia and Southern Asia",
@@ -175,7 +175,7 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
       "Oceania",
       "Northern America and Europe")
 
-    } else if(identical(family, "wb")) {
+    } else if (identical(family, "wb")) {
         c("High-income countries", "Upper-middle-income countries", "Middle-income countries",
           "Lower-middle-income countries", "Low-income countries")
     }
@@ -219,8 +219,47 @@ clean_indic_name <- function(indicator) {
 ## Turn strings into lower_snake_case.  Spaces and full stops are
 ## replaced with underscores and the whole thing is put in lower case.
 lower_snake_casify <- function(x, use_make.names = TRUE) {
-    if(use_make.names) x <- base::make.names(x)
+    if (use_make.names) x <- base::make.names(x)
     x <- gsub("[ .\n\r]+", "_", x)
     x <- gsub("_+", "_", x)
     tolower(x)
+}
+
+
+##' Clean names of columns in data frames
+##'
+##' Reformats names to lower snake case by replacing spaces and other
+##' non-letter characters (e.g., \dQuote{.}) with underscores. In
+##' addition, the following substitutions are made \emph{after} snake casification:
+##'
+##' \describe{
+##' \item{\code{iso_code}}{replaced with \code{iso}}
+##' \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}
+##' }
+##'
+##' @param x Object for which a method is defined (e.g., character
+##'     string or data frame).
+##' @param use_make.names Apply \code{\link[base]{make.names}} to
+##'     \code{x} \emph{before} doing anything else?
+##' @return Formatted version of \code{x}.
+##' @author Mark Wheldon
+##' @export
+clean_col_names <- function(x, use_make.names = TRUE) {
+    UseMethod("clean_col_names")
+}
+
+##' @rdname clean_col_names
+##' @export
+clean_col_names.character <- function(x, use_make.names = TRUE) {
+    x <- lower_snake_casify(x, use_make.names = use_make.names)
+    x[x == "iso_code"] <- "iso"
+    x[x %in% c("country", "country_or_area")] <- "name"
+    return(x)
+}
+
+##' @rdname clean_col_names
+##' @export
+clean_col_names.data.frame <- function(x, use_make.names = TRUE) {
+    colnames(x) <- clean_col_names(colnames(x), use_make.names = use_make.names)
+    return(x)
 }

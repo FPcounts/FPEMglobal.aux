@@ -52,6 +52,9 @@ get_used_unpd_regions <-
              clean_col_names = TRUE,
              verbose = FALSE, UNlocations_names = TRUE, ...) {
 
+        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE)
+
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
@@ -60,7 +63,7 @@ get_used_unpd_regions <-
 
         data_dir <- file.path(output_dir, data_dir_name)
 
-        if(verbose) {
+        if (verbose) {
             out <-
                 readr::read_csv(file.path(data_dir,
                                           "country_and_area_classification.csv"))
@@ -72,11 +75,11 @@ get_used_unpd_regions <-
             })
         }
 
-        if(UNlocations_names)
+        if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
 
-        if(clean_col_names) {
+        if (clean_col_names) {
             colnames(out)[colnames(out) == "ISO Code"] <- "iso"
             colnames(out)[colnames(out) == "Country or area"] <- "name"
             colnames(out) <- lower_snake_casify(colnames(out))
@@ -129,6 +132,9 @@ get_used_special_aggregates <-
              clean_col_names = TRUE,
              verbose = FALSE, ...) {
 
+        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE)
+
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
@@ -140,29 +146,29 @@ get_used_special_aggregates <-
         agg_csv_names <- list_special_aggregates_csv_filenames()
         agg_names <- list_special_aggregates_names()
 
-        for(i in seq_along(agg_csv_names)) {
+        for (i in seq_along(agg_csv_names)) {
             fpath <- file.path(data_dir, agg_csv_names[i])
-            if(file.exists(fpath)) {
-                if(verbose) {
+            if (file.exists(fpath)) {
+                if (verbose) {
                     y <- readr::read_csv(fpath)[,c("iso.country", "groupname")]
                 } else {
                     suppressMessages({
                         y <- readr::read_csv(fpath)[,c("iso.country", "groupname")]
                     })
                 }
-                if(clean_col_names) colnames(y) <- c("iso", agg_names[i])
+                if (clean_col_names) colnames(y) <- c("iso", agg_names[i])
                 out <- dplyr::full_join(out, y, by = "iso")
             }
         }
         out <- out[!is.na(out$iso),]
 
-        if("SDG_regions_LDCs" %in% colnames(out)) {
+        if ("SDG_regions_LDCs" %in% colnames(out)) {
             out <- out %>%
                 dplyr::mutate(SDG_LDC = SDG_regions_LDCs == "Least Developed Countries (LDCs)" &
                            !is.na(SDG_regions_LDCs)) %>%
                 dplyr::select(-SDG_regions_LDCs)
         }
-        if("SDG_regions_LLDCs_SIDS" %in% colnames(out)) {
+        if ("SDG_regions_LLDCs_SIDS" %in% colnames(out)) {
             out <- out %>%
                 dplyr::mutate(SDG_LLDC = SDG_regions_LLDCs_SIDS == "Landlocked developing countries (LLDCs)" &
                            !is.na(SDG_regions_LLDCs_SIDS),
@@ -171,10 +177,8 @@ get_used_special_aggregates <-
                 dplyr::select(-SDG_regions_LLDCs_SIDS)
         }
 
-        if(clean_col_names) {
-            out <- out %>%
-                dplyr::rename(sdg_l1 = SDG_regions_level_1, sdg_l2 = SDG_regions_level_2)
-            colnames(out) <- lower_snake_casify(colnames(out))
+        if (clean_col_names) {
+            out <- clean_col_names(out)
             }
 
         return(out)
@@ -208,7 +212,7 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = "."
     traj_index <- try(read.csv(file.path(output_dir, "iso.Ptp3s.key.csv"),
                                colClasses = c("character")))
 
-    if(identical(class(traj_index), "try-error")) {
+    if (identical(class(traj_index), "try-error")) {
         stop("Error reading 'iso.Ptp3s.key.csv'. Did you supply a run name or output directory for an all women run?")
         } else return(tibble::as_tibble(traj_index))
     }

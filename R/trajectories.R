@@ -34,13 +34,13 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 
     ob_name <- load(file = file.path(res_dir, "mcmc.array.rda"))
 
-    if(verbose) {
+    if (verbose) {
         msg_loaded(file.path(res_dir, "mcmc.array.rda"), ob_name)
     }
 
     out <- get(ob_name[1])
 
-    if(name_dims) {
+    if (name_dims) {
         names(dimnames(out)) <- c("iteration", "chain", "parameter")
         }
 
@@ -110,7 +110,7 @@ get_model_param_names <- function(mcmc_array) {
 get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                  country_name, iso_code, verbose = FALSE) {
 
-    if((missing(country_name) && missing(iso_code)) || (
+    if ((missing(country_name) && missing(iso_code)) || (
         !missing(country_name) && !missing(iso_code))
        ) stop("Supply one, and only one, of 'country_name', 'iso_code'.")
 
@@ -122,8 +122,8 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
         get_country_index(run_name = run_name, output_dir = output_dir,
                           root_dir = root_dir, verbose = FALSE)
 
-    if(!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not valid.")
-    if(missing(country_name)) {
+    if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not valid.")
+    if (missing(country_name)) {
         traj_fname <-
             traj_index$filename[traj_index$iso.c == as.character(iso_code)]
     } else {
@@ -134,7 +134,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
     ob_name <- load(file = traj_full_path, verbose = verbose)
 
-    if(verbose) msg_loaded(traj_full_path, ob_name)
+    if (verbose) msg_loaded(traj_full_path, ob_name)
 
     return(get(ob_name[1]))
 }
@@ -186,7 +186,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 
     ob_name <- load(file = traj_full_path, verbose = verbose)
 
-    if(verbose) msg_loaded(traj_full_path, ob_name)
+    if (verbose) msg_loaded(traj_full_path, ob_name)
 
     return(get(ob_name[1]))
 }
@@ -221,7 +221,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
                            root_dir = root_dir, verbose = verbose)
     par_ciq_path <- file.path(res_dir, "par.ciq.rda")
     ob_name <- load(file = par_ciq_path)
-    if(verbose) msg_loaded(par_ciq_path, ob_name)
+    if (verbose) msg_loaded(par_ciq_path, ob_name)
 
     get(ob_name[1])
     }
@@ -278,17 +278,17 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##' @author Mark Wheldon
 ##' @export
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-                         agg_family_name, agg_name, marital_group = c("married", "unmarried", "all women"),
+                         agg_family_name, agg_name, marital_group = c("married", "unmarried", "all_women"),
                          verbose = FALSE) {
 
-    if(missing(agg_name)) stop("Must supply 'agg_name'.")
-    if(missing(agg_family_name)) stop("Must supply 'agg_family_name'.")
+    if (missing(agg_name)) stop("Must supply 'agg_name'.")
+    if (missing(agg_family_name)) stop("Must supply 'agg_family_name'.")
 
     marital_group <- match.arg(marital_group)
     ## Marital group must match the file naming convention:
     marital_group[marital_group == "married"] <- "mwra"
     marital_group[marital_group == "unmarried"] <- "uwra"
-    marital_group[marital_group == "all women"] <- "awra"
+    marital_group[marital_group == "all_women"] <- "awra"
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -296,11 +296,11 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)
-    if(!file.exists(traj_full_path)) stop("File '", traj_full_path, "' does not exist.")
+    if (!file.exists(traj_full_path)) stop("File '", traj_full_path, "' does not exist.")
 
     ob_name <- load(file = traj_full_path, verbose = verbose)
 
-    if(verbose) msg_loaded(traj_full_path, ob_name)
+    if (verbose) msg_loaded(traj_full_path, ob_name)
 
     return(get(ob_name[1]))
 }

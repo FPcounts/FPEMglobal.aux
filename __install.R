@@ -30,9 +30,9 @@ divider <- function(x) {
 ## From 'example("source", package = "base")
 sourceDir <- function(path, trace = TRUE, ...) {
     for (nm in list.files(path, pattern = "[.][RrSsQq]$")) {
-        if(trace) cat(nm,":")
+        if (trace) cat(nm,":")
         source(file.path(path, nm), ...)
-        if(trace) cat("\n")
+        if (trace) cat("\n")
     }
 }
 
@@ -50,7 +50,7 @@ write_sha1_DESC <- function(pkg_dir, git_dir) {
     ## Is there already a 'GitHubSHA1LastCommit:' line? If so, replace it. If
     ## not, add one.
     sha1_line_num <- grep("GitHubSHA1LastCommit:", DESC_lines)
-    if(identical(length(sha1_line_num), 1L)) DESC_lines[sha1_line_num] <- new_sha1_line
+    if (identical(length(sha1_line_num), 1L)) DESC_lines[sha1_line_num] <- new_sha1_line
     else DESC_lines <- rbind(DESC_lines, new_sha1_line)
 
     ## Write DES
@@ -66,7 +66,7 @@ clean_sha1_DESC <- function(pkg_dir) {
 
     ## Is there already a 'GitHubSHA1LastCommit:' line? If so, replace it with 'GitHubSHA1LastCommit: -'.
     sha1_line_num <- grep("GitHubSHA1LastCommit:", DESC_lines)
-    if(identical(length(sha1_line_num), 1L)) DESC_lines[sha1_line_num] <- "GitHubSHA1LastCommit: -"
+    if (identical(length(sha1_line_num), 1L)) DESC_lines[sha1_line_num] <- "GitHubSHA1LastCommit: -"
 
     ## Write DES
     writeLines(DESC_lines, con = DESC_con)
@@ -87,7 +87,7 @@ devtools::document()
 
 ### Do all tests
 divider("RUNNING TESTS")
-if(length(dir("tests/testthat")) > 0) {
+if (length(dir("tests/testthat")) > 0) {
     devtools::test(reporter = c("summary", "fail"))
 }
 
