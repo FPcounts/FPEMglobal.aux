@@ -54,7 +54,8 @@ load_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                            verbose = FALSE) {
     tmp_env <- new.env()
-    if (verbose) message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'.")
+    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
+                         add = TRUE, after = FALSE)
     return(get(load_model_meta(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
 }
@@ -101,8 +102,12 @@ load_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @export
 get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                  verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
     tmp_env <- new.env()
-    if (verbose) message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'.")
+    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'."),
+                         add = TRUE, after = FALSE)
     return(get(load_global_mcmc_args(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
 }
