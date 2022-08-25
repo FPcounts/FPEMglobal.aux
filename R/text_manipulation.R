@@ -154,7 +154,7 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
 
     family <- match.arg(family)
 
-    if (identical(family, "geom_maj")) {
+    if (identical(family, "geog_maj")) {
 
         c("Africa", "Asia", "Europe", "Latin America and the Caribbean", "Northern America", "Oceania")
     } else if (identical(family, "geog_subr")) {
@@ -244,7 +244,7 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon
 ##' @export
-clean_col_names <- function(x, use_make.names = FALSE) {
+clean_col_names <- function(x, use_make.names = FALSE)q {
     UseMethod("clean_col_names")
 }
 
