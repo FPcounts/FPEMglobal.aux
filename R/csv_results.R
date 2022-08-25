@@ -81,7 +81,7 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              aggregate = "Country",
                              stat = c("perc", "count", "ratio"),
                              add_stat_column = FALSE,
@@ -413,7 +413,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 ##' @author Mark Wheldon
 ##' @export
 get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
-                                            root_dir = ".",
+                                            root_dir = NULL,
                                             index_col_name = "marital_group",
                                             sort = TRUE,
                                             ...) {

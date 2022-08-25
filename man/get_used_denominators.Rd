@@ -7,7 +7,7 @@
 get_used_denominators(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   filename = NULL,
   marital_group = c("default", "married", "unmarried", "all_women"),
   add_marital_group = TRUE,

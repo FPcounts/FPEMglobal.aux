@@ -36,7 +36,7 @@
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @noRd
-get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                     aggregate = "Country",
                                     clean_indicator_names = TRUE,
                                     verbose = FALSE,
@@ -177,7 +177,7 @@ get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".
 ##'
 ##' @noRd
 get_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
-                                            root_dir = ".",
+                                            root_dir = NULL,
                                             aggregate = "Country",
                                             clean_indicator_names = TRUE,
                                             verbose = FALSE,
@@ -229,7 +229,7 @@ get_csv_change_all_mar_res <- function(run_name_list = NULL, output_dir_list = N
 ##' @author Mark Wheldon
 ##'
 ##' @noRd
-get_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                          aggregate = "Country", adj = FALSE, clean_indicator_names = TRUE,
                                         verbose = FALSE,
                                    ...) {
@@ -298,7 +298,7 @@ get_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir 
 
 
 ## Get results from the RDA files
-get_indicator_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_indicator_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              aggregate = "Country",
                              adj = c("orig", "adj", "sub_adj"),
                              verbose = FALSE) {

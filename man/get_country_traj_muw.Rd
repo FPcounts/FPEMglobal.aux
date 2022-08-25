@@ -7,7 +7,7 @@
 get_country_traj_muw(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   country_name,
   iso_code,
   verbose = FALSE

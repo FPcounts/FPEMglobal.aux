@@ -7,7 +7,7 @@
 get_model_meta(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   verbose = FALSE
 )
 }

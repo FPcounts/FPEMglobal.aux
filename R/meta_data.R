@@ -32,7 +32,7 @@
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            verbose = FALSE) {
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
@@ -59,7 +59,7 @@ get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -89,7 +89,7 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,

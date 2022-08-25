@@ -7,7 +7,7 @@
 get_global_mcmc_args(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   verbose = FALSE
 )
 }

@@ -7,7 +7,7 @@
 read_named_csv_file(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   file_name,
   verbose = FALSE,
   ...

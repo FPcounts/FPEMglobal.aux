@@ -7,7 +7,7 @@
 get_country_traj_aw(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   iso_code,
   verbose = FALSE
 )

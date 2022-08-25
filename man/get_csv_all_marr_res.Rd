@@ -7,7 +7,7 @@
 get_csv_all_marr_res(
   run_name_list = NULL,
   output_dir_list = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   index_col_name = "marital_group",
   sort = TRUE,
   ...

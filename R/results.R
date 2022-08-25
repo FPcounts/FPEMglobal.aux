@@ -11,7 +11,7 @@
 ##' @return The \code{\link{load}}ed object.
 ##' @author Mark Wheldon
 ##' @export
-get_model_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_model_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          verbose = FALSE) {
 
     output_dir <-

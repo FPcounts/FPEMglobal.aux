@@ -16,7 +16,7 @@
 ##' @family input_data_functions
 ##'
 ##' @export
-get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
              processed = TRUE,
              verbose = FALSE, ...) {
 
@@ -89,7 +89,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @family input_data_functions
 ##'
 ##' @export
-get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   filename = NULL,
                                   marital_group = c("default", "married", "unmarried", "all_women"),
                                   add_marital_group = TRUE,
@@ -272,7 +272,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'
 ##' @seealso get_used_input_data, get_csv_res
 ##' @export
-read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 file_name, verbose = FALSE, ...) {
 
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)

@@ -7,7 +7,7 @@
 get_csv_res(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   aggregate = "Country",
   stat = c("perc", "count", "ratio"),
   add_stat_column = FALSE,

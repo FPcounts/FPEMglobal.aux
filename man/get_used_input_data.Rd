@@ -7,7 +7,7 @@
 get_used_input_data(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   processed = TRUE,
   verbose = FALSE,
   ...

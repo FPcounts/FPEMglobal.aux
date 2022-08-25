@@ -25,7 +25,7 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            verbose = FALSE, name_dims = FALSE) {
 
     res_dir <-
@@ -107,7 +107,7 @@ get_model_param_names <- function(mcmc_array) {
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
-get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  country_name, iso_code, verbose = FALSE) {
 
     if ((missing(country_name) && missing(iso_code)) || (
@@ -175,7 +175,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
-get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  iso_code, verbose = FALSE) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -210,7 +210,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @inheritParams get_csv_res
 ##' @author Mark Wheldon
 ##' @export
-get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                             verbose = FALSE) {
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -273,7 +273,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##' @return The loaded aggregate trajectory object.
 ##' @author Mark Wheldon
 ##' @export
-get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_family_name, agg_name, marital_group = c("married", "unmarried", "all_women"),
                          verbose = FALSE) {
 

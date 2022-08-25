@@ -73,7 +73,7 @@ get_185_countries <-
 ##' @family country_aggregates
 ##' @export
 get_used_unpd_regions <-
-    function(run_name = NULL, output_dir = NULL, root_dir = ".",
+    function(run_name = NULL, output_dir = NULL, root_dir = NULL,
              clean_col_names = TRUE,
              verbose = FALSE, UNlocations_names = TRUE, ...) {
 
@@ -157,7 +157,7 @@ list_special_aggregates_names <- function() {
 ##' @family country_aggregates
 ##' @export
 get_used_special_aggregates <-
-    function(run_name = NULL, output_dir = NULL, root_dir = ".",
+    function(run_name = NULL, output_dir = NULL, root_dir = NULL,
              clean_col_names = TRUE,
              verbose = FALSE, ...) {
 
@@ -231,7 +231,7 @@ get_used_special_aggregates <-
 ##'     number.
 ##' @author Mark Wheldon
 ##' @export
-get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 verbose = FALSE) {
 
     output_dir <-

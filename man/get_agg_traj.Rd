@@ -7,7 +7,7 @@
 get_agg_traj(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   agg_family_name,
   agg_name,
   marital_group = c("married", "unmarried", "all_women"),

@@ -7,7 +7,7 @@
 get_used_unpd_regions(
   run_name = NULL,
   output_dir = NULL,
-  root_dir = ".",
+  root_dir = NULL,
   clean_col_names = TRUE,
   verbose = FALSE,
   UNlocations_names = TRUE,
