@@ -35,7 +35,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
             data_dir_name  <- "data"
             data_dir <- file.path(output_dir, data_dir_name)
         }
-
+    if (verbose) message("Reading '", file.path(data_dir, fname), "'.")
         readr::read_csv(file.path(data_dir, fname), show_col_types = verbose)
 }
 
@@ -281,5 +281,6 @@ read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = N
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
+    if (verbose) message("Reading '", file.path(output_dir, file_name), "'.")
     readr::read_csv(file = file.path(output_dir, file_name), show_col_types = verbose)
 }

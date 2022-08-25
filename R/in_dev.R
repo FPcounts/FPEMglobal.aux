@@ -67,6 +67,10 @@ get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = NU
         marital_group  <- guess_marital_group(run_name)
     }
 
+############
+    ######## NEED TO UPDATE STYLE TO MATCH 'get_csv_res'.
+    ######## Eg use verbose and issue a message, don't use if and suppress, instead rely on reader options set above.
+
     ## Read the 'perc_Total' file first
     fname1 <- paste0(fname, "_changes_perc_Total.csv")
     if (verbose) {
