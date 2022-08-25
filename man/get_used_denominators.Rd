@@ -82,13 +82,16 @@ If \code{long_format} is \code{TRUE}, the counts are in a single
 column called \dQuote{\code{value}}, with the necessary
 identifying columns added. Otherwise the result is in the same
 format as the original counts files, which have one year per row.
-}
-\examples{
 
+The poulation denominators are stored in \file{.csv} files in the
+output directory. These are read in using an unexported function
+from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 }
 \seealso{
-\code{\link{get_main_input_file}}.
+Other input_data_functions: 
+\code{\link{get_used_input_data}()}
 }
 \author{
 Mark Wheldon
 }
+\concept{input_data_functions}

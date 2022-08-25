@@ -24,9 +24,6 @@ the directory called \dQuote{output}.}
 
 \item{verbose}{Logical. Print lots of messages?}
 }
-\value{
-The loaded object.
-}
 \description{
 This function \code{\link{load}}s and returns the object in the
 file \file{par.ciq.rda} found in

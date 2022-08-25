@@ -5,20 +5,31 @@
 \title{Read table of \sQuote{185} countries}
 \usage{
 get_185_countries(
-  filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
+  filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal"),
+  verbose = FALSE
 )
 }
 \arguments{
 \item{filepath}{Path to \file{.csv} file containing the countries.}
+
+\item{verbose}{Logical. Print lots of messages?}
 }
 \value{
 Data frame with the countries.
 }
 \description{
-These are the 185 countries for which estimates are released by UNPD.
+These are the 185 countries for which estimates are released by
+UNPD. The file is read using \code{\link{[readr]{read_csv}}}. See
+\dQuote{Note} in the documentation for
+\code{\link{get_195_countries}}.
 }
 \seealso{
 Other countries, regions and aggregates functions: 
+\code{\link{get_195_countries}()},
+\code{\link{get_used_special_aggregates}()},
+\code{\link{get_used_unpd_regions}()}
+
+Other country_aggregates: 
 \code{\link{get_195_countries}()},
 \code{\link{get_used_special_aggregates}()},
 \code{\link{get_used_unpd_regions}()}
@@ -27,3 +38,4 @@ Other countries, regions and aggregates functions:
 Mark Wheldon
 }
 \concept{countries, regions and aggregates functions}
+\concept{country_aggregates}

@@ -13,14 +13,13 @@
 ##   global workspace is not modified.
 
 
-##' Load and return model meta data
+##' Get the meta data for an FPEMglobal model run
 ##'
-##' \code{load_model_meta} \code{\link{load}}s \file{mcmc.meta.rda}
-##' from the output directory. This contains all sorts of information
-##' about the model run. \code{get_model_meta} calls
-##' \code{load_model_meta} and, additionally, returns the loaded
-##' object. This will cause the printing of a large amount of output;
-##' it is usually much better to assign the result to a variable name.
+##' \code{\link{load}}s and returns the \file{mcmc.meta.rda} file from
+##' the output directory. This contains all sorts of information about
+##' the model run. This will cause the printing of a large amount of
+##' output; it is usually much better to assign the result to a
+##' variable name.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -30,75 +29,35 @@
 ##'     (\code{get_model_meta}).
 ##'
 ##' @author Mark Wheldon
-##' @export
-load_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             verbose = FALSE, envir = parent.frame()) {
-
-    res_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
-
-    ob_name <- load(file = file.path(res_dir, "mcmc.meta.rda"), envir = envir)
-
-    if (verbose) {
-        message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'. \n.. Object is '",
-                paste(ob_name, collapse = " "), "'. \n.. Returning '", ob_name[1],
-                "'.")
-    }
-
-    return(invisible(ob_name))
-    }
-
-##' @rdname load_model_meta
+##'
+##' @family model_run_meta_info
 ##' @export
 get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                            verbose = FALSE) {
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
                          add = TRUE, after = FALSE)
-    return(get(load_model_meta(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
+    return(get(load(file = file.path(res_dir, "mcmc.meta.rda"), envir = tmp_env), envir = tmp_env))
 }
 
 
-##' Load and return global arguments used to generate the run
+##' Get the global arguments used to generate an FPEMglobal model run
 ##'
-##' \code{load_global_mcmc_args} \code{\link{load}}s \file{mcmc.meta.rda}
-##' from the output directory. This contains all sorts of information
-##' about the model run. \code{get_global_mcmc_args} calls
-##' \code{load_global_mcmc_args} and, additionally, returns the loaded
-##' object. This will cause the printing of a large amount of output;
-##' it is usually much better to assign the result to a variable name.
+##' \code{\link{load}}s and returns the \file{global_mcmc_args.RData}
+##' file from the output directory. This contains the values of all
+##' arguments passed to \pkg{FPEMglobal} functions (e.g.,
+##' \code{\link[FPEMglobal]{do_global_mcmc}}). This will cause the
+##' printing of a large amount of output; it is usually much better to
+##' assign the result to a variable name.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
 ##'
-##' @return Either the name of the loaded object, invisibly
-##'     (\code{load_global_mcmc_args}), or the loaded object itself
-##'     (\code{get_global_mcmc_args}).
+##' @return A named list.
 ##'
 ##' @author Mark Wheldon
-##' @export
-load_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
-             verbose = FALSE, envir = parent.frame()) {
-
-    res_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
-
-    ob_name <- load(file = file.path(res_dir, "global_mcmc_args.RData"), envir = envir)
-
-    if (verbose) {
-        message("Loaded '", file.path(res_dir, "global_mcmc_args.RData"), "'. \n.. Object is '",
-                paste(ob_name, collapse = " "), "'. \n.. Returning '", ob_name[1],
-                "'.")
-    }
-
-    return(invisible(ob_name))
-}
-
-
-##' @rdname load_global_mcmc_args
+##'
+##' @family model_run_meta_info
 ##' @export
 get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                  verbose = FALSE) {
@@ -108,12 +67,27 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'."),
                          add = TRUE, after = FALSE)
-    return(get(load_global_mcmc_args(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = FALSE, envir = tmp_env), envir = tmp_env))
+    return(get(load(file = file.path(res_dir, "global_mcmc_args.RData"), envir = tmp_env), envir = tmp_env))
 }
 
 
-##' @rdname load_global_mcmc_args
+##' Get the global arguments used to process an FPEMglobal model run
+##'
+##' \code{\link{load}}s and returns the \file{post_process_args.RData}
+##' file from the output directory. This contains the values of all
+##' arguments passed to
+##' \code{\link[FPEMglobal]{post_process_mcmc}}. This will cause the
+##' printing of a large amount of output; it is usually much better to
+##' assign the result to a variable name.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##'
+##' @return A named list.
+##'
+##' @author Mark Wheldon
+##'
+##' @family model_run_meta_info
 ##' @export
 get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                  verbose = FALSE) {
@@ -140,6 +114,8 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
 ##'
 ##' @return The run name as a character string.
 ##' @author Mark Wheldon
+##'
+##' @family model_run_meta_info
 ##' @export
 get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 

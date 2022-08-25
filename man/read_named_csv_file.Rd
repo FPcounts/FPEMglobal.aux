@@ -37,12 +37,16 @@ A \code{\link[tibble]{tibble}} with the file contents.
 \description{
 A thin wrapper to \code{\link[readr]{read_csv}} to read the
 contents of an arbitrary \file{.csv} file in the output directory
-of an FPEM run.
+of an FPEM run. The file is read using
+\code{\link{[readr]{read_csv}}}.
 }
 \details{
 The file will be searched for in the output directory, so add any
 subdirectories to \code{file_name} (e.g., \code{file_name =
 "table/obj/myFile.csv"}).
+}
+\seealso{
+get_used_input_data, get_csv_res
 }
 \author{
 Mark Wheldon

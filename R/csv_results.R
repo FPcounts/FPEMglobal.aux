@@ -5,7 +5,8 @@
 ##'
 ##' Reads \emph{all} results \file{.csv} files from a results
 ##' directory for a given country or region that contain percentages,
-##' counts, and ratios.
+##' counts, and ratios. The files are read using
+##' \code{\link{[readr]{read_csv}}}.
 ##'
 ##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
 ##' family planning indicators are made all lower case and spaces (and
@@ -33,8 +34,6 @@
 ##' also transposed. It has a single \code{"value"} colum for all
 ##' indicators and an ID column for indicator (\code{"indicator"})}
 ##' }
-##'
-##' @family csv results functions
 ##'
 ##' @param output_dir Path to directory containing outputs. See
 ##'     Section \dQuote{Specifying results directory} in the help file
@@ -71,8 +70,12 @@
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##'
+##' @family csv results functions
+##'
 ##' @seealso \code{\link{get_output_dir}} for instructions on how to
-##'     specify output directories and run names.
+##'     specify output directories and run
+##'     names. \code{link{FPEMglobal.aux}} for a note about
+##'     \pkg{readr} messages.
 ##'
 ##' @author Mark Wheldon
 ##' @export
@@ -449,6 +452,9 @@ get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
 
 
 ##' Convert loaded csv results to \pkg{fpemdata} format.
+##'
+##' This function provides for interaction with the \pkg{fpemdata}
+##' package.
 ##'
 ##' @section Note:
 ##' \pkg{fpemdata} only requires the proportions which

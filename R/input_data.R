@@ -4,14 +4,17 @@
 
 ##' Get country input data actually used
 ##'
-##' Reads the '.csv' file containing the prevalence data used in the run.
+##' Reads the '.csv' file containing the prevalence data used in the
+##' run. The file is read using \code{\link{[readr]{read_csv}}}.
 ##'
 ##' @param processed Logical; get the input data after processing by
 ##'     \pkg{\link{FPEMglobal}}, or the raw input data?
 ##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
-##' @seealso \code{\link{get_main_input_file}}.
+##'
+##' @family input_data_functions
+##'
 ##' @export
 get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
              processed = TRUE,
@@ -57,6 +60,10 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' identifying columns added. Otherwise the result is in the same
 ##' format as the original counts files, which have one year per row.
 ##'
+##' The poulation denominators are stored in \file{.csv} files in the
+##' output directory. These are read in using an unexported function
+##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
+##'
 ##' @param filename Name of file with the counts (including
 ##'     extension). If \code{NULL}, this will be inferred from the
 ##'     meta data (see \code{\link{get_global_mcmc_args}}.
@@ -78,9 +85,8 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @return A \code{\link[tibble]{tibble}} with the requested results
 ##'     in \dQuote{long} format; see \dQuote{Details}.
 ##' @author Mark Wheldon
-##' @seealso \code{\link{get_main_input_file}}.
 ##'
-##' @examples
+##' @family input_data_functions
 ##'
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -250,7 +256,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'
 ##' A thin wrapper to \code{\link[readr]{read_csv}} to read the
 ##' contents of an arbitrary \file{.csv} file in the output directory
-##' of an FPEM run.
+##' of an FPEM run. The file is read using
+##' \code{\link{[readr]{read_csv}}}.
 ##'
 ##' The file will be searched for in the output directory, so add any
 ##' subdirectories to \code{file_name} (e.g., \code{file_name =
@@ -262,6 +269,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'     subdirectory and file extension; see \dQuote{Details}.
 ##' @return A \code{\link[tibble]{tibble}} with the file contents.
 ##' @author Mark Wheldon
+##'
+##' @seealso get_used_input_data, get_csv_res
 ##' @export
 read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                 file_name, verbose = FALSE, ...) {

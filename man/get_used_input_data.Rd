@@ -35,11 +35,14 @@ the directory called \dQuote{output}.}
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Reads the '.csv' file containing the prevalence data used in the run.
+Reads the '.csv' file containing the prevalence data used in the
+run. The file is read using \code{\link{[readr]{read_csv}}}.
 }
 \seealso{
-\code{\link{get_main_input_file}}.
+Other input_data_functions: 
+\code{\link{get_used_denominators}()}
 }
 \author{
 Mark Wheldon
 }
+\concept{input_data_functions}

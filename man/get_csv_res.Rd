@@ -78,7 +78,8 @@ A \code{\link[tibble]{tibble}} with the requested results.
 \description{
 Reads \emph{all} results \file{.csv} files from a results
 directory for a given country or region that contain percentages,
-counts, and ratios.
+counts, and ratios. The files are read using
+\code{\link{[readr]{read_csv}}}.
 }
 \details{
 If \code{clean_indicator_names} is \code{TRUE}, the names of the
@@ -110,7 +111,9 @@ indicators and an ID column for indicator (\code{"indicator"})}
 }
 \seealso{
 \code{\link{get_output_dir}} for instructions on how to
-specify output directories and run names.
+specify output directories and run
+names. \code{link{FPEMglobal.aux}} for a note about
+\pkg{readr} messages.
 
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},

@@ -207,10 +207,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.
 ##'
-##' @inheritParams get_output_dir
-##' @inheritParams get_country_traj
-##' @return The loaded object.
-##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
 ##' @author Mark Wheldon
 ##' @export

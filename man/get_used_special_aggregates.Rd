@@ -32,10 +32,17 @@ the directory called \dQuote{output}.}
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Loads the special country classifications actually used to produce the results.
+Loads the special country classifications actually used to produce
+the results. The files are read using
+\code{\link{[readr]{read_csv}}}.
 }
 \seealso{
 Other countries, regions and aggregates functions: 
+\code{\link{get_185_countries}()},
+\code{\link{get_195_countries}()},
+\code{\link{get_used_unpd_regions}()}
+
+Other country_aggregates: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
 \code{\link{get_used_unpd_regions}()}
@@ -44,3 +51,4 @@ Other countries, regions and aggregates functions:
 Mark Wheldon
 }
 \concept{countries, regions and aggregates functions}
+\concept{country_aggregates}

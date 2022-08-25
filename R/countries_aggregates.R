@@ -3,39 +3,62 @@
 
 ##' Read table of \sQuote{195} countries
 ##'
-##' These are the 195 countries in the original married women model.
+##' These are the 195 countries in the original married women
+##' model. The file is read using \code{\link{[readr]{read_csv}}}.
+##'
+##' @section Note:
+##' These are (currently) taken from the \pkg{FPEMglobal} package and
+##' \emph{may} not correspond to the aggregates used in a specific
+##' model run (although, as of 2022-08-25, this is unlikely).
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
 ##' @param filepath Path to \file{.csv} file containing the countries.
+##' @inheritParams get_csv_res
 ##' @return Data frame with the countries.
 ##' @author Mark Wheldon
+##'
+##' @family country_aggregates
+##'
 ##' @export
 get_195_countries <-
-    function(filepath = system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")) {
-        read.csv(filepath)
+    function(filepath = system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal"),
+             verbose = FALSE) {
+        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE)
+        readr::read_csv(filepath)
     }
 
 
 ##' Read table of \sQuote{185} countries
 ##'
-##' These are the 185 countries for which estimates are released by UNPD.
+##' These are the 185 countries for which estimates are released by
+##' UNPD. The file is read using \code{\link{[readr]{read_csv}}}. See
+##' \dQuote{Note} in the documentation for
+##' \code{\link{get_195_countries}}.
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
 ##' @param filepath Path to \file{.csv} file containing the countries.
+##' @inheritParams get_csv_res
 ##' @return Data frame with the countries.
 ##' @author Mark Wheldon
+##'
+##' @family country_aggregates
 ##' @export
 get_185_countries <-
-    function(filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")) {
-        read.csv(filepath)
+    function(filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal"),
+             verbose = FALSE) {
+        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE)
+        readr::read_csv(filepath)
     }
 
 
 ##' Get UNPD aggregate country classifications
 ##'
-##' Loads the country classifications actually used in a model run.
+##' Loads the country classifications actually used in a model
+##' run. The files are read using \code{\link{[readr]{read_csv}}}.
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
@@ -46,6 +69,8 @@ get_185_countries <-
 ##' @inheritParams get_used_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
+##'
+##' @family country_aggregates
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -119,13 +144,17 @@ list_special_aggregates_names <- function() {
 
 ##' Get special aggregate country classifications
 ##'
-##' Loads the special country classifications actually used to produce the results.
+##' Loads the special country classifications actually used to produce
+##' the results. The files are read using
+##' \code{\link{[readr]{read_csv}}}.
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
 ##' @inheritParams get_used_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
+##'
+##' @family country_aggregates
 ##' @export
 get_used_special_aggregates <-
     function(run_name = NULL, output_dir = NULL, root_dir = ".",

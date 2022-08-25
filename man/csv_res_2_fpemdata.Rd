@@ -13,7 +13,8 @@ csv_res_2_fpemdata(csv_tbl)
 A \code{\link[tibble]{tibble}}.
 }
 \description{
-Convert loaded csv results to \pkg{fpemdata} format.
+This function provides for interaction with the \pkg{fpemdata}
+package.
 }
 \section{Note}{
 
