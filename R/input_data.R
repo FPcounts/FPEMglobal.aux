@@ -209,9 +209,10 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
                                      substr(age_group_from_cols, 3,4), sep = "-")
         if (!identical(as.character(rep(age_group_from_cols[1], length(age_group_from_cols))),
                        as.character(age_group_from_cols)))
-            stop("Age groups implied in column names of '", fpath, "' are not all the same.")
-        if (!identical(as.character(age_group_from_cols), as.character(age_group)))
-            stop("Age group implied in column names is '", as.character(age_group_from_cols),
+            stop("Age groups implied in column names of '", fpath, "' are not all the same: ",
+                 toString(age_group_from_cols))
+        if (!identical(as.character(age_group_from_cols[1]), as.character(age_group)))
+            stop("Age group implied in column names is '", as.character(age_group_from_cols[1]),
                  "' but 'age_group' argument is '", age_group,
                  "'. Note: if you didn't specify 'age_group' it was read from the meta data.")
     }
