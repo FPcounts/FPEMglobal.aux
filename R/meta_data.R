@@ -23,7 +23,7 @@
 ##' it is usually much better to assign the result to a variable name.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##'
 ##' @return Either the name of the loaded object, invisibly
 ##'     (\code{load_model_meta}), or the loaded object itself
@@ -71,7 +71,7 @@ get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
 ##' it is usually much better to assign the result to a variable name.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##'
 ##' @return Either the name of the loaded object, invisibly
 ##'     (\code{load_global_mcmc_args}), or the loaded object itself
@@ -136,7 +136,7 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
 ##' used.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##'
 ##' @return The run name as a character string.
 ##' @author Mark Wheldon

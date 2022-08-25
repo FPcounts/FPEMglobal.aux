@@ -196,7 +196,7 @@ get_used_special_aggregates <-
 ##' this data frame.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with country ISO codes, names, and trajectory
 ##'     file names, where row number corresponds to the internal index
 ##'     number.

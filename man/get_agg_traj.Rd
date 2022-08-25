@@ -77,7 +77,7 @@ the same as for country trajectories.
 
 \section{Specifying results directory}{
 
-See the section in \code{\link{get_FPEMglobal_csv_res}}.
+See the section in \code{\link{get_csv_res}}.
 }
 
 \seealso{

@@ -7,7 +7,7 @@
 ##' posterior quantiles of model parameters.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @return The \code{\link{load}}ed object.
 ##' @author Mark Wheldon
 ##' @export

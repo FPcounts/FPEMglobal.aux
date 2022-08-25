@@ -10,7 +10,7 @@
 ##'
 ##' @section Specifying the results directory from other functions:
 ##'
-##' Several functions, e.g., \code{\link{get_FPEMglobal_csv_res}},
+##' Several functions, e.g., \code{\link{get_csv_res}},
 ##' require the output directory to be specified via arguments
 ##' \code{run_name}, \code{root_dir}, and \code{output_dir}. There are
 ##' two ways to do this:

@@ -7,7 +7,7 @@
 csv_res_2_fpemdata(csv_tbl)
 }
 \arguments{
-\item{csv_tbl}{Results as loaded by \code{\link{get_FPEMglobal_csv_res}}.}
+\item{csv_tbl}{Results as loaded by \code{\link{get_csv_res}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.
@@ -18,14 +18,14 @@ Convert loaded csv results to \pkg{fpemdata} format.
 \section{Note}{
 
 \pkg{fpemdata} only requires the proportions which
-can be read via \code{get_FPEMglobal_csv_res(..., stat = "perc",
+can be read via \code{get_csv_res(..., stat = "perc",
     ...)}.
 }
 
 \seealso{
 Other csv results functions: 
-\code{\link{get_FPEMglobal_csv_all_marr_res}()},
-\code{\link{get_FPEMglobal_csv_res}()}
+\code{\link{get_csv_all_marr_res}()},
+\code{\link{get_csv_res}()}
 }
 \author{
 Mark C Wheldon

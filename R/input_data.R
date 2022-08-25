@@ -8,7 +8,7 @@
 ##'
 ##' @param processed Logical; get the input data after processing by
 ##'     \pkg{\link{FPEMglobal}}, or the raw input data?
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##' @seealso \code{\link{get_main_input_file}}.
@@ -72,7 +72,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##'     indicate the marital group? Such a column is always added if
 ##'     \code{marital_group} has more than one element.
 ##' @param sort Logical. Sort by stat, name, year, percentile?
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results
@@ -256,7 +256,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' subdirectories to \code{file_name} (e.g., \code{file_name =
 ##' "table/obj/myFile.csv"}).
 ##'
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##' @param file_name Name of file to read, \emph{including} any
 ##'     subdirectory and file extension; see \dQuote{Details}.

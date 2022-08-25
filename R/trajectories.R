@@ -17,7 +17,7 @@
 ##' @family trajectory functions
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
+##' See the section in \code{\link{get_csv_res}}.
 ##'
 ##' @param name_dims Logical; should the dimensions be given informative names? See \dQuote{Details}.
 ##' @return The loaded object.
@@ -96,14 +96,14 @@ get_model_param_names <- function(mcmc_array) {
 ##' @family trajectory functions
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
+##' See the section in \code{\link{get_csv_res}}.
 ##'
 ##' @param country_name Name of country to get trajectories for; only one of
 ##'     \code{iso_code} and \code{country_name} should be given.
 ##' @param iso_code Alternative way of selecting country to get trajectories
 ##'     for; only one of \code{iso_code} and \code{country_name} should be given.
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
@@ -170,7 +170,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @family trajectory functions
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @inheritParams get_country_traj_muw
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
@@ -205,13 +205,13 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = "
 ##' \dQuote{unmet.intercept.c}.
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
+##' See the section in \code{\link{get_csv_res}}.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_country_traj
 ##' @return The loaded object.
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @author Mark Wheldon
 ##' @export
 get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
@@ -260,7 +260,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##'     the same as for country trajectories.
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
+##' See the section in \code{\link{get_csv_res}}.
 ##'
 ##' @family trajectory functions
 ##' @param agg_family_name Name of the aggregate family for which to
@@ -273,7 +273,7 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
 ##' @param verbose Logical; report the path, filename, and object name
 ##'     in a message?
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @return The loaded aggregate trajectory object.
 ##' @author Mark Wheldon
 ##' @export

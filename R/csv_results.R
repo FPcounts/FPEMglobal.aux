@@ -76,7 +76,7 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
+get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                              aggregate = "Country",
                              stat = c("perc", "count", "ratio"),
                              add_stat_column = FALSE,
@@ -383,7 +383,7 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
 
 ##' Read results csv files containing percentages, etc., for all three marital groups
 ##'
-##' Calls \code{\link{get_FPEMglobal_csv_res}} sequentially on first
+##' Calls \code{\link{get_csv_res}} sequentially on first
 ##' elements of \code{run_name_list} and \code{output_dir_list}, second
 ##' elements of \code{run_name_list} and \code{output_dir_list}, etc.,
 ##' to load \emph{all} results for all marital groups. Binds the three
@@ -392,10 +392,10 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
 ##' @family csv results functions
 ##'
 ##' @section Specifying results directory:
-##' See the section in \code{\link{get_FPEMglobal_csv_res}}.
+##' See the section in \code{\link{get_csv_res}}.
 ##'
 ##' @inheritParams get_output_dir
-##' @inheritParams get_FPEMglobal_csv_res
+##' @inheritParams get_csv_res
 ##' @param run_name_list List of run names for married, unmarried, and
 ##'     all women. Element names must be \dQuote{married},
 ##'     \dQuote{unmarried}, and \dQuote{all_women}.
@@ -403,11 +403,11 @@ get_FPEMglobal_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir 
 ##'     unmarried, and all women. See \code{run_name_list}.
 ##' @param index_col_name Character. Name of column added to output
 ##'     that identifies observations for each marital group.
-##' @param ... Passed to \code{\link{get_FPEMglobal_csv_res}}.
+##' @param ... Passed to \code{\link{get_csv_res}}.
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##' @export
-get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
+get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
                                             root_dir = ".",
                                             index_col_name = "marital_group",
                                             sort = TRUE,
@@ -429,7 +429,7 @@ get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_lis
     out <- data.frame()
 
     for (i in seq_along(output_dir_list)) {
-        x <- get_FPEMglobal_csv_res(run_name = run_name_list[[i]],
+        x <- get_csv_res(run_name = run_name_list[[i]],
                          output_dir = output_dir_list[[i]], root_dir = root_dir,
                          sort = FALSE, #< Don't sort twice
                          ...)
@@ -452,12 +452,12 @@ get_FPEMglobal_csv_all_marr_res <- function(run_name_list = NULL, output_dir_lis
 ##'
 ##' @section Note:
 ##' \pkg{fpemdata} only requires the proportions which
-##'     can be read via \code{get_FPEMglobal_csv_res(..., stat = "perc",
+##'     can be read via \code{get_csv_res(..., stat = "perc",
 ##'     ...)}.
 ##'
 ##' @family csv results functions
 ##'
-##' @param csv_tbl Results as loaded by \code{\link{get_FPEMglobal_csv_res}}.
+##' @param csv_tbl Results as loaded by \code{\link{get_csv_res}}.
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export

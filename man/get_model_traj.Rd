@@ -37,7 +37,7 @@ The dimensions are not named by the esimtation software. If
 }
 \section{Specifying results directory}{
 
-See the section in \code{\link{get_FPEMglobal_csv_res}}.
+See the section in \code{\link{get_csv_res}}.
 }
 
 \seealso{
