@@ -20,8 +20,8 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = "
              processed = TRUE,
              verbose = FALSE, ...) {
 
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE) }
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -275,8 +275,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                                 file_name, verbose = FALSE, ...) {
 
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE) }
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,

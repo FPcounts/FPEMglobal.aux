@@ -12,7 +12,9 @@ Section \dQuote{Specifying results directory} in the help file
 for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 The run name as a character string.

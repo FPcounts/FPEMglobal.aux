@@ -30,7 +30,9 @@ the directory called \dQuote{output}.}
 \item{iso_code}{Alternative way of selecting country to get trajectories
 for; only one of \code{iso_code} and \code{country_name} should be given.}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 The loaded country trajectory object.

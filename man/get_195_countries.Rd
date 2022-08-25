@@ -12,7 +12,9 @@ get_195_countries(
 \arguments{
 \item{filepath}{Path to \file{.csv} file containing the countries.}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 Data frame with the countries.

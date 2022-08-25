@@ -64,7 +64,9 @@
 ##' @param long_format Logical or character. Should the table be
 ##'     returned in long format? See \dQuote{Details}.
 ##' @param sort Logical. Sort by stat, name, year, percentile?
-##' @param verbose Logical. Print lots of messages?
+##' @param verbose Logical. Print lots of messages? See
+##'     \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+##'     messages.
 ##' @param ... passed to \code{\link{read_csv}}.
 ##' @inheritParams get_output_dir
 ##'
@@ -94,8 +96,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".",
                              verbose = FALSE,
                              ...) {
 
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE) }
 
     stat <- match.arg(stat)
 

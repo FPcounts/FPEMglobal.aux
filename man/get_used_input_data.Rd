@@ -27,7 +27,9 @@ the directory called \dQuote{output}.}
 \item{processed}{Logical; get the input data after processing by
 \pkg{\link{FPEMglobal}}, or the raw input data?}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

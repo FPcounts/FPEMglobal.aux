@@ -22,7 +22,9 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 A named list.

@@ -68,7 +68,9 @@ returned in long format? See \dQuote{Details}.}
 
 \item{sort}{Logical. Sort by stat, name, year, percentile?}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 }

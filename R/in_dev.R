@@ -47,8 +47,8 @@ get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = ".
             " 'get_csv_change_res' IS IN DEVELOPMENT AND NOT FULLY TESTED\n",
             "===============================================================================\n")
 
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE) }
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -238,8 +238,8 @@ get_csv_res_age_ratios <- function(run_name = NULL, output_dir = NULL, root_dir 
             " 'get_csv_res_age_ratios' IS IN DEVELOPMENT AND NOT FULLY TESTED\n",
             "===============================================================================\n")
 
-    op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE)
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+    on.exit(options(op), add = TRUE, after = FALSE) }
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,

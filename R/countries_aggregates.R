@@ -24,8 +24,8 @@
 get_195_countries <-
     function(filepath = system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal"),
              verbose = FALSE) {
-        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE)
+        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
         readr::read_csv(filepath)
     }
 
@@ -49,8 +49,8 @@ get_195_countries <-
 get_185_countries <-
     function(filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal"),
              verbose = FALSE) {
-        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE)
+        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
         readr::read_csv(filepath)
     }
 
@@ -77,8 +77,8 @@ get_used_unpd_regions <-
              clean_col_names = TRUE,
              verbose = FALSE, UNlocations_names = TRUE, ...) {
 
-        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE)
+        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -161,8 +161,8 @@ get_used_special_aggregates <-
              clean_col_names = TRUE,
              verbose = FALSE, ...) {
 
-        op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE)
+        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,

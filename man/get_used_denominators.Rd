@@ -53,7 +53,9 @@ taken from the column names.}
 \item{long_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
 
-\item{verbose}{Logical. Print lots of messages?}
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 
 \item{...}{passed to \code{\link{read_csv}}.}
 
