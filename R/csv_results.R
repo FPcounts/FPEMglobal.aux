@@ -142,13 +142,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Read the '_Total' file first
             fname1 <- paste0(fname, "_", stat, "_Total.csv")
-            if (verbose) {
-                res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-            } else {
-                suppressMessages({
-                    res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-                })
-            }
+            res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res$stat <- stat
             res$indicator <- "total"
 
@@ -156,13 +150,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
                                "Unmet")) {
                 fname_ind <- paste0(fname, "_", stat, "_", indicator, ".csv")
-                if (verbose) {
-                    res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                } else {
-                    suppressMessages({
-                        res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                    })
-                }
+                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_ind$stat <- stat
                 if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
                 res <- dplyr::bind_rows(res, res_ind)
@@ -174,13 +162,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Read the '_Met Demand' file first
             fname1 <- paste0(fname, "_", stat, "_Met Demand.csv")
-            if (verbose) {
-                res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-            } else {
-                suppressMessages({
-                    res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-                })
-            }
+            res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res$stat <- stat
             res$indicator <- "Met Demand"
 
@@ -188,13 +170,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (adjusted == "orig") ind_values <- c(ind_values, "Z")
             for (indicator in ind_values) {
                 fname_ind <- paste0(fname, "_", "ratio", "_", indicator, ".csv")
-                if (verbose) {
-                    res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                } else {
-                    suppressMessages({
-                        res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                    })
-                }
+                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_ind$stat <- stat
                 if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
                 res <- dplyr::bind_rows(res, res_ind)
@@ -214,13 +190,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Read the '_Total' file first
             fname1 <- paste0(fname, "_", stat, "_Total_Adj.csv")
-            if (verbose) {
-                res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-            } else {
-                suppressMessages({
-                    res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-                })
-            }
+            res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res_adj$stat <- stat
             res_adj$indicator <- "total"
 
@@ -228,13 +198,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
                                "Unmet")) {
                 fname_ind <- paste0(fname, "_", stat, "_", indicator, "_Adj.csv")
-                if (verbose) {
-                    res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                } else {
-                    suppressMessages({
-                        res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                    })
-                }
+                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_adj_ind$stat <- stat
                 if (clean_indicator_names) res_adj_ind$indicator <- clean_indic_name(indicator)
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
@@ -244,13 +208,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Read the '_Met Demand' file first
             fname1 <- paste0(fname, "_", stat, "_Met Demand_Adj.csv")
-            if (verbose) {
-                res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-            } else {
-                suppressMessages({
-                    res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
-                })
-            }
+            res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res_adj$stat <- stat
             res_adj$indicator <- "Met Demand"
 
@@ -258,13 +216,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ind_values <- c("MetDemModMeth", "ModernOverTotal")
             for (indicator in ind_values) {
                 fname_ind <- paste0(fname, "_", "ratio", "_", indicator, "_Adj.csv")
-                if (verbose) {
-                    res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                } else {
-                    suppressMessages({
-                        res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
-                    })
-                }
+                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_adj_ind$stat <- stat
                 if (clean_indicator_names) res_adj_ind$indicator <- clean_indic_name(indicator)
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
