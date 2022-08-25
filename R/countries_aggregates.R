@@ -1,36 +1,36 @@
 ###-----------------------------------------------------------------------------
 ### * Work with Countries and Aggregates
 
-##' Read table of \sQuote{195} countries
+##' Read table of the \dQuote{195} countries
 ##'
 ##' These are the 195 countries in the original married women
 ##' model. The file is read using \code{\link{[readr]{read_csv}}}.
 ##'
 ##' @section Note:
-##' These are (currently) taken from the \pkg{FPEMglobal} package and
-##' \emph{may} not correspond to the aggregates used in a specific
-##' model run (although, as of 2022-08-25, this is unlikely).
+##' These are taken from the \pkg{FPEMglobal} package \emph{installed
+##' on your system}. As such, they \emph{may} not correspond to the
+##' aggregates used in a specific model run (although, as of
+##' 2022-08-25, this is unlikely).
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
-##' @param filepath Path to \file{.csv} file containing the countries.
 ##' @inheritParams get_csv_res
-##' @return Data frame with the countries.
+##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'
 ##' @family country_aggregates
 ##'
 ##' @export
-get_195_countries <-
-    function(filepath = system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal"),
-             verbose = FALSE) {
-        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
-        readr::read_csv(filepath)
-    }
+    out <- readr::read_csv(system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal"))
+    if (clean_col_names) out <- clean_col_names(out)
+    return(out)
+}
 
 
-##' Read table of \sQuote{185} countries
+##' Read table of the \dQuote{185} countries
 ##'
 ##' These are the 185 countries for which estimates are released by
 ##' UNPD. The file is read using \code{\link{[readr]{read_csv}}}. See
@@ -39,20 +39,48 @@ get_195_countries <-
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
-##' @param filepath Path to \file{.csv} file containing the countries.
 ##' @inheritParams get_csv_res
-##' @return Data frame with the countries.
+##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'
 ##' @family country_aggregates
 ##' @export
-get_185_countries <-
-    function(filepath = system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal"),
-             verbose = FALSE) {
-        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
-        readr::read_csv(filepath)
-    }
+    out <- readr::read_csv(system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal"))
+    if (clean_col_names) out <- clean_col_names(out)
+    return(out)
+}
+
+
+##' Get country geographic classifications
+##'
+##' Returns a table of geographic country groupings. The file is read
+##' using \code{\link{[readr]{read_csv}}}. See \dQuote{Note} in the
+##' documentation for \code{\link{get_195_countries}}.
+##'
+##' @family countries, regions and aggregates functions
+##'
+##' @inheritParams get_csv_res
+##' @inheritParams get_used_unpd_regions
+##' @return A \code{\link[tibble]{tibble}} with the aggregates.
+##' @author Mark Wheldon
+##'
+##' @family country_aggregates
+##' @export
+get_country_classifications <- function(UNlocations_names = TRUE,
+                                        clean_col_names = TRUE,
+                                        verbose = FALSE) {
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
+    out <- readr::read_csv(system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal"))
+    if (UNlocations_names)
+            out[, "Country or area"] <-
+                match_UNlocations(out[, "Country or area"], "UNlocations")
+    if (clean_col_names) out <- clean_col_names(out)
+    return(out)
+}
 
 
 ##' Get UNPD aggregate country classifications
@@ -63,8 +91,8 @@ get_185_countries <-
 ##' @family countries, regions and aggregates functions
 ##'
 ##' @param UNlocations_names Logical; should
-##'     \code{match_UNlocations(..., return_names = "UNlocations")} be
-##'     run on the country and area names column of the result?
+##'     \code{\link{match_UNlocations}(..., return_names = "UNlocations")} be
+##'     run to standardize country and area names?
 ##'
 ##' @inheritParams get_used_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
@@ -74,8 +102,8 @@ get_185_countries <-
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-             clean_col_names = TRUE,
-             verbose = FALSE, UNlocations_names = TRUE, ...) {
+             clean_col_names = TRUE, UNlocations_names = TRUE,
+             verbose = FALSE) {
 
         if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
@@ -83,32 +111,16 @@ get_used_unpd_regions <-
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
-
         data_dir_name <- "data"
-
         data_dir <- file.path(output_dir, data_dir_name)
 
-        if (verbose) {
-            out <-
-                readr::read_csv(file.path(data_dir,
-                                          "country_and_area_classification.csv"))
-        } else {
-            suppressMessages({
-                out <-
-                    readr::read_csv(file.path(data_dir,
-                                              "country_and_area_classification.csv"))
-            })
-        }
-
+        out <- readr::read_csv(file.path(data_dir,
+                                         "country_and_area_classification.csv"))
         if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
+        if (clean_col_names) out <- clean_col_names(out)
 
-        if (clean_col_names) {
-            colnames(out)[colnames(out) == "ISO Code"] <- "iso"
-            colnames(out)[colnames(out) == "Country or area"] <- "name"
-            colnames(out) <- lower_snake_casify(colnames(out))
-        }
         return(out)
     }
 

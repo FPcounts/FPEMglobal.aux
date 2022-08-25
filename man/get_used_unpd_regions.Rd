@@ -9,9 +9,8 @@ get_used_unpd_regions(
   output_dir = NULL,
   root_dir = NULL,
   clean_col_names = TRUE,
-  verbose = FALSE,
   UNlocations_names = TRUE,
-  ...
+  verbose = FALSE
 )
 }
 \arguments{
@@ -25,15 +24,13 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
+\item{UNlocations_names}{Logical; should
+\code{\link{match_UNlocations}(..., return_names = "UNlocations")} be
+run to standardize country and area names?}
+
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
-
-\item{UNlocations_names}{Logical; should
-\code{match_UNlocations(..., return_names = "UNlocations")} be
-run on the country and area names column of the result?}
-
-\item{...}{passed to \code{\link{read_csv}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.
@@ -46,11 +43,13 @@ run. The files are read using \code{\link{[readr]{read_csv}}}.
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_special_aggregates}()}
 
 Other country_aggregates: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_special_aggregates}()}
 }
 \author{

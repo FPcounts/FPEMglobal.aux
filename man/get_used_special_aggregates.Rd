@@ -42,11 +42,13 @@ the results. The files are read using
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_unpd_regions}()}
 
 Other country_aggregates: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_unpd_regions}()}
 }
 \author{

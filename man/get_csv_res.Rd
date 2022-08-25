@@ -14,8 +14,8 @@ get_csv_res(
   adjusted = c("orig", "adj", "sub_adj"),
   add_adjusted_column = identical(adjusted, "sub_adj"),
   years_1_jan = TRUE,
-  clean_indicator_names = TRUE,
   clean_col_names = TRUE,
+  clean_indicator_names = clean_col_names,
   add_country_classifications = FALSE,
   long_format = NULL,
   sort = TRUE,
@@ -54,11 +54,11 @@ are not (\code{FALSE}).}
 \item{years_1_jan}{Should years in \dQuote{yyyy.5} format be
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
+\item{clean_col_names}{Logical. See \dQuote{Details}.}
+
 \item{clean_indicator_names}{Logical. When \code{TRUE}, the column
 names of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}.}
-
-\item{clean_col_names}{Logical. See \dQuote{Details}.}
 
 \item{add_country_classifications}{Add on columns with geographic
 country classifications? See \dQuote{Details}.}

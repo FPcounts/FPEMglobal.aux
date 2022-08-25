@@ -244,7 +244,7 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon
 ##' @export
-clean_col_names <- function(x, use_make.names = FALSE)q {
+clean_col_names <- function(x, use_make.names = FALSE) {
     UseMethod("clean_col_names")
 }
 

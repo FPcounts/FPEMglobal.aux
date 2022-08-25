@@ -2,22 +2,19 @@
 % Please edit documentation in R/countries_aggregates.R
 \name{get_195_countries}
 \alias{get_195_countries}
-\title{Read table of \sQuote{195} countries}
+\title{Read table of the \dQuote{195} countries}
 \usage{
-get_195_countries(
-  filepath = system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal"),
-  verbose = FALSE
-)
+get_195_countries(clean_col_names = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{filepath}{Path to \file{.csv} file containing the countries.}
+\item{clean_col_names}{Logical. See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{
-Data frame with the countries.
+A \code{\link[tibble]{tibble}} with the countries.
 }
 \description{
 These are the 195 countries in the original married women
@@ -25,19 +22,22 @@ model. The file is read using \code{\link{[readr]{read_csv}}}.
 }
 \section{Note}{
 
-These are (currently) taken from the \pkg{FPEMglobal} package and
-\emph{may} not correspond to the aggregates used in a specific
-model run (although, as of 2022-08-25, this is unlikely).
+These are taken from the \pkg{FPEMglobal} package \emph{installed
+on your system}. As such, they \emph{may} not correspond to the
+aggregates used in a specific model run (although, as of
+2022-08-25, this is unlikely).
 }
 
 \seealso{
 Other countries, regions and aggregates functions: 
 \code{\link{get_185_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_special_aggregates}()},
 \code{\link{get_used_unpd_regions}()}
 
 Other country_aggregates: 
 \code{\link{get_185_countries}()},
+\code{\link{get_country_classifications}()},
 \code{\link{get_used_special_aggregates}()},
 \code{\link{get_used_unpd_regions}()}
 }
