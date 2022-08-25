@@ -290,13 +290,18 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Substitute medians for adjusted medians
             res_med <- res$Percentile == 0.5
-            res$adjusted <- FALSE
-            res$adjusted[res_med] <- TRUE
-
+            if (add_adjusted_column) {
+                res$adjusted <- FALSE
+                res$adjusted[res_med] <- TRUE
+            }
             res$year <- as.numeric(res$year)
         } else {
             if (!identical(sort(colnames(res)), sort(colnames(res_adj))))
                 stop("Column names in 'orig' and 'adj' results are not the same; cannot concatenate.")
+            if (add_adjusted_column) {
+                res$adjusted <- FALSE
+                res_adj$adjusted <- TRUE
+            }
             res <- dplyr::bind_rows(res[res$Percentile != 0.5,], res_adj)
         }
     }
@@ -305,13 +310,9 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         ind_vals <- unique(res$indicator)
         res <- res %>%
             tidyr::spread(key = c("indicator"), value = "value")
-        if (adjusted == "adj") {
-            if ("adj" %in% colnames(res))
-                res <- res[,c("stat", "Name", "Iso", "year", "Percentile", "adjusted", ind_vals)]
-            else res <- res[,c("stat", "Name", "Iso", "year", "Percentile", ind_vals)]
-        } else {
-            res <- res[,c("stat", "Name", "Iso", "year", "Percentile", ind_vals)]
-        }
+        if ("adj" %in% colnames(res))
+            res <- res[,c("stat", "Name", "Iso", "year", "Percentile", "adjusted", ind_vals)]
+        else res <- res[,c("stat", "Name", "Iso", "year", "Percentile", ind_vals)]
     }
 
     ## Clean column names
