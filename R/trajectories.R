@@ -4,13 +4,14 @@
 
 ##' Get model parameter trajectory array
 ##'
-##' This function \code{\link{load}}s \file{mcmc.array.rda} from the
-##' output directory. This contains MCMC trajectories for the model
+##' This function \code{\link{load}}s and returns MCMC trajectories
+##' stored in the file \file{mcmc.array.rda} in the output directory
+##' \code{output_dir}. This contains MCMC trajectories for the model
 ##' parameters. If you want country trajectories, use
 ##' \code{\link{get_country_traj_muw}} or
 ##' \code{\link{get_country_traj_aw}}.
 ##'
-##' The dimensions are not named by the esimtation software. If
+##' The dimensions are not named by \pkg{FPEMglobal}. If
 ##' \code{name_dims} is \code{TRUE} they are given the names
 ##' \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 ##'
@@ -25,24 +26,19 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                           verbose = FALSE, name_dims = FALSE) {
+get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, name_dims = TRUE,
+                           verbose = FALSE) {
 
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
 
-    ob_name <- load(file = file.path(res_dir, "mcmc.array.rda"))
+    tmp_env <- new.env()
+    if (verbose) message("Reading '", file.path(res_dir, "mcmc.array.rda"), "'.")
+    out <- get(load(file = file.path(res_dir, "mcmc.array.rda"), envir = tmp_env),
+               envir = tmp_env)
 
-    if (verbose) {
-        msg_loaded(file.path(res_dir, "mcmc.array.rda"), ob_name)
-    }
-
-    out <- get(ob_name[1])
-
-    if (name_dims) {
-        names(dimnames(out)) <- c("iteration", "chain", "parameter")
-        }
+    if (name_dims) names(dimnames(out)) <- c("iteration", "chain", "parameter")
 
     return(out)
 }
@@ -132,11 +128,12 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     }
 
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
-    ob_name <- load(file = traj_full_path, verbose = verbose)
+    tmp_env <- new.env()
+    if (verbose) message("Reading '", traj_full_path, "'.")
+    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
+               envir = tmp_env)
 
-    if (verbose) msg_loaded(traj_full_path, ob_name)
-
-    return(get(ob_name[1]))
+    return(obj)
 }
 
 
@@ -184,11 +181,12 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
     traj_fname <- paste0("aw_ISO_", iso_code, "_counts.rda")
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
 
-    ob_name <- load(file = traj_full_path, verbose = verbose)
+    tmp_env <- new.env()
+    if (verbose) message("Reading '", traj_full_path, "'.")
+    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
+               envir = tmp_env)
 
-    if (verbose) msg_loaded(traj_full_path, ob_name)
-
-    return(get(ob_name[1]))
+    return(obj)
 }
 
 
@@ -216,11 +214,12 @@ get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, roo
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
     par_ciq_path <- file.path(res_dir, "par.ciq.rda")
-    ob_name <- load(file = par_ciq_path)
-    if (verbose) msg_loaded(par_ciq_path, ob_name)
 
-    get(ob_name[1])
-    }
+    tmp_env <- new.env()
+    if (verbose) message("Reading '", par_ciq_path, "'.")
+    obj <- get(load(file = par_ciq_path, verbose = verbose, envir = tmp_env),
+               envir = tmp_env)
+}
 
 
 
@@ -294,9 +293,10 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)
     if (!file.exists(traj_full_path)) stop("File '", traj_full_path, "' does not exist.")
 
-    ob_name <- load(file = traj_full_path, verbose = verbose)
+    tmp_env <- new.env()
+    if (verbose) message("Reading '", traj_full_path, "'.")
+    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
+               envir = tmp_env)
 
-    if (verbose) msg_loaded(traj_full_path, ob_name)
-
-    return(get(ob_name[1]))
+    return(obj)
 }
