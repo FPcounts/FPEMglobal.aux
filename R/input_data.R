@@ -78,7 +78,6 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'     \dQuote{\code{marital_group}} be added to the output to
 ##'     indicate the marital group? Such a column is always added if
 ##'     \code{marital_group} has more than one element.
-##' @param sort Logical. Sort by stat, name, year, percentile?
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##'

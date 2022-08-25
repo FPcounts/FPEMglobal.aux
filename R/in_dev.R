@@ -145,6 +145,7 @@ get_csv_change_res <- function(run_name = NULL, output_dir = NULL, root_dir = NU
         c("0.1", "0.025", "0.5", "0.9", "0.975")[perc_colnames_present_idx]
 
     ## Reshape
+    ## NOTE NOTE:: 'percentile column might havbe been renamed to 'quantile'
     res <- tidyr::gather(res, -Name, -Iso, -Change, -stat, -indicator, -PPPC,
                          key = "percentile", value = "prop_change")
 

@@ -15,6 +15,13 @@
 ##' underscored, rather they are just removed resulting in a single
 ##' unbroken string.
 ##'
+##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
+##' the column names. This tidies up and standardizes column
+##' names. Note that, \emph{in addition}, the column name
+##' \dQuote{\code{percentile}} is changed to \dQuote{\code{quantile}}
+##' to match the actual values. This column is misnamed in the raw
+##' \file{.csv} output files.
+##'
 ##' Country classifications are loaded via
 ##' \code{\link{get_used_unpd_regions}},
 ##' \code{\link{get_used_world_bank_regions}}, and
@@ -23,7 +30,6 @@
 ##' \code{long_format} determines the \dQuote{shape} of the output
 ##' table. If it is character it must be in c("raw", "wide", "long"),
 ##' which have the following effects:
-##'
 ##' \describe{
 ##' \item{\code{"raw"}}{No reshaping of the input file is done. This
 ##' format has a column for each year and an ID column for indicator
@@ -55,10 +61,11 @@
 ##'     are not (\code{FALSE}).
 ##' @param years_1_jan Should years in \dQuote{yyyy.5} format be
 ##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
-##' @param clean_indicator_names Logical. When \code{TRUE}, the column
-##'     names of the result are \sQuote{cleaned} by applying
-##'     \code{\link{clean_col_names}}.
-##' @param clean_col_names Logical. See \dQuote{Details}.
+##' @param clean_indicator_names Logical; see \dQuote{Details}.
+##' @param clean_col_names Logical; When \code{TRUE}, the column names
+##'     of the result are \sQuote{cleaned} by applying
+##'     \code{\link{clean_col_names}}. Also, see \dQuote{Details} for
+##'     a note about \dQuote{percentile} vs. \dQuote{quantile}.
 ##' @param add_country_classifications Add on columns with geographic
 ##'     country classifications? See \dQuote{Details}.
 ##' @param long_format Logical or character. Should the table be
@@ -333,6 +340,9 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             res <- res %>% dplyr::arrange(indicator, iso, year, percentile)
     }
 
+    ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE
+    if (clean_col_names) colnames(res)[colnames(res) == "percentile"] <- "quantile"
+
     ## END
     return(tibble::as_tibble(res))
 }
@@ -367,7 +377,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
                                             root_dir = NULL,
                                             index_col_name = "marital_group",
-                                            sort = TRUE,
                                             ...) {
 
     stopifnot(is.list(run_name_list))
@@ -399,8 +408,6 @@ get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
     cols <- colnames(out)[colnames(out) != "marital_group"]
     out <- out[,c("marital_group", cols)]
 
-    if (sort) out <- out %>% arrange(marital_group, stat, name, year, percentile)
-
     return(tibble::as_tibble(out))
 }
 
@@ -422,6 +429,14 @@ get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @author Mark C Wheldon
 ##' @export
 csv_res_2_fpemdata <- function(csv_tbl) {
+
+    csv_tbl <- clean_col_names(csv_tbl)
+
+    ## Need to account for possible renaming of 'percentile' column.
+    col_quant <- grep("[Qq]antile", colnames(csv_tbl))
+    if (length(col_quant))
+        colnames(csv_tbl)[col_quant] <- "percentile"
+
     out <- csv_tbl %>%
         dplyr::select(c("name", "iso", "year", "percentile",
                         "modern", "traditional", "unmet")) %>%
