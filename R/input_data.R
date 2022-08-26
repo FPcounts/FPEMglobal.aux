@@ -237,13 +237,6 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 
     if (clean_col_names) {
         denom_counts <- clean_col_names(denom_counts)
-        if (!long_format) {
-            xyr_cols_idx <- grep("(x|X)[0-9]{4}", colnames(denom_counts))
-            if (length(xyr_cols_idx)) {
-                colnames(denom_counts)[xyr_cols_idx] <-
-                    gsub("x|X", "", colnames(denom_counts)[xyr_cols_idx])
-            }
-        }
     }
 
     ## -------* END

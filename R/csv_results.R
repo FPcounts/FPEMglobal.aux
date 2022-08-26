@@ -17,9 +17,12 @@
 ##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
 ##' the column names. This tidies up and standardizes column
-##' names. Note that, \emph{in addition}, the column name
-##' \dQuote{\code{percentile}} is changed to \dQuote{\code{quantile}}
-##' to match the actual values. This column is misnamed in the raw
+##' names. When the argument \code{clean_col_names} is \code{TRUE} an
+##' additional step is performed after calling
+##' \code{\link{clean_col_names}} the function: the column name
+##' \dQuote{\code{percentile}} is changed to
+##' \dQuote{\code{quantile}}. This makes the column name match the
+##' actual values in the column. This column is misnamed in the raw
 ##' \file{.csv} output files.
 ##'
 ##' Country classifications are loaded via
@@ -64,7 +67,7 @@
 ##' @param clean_indicator_names Logical; see \dQuote{Details}.
 ##' @param clean_col_names Logical; When \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
-##'     \code{\link{clean_col_names}}. Also, see \dQuote{Details} for
+##'     \code{\link{clean_col_names}}. See \dQuote{Details} for
 ##'     a note about \dQuote{percentile} vs. \dQuote{quantile}.
 ##' @param add_country_classifications Add on columns with geographic
 ##'     country classifications? See \dQuote{Details}.
@@ -284,8 +287,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             res <- dplyr::left_join(res, res_adj,
                                     by = c("Name", "Iso", "Percentile", "stat",
                                            "indicator", "year"))
-            res[res$Percentile == 0.5,]$value.x <-
-                res[res$Percentile == 0.5,]$value.y
+            res[res$Percentile == 0.5,]$value.x <- res[res$Percentile == 0.5,]$value.y
             res <- dplyr::select(res, -value.y) %>% dplyr::rename(value = value.x)
 
             ## Substitute medians for adjusted medians
