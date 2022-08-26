@@ -229,9 +229,10 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' Clean names of columns in data frames
 ##'
 ##' Reformats names to lower snake case by replacing spaces and other
-##' non-letter characters (e.g., \dQuote{.}) with underscores. In
-##' addition, the following substitutions are made \emph{after} snake casification:
-##'
+##' non-letter characters (e.g., \dQuote{.}) with underscores. If
+##' \code{use_make.names = TRUE}, \code{\link[base]{make.names}} is
+##' run \emph{first}. In addition, the following substitutions are
+##' made \emph{after} all re-formats:##'
 ##' \describe{
 ##' \item{\code{iso_code}}{replaced with \code{iso}}
 ##' \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}
@@ -239,7 +240,7 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##'
 ##' @param x Object for which a method is defined (e.g., character
 ##'     string or data frame).
-##' @param use_make.names Apply \code{\link[base]{make.names}} to
+##' @param use_make.names Logical; apply \code{\link[base]{make.names}} to
 ##'     \code{x} \emph{before} doing anything else?
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon

@@ -55,10 +55,11 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' \code{"all_women"} is included, values will be constructed by
 ##' summing the married and unmarried denominators.
 ##'
-##' If \code{long_format} is \code{TRUE}, the counts are in a single
-##' column called \dQuote{\code{value}}, with the necessary
+##' If \code{table_format} is \code{"long"}, the counts are in a
+##' single column called \dQuote{\code{value}}, with the necessary
 ##' identifying columns added. Otherwise the result is in the same
-##' format as the original counts files, which have one year per row.
+##' format as the original counts files, which have one column per
+##' year.
 ##'
 ##' The poulation denominators are stored in \file{.csv} files in the
 ##' output directory. These are read in using an unexported function
@@ -91,11 +92,11 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   filename = NULL,
                                   marital_group = c("default", "married", "unmarried", "all_women"),
-                                  add_marital_group = TRUE,
-                                  add_age_group = TRUE,
+                                  add_marital_group = length(marital_group) > 1L,
                                   age_group = NULL,
+                                  add_age_group = TRUE,
                                   clean_col_names = TRUE,
-                                  long_format = TRUE,
+                                  table_format = c("long", "raw"),
                                   verbose = FALSE, ...) {
 
     ## -------* Set-up
@@ -110,11 +111,13 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
         marital_group[marital_group == "default"] <- mcmc_args$marital_group
         marital_group <- unique(marital_group)
     }
-    if (length(marital_group) > 1) add_marital_group <- TRUE
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose)
+
+    table_format <- match.arg(table_format)
+
     data_dir_name <- "data"
     data_dir <- file.path(output_dir, data_dir_name)
 
@@ -218,7 +221,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 
     ## -------* Cleaning, Additional Columns, etc.
 
-    if (long_format) {
+    if (identical(table_format, "long")) {
         denom_counts <-
             tidyr::gather(denom_counts, tidyselect::all_of(value_cols),
                           key = "key", value = "count") %>%

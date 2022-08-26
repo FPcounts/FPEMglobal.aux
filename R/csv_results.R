@@ -30,8 +30,8 @@
 ##' \code{\link{get_used_world_bank_regions}}, and
 ##' \code{\link{get_used_special_aggregates}}.
 ##'
-##' \code{long_format} determines the \dQuote{shape} of the output
-##' table. If it is character it must be in c("raw", "wide", "long"),
+##' \code{table_format} determines the \dQuote{shape} of the output
+##' table. It takes values in c("long", "wide", "raw"),
 ##' which have the following effects:
 ##' \describe{
 ##' \item{\code{"raw"}}{No reshaping of the input file is done. This
@@ -42,6 +42,7 @@
 ##' \item{\code{"long"}}{Like \code{"wide"} but the indicators are
 ##' also transposed. It has a single \code{"value"} colum for all
 ##' indicators and an ID column for indicator (\code{"indicator"})}
+##' The default is \code{"long"}.
 ##' }
 ##'
 ##' @param output_dir Path to directory containing outputs. See
@@ -71,7 +72,7 @@
 ##'     a note about \dQuote{percentile} vs. \dQuote{quantile}.
 ##' @param add_country_classifications Add on columns with geographic
 ##'     country classifications? See \dQuote{Details}.
-##' @param long_format Logical or character. Should the table be
+##' @param table_format Logical or character. Should the table be
 ##'     returned in long format? See \dQuote{Details}.
 ##' @param sort Logical. Sort by stat, name, year, percentile?
 ##' @param verbose Logical. Print lots of messages? See
@@ -101,7 +102,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              clean_col_names = TRUE,
                              clean_indicator_names = clean_col_names,
                              add_country_classifications = FALSE,
-                             long_format = NULL,
+                             table_format = c("long", "wide", "raw"),
                              sort = TRUE,
                              verbose = FALSE,
                              ...) {
@@ -131,14 +132,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     adjusted <- match.arg(adjusted)
 
-    if (is.null(long_format)) long_format <- "long"
-    if (is.logical(long_format)) {
-        if (long_format) long_format <- "long"
-        else long_format <- "raw"
-    } else if (is.character(long_format)) {
-        long_format <- match.arg(long_format, choices = c("raw", "wide", "long"))
-    }
-
+    table_format <- match.arg(table_format)
 
     ## -------* Load the 'orig' results
 
@@ -260,7 +254,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     ## Reshape
     if (adjusted == "orig") {
-        if (long_format %in% c("wide", "long")) {
+        if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
                                  key = "year", value = "value")
             res$year <- as.numeric(res$year)
@@ -271,7 +265,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (adjusted == "adj") {
         ## Only output res_adj
         res <- res_adj
-        if (long_format %in% c("wide", "long")) {
+        if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
                                  key = "year", value = "value")
             res$year <- as.numeric(res$year)
@@ -279,7 +273,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         if (add_adjusted_column) res$adjusted <- TRUE
 
     } else if (adjusted == "sub_adj") {
-        if (long_format %in% c("wide", "long")) {
+        if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
                                  key = "year", value = "value")
             res_adj <- tidyr::gather(res_adj, -Name, -Iso, -Percentile, -stat, -indicator,
@@ -308,7 +302,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         }
     }
 
-    if (identical(long_format, "wide")) {
+    if (identical(table_format, "wide")) {
         ind_vals <- unique(res$indicator)
         res <- res %>%
             tidyr::spread(key = c("indicator"), value = "value")
@@ -343,11 +337,11 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     ## Sort
     if (sort) {
-        if (identical(long_format, "raw"))
+        if (identical(table_format, "raw"))
             res <- res %>% dplyr::arrange(indicator, iso, percentile)
-        else if (identical(long_format, "wide"))
+        else if (identical(table_format, "wide"))
             res <- res %>% dplyr::arrange(iso, year, percentile)
-        else if (identical(long_format, "long"))
+        else if (identical(table_format, "long"))
             res <- res %>% dplyr::arrange(indicator, iso, year, percentile)
     }
 
