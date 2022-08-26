@@ -263,3 +263,15 @@ clean_col_names.data.frame <- function(x, use_make.names = FALSE) {
     colnames(x) <- clean_col_names(colnames(x), use_make.names = use_make.names)
     return(x)
 }
+
+##' @rdname clean_col_names
+##' @export
+clean_col_names.list <- function(x, use_make.names = FALSE) {
+    avail_methods <-
+        gsub("clean_col_names\\.", "",
+             row.names(attr(methods("clean_col_names"), "info")))
+    lapply(x, function(z, umn = use_make.names, am = avail_methods) {
+        if (class(z) %in% am)
+            clean_col_names(z, use_make.names = umn)
+    })
+}
