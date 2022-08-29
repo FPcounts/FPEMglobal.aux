@@ -57,15 +57,16 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                root_dir = NULL, verbose = FALSE) {
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'")
-        return(get_output_dir(run_name, root_dir))
+        out <- get_output_dir(run_name, root_dir)
     } else {
         if (!is.null(root_dir)) {
             if (verbose) {
                 message("'output_dir' has been supplied so 'root_dir' is ignored.")
                 }
         }
-        return(output_dir)
+        out <- output_dir
     }
+    return(assert_valid_output_dir(out))
 }
 
 ## Select the 'orig' or 'adj' subdirectory of the table directory.
