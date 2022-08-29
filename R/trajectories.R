@@ -113,7 +113,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
-                           post_processed = TRUE)
+                           post_processed = TRUE, countrytrajectories = TRUE)
 
     traj_index <-
         get_country_index(run_name = run_name, output_dir = output_dir,
@@ -257,7 +257,8 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE, countrytrajectories = TRUE)
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)

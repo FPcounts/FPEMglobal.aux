@@ -34,6 +34,10 @@
 ##' @export
 get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
                          add = TRUE, after = FALSE)
@@ -63,7 +67,8 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
                                  verbose = FALSE) {
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = FALSE)
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'."),
                          add = TRUE, after = FALSE)
@@ -146,6 +151,57 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
             }
         }
     }
+}
+
+
+##' Determine the marital group or age group of an FPEM run
+##'
+##' These functions get and check the marital group and age group of
+##' an FPEMglobal model run.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##' @return A character string (\code{get_...}) or logical value (\code{is_...}).
+##' @author Mark Wheldon
+##'
+##' @family model_run_meta_info
+##' @export
+get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    get_global_mcmc_args(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                         verbose = FALSE)$marital_group
+}
+
+##' @rdname get_marital_group
+##' @export
+is_all_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                         verbose = FALSE), "all women")
+}
+
+##' @rdname get_marital_group
+##' @export
+is_married_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                         verbose = FALSE), "married")
+}
+
+##' @rdname get_marital_group
+##' @export
+is_unmarried_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                         verbose = FALSE), "unmarried")
+}
+
+##' @rdname get_marital_group
+##' @export
+get_age_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    get_global_mcmc_args(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                         verbose = FALSE)$age_group
 }
 
 
