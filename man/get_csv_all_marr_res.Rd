@@ -9,7 +9,6 @@ get_csv_all_marr_res(
   output_dir_list = NULL,
   root_dir = NULL,
   index_col_name = "marital_group",
-  sort = TRUE,
   ...
 )
 }
@@ -26,8 +25,6 @@ the directory called \dQuote{output}.}
 
 \item{index_col_name}{Character. Name of column added to output
 that identifies observations for each marital group.}
-
-\item{sort}{Logical. Sort by stat, name, year, percentile?}
 
 \item{...}{Passed to \code{\link{get_csv_res}}.}
 }

@@ -17,7 +17,7 @@ get_csv_res(
   clean_col_names = TRUE,
   clean_indicator_names = clean_col_names,
   add_country_classifications = FALSE,
-  long_format = NULL,
+  table_format = c("long", "wide", "raw"),
   sort = TRUE,
   verbose = FALSE,
   ...
@@ -54,16 +54,17 @@ are not (\code{FALSE}).}
 \item{years_1_jan}{Should years in \dQuote{yyyy.5} format be
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
-\item{clean_col_names}{Logical. See \dQuote{Details}.}
+\item{clean_col_names}{Logical; When \code{TRUE}, the column names
+of the result are \sQuote{cleaned} by applying
+\code{\link{clean_col_names}}. See \dQuote{Details} for
+a note about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{clean_indicator_names}{Logical. When \code{TRUE}, the column
-names of the result are \sQuote{cleaned} by applying
-\code{\link{clean_col_names}}.}
+\item{clean_indicator_names}{Logical; see \dQuote{Details}.}
 
 \item{add_country_classifications}{Add on columns with geographic
 country classifications? See \dQuote{Details}.}
 
-\item{long_format}{Logical or character. Should the table be
+\item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
 
 \item{sort}{Logical. Sort by stat, name, year, percentile?}
@@ -91,15 +92,24 @@ quite the same as lower snake case as spaces are not replaced with
 underscored, rather they are just removed resulting in a single
 unbroken string.
 
+\code{clean_col_names} applies \code{\link{clean_col_names}} to
+the column names. This tidies up and standardizes column
+names. When the argument \code{clean_col_names} is \code{TRUE} an
+additional step is performed after calling
+\code{\link{clean_col_names}} the function: the column name
+\dQuote{\code{percentile}} is changed to
+\dQuote{\code{quantile}}. This makes the column name match the
+actual values in the column. This column is misnamed in the raw
+\file{.csv} output files.
+
 Country classifications are loaded via
 \code{\link{get_used_unpd_regions}},
 \code{\link{get_used_world_bank_regions}}, and
 \code{\link{get_used_special_aggregates}}.
 
-\code{long_format} determines the \dQuote{shape} of the output
-table. If it is character it must be in c("raw", "wide", "long"),
+\code{table_format} determines the \dQuote{shape} of the output
+table. It takes values in c("long", "wide", "raw"),
 which have the following effects:
-
 \describe{
 \item{\code{"raw"}}{No reshaping of the input file is done. This
 format has a column for each year and an ID column for indicator
@@ -109,6 +119,7 @@ and an ID column for years (\code{"year"}).}
 \item{\code{"long"}}{Like \code{"wide"} but the indicators are
 also transposed. It has a single \code{"value"} colum for all
 indicators and an ID column for indicator (\code{"indicator"})}
+The default is \code{"long"}.
 }
 }
 \seealso{

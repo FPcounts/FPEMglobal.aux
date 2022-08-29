@@ -4,19 +4,22 @@
 \alias{clean_col_names}
 \alias{clean_col_names.character}
 \alias{clean_col_names.data.frame}
+\alias{clean_col_names.list}
 \title{Clean names of columns in data frames}
 \usage{
-clean_col_names(x, use_make.names = FALSE)
+clean_col_names(x, ...)
 
-\method{clean_col_names}{character}(x, use_make.names = FALSE)
+\method{clean_col_names}{character}(x, use_make.names = TRUE)
 
-\method{clean_col_names}{data.frame}(x, use_make.names = FALSE)
+\method{clean_col_names}{data.frame}(x, use_make.names = TRUE)
+
+\method{clean_col_names}{list}(x, use_make.names = TRUE)
 }
 \arguments{
 \item{x}{Object for which a method is defined (e.g., character
 string or data frame).}
 
-\item{use_make.names}{Apply \code{\link[base]{make.names}} to
+\item{use_make.names}{Logical; apply \code{\link[base]{make.names}} to
 \code{x} \emph{before} doing anything else?}
 }
 \value{
@@ -24,10 +27,10 @@ Formatted version of \code{x}.
 }
 \description{
 Reformats names to lower snake case by replacing spaces and other
-non-letter characters (e.g., \dQuote{.}) with underscores. In
-addition, the following substitutions are made \emph{after} snake casification:
-}
-\details{
+non-letter characters (e.g., \dQuote{.}) with underscores. If
+\code{use_make.names = TRUE}, \code{\link[base]{make.names}} is
+run \emph{first}. In addition, the following substitutions are
+made \emph{after} all re-formats:##'
 \describe{
 \item{\code{iso_code}}{replaced with \code{iso}}
 \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}

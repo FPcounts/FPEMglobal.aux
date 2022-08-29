@@ -8,8 +8,8 @@ get_model_traj(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  verbose = FALSE,
-  name_dims = FALSE
+  name_dims = TRUE,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -24,14 +24,15 @@ the directory called \dQuote{output}.}
 The loaded object.
 }
 \description{
-This function \code{\link{load}}s \file{mcmc.array.rda} from the
-output directory. This contains MCMC trajectories for the model
+This function \code{\link{load}}s and returns MCMC trajectories
+stored in the file \file{mcmc.array.rda} in the output directory
+\code{output_dir}. This contains MCMC trajectories for the model
 parameters. If you want country trajectories, use
 \code{\link{get_country_traj_muw}} or
 \code{\link{get_country_traj_aw}}.
 }
 \details{
-The dimensions are not named by the esimtation software. If
+The dimensions are not named by \pkg{FPEMglobal}. If
 \code{name_dims} is \code{TRUE} they are given the names
 \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 }

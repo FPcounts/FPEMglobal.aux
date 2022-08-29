@@ -10,11 +10,11 @@ get_used_denominators(
   root_dir = NULL,
   filename = NULL,
   marital_group = c("default", "married", "unmarried", "all_women"),
-  add_marital_group = TRUE,
-  add_age_group = TRUE,
+  add_marital_group = length(marital_group) > 1L,
   age_group = NULL,
+  add_age_group = TRUE,
   clean_col_names = TRUE,
-  long_format = TRUE,
+  table_format = c("long", "raw"),
   verbose = FALSE,
   ...
 )
@@ -48,9 +48,12 @@ frame. If the column names are of the form
 'U/MW_[aabb]_year' this is ignored and the age group is
 taken from the column names.}
 
-\item{clean_col_names}{Logical. See \dQuote{Details}.}
+\item{clean_col_names}{Logical; When \code{TRUE}, the column names
+of the result are \sQuote{cleaned} by applying
+\code{\link{clean_col_names}}. See \dQuote{Details} for
+a note about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{long_format}{Logical or character. Should the table be
+\item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
@@ -58,8 +61,6 @@ returned in long format? See \dQuote{Details}.}
 messages.}
 
 \item{...}{passed to \code{\link{read_csv}}.}
-
-\item{sort}{Logical. Sort by stat, name, year, percentile?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results
@@ -80,10 +81,11 @@ the marital group matching that of the output is included. If
 \code{"all_women"} is included, values will be constructed by
 summing the married and unmarried denominators.
 
-If \code{long_format} is \code{TRUE}, the counts are in a single
-column called \dQuote{\code{value}}, with the necessary
+If \code{table_format} is \code{"long"}, the counts are in a
+single column called \dQuote{\code{value}}, with the necessary
 identifying columns added. Otherwise the result is in the same
-format as the original counts files, which have one year per row.
+format as the original counts files, which have one column per
+year.
 
 The poulation denominators are stored in \file{.csv} files in the
 output directory. These are read in using an unexported function

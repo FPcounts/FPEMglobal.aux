@@ -7,7 +7,10 @@
 get_185_countries(clean_col_names = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{clean_col_names}{Logical. See \dQuote{Details}.}
+\item{clean_col_names}{Logical; When \code{TRUE}, the column names
+of the result are \sQuote{cleaned} by applying
+\code{\link{clean_col_names}}. See \dQuote{Details} for
+a note about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
