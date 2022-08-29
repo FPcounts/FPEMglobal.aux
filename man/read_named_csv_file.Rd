@@ -40,7 +40,7 @@ A \code{\link[tibble]{tibble}} with the file contents.
 A thin wrapper to \code{\link[readr]{read_csv}} to read the
 contents of an arbitrary \file{.csv} file in the output directory
 of an FPEM run. The file is read using
-\code{\link{[readr]{read_csv}}}.
+\code{\link[readr]{read_csv}}.
 }
 \details{
 The file will be searched for in the output directory, so add any

@@ -21,7 +21,7 @@ A \code{\link[tibble]{tibble}} with the countries.
 }
 \description{
 These are the 195 countries in the original married women
-model. The file is read using \code{\link{[readr]{read_csv}}}.
+model. The file is read using \code{\link[readr]{read_csv}}.
 }
 \section{Note}{
 

@@ -232,7 +232,7 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' non-letter characters (e.g., \dQuote{.}) with underscores. If
 ##' \code{use_make.names = TRUE}, \code{\link[base]{make.names}} is
 ##' run \emph{first}. In addition, the following substitutions are
-##' made \emph{after} all re-formats:##'
+##' made \emph{after} all re-formats:
 ##' \describe{
 ##' \item{\code{iso_code}}{replaced with \code{iso}}
 ##' \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}

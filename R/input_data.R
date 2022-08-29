@@ -5,7 +5,7 @@
 ##' Get country input data actually used
 ##'
 ##' Reads the '.csv' file containing the prevalence data used in the
-##' run. The file is read using \code{\link{[readr]{read_csv}}}.
+##' run. The file is read using \code{\link[readr]{read_csv}}.
 ##'
 ##' @param processed Logical; get the input data after processing by
 ##'     \pkg{\link{FPEMglobal}}, or the raw input data?
@@ -253,7 +253,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' A thin wrapper to \code{\link[readr]{read_csv}} to read the
 ##' contents of an arbitrary \file{.csv} file in the output directory
 ##' of an FPEM run. The file is read using
-##' \code{\link{[readr]{read_csv}}}.
+##' \code{\link[readr]{read_csv}}.
 ##'
 ##' The file will be searched for in the output directory, so add any
 ##' subdirectories to \code{file_name} (e.g., \code{file_name =

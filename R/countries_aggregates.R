@@ -4,7 +4,7 @@
 ##' Read table of the \dQuote{195} countries
 ##'
 ##' These are the 195 countries in the original married women
-##' model. The file is read using \code{\link{[readr]{read_csv}}}.
+##' model. The file is read using \code{\link[readr]{read_csv}}.
 ##'
 ##' @section Note:
 ##' These are taken from the \pkg{FPEMglobal} package \emph{installed
@@ -35,7 +35,7 @@ get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 ##' Read table of the \dQuote{185} countries
 ##'
 ##' These are the 185 countries for which estimates are released by
-##' UNPD. The file is read using \code{\link{[readr]{read_csv}}}. See
+##' UNPD. The file is read using \code{\link[readr]{read_csv}}. See
 ##' \dQuote{Note} in the documentation for
 ##' \code{\link{get_195_countries}}.
 ##'
@@ -60,7 +60,7 @@ get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 ##' Get country geographic classifications
 ##'
 ##' Returns a table of geographic country groupings. The file is read
-##' using \code{\link{[readr]{read_csv}}}. See \dQuote{Note} in the
+##' using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
 ##' documentation for \code{\link{get_195_countries}}.
 ##'
 ##' @family countries, regions and aggregates functions
@@ -90,7 +90,7 @@ get_country_classifications <- function(UNlocations_names = TRUE,
 ##' Get UNPD aggregate country classifications
 ##'
 ##' Loads the country classifications actually used in a model
-##' run. The files are read using \code{\link{[readr]{read_csv}}}.
+##' run. The files are read using \code{\link[readr]{read_csv}}.
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
@@ -163,7 +163,7 @@ list_special_aggregates_names <- function() {
 ##'
 ##' Loads the special country classifications actually used to produce
 ##' the results. The files are read using
-##' \code{\link{[readr]{read_csv}}}.
+##' \code{\link[readr]{read_csv}}.
 ##'
 ##' @family countries, regions and aggregates functions
 ##'

@@ -6,7 +6,7 @@
 ##' Reads \emph{all} results \file{.csv} files from a results
 ##' directory for a given country or region that contain percentages,
 ##' counts, and ratios. The files are read using
-##' \code{\link{[readr]{read_csv}}}.
+##' \code{\link[readr]{read_csv}}.
 ##'
 ##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
 ##' family planning indicators are made all lower case and spaces (and

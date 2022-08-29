@@ -82,7 +82,7 @@ A \code{\link[tibble]{tibble}} with the requested results.
 Reads \emph{all} results \file{.csv} files from a results
 directory for a given country or region that contain percentages,
 counts, and ratios. The files are read using
-\code{\link{[readr]{read_csv}}}.
+\code{\link[readr]{read_csv}}.
 }
 \details{
 If \code{clean_indicator_names} is \code{TRUE}, the names of the

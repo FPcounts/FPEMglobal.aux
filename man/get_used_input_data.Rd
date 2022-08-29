@@ -38,7 +38,7 @@ A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
 Reads the '.csv' file containing the prevalence data used in the
-run. The file is read using \code{\link{[readr]{read_csv}}}.
+run. The file is read using \code{\link[readr]{read_csv}}.
 }
 \seealso{
 Other input_data_functions: 

@@ -29,7 +29,7 @@ A \code{\link[tibble]{tibble}} with the aggregates.
 }
 \description{
 Returns a table of geographic country groupings. The file is read
-using \code{\link{[readr]{read_csv}}}. See \dQuote{Note} in the
+using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
 documentation for \code{\link{get_195_countries}}.
 }
 \seealso{

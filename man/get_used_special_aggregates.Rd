@@ -36,7 +36,7 @@ A \code{\link[tibble]{tibble}} with the requested results.
 \description{
 Loads the special country classifications actually used to produce
 the results. The files are read using
-\code{\link{[readr]{read_csv}}}.
+\code{\link[readr]{read_csv}}.
 }
 \seealso{
 Other countries, regions and aggregates functions: 

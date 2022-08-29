@@ -21,7 +21,7 @@ A \code{\link[tibble]{tibble}} with the countries.
 }
 \description{
 These are the 185 countries for which estimates are released by
-UNPD. The file is read using \code{\link{[readr]{read_csv}}}. See
+UNPD. The file is read using \code{\link[readr]{read_csv}}. See
 \dQuote{Note} in the documentation for
 \code{\link{get_195_countries}}.
 }
