@@ -112,7 +112,8 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
 
     traj_index <-
         get_country_index(run_name = run_name, output_dir = output_dir,
@@ -176,7 +177,8 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
                                  iso_code, verbose = FALSE) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
 
     traj_fname <- paste0("aw_ISO_", iso_code, "_counts.rda")
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
@@ -187,38 +189,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
                envir = tmp_env)
 
     return(obj)
-}
-
-
-##' Load and return quantiles of country-specific model parameters.
-##'
-##' This function \code{\link{load}}s and returns the object in the
-##' file \file{par.ciq.rda} found in
-##' \code{file.path{output_dir}}. These are the quantiles of the
-##' country-specific model parameters, such as the asymptotes, rate
-##' paratmeters, timing parameters, etc.
-##'
-##' The specific parameters loaded are, \dQuote{omega.c}, \dQuote{T.c},
-##' \dQuote{pmax.c}, \dQuote{Romega.c}, \dQuote{RT.c}, \dQuote{Rmax.c},
-##' \dQuote{unmet.intercept.c}.
-##'
-##' @section Specifying results directory:
-##' See the section in \code{\link{get_csv_res}}.
-##'
-##' @inheritParams get_csv_res
-##' @author Mark Wheldon
-##' @export
-get_countries_model_params_q <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                            verbose = FALSE) {
-    res_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
-    par_ciq_path <- file.path(res_dir, "par.ciq.rda")
-
-    tmp_env <- new.env()
-    if (verbose) message("Reading '", par_ciq_path, "'.")
-    obj <- get(load(file = par_ciq_path, verbose = verbose, envir = tmp_env),
-               envir = tmp_env)
 }
 
 

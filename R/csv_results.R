@@ -120,7 +120,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
 
     data_dir_name <- "data"
     table_dir_name <- "table"

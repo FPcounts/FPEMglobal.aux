@@ -54,7 +54,8 @@ get_output_dir <- function(run_name, root_dir = ".") {
 
 ## Used in functions to check if user supplied the necessary arguments.
 output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
-                               root_dir = NULL, verbose = FALSE) {
+                               root_dir = NULL, verbose = FALSE,
+                               post_processed = FALSE, countrytrajectories = post_processed) {
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'")
         out <- get_output_dir(run_name, root_dir)
@@ -66,7 +67,10 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
         }
         out <- output_dir
     }
-    return(assert_valid_output_dir(out))
+
+    return(assert_valid_output_dir(out,
+                                   post_processed = post_processed,
+                                   countrytrajectories = countrytrajectories))
 }
 
 ## Select the 'orig' or 'adj' subdirectory of the table directory.
