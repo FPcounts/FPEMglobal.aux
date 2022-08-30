@@ -216,6 +216,15 @@ clean_indic_name <- function(indicator) {
         tolower(ind_no_spaces)
 }
 
+
+## Round down years to nearest integer?
+round_down_years <- function(x) {
+    out <- floor(as.numeric(x))
+    if (is.character(x)) return(as.character(out))
+    else return(out)
+}
+
+
 ## Turn strings into lower_snake_case.  Spaces and full stops are
 ## replaced with underscores and the whole thing is put in lower case.
 lower_snake_casify <- function(x, use_make.names = TRUE) {

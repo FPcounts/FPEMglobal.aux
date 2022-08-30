@@ -10,15 +10,14 @@
 ##'
 ##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
 ##' family planning indicators are made all lower case and spaces (and
-##' other non-letter characters) are removed. \emph{Note} this is not
+##' other non-letter characters) are removed. \emph{Note:} This is not
 ##' quite the same as lower snake case as spaces are not replaced with
 ##' underscores, rather they are just removed resulting in a single
 ##' unbroken string.
 ##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
 ##' the column names. This tidies up and standardizes column
-##' names. When the argument \code{clean_col_names} is \code{TRUE} an
-##' additional step is performed after calling
+##' names. \emph{Note:} An additional step is performed after calling
 ##' \code{\link{clean_col_names}} the function: the column name
 ##' \dQuote{\code{percentile}} is changed to
 ##' \dQuote{\code{quantile}}. This makes the column name match the
@@ -63,10 +62,10 @@
 ##' @param add_adjusted_column Add a column \dQuote{\code{adjusted}}?
 ##'     Cells indicate which rows are adjusted (\code{TRUE}) and which
 ##'     are not (\code{FALSE}).
-##' @param years_1_jan Should years in \dQuote{yyyy.5} format be
+##' @param round_down_years Should years in \dQuote{yyyy.5} format be
 ##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
 ##' @param clean_indicator_names Logical; see \dQuote{Details}.
-##' @param clean_col_names Logical; When \code{TRUE}, the column names
+##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
 ##'     \code{\link{clean_col_names}}. See \dQuote{Details} for
 ##'     a note about \dQuote{percentile} vs. \dQuote{quantile}.
@@ -98,7 +97,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              add_stat_column = FALSE,
                              adjusted = c("orig", "adj", "sub_adj"),
                              add_adjusted_column = identical(adjusted, "sub_adj"),
-                             years_1_jan = TRUE,
+                             round_down_years = TRUE,
                              clean_col_names = TRUE,
                              clean_indicator_names = clean_col_names,
                              add_country_classifications = FALSE,
@@ -240,16 +239,16 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## -------* Modify, Merge, Etc.
 
     ## Years columns
-    if (years_1_jan) {
+    if (round_down_years) {
         if (adjusted %in% c("orig", "sub_adj")) {
             yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat",
                                                  "adjusted")
-            colnames(res)[yr_cols_idx] <- floor(as.numeric(colnames(res)[yr_cols_idx]))
+            colnames(res)[yr_cols_idx] <- round_down_years(colnames(res)[yr_cols_idx])
         }
         if (adjusted %in% c("adj", "sub_adj")) {
             yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat",
                                                      "adjusted")
-            colnames(res_adj)[yr_cols_idx] <- floor(as.numeric(colnames(res_adj)[yr_cols_idx]))
+            colnames(res_adj)[yr_cols_idx] <- round_down_years(colnames(res_adj)[yr_cols_idx])
         }
     }
 
