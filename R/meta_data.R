@@ -157,52 +157,74 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 ##' Determine the marital group or age group of an FPEM run
 ##'
 ##' These functions get and check the marital group and age group of
-##' an FPEMglobal model run.
+##' an FPEMglobal model run. \code{is_marital_group_run} is intended
+##' for checking if runs are either \code{"married"} or
+##' \code{"unmarried"} only. Use \code{is_all_women_run} to check if a
+##' run is an \code{"all women"} run.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
+##' @param marital_group Character string; the marital group to check against.
 ##' @return A character string (\code{get_...}) or logical value (\code{is_...}).
 ##' @author Mark Wheldon
 ##'
 ##' @family model_run_meta_info
 ##' @export
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
-    get_global_mcmc_args(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         verbose = FALSE)$marital_group
+                              verbose = FALSE) {
+    mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                              verbose = verbose)$general
+    if (isTRUE(mg$all.women.run.copy)) return("all women")
+    else return(switch_marr_group_names(mg$marital.group))
 }
 
 ##' @rdname get_marital_group
 ##' @export
 is_all_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
-    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         verbose = FALSE), "all women")
+    isTRUE(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                              verbose = verbose)$general$all.women.run.copy)
+}
+
+##' @rdname get_marital_group
+##' @export
+is_marital_group_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 marital_group = c("married", "unmarried"),
+                                 verbose = FALSE) {
+    marital_group <- match.arg(marital_group)
+    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                         verbose = verbose)) {
+        return(FALSE)
+    } else {
+        mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                                   verbose = verbose)$general$marital.group
+        return(identical(switch_marr_group_names(mgp), marital_group))
+    }
 }
 
 ##' @rdname get_marital_group
 ##' @export
 is_married_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
-    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         verbose = FALSE), "married")
+    is_marital_group_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                         marital_group = "married",
+                         verbose = verbose)
 }
 
 ##' @rdname get_marital_group
 ##' @export
 is_unmarried_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
-    identical(get_marital_group(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         verbose = FALSE), "unmarried")
+    is_marital_group_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                         marital_group = "unmarried",
+                         verbose = verbose)
 }
 
 ##' @rdname get_marital_group
 ##' @export
 get_age_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  verbose = FALSE) {
-    get_global_mcmc_args(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         verbose = FALSE)$age_group
+    return(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                              verbose = verbose)$general$age.group)
 }
-
-
 
