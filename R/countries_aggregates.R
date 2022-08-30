@@ -224,36 +224,3 @@ get_used_special_aggregates <-
 
         return(out)
     }
-
-
-##' Get the country-index map
-##'
-##' The model outputs are not labelled with country names or ISO
-##' codes. Instead there is an internal index for the countries. This
-##' function returns a data frame with columns \dQuote{iso.c},
-##' \dQuote{name.c}, and \dQuote{filename} containing the ISO codes,
-##' country names, and filename of the country-level trajectories. The
-##' internal country index corresponds to the country's row number in
-##' this data frame.
-##'
-##' @inheritParams get_output_dir
-##' @inheritParams get_csv_res
-##' @return A \code{\link[tibble]{tibble}} with country ISO codes, names, and trajectory
-##'     file names, where row number corresponds to the internal index
-##'     number.
-##' @author Mark Wheldon
-##' @export
-get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                verbose = FALSE) {
-
-    output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
-
-    traj_index <- try(read.csv(file.path(output_dir, "iso.Ptp3s.key.csv"),
-                               colClasses = c("character")))
-
-    if (identical(class(traj_index), "try-error")) {
-        stop("Error reading 'iso.Ptp3s.key.csv'. Did you supply a run name or output directory for an all women run?")
-        } else return(tibble::as_tibble(traj_index))
-    }

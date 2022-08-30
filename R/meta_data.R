@@ -45,6 +45,49 @@ get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = N
 }
 
 
+##' Get the country-index map file
+##'
+##' The model outputs are not labelled with country names or ISO
+##' codes. Instead there is an internal index for the countries. This
+##' function returns a data frame with columns \dQuote{iso.c},
+##' \dQuote{name.c}, and \dQuote{filename} containing the ISO codes,
+##' country names, and filename of the country-level trajectories. The
+##' internal country index corresponds to the country's row number in
+##' this data frame. This is only available for married and unmarried
+##' women runs. Calling this function on an output directory from an
+##' all women run will result in an error.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}} with country ISO codes, names, and trajectory
+##'     file names, where row number corresponds to the internal index
+##'     number.
+##'
+##' @author Mark Wheldon
+##'
+##' @family model_run_meta_info
+##'
+##' @export
+get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                              verbose = FALSE) {
+
+    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
+        on.exit(options(op), add = TRUE, after = FALSE) }
+
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+    if (is_all_women_run(output_dir = output_dir))
+        stop("'output_dir' is an all women run; country index files are only available for married and unmarried women runs.")
+
+    traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c"))
+
+    if (identical(class(traj_index), "try-error")) {
+        stop("Error reading 'iso.Ptp3s.key.csv'. Did you supply a run name or output directory for an all women run?")
+    } else return(tibble::as_tibble(traj_index))
+}
+
+
 ##' Get the global arguments used to generate an FPEMglobal model run
 ##'
 ##' \code{\link{load}}s and returns the \file{global_mcmc_args.RData}
