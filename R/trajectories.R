@@ -78,6 +78,15 @@ get_model_param_names <- function(mcmc_array) {
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
 ##'
+##' If \code{round_down_years} is \code{TRUE}, the year labels are rounded
+##' down to the nearest integer. E.g., \code{"1970.5"} becomes
+##' \code{"1970"}.This affects the \code{dimnames} of the first
+##' dimension of the result matrix.
+##'
+##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
+##' family planning indicators are made all lower case. This affects
+##' the \code{dimnames} of the second dimension of the result matrix.
+##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for all women are stored differently. Do
 ##' not use this function for all women country trajectories. Use
@@ -91,48 +100,51 @@ get_model_param_names <- function(mcmc_array) {
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.
 ##'
-##' @param country_name Name of country to get trajectories for; only one of
-##'     \code{iso_code} and \code{country_name} should be given.
-##' @param iso_code Alternative way of selecting country to get trajectories
-##'     for; only one of \code{iso_code} and \code{country_name} should be given.
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
+##' @param iso_code Numeric ISO code of country to get trajectories
+##'     for.
+##' @param clean_indicator_names Logical; should indicator names
+##'     within the result's dimnames be \dQuote{cleaned} up? See
+##'     \dQuote{Details}.
+##' @param round_down_years Should year names within the result's dimnames
+##'     be rounded down to integer values (e.g., 1970.5 becomes 1970)?
+##'     See \dQuote{Details}.
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
 get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 country_name, iso_code, verbose = FALSE) {
-
-    if ((missing(country_name) && missing(iso_code)) || (
-        !missing(country_name) && !missing(iso_code))
-       ) stop("Supply one, and only one, of 'country_name', 'iso_code'.")
+                                 iso_code,
+                                 clean_indicator_names = TRUE,
+                                 round_down_years = clean_indicator_names,
+                                 verbose = FALSE) {
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
-    if (is_all_women_run(output_dir))
+    if (is_all_women_run(output_dir = output_dir))
         stop("'", output_dir, "' is an all women output directory. Use 'get_country_traj_aw' instead. NOTE that all women trajectories are in a different format from married and unmarried trajectories.")
+
+    stopifnot(identical(length(iso_code), 1L))
+    iso_code <- as.character(iso_code)
 
     traj_index <-
         get_country_index(run_name = run_name, output_dir = output_dir,
-                          root_dir = root_dir, verbose = FALSE)
+                          root_dir = root_dir, verbose = verbose)
 
-    if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not valid.")
-    if (missing(country_name)) {
-        traj_fname <-
-            traj_index$filename[traj_index$iso.c == as.character(iso_code)]
-    } else {
-        traj_fname <-
-            traj_index$filename[traj_index$name.c == as.character(country_name)]
-    }
+    if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not found in trajectory index (see '?get_country_index').")
+    traj_fname <-
+        traj_index$filename[traj_index$iso.c == iso_code]
 
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
-    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
-               envir = tmp_env)
+    obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
+
+    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
 
     return(obj)
 }
@@ -155,6 +167,11 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'  ..$ : chr [1:6] "Total" "Modern" "Traditional" "Unmet" ...
 ##'  ..$ : NULL}
 ##'
+##' See \dQuote{Details} section under
+##' \code{\link{get_country_traj_aw}} for more information about
+##' arguments \code{clean_indicator_names} and
+##' \code{round_down_years}.
+##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for married and unmarried women are
 ##' stored differently. Do not use this function for married and
@@ -173,30 +190,37 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @author Mark Wheldon
 ##' @export
 get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 iso_code, verbose = FALSE) {
+                                iso_code,
+                                 clean_indicator_names = TRUE,
+                                 round_down_years = clean_indicator_names,
+                                verbose = FALSE) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE)
 
-    if (!is_all_women_run(output_dir))
+    if (!is_all_women_run(output_dir = output_dir))
         stop("'", output_dir, "' is not an all women output directory. Use 'get_country_traj_muw' instead. NOTE that married/unmarried trajectories are in a different format from all women trajectories.")
+
+    stopifnot(identical(length(iso_code), 1L))
 
     traj_fname <- paste0("aw_ISO_", iso_code, "_counts.rda")
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
 
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
-    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
-               envir = tmp_env)
+    obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
+
+    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
 
     return(obj)
 }
 
 
-
 ##' Load and return aggregate trajectories
 ##'
+##' @description
 ##' This function \code{\link{load}}s the MCMC sample from the
 ##' posterior sample for married, unmarried or all women for a single
 ##' aggregate and returns it as an R object. Trajectories are loaded
@@ -204,10 +228,13 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' subdirectory \file{aggregatetrajectories} of the results directory
 ##' (see below). The directory and file names for the given aggregate
 ##' are determined from \code{agg_family_name} and
-##' \code{agg_name}. \emph{Note:} Aggregate trajectories are only
+##' \code{agg_name}.
+##'
+##' \emph{Note:} Aggregate trajectories are only
 ##' stored in an all women output directory; calling this function on
 ##' a married or unmarried output directory will result in an error.
 ##'
+##' @details
 ##' Aggregate trajectories are 3D matrices:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
@@ -215,6 +242,11 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
+##'
+##' See \dQuote{Details} section under
+##' \code{\link{get_country_traj_aw}} for more information about
+##' arguments \code{clean_indicator_names} and
+##' \code{round_down_years}.
 ##'
 ##' \subsection{Aggregate names}{
 ##' It is recommended to check the actual output files to get the
@@ -233,7 +265,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' scale for all marital groups. This is \emph{not} the same as for
 ##' country trajectories.}
 ##'
-##' @family trajectory functions
 ##' @param agg_family_name Name of the aggregate family for which to
 ##'     retrieve trajectories. This must match the name of the
 ##'     subdirectory of \code{file.path(output_dir,
@@ -241,32 +272,36 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @param agg_name Name of the aggregate for which to retrieve
 ##'     trajectories. This must match the filename \emph{exactly} (see
 ##'     \dQuote{Description}).
-##' @param verbose Logical; report the path, filename, and object name
-##'     in a message?
+##' @inheritParams get_country_traj_muw
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
 ##' @return The loaded aggregate trajectory object.
+##'
+##' @family trajectory functions
+##'
 ##' @author Mark Wheldon
 ##' @export
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                         agg_family_name, agg_name, marital_group = c("married", "unmarried", "all_women"),
+                         agg_name, agg_family_name = "UNPDaggregates",
+                         marital_group = c("married", "unmarried", "all women"),
+                                 clean_indicator_names = TRUE,
+                                 round_down_years = clean_indicator_names,
                          verbose = FALSE) {
 
     if (missing(agg_name)) stop("Must supply 'agg_name'.")
-    if (missing(agg_family_name)) stop("Must supply 'agg_family_name'.")
 
     marital_group <- match.arg(marital_group)
     ## Marital group must match the file naming convention:
     marital_group[marital_group == "married"] <- "mwra"
     marital_group[marital_group == "unmarried"] <- "uwra"
-    marital_group[marital_group == "all_women"] <- "awra"
+    marital_group[marital_group == "all women"] <- "awra"
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
-    if (!is_all_women_run(output_dir))
+    if (!is_all_women_run(output_dir = output_dir))
         stop("Aggregate trajectories are stored in the 'all women' output directory. Call this function on an 'all women' output directory.")
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
@@ -275,8 +310,10 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
-    obj <- get(load(file = traj_full_path, verbose = verbose, envir = tmp_env),
-               envir = tmp_env)
+    obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)[["CP"]]
+
+    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
 
     return(obj)
 }
