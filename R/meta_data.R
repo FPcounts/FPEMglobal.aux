@@ -26,13 +26,13 @@
 ##'
 ##' @return Either the name of the loaded object, invisibly
 ##'     (\code{load_model_meta}), or the loaded object itself
-##'     (\code{get_model_meta}).
+##'     (\code{get_model_meta_info}).
 ##'
 ##' @author Mark Wheldon
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_model_meta <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            verbose = FALSE) {
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
