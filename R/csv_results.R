@@ -12,7 +12,7 @@
 ##' family planning indicators are made all lower case and spaces (and
 ##' other non-letter characters) are removed. \emph{Note} this is not
 ##' quite the same as lower snake case as spaces are not replaced with
-##' underscored, rather they are just removed resulting in a single
+##' underscores, rather they are just removed resulting in a single
 ##' unbroken string.
 ##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
