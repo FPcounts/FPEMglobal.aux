@@ -39,9 +39,10 @@ assign the result to a variable name.
 }
 \seealso{
 Other model_run_meta_info: 
+\code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_marital_group}()},
-\code{\link{get_model_meta}()},
+\code{\link{get_model_meta_info}()},
 \code{\link{get_run_name}()}
 }
 \author{

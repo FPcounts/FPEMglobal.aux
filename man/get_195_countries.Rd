@@ -7,7 +7,7 @@
 get_195_countries(clean_col_names = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{clean_col_names}{Logical; When \code{TRUE}, the column names
+\item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for
 a note about \dQuote{percentile} vs. \dQuote{quantile}.}

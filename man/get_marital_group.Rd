@@ -3,6 +3,7 @@
 \name{get_marital_group}
 \alias{get_marital_group}
 \alias{is_all_women_run}
+\alias{is_marital_group_run}
 \alias{is_married_women_run}
 \alias{is_unmarried_women_run}
 \alias{get_age_group}
@@ -19,6 +20,14 @@ is_all_women_run(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
+  verbose = FALSE
+)
+
+is_marital_group_run(
+  run_name = NULL,
+  output_dir = NULL,
+  root_dir = NULL,
+  marital_group = c("married", "unmarried"),
   verbose = FALSE
 )
 
@@ -57,19 +66,25 @@ the directory called \dQuote{output}.}
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
+
+\item{marital_group}{Character string; the marital group to check against.}
 }
 \value{
 A character string (\code{get_...}) or logical value (\code{is_...}).
 }
 \description{
 These functions get and check the marital group and age group of
-an FPEMglobal model run.
+an FPEMglobal model run. \code{is_marital_group_run} is intended
+for checking if runs are either \code{"married"} or
+\code{"unmarried"} only. Use \code{is_all_women_run} to check if a
+run is an \code{"all women"} run.
 }
 \seealso{
 Other model_run_meta_info: 
+\code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_global_post_process_args}()},
-\code{\link{get_model_meta}()},
+\code{\link{get_model_meta_info}()},
 \code{\link{get_run_name}()}
 }
 \author{

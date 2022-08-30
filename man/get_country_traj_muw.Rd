@@ -8,8 +8,9 @@ get_country_traj_muw(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  country_name,
   iso_code,
+  clean_indicator_names = TRUE,
+  round_down_years = FALSE,
   verbose = FALSE
 )
 }
@@ -24,11 +25,16 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{country_name}{Name of country to get trajectories for; only one of
-\code{iso_code} and \code{country_name} should be given.}
+\item{iso_code}{Numeric ISO code of country to get trajectories
+for.}
 
-\item{iso_code}{Alternative way of selecting country to get trajectories
-for; only one of \code{iso_code} and \code{country_name} should be given.}
+\item{clean_indicator_names}{Logical; should indicator names
+within the result's dimnames be \dQuote{cleaned} up? See
+\dQuote{Details}.}
+
+\item{round_down_years}{Should year names within the result's dimnames
+be rounded down to integer values (e.g., 1970.5 becomes 1970)?
+See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
@@ -54,6 +60,15 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
  ..$ : NULL}
+
+If \code{round_down_years} is \code{TRUE}, the year labels are rounded
+down to the nearest integer. E.g., \code{"1970.5"} becomes
+\code{"1970"}.This affects the \code{dimnames} of the first
+dimension of the result matrix.
+
+If \code{clean_indicator_names} is \code{TRUE}, the names of the
+family planning indicators are made all lower case. This affects
+the \code{dimnames} of the second dimension of the result matrix.
 
 \subsection{Married/unmarried vs all women trajectories}{
 The country trajectories for all women are stored differently. Do

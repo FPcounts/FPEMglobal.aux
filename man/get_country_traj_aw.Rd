@@ -9,6 +9,8 @@ get_country_traj_aw(
   output_dir = NULL,
   root_dir = NULL,
   iso_code,
+  clean_indicator_names = TRUE,
+  round_down_years = FALSE,
   verbose = FALSE
 )
 }
@@ -23,8 +25,13 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{iso_code}{Alternative way of selecting country to get trajectories
-for; only one of \code{iso_code} and \code{country_name} should be given.}
+\item{iso_code}{Numeric ISO code of country to get trajectories
+for.}
+
+\item{clean_indicator_names}{Logical; see \dQuote{Details}.}
+
+\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
+rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
@@ -49,6 +56,11 @@ num [1:61, 1:6, 1:15000] 37.2 37.3 39.2 43.6 51.9 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:6] "Total" "Modern" "Traditional" "Unmet" ...
  ..$ : NULL}
+
+See \dQuote{Details} section under
+\code{\link{get_country_traj_aw}} for more information about
+arguments \code{clean_indicator_names} and
+\code{round_down_years}.
 
 \subsection{Married/unmarried vs all women trajectories}{
 The country trajectories for married and unmarried women are

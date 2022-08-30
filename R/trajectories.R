@@ -116,7 +116,7 @@ get_model_param_names <- function(mcmc_array) {
 get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  iso_code,
                                  clean_indicator_names = TRUE,
-                                 round_down_years = clean_indicator_names,
+                                 round_down_years = FALSE,
                                  verbose = FALSE) {
 
     output_dir <-
@@ -192,7 +192,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 iso_code,
                                  clean_indicator_names = TRUE,
-                                 round_down_years = clean_indicator_names,
+                                 round_down_years = FALSE,
                                 verbose = FALSE) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -285,7 +285,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
                          marital_group = c("married", "unmarried", "all women"),
                                  clean_indicator_names = TRUE,
-                                 round_down_years = clean_indicator_names,
+                                 round_down_years = FALSE,
                          verbose = FALSE) {
 
     if (missing(agg_name)) stop("Must supply 'agg_name'.")

@@ -8,9 +8,11 @@ get_agg_traj(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  agg_family_name,
   agg_name,
-  marital_group = c("married", "unmarried", "all_women"),
+  agg_family_name = "UNPDaggregates",
+  marital_group = c("married", "unmarried", "all women"),
+  clean_indicator_names = TRUE,
+  round_down_years = FALSE,
   verbose = FALSE
 )
 }
@@ -25,17 +27,26 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
+\item{agg_name}{Name of the aggregate for which to retrieve
+trajectories. This must match the filename \emph{exactly} (see
+\dQuote{Description}).}
+
 \item{agg_family_name}{Name of the aggregate family for which to
 retrieve trajectories. This must match the name of the
 subdirectory of \code{file.path(output_dir,
     "aggregatetrajectories")}.}
 
-\item{agg_name}{Name of the aggregate for which to retrieve
-trajectories. This must match the filename \emph{exactly} (see
-\dQuote{Description}).}
+\item{clean_indicator_names}{Logical; should indicator names
+within the result's dimnames be \dQuote{cleaned} up? See
+\dQuote{Details}.}
 
-\item{verbose}{Logical; report the path, filename, and object name
-in a message?}
+\item{round_down_years}{Should year names within the result's dimnames
+be rounded down to integer values (e.g., 1970.5 becomes 1970)?
+See \dQuote{Details}.}
+
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 The loaded aggregate trajectory object.
@@ -48,7 +59,9 @@ from \file{.rda} files found in subdirectories of the the
 subdirectory \file{aggregatetrajectories} of the results directory
 (see below). The directory and file names for the given aggregate
 are determined from \code{agg_family_name} and
-\code{agg_name}. \emph{Note:} Aggregate trajectories are only
+\code{agg_name}.
+
+\emph{Note:} Aggregate trajectories are only
 stored in an all women output directory; calling this function on
 a married or unmarried output directory will result in an error.
 }
@@ -60,6 +73,11 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
  ..$ : NULL}
+
+See \dQuote{Details} section under
+\code{\link{get_country_traj_aw}} for more information about
+arguments \code{clean_indicator_names} and
+\code{round_down_years}.
 
 \subsection{Aggregate names}{
 It is recommended to check the actual output files to get the

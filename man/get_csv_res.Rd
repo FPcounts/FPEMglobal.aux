@@ -13,9 +13,9 @@ get_csv_res(
   add_stat_column = FALSE,
   adjusted = c("orig", "adj", "sub_adj"),
   add_adjusted_column = identical(adjusted, "sub_adj"),
-  years_1_jan = TRUE,
   clean_col_names = TRUE,
   clean_indicator_names = clean_col_names,
+  round_down_years = FALSE,
   add_country_classifications = FALSE,
   table_format = c("long", "wide", "raw"),
   sort = TRUE,
@@ -51,15 +51,15 @@ substituted with adjusted medians (\dQuote{sub_adj}).}
 Cells indicate which rows are adjusted (\code{TRUE}) and which
 are not (\code{FALSE}).}
 
-\item{years_1_jan}{Should years in \dQuote{yyyy.5} format be
-rounded down to integer values? (e.g., 1970.5 becomes 1970).}
-
-\item{clean_col_names}{Logical; When \code{TRUE}, the column names
+\item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for
 a note about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{clean_indicator_names}{Logical; see \dQuote{Details}.}
+
+\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
+rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
 \item{add_country_classifications}{Add on columns with geographic
 country classifications? See \dQuote{Details}.}
@@ -87,15 +87,14 @@ counts, and ratios. The files are read using
 \details{
 If \code{clean_indicator_names} is \code{TRUE}, the names of the
 family planning indicators are made all lower case and spaces (and
-other non-letter characters) are removed. \emph{Note} this is not
+other non-letter characters) are removed. \emph{Note:} This is not
 quite the same as lower snake case as spaces are not replaced with
-underscored, rather they are just removed resulting in a single
+underscores, rather they are just removed resulting in a single
 unbroken string.
 
 \code{clean_col_names} applies \code{\link{clean_col_names}} to
 the column names. This tidies up and standardizes column
-names. When the argument \code{clean_col_names} is \code{TRUE} an
-additional step is performed after calling
+names. \emph{Note:} An additional step is performed after calling
 \code{\link{clean_col_names}} the function: the column name
 \dQuote{\code{percentile}} is changed to
 \dQuote{\code{quantile}}. This makes the column name match the
