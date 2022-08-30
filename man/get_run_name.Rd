@@ -30,6 +30,7 @@ used.
 Other model_run_meta_info: 
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_global_post_process_args}()},
+\code{\link{get_marital_group}()},
 \code{\link{get_model_meta}()}
 }
 \author{

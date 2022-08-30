@@ -2,7 +2,7 @@
 % Please edit documentation in R/results.R
 \name{get_model_quantiles}
 \alias{get_model_quantiles}
-\title{Get model parameter quantiles}
+\title{Load and return quantiles of country-specific model parameters.}
 \usage{
 get_model_quantiles(
   run_name = NULL,
@@ -30,8 +30,16 @@ messages.}
 The \code{\link{load}}ed object.
 }
 \description{
-\code{\link{load}}s the file \dQuote{par.ciq.rda} which contains
-posterior quantiles of model parameters.
+This function \code{\link{load}}s and returns the object in the
+file \file{par.ciq.rda} found in
+\code{file.path{output_dir}}. These are the quantiles of the
+country-specific model parameters, such as the asymptotes, rate
+paratmeters, timing parameters, etc.
+}
+\details{
+The specific parameters loaded are, \dQuote{omega.c}, \dQuote{T.c},
+\dQuote{pmax.c}, \dQuote{Romega.c}, \dQuote{RT.c}, \dQuote{Rmax.c},
+\dQuote{unmet.intercept.c}.
 }
 \author{
 Mark Wheldon

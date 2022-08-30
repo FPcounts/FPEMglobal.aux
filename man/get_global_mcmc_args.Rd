@@ -40,6 +40,7 @@ assign the result to a variable name.
 \seealso{
 Other model_run_meta_info: 
 \code{\link{get_global_post_process_args}()},
+\code{\link{get_marital_group}()},
 \code{\link{get_model_meta}()},
 \code{\link{get_run_name}()}
 }

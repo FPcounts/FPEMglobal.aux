@@ -17,12 +17,10 @@
 ##'
 ##' @family trajectory functions
 ##'
-##' @section Specifying results directory:
-##' See the section in \code{\link{get_csv_res}}.
-##'
+##' @inheritParams get_csv_res
+##' @inheritParams get_output_dir
 ##' @param name_dims Logical; should the dimensions be given informative names? See \dQuote{Details}.
 ##' @return The loaded object.
-##' @inheritParams get_output_dir
 ##'
 ##' @author Mark Wheldon
 ##' @export
@@ -80,14 +78,13 @@ get_model_param_names <- function(mcmc_array) {
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
 ##'
-##' @section Married/unmarried vs all women trajectories:
-##'
+##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for all women are stored differently. Do
 ##' not use this function for all women country trajectories. Use
 ##' \code{\link{get_country_traj_aw}} instead.
 ##'
 ##' The country trajectories for all women are \emph{counts}. Those
-##' for married and unmarried are \emph{proportions}.
+##' for married and unmarried are \emph{proportions}.}
 ##'
 ##' @family trajectory functions
 ##'
@@ -114,6 +111,9 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = TRUE)
+
+    if (is_all_women_run(output_dir))
+        stop("'", output_dir, "' is an all women output directory. Use 'get_country_traj_aw' instead. NOTE that all women trajectories are in a different format from married and unmarried trajectories.")
 
     traj_index <-
         get_country_index(run_name = run_name, output_dir = output_dir,
@@ -155,15 +155,14 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'  ..$ : chr [1:6] "Total" "Modern" "Traditional" "Unmet" ...
 ##'  ..$ : NULL}
 ##'
-##' @section Married/unmarried vs all women trajectories:
-##'
+##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for married and unmarried women are
 ##' stored differently. Do not use this function for married and
 ##' unmarried women country trajectories. Use
 ##' \code{\link{get_country_traj_muw}} instead.
 ##'
 ##' The country trajectories for all women are \emph{counts}. Those
-##' for married and unmarried are \emph{proportions}.
+##' for married and unmarried are \emph{proportions}.}
 ##'
 ##' @family trajectory functions
 ##'
@@ -179,6 +178,9 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE)
+
+    if (!is_all_women_run(output_dir))
+        stop("'", output_dir, "' is not an all women output directory. Use 'get_country_traj_muw' instead. NOTE that married/unmarried trajectories are in a different format from all women trajectories.")
 
     traj_fname <- paste0("aw_ISO_", iso_code, "_counts.rda")
     traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
@@ -196,11 +198,15 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' Load and return aggregate trajectories
 ##'
 ##' This function \code{\link{load}}s the MCMC sample from the
-##' posterior sample for married or unmarried for a single aggregate and returns it as an R
-##' object. Trajectories are loaded from \file{.rda} files found in subdirectories of the
-##' the subdirectory \file{aggregatetrajectories} of the results
-##' directory (see below). The directory and file names for the given aggregate are
-##' determined from \code{agg_family_name} and \code{agg_name}.
+##' posterior sample for married, unmarried or all women for a single
+##' aggregate and returns it as an R object. Trajectories are loaded
+##' from \file{.rda} files found in subdirectories of the the
+##' subdirectory \file{aggregatetrajectories} of the results directory
+##' (see below). The directory and file names for the given aggregate
+##' are determined from \code{agg_family_name} and
+##' \code{agg_name}. \emph{Note:} Aggregate trajectories are only
+##' stored in an all women output directory; calling this function on
+##' a married or unmarried output directory will result in an error.
 ##'
 ##' Aggregate trajectories are 3D matrices:
 ##' \preformatted{str(...)
@@ -210,22 +216,22 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
 ##'
-##' @section Aggregate names:
-##' It is recommended to check the actual
-##'     output files to get the aggregate family names and aggregate
-##'     names correct. The aggregate names in particular may not be
-##'     guessable because many will have been abbreviated to create
-##'     valid, short(ish) filenames.
+##' \subsection{Aggregate names}{
+##' It is recommended to check the actual output files to get the
+##' aggregate family names and aggregate names correct. The aggregate
+##' names in particular may not be guessable because many will have
+##' been abbreviated to create valid, short(ish) filenames.}
 ##'
-##' @section Married/unmarried vs all women trajectories:
+##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The aggregate trajectories for all marital groups are saved only
-##'     when all women results are created, e.g., by
-##'     \code{link{combine_runs}}. The trajectories are on the
-##'     \emph{count} scale for all marital groups. This is \emph{not}
-##'     the same as for country trajectories.
+##' when all women results are created by running
+##' \code{link[FPEMglobal]{combine_runs}}. They are saved in only in
+##' the all women output directory, hence this function must be called
+##' on such a directory.
 ##'
-##' @section Specifying results directory:
-##' See the section in \code{\link{get_csv_res}}.
+##' The trajectories are on the \emph{count}
+##' scale for all marital groups. This is \emph{not} the same as for
+##' country trajectories.}
 ##'
 ##' @family trajectory functions
 ##' @param agg_family_name Name of the aggregate family for which to
@@ -259,6 +265,9 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = TRUE)
+
+    if (!is_all_women_run(output_dir))
+        stop("Aggregate trajectories are stored in the 'all women' output directory. Call this function on an 'all women' output directory.")
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)

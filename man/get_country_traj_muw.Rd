@@ -54,18 +54,15 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
  ..$ : NULL}
-}
-\section{Married/unmarried vs all women trajectories}{
 
-
+\subsection{Married/unmarried vs all women trajectories}{
 The country trajectories for all women are stored differently. Do
 not use this function for all women country trajectories. Use
 \code{\link{get_country_traj_aw}} instead.
 
 The country trajectories for all women are \emph{counts}. Those
-for married and unmarried are \emph{proportions}.
+for married and unmarried are \emph{proportions}.}
 }
-
 \section{Specifying results directory}{
 
 See the section in \code{\link{get_csv_res}}.

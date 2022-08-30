@@ -42,11 +42,15 @@ The loaded aggregate trajectory object.
 }
 \description{
 This function \code{\link{load}}s the MCMC sample from the
-posterior sample for married or unmarried for a single aggregate and returns it as an R
-object. Trajectories are loaded from \file{.rda} files found in subdirectories of the
-the subdirectory \file{aggregatetrajectories} of the results
-directory (see below). The directory and file names for the given aggregate are
-determined from \code{agg_family_name} and \code{agg_name}.
+posterior sample for married, unmarried or all women for a single
+aggregate and returns it as an R object. Trajectories are loaded
+from \file{.rda} files found in subdirectories of the the
+subdirectory \file{aggregatetrajectories} of the results directory
+(see below). The directory and file names for the given aggregate
+are determined from \code{agg_family_name} and
+\code{agg_name}. \emph{Note:} Aggregate trajectories are only
+stored in an all women output directory; calling this function on
+a married or unmarried output directory will result in an error.
 }
 \details{
 Aggregate trajectories are 3D matrices:
@@ -56,30 +60,24 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
  ..$ : NULL}
-}
-\section{Aggregate names}{
 
-It is recommended to check the actual
-output files to get the aggregate family names and aggregate
-names correct. The aggregate names in particular may not be
-guessable because many will have been abbreviated to create
-valid, short(ish) filenames.
-}
+\subsection{Aggregate names}{
+It is recommended to check the actual output files to get the
+aggregate family names and aggregate names correct. The aggregate
+names in particular may not be guessable because many will have
+been abbreviated to create valid, short(ish) filenames.}
 
-\section{Married/unmarried vs all women trajectories}{
-
+\subsection{Married/unmarried vs all women trajectories}{
 The aggregate trajectories for all marital groups are saved only
-when all women results are created, e.g., by
-\code{link{combine_runs}}. The trajectories are on the
-\emph{count} scale for all marital groups. This is \emph{not}
-the same as for country trajectories.
+when all women results are created by running
+\code{link[FPEMglobal]{combine_runs}}. They are saved in only in
+the all women output directory, hence this function must be called
+on such a directory.
+
+The trajectories are on the \emph{count}
+scale for all marital groups. This is \emph{not} the same as for
+country trajectories.}
 }
-
-\section{Specifying results directory}{
-
-See the section in \code{\link{get_csv_res}}.
-}
-
 \seealso{
 Other trajectory functions: 
 \code{\link{get_country_traj_aw}()},

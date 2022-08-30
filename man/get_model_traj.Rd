@@ -15,10 +15,19 @@ get_model_traj(
 \arguments{
 \item{run_name}{The run name.}
 
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
+ignored if \code{output_dir} is supplied.}
+
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
+
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 The loaded object.
@@ -36,11 +45,6 @@ The dimensions are not named by \pkg{FPEMglobal}. If
 \code{name_dims} is \code{TRUE} they are given the names
 \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 }
-\section{Specifying results directory}{
-
-See the section in \code{\link{get_csv_res}}.
-}
-
 \seealso{
 Other trajectory functions: 
 \code{\link{get_agg_traj}()},
