@@ -9,6 +9,9 @@
 ##' @param x Vector of country names to be standardized.
 ##' @return Vector of standardized country names.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 make_c_names_manus <- function(x) {
 x[grep("^Bolivia \\(Plurinational State of\\)", x)] <- "Bolivia, Plurinational State of"
@@ -48,6 +51,9 @@ x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian 
 ##' @return Vector of converted country names, character or factor
 ##'     following the class of \code{x}.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) {
 
@@ -115,6 +121,9 @@ match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) 
 ##' @param x Vector of country names to be standardized.
 ##' @return Vector of standardized country names.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 make_reg_names_manus <- function(x) {
     x[grep("^Federated States of Micronesia", x)] <- "Micronesia, Fed.\\ States of"
@@ -129,6 +138,9 @@ make_reg_names_manus <- function(x) {
 ##' @param x Vector of (sub)region names to shorten.
 ##' @return Vector of shortened (sub)region names.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 shorten_reg_names_manus <- function(x) {
     x[grep("^Latin America and the Caribbean"    , x)] <- "LAC"
@@ -150,6 +162,10 @@ shorten_reg_names_manus <- function(x) {
 ##' @param family Code naming the aggregate family.
 ##' @return Character vector of family members.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
+##' @export
 get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb")) {
 
     family <- match.arg(family)
@@ -193,6 +209,9 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
 ##' @param x Character, R code parameter name.
 ##' @return Character, plain English name.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 convert_param_name <- function(x) {
     code <- c("omega.c", "T.c", "pmax.c", "Romega.c", "RT.c", "Rmax.c",
@@ -210,6 +229,16 @@ convert_param_name <- function(x) {
 ### * Misc Text String Manipulations
 
 
+##' Report all possible names of family planning indicators used in FPEMglobal
+##'
+##' This function returns a character vector containing all possible indicator names.
+##'
+##' @return Character vector of all indicator names.
+##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
+##' @export
 list_indicator_names <- function() {
     c("Modern", "ModernOverTotal", "MetDemand", "metDemGT_modMeth75pc",
       "MetDemModMeth",
@@ -226,6 +255,8 @@ list_indicator_names <- function() {
 ##' @param indicator Character string to \dQuote{clean} up.
 ##' @return Character string.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
 ##'
 ##' @examples
 ##'
@@ -284,6 +315,9 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##'     \code{x} \emph{before} doing anything else?
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon
+##'
+##' @family String utility functions
+##'
 ##' @export
 clean_col_names <- function(x, ...) {
     UseMethod("clean_col_names")
