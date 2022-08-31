@@ -8,13 +8,6 @@
 ##' counts, and ratios. The files are read using
 ##' \code{\link[readr]{read_csv}}.
 ##'
-##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
-##' family planning indicators are made all lower case and spaces (and
-##' other non-letter characters) are removed. \emph{Note:} This is not
-##' quite the same as lower snake case as spaces are not replaced with
-##' underscores, rather they are just removed resulting in a single
-##' unbroken string.
-##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
 ##' the column names. This tidies up and standardizes column
 ##' names. \emph{Note:} An additional step is performed after calling
@@ -64,7 +57,9 @@
 ##'     are not (\code{FALSE}).
 ##' @param round_down_years Should years in \dQuote{yyyy.5} format be
 ##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
-##' @param clean_indicator_names Logical; see \dQuote{Details}.
+##' @param clean_indicator_names Logical; use
+##'     \code{\link{clean_indic_name}} to modify the strings used to
+##'     name family planning indicators?
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
 ##'     \code{\link{clean_col_names}}. See \dQuote{Details} for a note

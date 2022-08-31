@@ -133,7 +133,6 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     traj_index <-
         get_country_index(run_name = run_name, output_dir = output_dir,
                           root_dir = root_dir, verbose = verbose)
-
     if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not found in trajectory index (see '?get_country_index').")
     traj_fname <-
         traj_index$filename[traj_index$iso.c == iso_code]

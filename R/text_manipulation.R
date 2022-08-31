@@ -209,8 +209,17 @@ convert_param_name <- function(x) {
 ###-----------------------------------------------------------------------------
 ### * Misc Text String Manipulations
 
-## Clean up names of indicators.
-## This function takes out spaces and makes the whole thing lower case.
+##' Clean indicator names
+##'
+##' This function takes out spaces and makes the whole string lower
+##' case. This is not quite the same as lower snake case as spaces are
+##' not replaced with underscores, rather they are just removed
+##' resulting in a single unbroken string.
+##'
+##' @param indicator Character string to \dQuote{clean} up.
+##' @return Character string.
+##' @author Mark Wheldon
+##' @export
 clean_indic_name <- function(indicator) {
         ind_no_spaces <- gsub("[ ]+", "", indicator)
         tolower(ind_no_spaces)
