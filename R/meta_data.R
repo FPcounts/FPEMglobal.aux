@@ -167,31 +167,26 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
 ##' @export
 get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 
-    if (!is_all_women_run(output_dir = output_dir)) {
-        args <- get_global_mcmc_args(output_dir = output_dir, verbose = verbose)
+    res_dir <- output_dir_wrapper(output_dir = output_dir, verbose = verbose)
+
+    if (!is_all_women_run(output_dir = res_dir)) {
+        args <- get_global_mcmc_args(output_dir = res_dir, verbose = verbose)
         if ("run_name" %in% names(args))
             return(args$run_name)
-    } else {
-        res_dir <-
-            output_dir_wrapper(output_dir = output_dir, verbose = verbose)
+    }
 
-        file_name <- grep("CIs\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
+    file_name <- grep("CIs\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
+    if (length(file_name) && nchar(file_name))
+        return(gsub("CIs\\.pdf$", "", file_name))
+    else {
+        file_name <- grep("CIs_nopar\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
         if (length(file_name) && nchar(file_name))
-            return(gsub("CIs\\.pdf$", "", file_name))
-
+            return(gsub("CIs_nopar\\.pdf$", "", file_name))
         else {
-            file_name <- grep("CIs_nopar\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
+            file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
             if (length(file_name) && nchar(file_name))
-                return(gsub("CIs_nopar\\.pdf$", "", file_name))
-
-            else {
-                file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
-                if (length(file_name) && nchar(file_name))
-                    return(gsub("datainfo_total\\.pdf$", "", file_name))
-
-                else stop("Cannot determine run name.")
-
-            }
+                return(gsub("datainfo_total\\.pdf$", "", file_name))
+            else stop("Cannot determine run name.")
         }
     }
 }
