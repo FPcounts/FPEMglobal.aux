@@ -264,7 +264,7 @@ list_indicator_names <- function() {
 ##' list_indicator_names()
 ##'
 ##' @export
-clean_indic_name <- function(indicator) {
+clean_indic_names <- function(indicator) {
     clean <- function(x) {
         tolower(gsub("[ ]+", "_", x))
     }

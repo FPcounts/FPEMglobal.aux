@@ -143,7 +143,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }
@@ -211,7 +211,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }
@@ -312,7 +312,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)[["CP"]]
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_name(dimnames(obj)[[2]])
+    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }

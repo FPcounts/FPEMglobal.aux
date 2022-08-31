@@ -58,7 +58,7 @@
 ##' @param round_down_years Should years in \dQuote{yyyy.5} format be
 ##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
 ##' @param clean_indicator_names Logical; use
-##'     \code{\link{clean_indic_name}} to modify the strings used to
+##'     \code{\link{clean_indic_names}} to modify the strings used to
 ##'     name family planning indicators?
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
