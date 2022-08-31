@@ -282,7 +282,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @export
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
-                         marital_group = c("married", "unmarried", "all women"),
+                         marital_group = c("married", "unmarried", "all_women"),
                                  clean_indicator_names = TRUE,
                                  round_down_years = FALSE,
                          verbose = FALSE) {
@@ -293,7 +293,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## Marital group must match the file naming convention:
     marital_group[marital_group == "married"] <- "mwra"
     marital_group[marital_group == "unmarried"] <- "uwra"
-    marital_group[marital_group == "all women"] <- "awra"
+    marital_group[marital_group == "all_women"] <- "awra"
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -301,7 +301,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
     if (!is_all_women_run(output_dir = output_dir))
-        stop("Aggregate trajectories are stored in the 'all women' output directory. Call this function on an 'all women' output directory.")
+        stop("Aggregate trajectories are stored in the 'all_women' output directory. Call this function on an 'all_women' output directory.")
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)

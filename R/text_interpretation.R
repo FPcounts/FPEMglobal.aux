@@ -16,13 +16,28 @@ guess_marital_group <- function(run_name) {
     if (identical(m + u + a, 1L)) {
         if (m) "married"
         else if (u) "unmarried"
-        else if (a) "all women"
+        else if (a) "all_women"
     } else NULL
 }
 
 
 ## Conversion from short/acronym marital group names to long names.
-get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title", "upper")) {
+get_std_marr_group_names <- function() {
+    c("mwra" = "married", "uwra" = "unmarried", "wra" = "all_women")
+}
+
+
+## Get 'long' marital group name from the acronym
+switch_marr_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
+    x <- tolower(x)
+    x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
+    basis <- get_std_marr_group_names()
+    return(as.character(basis[x])) # Need 'as.character' to remove names.
+}
+
+
+## Conversion from short/acronym marital group names to long names.
+get_fancy_marr_group_names <- function(return_case = c("lower", "sentence", "title", "upper")) {
     return_case <- match.arg(return_case)
     basis <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All Women")
     basis2 <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All women")
@@ -31,15 +46,4 @@ get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title
     else if (identical(return_case, "sentence")) return(basis2)
     else if (identical(return_case, "title")) return(basis)
     return(stop("Nothing selected"))
-}
-
-
-## Get 'long' marital group name from the acronym
-switch_marr_group_names <- function(x = c("mwra", "uwra", "wra", "awra"),
-                                    return_case = c("lower", "title", "sentence", "upper")) {
-    x <- tolower(x)
-    x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
-    return_case <- match.arg(return_case)
-    basis <- get_std_marr_group_names(return_case = return_case)
-    return(as.character(basis[x])) # Need 'as.character' to remove names.
 }
