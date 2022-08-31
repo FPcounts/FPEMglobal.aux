@@ -263,6 +263,7 @@ clean_col_names <- function(x, ...) {
 clean_col_names.character <- function(x, use_make.names = TRUE) {
     x <- lower_snake_casify(x, use_make.names = use_make.names)
     x[x == "iso_code"] <- "iso"
+    x[x == "iso_country"] <- "iso"
     x[x %in% c("country", "country_or_area")] <- "name"
     return(x)
 }

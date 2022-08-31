@@ -51,7 +51,7 @@
 ##' @param verbose Logical; report the path, filename, and object name
 ##'     in a message?
 ##' @param aggregate Name of the 'aggregate' to load. Note: use
-##'     \code{aggregate = "Country"} to load country results.
+##'     \code{aggregate = "country"} to load country results.
 ##' @param stat Which statistics should be loaded? Allowable values
 ##'     are \code{c("orig", "adj", "sub_adj")}.
 ##' @param add_stat_column Logical. Add a column \dQuote{\code{stat}}
@@ -67,10 +67,12 @@
 ##' @param clean_indicator_names Logical; see \dQuote{Details}.
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
-##'     \code{\link{clean_col_names}}. See \dQuote{Details} for
-##'     a note about \dQuote{percentile} vs. \dQuote{quantile}.
-##' @param add_country_classifications Add on columns with geographic
-##'     country classifications? See \dQuote{Details}.
+##'     \code{\link{clean_col_names}}. See \dQuote{Details} for a note
+##'     about \dQuote{percentile} vs. \dQuote{quantile}.
+##' @param add_country_classifications Logical; add on columns with
+##'     geographic country classifications? Only has an effect if
+##'     \code{aggregate} is \code{"country"}. See also
+##'     \dQuote{Details}.
 ##' @param table_format Logical or character. Should the table be
 ##'     returned in long format? See \dQuote{Details}.
 ##' @param sort Logical. Sort by stat, name, year, percentile?
@@ -92,7 +94,7 @@
 ##' @author Mark Wheldon
 ##' @export
 get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                             aggregate = "Country",
+                             aggregate = "country",
                              stat = c("perc", "count", "ratio"),
                              add_stat_column = FALSE,
                              adjusted = c("orig", "adj", "sub_adj"),
@@ -111,10 +113,9 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     stat <- match.arg(stat)
 
-    c_add_class <- identical(aggregate, "Country") & add_country_classifications
-    if (c_add_class & !clean_col_names) {
-        clean_col_names <- TRUE
-        message("'clean_col_names' set to 'TRUE' because 'add_country_classifications' is 'TRUE'.")
+    if (add_country_classifications && !identical(aggregate, "country")) {
+        warning("'add_country_classifications' only has an effect if 'aggregate' == '\"country\"'. No classifications will be added.")
+        add_country_classifications <- FALSE
     }
 
     output_dir <-
@@ -149,7 +150,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res$stat <- stat
-            res$indicator <- "total"
+            res$indicator <- "Total"
 
             ## Read in rest of indicators
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
@@ -158,7 +159,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                 if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_ind$stat <- stat
-                if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
+                res_ind$indicator <- indicator
                 res <- dplyr::bind_rows(res, res_ind)
             }
 
@@ -180,7 +181,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_ind$stat <- stat
-                if (clean_indicator_names) res_ind$indicator <- clean_indic_name(indicator)
+                res_ind$indicator <- indicator
                 res <- dplyr::bind_rows(res, res_ind)
             }
         }
@@ -201,7 +202,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res_adj <- readr::read_csv(file.path(tbl_dir, fname1), ...)
             res_adj$stat <- stat
-            res_adj$indicator <- "total"
+            res_adj$indicator <- "Total"
 
             ## Read in rest of indicators
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
@@ -210,7 +211,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_adj_ind$stat <- stat
-                if (clean_indicator_names) res_adj_ind$indicator <- clean_indic_name(indicator)
+                res_adj_ind$indicator <- indicator
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
             }
 
@@ -230,7 +231,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), ...)
                 res_adj_ind$stat <- stat
-                if (clean_indicator_names) res_adj_ind$indicator <- clean_indic_name(indicator)
+                res_adj_ind$indicator <- indicator
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
             }
         }
@@ -241,13 +242,11 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## Years columns
     if (round_down_years) {
         if (adjusted %in% c("orig", "sub_adj")) {
-            yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat",
-                                                 "adjusted")
+            yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
             colnames(res)[yr_cols_idx] <- round_down_years(colnames(res)[yr_cols_idx])
         }
         if (adjusted %in% c("adj", "sub_adj")) {
-            yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat",
-                                                     "adjusted")
+            yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
             colnames(res_adj)[yr_cols_idx] <- round_down_years(colnames(res_adj)[yr_cols_idx])
         }
     }
@@ -256,8 +255,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (adjusted == "orig") {
         if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
-                                 key = "year", value = "value")
-            res$year <- as.numeric(res$year)
+                                 key = "Year", value = "Value")
+            res$Year <- as.numeric(res$Year)
         }
         if (add_adjusted_column) res$adjusted <- FALSE
     }
@@ -267,22 +266,22 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         res <- res_adj
         if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
-                                 key = "year", value = "value")
-            res$year <- as.numeric(res$year)
+                                 key = "Year", value = "Value")
+            res$Year <- as.numeric(res$Year)
         }
         if (add_adjusted_column) res$adjusted <- TRUE
 
     } else if (adjusted == "sub_adj") {
         if (table_format %in% c("wide", "long")) {
             res <- tidyr::gather(res, -Name, -Iso, -Percentile, -stat, -indicator,
-                                 key = "year", value = "value")
+                                 key = "Year", value = "Value")
             res_adj <- tidyr::gather(res_adj, -Name, -Iso, -Percentile, -stat, -indicator,
-                                     key = "year", value = "value")
+                                     key = "Year", value = "Value")
             res <- dplyr::left_join(res, res_adj,
                                     by = c("Name", "Iso", "Percentile", "stat",
-                                           "indicator", "year"))
-            res[res$Percentile == 0.5,]$value.x <- res[res$Percentile == 0.5,]$value.y
-            res <- dplyr::select(res, -value.y) %>% dplyr::rename(value = value.x)
+                                           "indicator", "Year"))
+            res[res$Percentile == 0.5,]$Value.x <- res[res$Percentile == 0.5,]$Value.y
+            res <- dplyr::select(res, -Value.y) %>% dplyr::rename(Value = Value.x)
 
             ## Substitute medians for adjusted medians
             res_med <- res$Percentile == 0.5
@@ -290,7 +289,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                 res$adjusted <- FALSE
                 res$adjusted[res_med] <- TRUE
             }
-            res$year <- as.numeric(res$year)
+            res$Year <- as.numeric(res$Year)
         } else {
             if (!identical(sort(colnames(res)), sort(colnames(res_adj))))
                 stop("Column names in 'orig' and 'adj' results are not the same; cannot concatenate.")
@@ -305,29 +304,28 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (identical(table_format, "wide")) {
         ind_vals <- unique(res$indicator)
         res <- res %>%
-            tidyr::spread(key = c("indicator"), value = "value")
+            tidyr::spread(key = c("indicator"), value = "Value")
         if ("adj" %in% colnames(res))
-            res <- res[,c("stat", "Name", "Iso", "year", "Percentile", "adjusted", ind_vals)]
-        else res <- res[,c("stat", "Name", "Iso", "year", "Percentile", ind_vals)]
+            res <- res[,c("stat", "Name", "Iso", "Year", "Percentile", "adjusted", ind_vals)]
+        else res <- res[,c("stat", "Name", "Iso", "Year", "Percentile", ind_vals)]
     }
 
-    ## Clean column names
-    if (clean_col_names) res <- clean_col_names(res)
-
-    if (c_add_class) {           #add classifications?
+    ## add classifications?
+    if (add_country_classifications) {
         class_unpd_agg <-
             get_used_unpd_regions(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                  clean_col_names = TRUE,
+                                  clean_col_names = FALSE,
                                   verbose = verbose)
 
         class_spec <-
             get_used_special_aggregates(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                        clean_col_names = TRUE,
+                                        clean_col_names = FALSE,
                                         verbose = verbose)
 
         res <- res %>%
-            dplyr::left_join(dplyr::select(class_unpd_agg, -name), by = "iso") %>%
-            dplyr::left_join(class_spec, by = "iso")
+            dplyr::left_join(dplyr::select(class_unpd_agg, -`Country or area`),
+                             by = c("Iso" = "ISO Code")) %>%
+            dplyr::left_join(class_spec, by = c("Iso" = "iso.country"))
     }
 
     ## Stat column
@@ -338,15 +336,19 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## Sort
     if (sort) {
         if (identical(table_format, "raw"))
-            res <- res %>% dplyr::arrange(indicator, iso, percentile)
+            res <- res %>% dplyr::arrange(indicator, Iso, Percentile)
         else if (identical(table_format, "wide"))
-            res <- res %>% dplyr::arrange(iso, year, percentile)
+            res <- res %>% dplyr::arrange(Iso, Year, Percentile)
         else if (identical(table_format, "long"))
-            res <- res %>% dplyr::arrange(indicator, iso, year, percentile)
+            res <- res %>% dplyr::arrange(indicator, Iso, Year, Percentile)
     }
 
-    ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE
-    if (clean_col_names) colnames(res)[colnames(res) == "percentile"] <- "quantile"
+    ## Clean column names
+    if (clean_col_names) {
+        colnames(res) <- clean_col_names(res)
+        ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE
+        colnames(res)[colnames(res) == "percentile"] <- "quantile"
+    }
 
     ## END
     return(tibble::as_tibble(res))

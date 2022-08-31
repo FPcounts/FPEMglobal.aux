@@ -187,7 +187,7 @@ get_used_special_aggregates <-
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
-        out <- tibble::tibble(iso = as.numeric(NA))
+        out <- tibble::tibble(iso.country = as.numeric(NA))
 
         agg_csv_names <- list_special_aggregates_csv_filenames()
         agg_names <- list_special_aggregates_names()
@@ -195,13 +195,13 @@ get_used_special_aggregates <-
         for (i in seq_along(agg_csv_names)) {
             fpath <- file.path(data_dir, agg_csv_names[i])
             if (file.exists(fpath)) {
-                    if (verbose) message("Reading '", file.path(tbl_dir, fpath), "'.")
-                    y <- readr::read_csv(fpath)[,c("iso.country", "groupname")]
-                if (clean_col_names) colnames(y) <- c("iso", agg_names[i])
-                out <- dplyr::full_join(out, y, by = "iso")
+                if (verbose) message("Reading '", file.path(tbl_dir, fpath), "'.")
+                y <- readr::read_csv(fpath)[,c("iso.country", "groupname")]
+                colnames(y)[colnames(y) == "groupname"] <- agg_names[i]
+                out <- dplyr::full_join(out, y, by = "iso.country")
             }
         }
-        out <- out[!is.na(out$iso),]
+        out <- out[!is.na(out$iso.country),]
 
         if ("SDG_regions_LDCs" %in% colnames(out)) {
             out <- out %>%
