@@ -340,7 +340,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     ## Clean column names
     if (clean_col_names) {
-        colnames(res) <- clean_col_names(res)
+        res <- clean_col_names(res)
         ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE
         colnames(res)[colnames(res) == "percentile"] <- "quantile"
     }
