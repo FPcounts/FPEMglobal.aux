@@ -209,6 +209,13 @@ convert_param_name <- function(x) {
 ###-----------------------------------------------------------------------------
 ### * Misc Text String Manipulations
 
+
+list_indicator_names <- function() {
+    c("Modern", "ModernOverTotal", "MetDemand", "metDemGT_modMeth75pc",
+      "MetDemModMeth",
+      "NoUse", "Traditional", "Total", "TotalPlusUnmet", "Unmet", "Z")
+}
+
 ##' Clean indicator names
 ##'
 ##' This function takes out spaces and makes the whole string lower
@@ -219,10 +226,25 @@ convert_param_name <- function(x) {
 ##' @param indicator Character string to \dQuote{clean} up.
 ##' @return Character string.
 ##' @author Mark Wheldon
+##'
+##' @examples
+##'
+##' ## Known indicators are:
+##' list_indicator_names()
+##'
 ##' @export
 clean_indic_name <- function(indicator) {
-        ind_no_spaces <- gsub("[ ]+", "", indicator)
-        tolower(ind_no_spaces)
+    clean <- function(x) {
+        tolower(gsub("[ ]+", "_", x))
+    }
+    ## regexp <- paste(list_indicator_names(), collapse = "|")
+    ## match_list <- gregexpr(pattern = regexp, text = indicator)
+    ## mapply(function(as.list(ind), mat) {
+
+    ## },
+    ## indicator, match_list,
+    ## SIMPLIFY = TRUE, USE.NAMES = FALSE)
+    clean(indicator)
 }
 
 
