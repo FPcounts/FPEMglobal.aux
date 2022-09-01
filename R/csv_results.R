@@ -4,9 +4,16 @@
 ##' Read results csv files containing percentages, counts, and ratios
 ##'
 ##' Reads \emph{all} results \file{.csv} files from a results
-##' directory for a given country or region that contain percentages,
+##' directory for a given country or region that contain proportions,
 ##' counts, and ratios. The files are read using
 ##' \code{\link[readr]{read_csv}}.
+##'
+##' The \code{stat} argument specifies the type of results to
+##' return. Results are stored separately for prevalence proportions,
+##' ratio indicators, and number of users. These can be requested by,
+##' respectively, \code{"prop"}, \code{"ratio"}, \code{"count"}. Note
+##' that prevalence \emph{proportions} are stored in \file{.csv} files
+##' with \dQuote{perc} in their names.
 ##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
 ##' the column names. This tidies up and standardizes column
@@ -90,7 +97,7 @@
 ##' @export
 get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              aggregate = "country",
-                             stat = c("perc", "count", "ratio"),
+                             stat = c("prop", "count", "ratio"),
                              add_stat_column = FALSE,
                              adjusted = c("orig", "adj", "sub_adj"),
                              add_adjusted_column = identical(adjusted, "sub_adj"),
@@ -138,10 +145,13 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             table_orig_adj_dir(tbl_dir = tbl_dir0, adj = FALSE,
                                verbose = verbose)
 
-        if (stat %in% c("perc", "count")) {
+        if (stat %in% c("prop", "count")) {
+
+            if (identical(stat, "prop")) stat_in_fname <- "perc"
+            else stat_in_fname <- stat
 
             ## Read the '_Total' file first
-            fname1 <- paste0(fname, "_", stat, "_Total.csv")
+            fname1 <- paste0(fname, "_", stat_in_fname, "_Total.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res <- readr::read_csv(file.path(tbl_dir, fname1))
             res$stat <- stat
@@ -150,7 +160,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read in rest of indicators
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
                                "Unmet")) {
-                fname_ind <- paste0(fname, "_", stat, "_", indicator, ".csv")
+                fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, ".csv")
                 if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_ind$stat <- stat
@@ -190,10 +200,13 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             table_orig_adj_dir(tbl_dir = tbl_dir0, adj = TRUE,
                                verbose = verbose)
 
-        if (stat %in% c("perc", "count")) {
+        if (stat %in% c("prop", "count")) {
+
+            if (identical(stat, "prop")) stat_in_fname <- "perc"
+            else stat_in_fname <- stat
 
             ## Read the '_Total' file first
-            fname1 <- paste0(fname, "_", stat, "_Total_Adj.csv")
+            fname1 <- paste0(fname, "_", stat_in_fname, "_Total_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res_adj <- readr::read_csv(file.path(tbl_dir, fname1))
             res_adj$stat <- stat
@@ -202,7 +215,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read in rest of indicators
             for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
                                "Unmet")) {
-                fname_ind <- paste0(fname, "_", stat, "_", indicator, "_Adj.csv")
+                fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, "_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
                 res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_adj_ind$stat <- stat
@@ -421,7 +434,7 @@ get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##'
 ##' @section Note:
 ##' \pkg{fpemdata} only requires the proportions which
-##'     can be read via \code{get_csv_res(..., stat = "perc",
+##'     can be read via \code{get_csv_res(..., stat = "prop",
 ##'     ...)}.
 ##'
 ##' @family csv results functions
