@@ -28,7 +28,9 @@ the directory called \dQuote{output}.}
 \item{iso_code}{Numeric ISO code of country to get trajectories
 for.}
 
-\item{clean_indicator_names}{Logical; see \dQuote{Details}.}
+\item{clean_indicator_names}{Logical; use
+\code{\link{clean_indic_names}} to modify the strings used to
+name family planning indicators?}
 
 \item{round_down_years}{Should years in \dQuote{yyyy.5} format be
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}

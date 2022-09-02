@@ -16,6 +16,18 @@ Character, plain English name.
 Converts model parameter names from those used in the R code to
 human readable, plain English names.
 }
+\seealso{
+Other String utility functions: 
+\code{\link{clean_col_names}()},
+\code{\link{clean_indic_names}()},
+\code{\link{get_aggregate_names}()},
+\code{\link{list_indicator_names}()},
+\code{\link{make_c_names_manus}()},
+\code{\link{make_reg_names_manus}()},
+\code{\link{match_UNlocations}()},
+\code{\link{shorten_reg_names_manus}()}
+}
 \author{
 Mark Wheldon
 }
+\concept{String utility functions}
