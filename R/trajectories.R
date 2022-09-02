@@ -65,10 +65,6 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' \code{"1970"}.This affects the \code{dimnames} of the first
 ##' dimension of the result matrix.
 ##'
-##' If \code{clean_indicator_names} is \code{TRUE}, the names of the
-##' family planning indicators are made all lower case. This affects
-##' the \code{dimnames} of the second dimension of the result matrix.
-##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for all women are stored differently. Do
 ##' not use this function for all women country trajectories. Use
@@ -86,9 +82,6 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' @inheritParams get_csv_res
 ##' @param iso_code Numeric ISO code of country to get trajectories
 ##'     for.
-##' @param clean_indicator_names Logical; should indicator names
-##'     within the result's dimnames be \dQuote{cleaned} up? See
-##'     \dQuote{Details}.
 ##' @param round_down_years Should year names within the result's dimnames
 ##'     be rounded down to integer values (e.g., 1970.5 becomes 1970)?
 ##'     See \dQuote{Details}.
@@ -97,7 +90,6 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' @export
 get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  iso_code,
-                                 clean_indicator_names = TRUE,
                                  round_down_years = FALSE,
                                  verbose = FALSE) {
 
@@ -125,7 +117,6 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }
@@ -148,11 +139,6 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'  ..$ : chr [1:6] "Total" "Modern" "Traditional" "Unmet" ...
 ##'  ..$ : NULL}
 ##'
-##' See \dQuote{Details} section under
-##' \code{\link{get_country_traj_aw}} for more information about
-##' arguments \code{clean_indicator_names} and
-##' \code{round_down_years}.
-##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for married and unmarried women are
 ##' stored differently. Do not use this function for married and
@@ -171,8 +157,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @author Mark Wheldon
 ##' @export
 get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                iso_code,
-                                 clean_indicator_names = TRUE,
+                                iso_cod
                                  round_down_years = FALSE,
                                 verbose = FALSE) {
     output_dir <-
@@ -193,7 +178,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }
@@ -223,11 +207,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
-##'
-##' See \dQuote{Details} section under
-##' \code{\link{get_country_traj_aw}} for more information about
-##' arguments \code{clean_indicator_names} and
-##' \code{round_down_years}.
 ##'
 ##' \subsection{Aggregate names}{
 ##' It is recommended to check the actual output files to get the
@@ -265,7 +244,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
                          marital_group = c("married", "unmarried", "all_women"),
-                                 clean_indicator_names = TRUE,
                                  round_down_years = FALSE,
                          verbose = FALSE) {
 
@@ -294,7 +272,6 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)[["CP"]]
 
     if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-    if (clean_indicator_names) dimnames(obj)[[2]] <- clean_indic_names(dimnames(obj)[[2]])
 
     return(obj)
 }
