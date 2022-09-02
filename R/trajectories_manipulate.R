@@ -7,7 +7,7 @@
 ## traj_array Indicator names in countrytrajectories arrays
 get_traj_array_indicator_names_count <- function() {
     c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet",
-       "TradPlusUnmet")
+      "TradPlusUnmet")
 }
 
 get_traj_array_indicator_names_prop <- function() {
@@ -102,7 +102,7 @@ convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_
 
     ## Put denominators into an array and multiply
     return(traj_array_props * array(denominator_counts_df[year_match, "count"],
-                              dim = c(length(unique(denominator_counts_df$year)), dim(traj_array_props)[[2]], dim(traj_array_props)[[3]])))
+                                    dim = c(length(unique(denominator_counts_df$year)), dim(traj_array_props)[[2]], dim(traj_array_props)[[3]])))
 }
 
 
@@ -119,6 +119,7 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
         msg <- "*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?"
         if (safe) stop(msg)
         else warning(msg)
+    }
 
     denominator_counts_df <-
         traj_converters_arg_check(traj_array = traj_array_counts, denominator_counts_df = denominator_counts_df, iso = iso)
@@ -133,7 +134,7 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
 
     ## Put denominators into an array and divide
     return(traj_array_counts / array(denominator_counts_df[year_match, "count"],
-                              dim = c(length(unique(denominator_counts_df$year)), 3, dim(traj_array_counts)[[3]])))
+                                     dim = c(length(unique(denominator_counts_df$year)), 3, dim(traj_array_counts)[[3]])))
 }
 
 
@@ -216,7 +217,7 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
 
         denom_counts_matrix <-
             matrix(denominator_counts_df[year_match, "count"],
-                  nrow = length(unique(denominator_counts_df$year)), ncol = dim(traj_array_counts)[[3]])
+                   nrow = length(unique(denominator_counts_df$year)), ncol = dim(traj_array_counts)[[3]])
 
     }
 
@@ -251,5 +252,3 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
 
     }
 }
-
-
