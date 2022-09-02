@@ -101,20 +101,22 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 
     ## -------* Set-up
 
-    mcmc_args <- get_global_mcmc_args(output_dir = output_dir)
-    pp_args <- get_global_post_process_args(run_name = run_name, output_dir = output_dir,
-                                         root_dir = root_dir)
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+
+    output_age_group <- get_age_group(output_dir = output_dir)
+    if (is_all_women_run(output_dir = output_dir))
+        denom_file_name_meta <- get_combine_runs_args(output_dir = output_dir)$denominator_counts_csv_filename
+    else
+        denom_file_name_meta <- get_global_post_process_args(output_dir = output_dir)$denominator_counts_csv_filename
 
     if (missing(marital_group)) marital_group <- "default"
     else marital_group <- match.arg(marital_group, several.ok = TRUE)
     if ("default" %in% marital_group) {
-        marital_group[marital_group == "default"] <- mcmc_args$marital_group
+        marital_group[marital_group == "default"] <- get_marital_group(output_dir = output_dir)
         marital_group <- unique(marital_group)
     }
-
-    output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
 
     table_format <- match.arg(table_format)
 
@@ -122,11 +124,11 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     data_dir <- file.path(output_dir, data_dir_name)
 
     if (is.null(filename)) {
-        if (length(pp_args$denominator_counts_csv_filename) && nchar(pp_args$denominator_counts_csv_filename)) {
-            filename <- basename(pp_args$denominator_counts_csv_filename)
+        if (length(denom_file_name_meta) && nchar(denom_file_name_meta)) {
+            filename <- basename(denom_file_name_meta)
 
             ## Since filename auto-determined, read the age group as well.
-            age_group_from_args <- mcmc_args$age_group
+            age_group_from_args <- output_age_group
             if (!is.null(age_group) && !identical(as.character(age_group), as.character(age_group_from_args)))
                 warning("'age_group' = '", age_group, "', but output directory is a run for age group '",
                         age_group_from_args, "'. Argument 'age_group' reset to the latter.\n\nIf you want to load an age group different from the age group of the output directory, you must specify 'filename'.")
@@ -138,7 +140,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     fpath <- file.path(data_dir, filename)
 
     ## If 'age_group' still 'NULL', use mcmc args
-    if (is.null(age_group)) age_group <- mcmc_args$age_group
+    if (is.null(age_group)) age_group <- output_age_group
 
     ## -------* Load .csv
 
