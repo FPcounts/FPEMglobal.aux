@@ -1,6 +1,6 @@
+
 ###-----------------------------------------------------------------------------
 ### * Interpret Character Strings
-
 
 ##' Attempt to guess marital group from run name
 ##'
@@ -18,14 +18,6 @@ guess_marital_group <- function(run_name) {
         else if (u) "unmarried"
         else if (a) "all_women"
     } else NULL
-}
-
-
-## Conversion from short/acronym marital group names to long names.
-get_std_marr_group_names <- function(named = TRUE) {
-    out <- c("mwra" = "married", "uwra" = "unmarried", "wra" = "all_women")
-    if (named) return(out)
-    else return(unname(out))
 }
 
 

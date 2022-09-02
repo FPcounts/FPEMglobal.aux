@@ -9,7 +9,7 @@ get_csv_res(
   output_dir = NULL,
   root_dir = NULL,
   aggregate = "country",
-  stat = c("perc", "count", "ratio"),
+  stat = c("prop", "count", "ratio"),
   add_stat_column = FALSE,
   adjusted = c("orig", "adj", "sub_adj"),
   add_adjusted_column = identical(adjusted, "sub_adj"),
@@ -84,11 +84,18 @@ A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
 Reads \emph{all} results \file{.csv} files from a results
-directory for a given country or region that contain percentages,
+directory for a given country or region that contain proportions,
 counts, and ratios. The files are read using
 \code{\link[readr]{read_csv}}.
 }
 \details{
+The \code{stat} argument specifies the type of results to
+return. Results are stored separately for prevalence proportions,
+ratio indicators, and number of users. These can be requested by,
+respectively, \code{"prop"}, \code{"ratio"}, \code{"count"}. Note
+that prevalence \emph{proportions} are stored in \file{.csv} files
+with \dQuote{perc} in their names.
+
 \code{clean_col_names} applies \code{\link{clean_col_names}} to
 the column names. This tidies up and standardizes column
 names. \emph{Note:} An additional step is performed after calling

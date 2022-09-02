@@ -19,7 +19,7 @@ package.
 \section{Note}{
 
 \pkg{fpemdata} only requires the proportions which
-can be read via \code{get_csv_res(..., stat = "perc",
+can be read via \code{get_csv_res(..., stat = "prop",
     ...)}.
 }
 

@@ -1,4 +1,25 @@
+###-----------------------------------------------------------------------------
+### * Convert and Expand Trajectories
 
+###-----------------------------------------------------------------------------
+### ** Support Functions
+
+## traj_array Indicator names in countrytrajectories arrays
+get_traj_array_indicator_names_count <- function() {
+    c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet",
+       "TradPlusUnmet")
+}
+
+get_traj_array_indicator_names_prop <- function() {
+    get_traj_array_indicator_names_count()
+}
+
+get_traj_array_indicator_names_ratio <- function() {
+    c("Modern/Total", "Met Demand", "Z", "Met Demand with Modern Methods")
+}
+
+
+## Checks inputs to the various converter functions.
 traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL) {
     ## Colnames of denominators
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts)))
@@ -22,121 +43,210 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 }
 
 
+###-----------------------------------------------------------------------------
+### ** Conversion Functions
 
-convert_country_traj_to_counts <- function(traj_array, denominator_counts_df, iso = NULL) {
+
+##' Transform MCMC trajectories
+##'
+##' These functions transform country trajectories between counts and
+##' proportions, and from counts to ratios. Country trajectories for
+##' married and unmarried women runs are prevalence proportions (see
+##' \code{\link{get_country_traj_muw}}); country trajectories for all
+##' women runs are counts (see \code{link{get_country_traj_aw}}).
+##'
+##' Conversions between counts and proportions require denominator
+##' counts. Since each trajectory array is only for a single country
+##' or area, the denominators must match. Argument \code{iso} can be
+##' used to subset \code{denominator_counts_df} if needed. In that
+##' case, the ISOs must be in column \code{"iso"}. See
+##' \code{\link{get_used_denominators}}.
+##'
+##' @param traj_array_props Trajectory array of proportions (for
+##'     \code{convert_country_traj_to_counts}).
+##' @param traj_array_counts Trajectory array of counts (for
+##'     \code{convert_country_traj_to_props} and
+##'     \code{convert_country_traj_to_ratios}).
+##' @param denominator_counts_df Data frame of denominator counts (as
+##'     produced by \code{\link{get_used_denominators}}).
+##' @param iso Numeric ISO code of the country to select from
+##'     \code{denominator_counts_df}; see \dQuote{Details}.
+##' @return Trajectory array.
+##' @author Mark Wheldon
+##'
+##' @family Trajectory conversion functions
+##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
+##'
+##' @export
+convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_df, iso = NULL) {
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array))
+    stopifnot(is.array(traj_array_props))
     stopifnot(is.data.frame(denominator_counts))
 
-    if (any(traj_array) > 1)
-        stop("Some elements of 'traj_array' are > 1. They should all be proportions. Did you pass in an all women trajectory array?")
+    if (any(traj_array_props) > 1)
+        stop("Some elements of 'traj_array_props' are > 1. They should all be proportions. Did you pass in an all women trajectory array or an array of counts?")
 
     denominator_counts_df <-
-        traj_converters_arg_check(traj_array = traj_array, denominator_counts_df = denominator_counts_df, iso = iso)
+        traj_converters_arg_check(traj_array = traj_array_props, denominator_counts_df = denominator_counts_df, iso = iso)
 
     ## -------* Convert to Counts
 
     ## Year index
-    year_vec <- floor(as.numeric(dimnames(traj_array)[[1]]))
+    year_vec <- floor(as.numeric(dimnames(traj_array_props)[[1]]))
     year_match <- match(year_vec, denominator_counts_df$year)
     if (any(is.na(year_match)))
-        stop("Cannot match years in 'traj_array' and 'denominator_counts_df'.")
+        stop("Cannot match years in 'traj_array_props' and 'denominator_counts_df'.")
 
     ## Put denominators into an array and multiply
-    return(traj_array * array(denominator_counts_df[year_match, "count"],
-                              dim = c(length(unique(denominator_counts_df$year)), dim(traj_array)[[2]], dim(traj_array)[[3]])))
+    return(traj_array_props * array(denominator_counts_df[year_match, "count"],
+                              dim = c(length(unique(denominator_counts_df$year)), dim(traj_array_props)[[2]], dim(traj_array_props)[[3]])))
 }
 
 
-convert_country_traj_to_props <- function(traj_array, denominator_counts_df, iso = NULL) {
+##' @rdname convert_country_traj_to_counts
+##' @export
+convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_df, iso = NULL) {
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array))
+    stopifnot(is.array(traj_array_counts))
     stopifnot(is.data.frame(denominator_counts))
 
+    if (all(traj_array_counts <= 1))
+        warning("*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
+
     denominator_counts_df <-
-        traj_converters_arg_check(traj_array = traj_array, denominator_counts_df = denominator_counts_df, iso = iso)
+        traj_converters_arg_check(traj_array = traj_array_counts, denominator_counts_df = denominator_counts_df, iso = iso)
 
     ## -------* Convert to Proportions
 
     ## Year index
-    year_vec <- floor(as.numeric(dimnames(traj_array)[[1]]))
+    year_vec <- floor(as.numeric(dimnames(traj_array_counts)[[1]]))
     year_match <- match(year_vec, denominator_counts_df$year)
     if (any(is.na(year_match)))
-        stop("Cannot match years in 'traj_array' and 'denominator_counts_df'.")
+        stop("Cannot match years in 'traj_array_counts' and 'denominator_counts_df'.")
 
     ## Put denominators into an array and divide
-    return(traj_array / array(denominator_counts_df[year_match, "count"],
-                              dim = c(length(unique(denominator_counts_df$year)), 3, dim(traj_array)[[3]])))
+    return(traj_array_counts / array(denominator_counts_df[year_match, "count"],
+                              dim = c(length(unique(denominator_counts_df$year)), 3, dim(traj_array_counts)[[3]])))
 }
 
 
-expand_country_traj <- function(traj_array, denominator_counts_df,
-                                    stat_in = c("prop", "count"),
-                                    stat_out = c("prop", "count", "ratio"),
-                                    iso = NULL) {
+##' @rdname convert_country_traj_to_counts
+##' @export
+convert_country_traj_to_ratios <- function(traj_array_counts) {
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array))
-    stopifnot(is.data.frame(denominator_counts))
-    stat_in <- match.arg(stat_in)
-    stat_out <- match.arg(stat_out)
+    stopifnot(is.array(traj_array_counts))
 
-    if (!all(c("Modern", "Traditional", "Unmet") %in% dimnames(traj_array)[[2]]))
-        stop("'traj_array' must have indicators ", toString(c("Modern", "Traditional", "Unmet")), ".")
+    needed_indicators <- c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet", "TradPlusUnmet", "NoUse")
+    if (!all(needed_indicators %in% dimnames(traj_array_counts[[2]])))
+        stop("'traj_array_counts' must have at least the indicators ", toString(needed_indicators), ". If you are missing 'NoUse', use 'expand_country_traj_count(..., incl_no_use = TRUE, ...)'.")
 
-    if (identical(stat_in, "prop")) {
-        if (any(traj_array > 1))
-            stop("Some elements of 'traj_array' are > 1. They should all be proportions. Did you pass in an all women trajectory array?")
-    }
+    if (all(traj_array_counts <= 1))
+        warning("*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
 
-    if (identical(stat_in, "count")) {
-        if (all(traj_array <= 1))
-            warning("*All* elements of 'traj_array' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
-    }
+    ## -------* Convert to Ratios
 
-    denominator_counts_df <-
-        traj_converters_arg_check(traj_array = traj_array, denominator_counts_df = denominator_counts_df, iso = iso)
+    return(abind::abind(traj_array_counts[, "Modern", ] / traj_array_counts[, "Total", ],
+                        traj_array_counts[, "Total", ] / (traj_array_counts[, "Total", ] + traj_array_counts[, "Unmet", ]),
+                        traj_array_counts[, "Unmet", ] / (traj_array_counts[, "Unmet", ] + traj_array_counts[, "NoUse", ]),
+                        traj_array_counts[, "Modern", ] / (traj_array_counts[, "Total", ] + traj_array_counts[, "Unmet", ]),
+                        along = 3,
+                        new.names = list(dimnames(traj_array_counts)[[1]],
+                                         c("Modern/Total", "Met Demand", "Z", "Met Demand with Modern Methods"),
+                                         NULL)))
+}
 
-    ## -------* Convert to Counts
 
-    ## Must be counts to expand
+##' Expand country count trajectory arrays by adding indicators
+##'
+##' Country trajectory arrays for married and unmarried women only
+##' contain trajectories for \code{"Traditional"}, \code{"Modern"},
+##' and \code{"Total"}. This function will add \code{"Total"},
+##' \code{"TotalPlusUnmet"}, \code{"TradPlusUnmet"}, and (optionally)
+##' \code{"NoUse"}.
+##'
+##' @inheritParams convert_country_traj_to_counts
+##' @param incl_no_use Logical; should \code{"NoUse"} be added? If so,
+##'     you must supply \code{denominator_counts_df}.
+##' @return An expanded trajectory array of counts.
+##' @author Mark Wheldon
+##'
+##' @family Trajectory conversion functions
+##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
+##'
+##' @export
+expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(denominator_counts_df),
+                                      denominator_counts_df = NULL, iso = NULL) {
 
-    if (identical(stat_in, "prop")) {
-        traj_array <-
-            convert_country_traj_to_counts(traj_array = traj_array,
-                                               denominator_counts_df = denominator_counts_df,
-                                               iso = iso)
+    ## -------* Check Inputs
+
+    stopifnot(is.array(traj_array_counts))
+
+    if (!all(c("Modern", "Traditional", "Unmet") %in% dimnames(traj_array_counts)[[2]]))
+        stop("'traj_array_counts' must have indicators ", toString(c("Modern", "Traditional", "Unmet")), ".")
+
+    all_ind_names <- get_traj_array_indicator_names_count()
+    if (incl_no_use) all_ind_names <- c(all_ind_names, "NoUse")
+    if (all(all_ind_names %in% dimnames(traj_array_counts)[[2]]))
+        warning("'traj_array_counts' already expanded; did you supply an all women array?")
+
+    if (incl_no_use) {
+
+        ## -------* Calculate 'No Use' Category
+
+        if (is.null(denominator_counts_df))
+            stop("If 'incl_no_use' is 'TRUE', you must supply 'denominator_counts_df'.")
+
+        denominator_counts_df <-
+            traj_converters_arg_check(traj_array = traj_array_counts, denominator_counts_df = denominator_counts_df, iso = iso)
+
+        ## Year index
+        year_vec <- floor(as.numeric(dimnames(traj_array_counts)[[1]]))
+        year_match <- match(year_vec, denominator_counts_df$year)
+        if (any(is.na(year_match)))
+            stop("Cannot match years in 'traj_array_counts' and 'denominator_counts_df'.")
+
+        denom_counts_matrix <-
+            matrix(denominator_counts_df[year_match, "count"],
+                  nrow = length(unique(denominator_counts_df$year)), ncol = dim(traj_array_counts)[[3]])
+
     }
 
     ## -------* Expand
 
-    traj_array <- abind::abind(traj_array[, "Modern", ] + traj_array[, "Traditional", ],
-                               traj_array[, "Modern", ],
-                               traj_array[, "Traditional", ],
-                               traj_array[, "Unmet", ],
-                               traj_array[, "Modern", ] + traj_array[, "Traditional", ] + traj_array[, "Unmet", ],
-                               traj_array[, "Traditional", ] + traj_array[, "Unmet", ],
-                               along = 3,
-                               new.names = list(dimnames(traj_array)[[1]],
-                                                c("Total", "Modern", "Traditional", "Unmet", "TotalPlusUnmet", "TradPlusUnmet"),
-                                                NULL))
+    if (!incl_no_use) {
 
-    ## -------* Convert for Output
+        return(abind::abind(traj_array_counts[, "Modern", ] + traj_array_counts[, "Traditional", ],
+                            traj_array_counts[, "Traditional", ],
+                            traj_array_counts[, "Modern", ],
+                            traj_array_counts[, "Unmet", ],
+                            traj_array_counts[, "Modern", ] + traj_array_counts[, "Traditional", ] + traj_array_counts[, "Unmet", ],
+                            traj_array_counts[, "Traditional", ] + traj_array_counts[, "Unmet", ],
+                            along = 3,
+                            new.names = list(dimnames(traj_array_counts)[[1]],
+                                             c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet", "TradPlusUnmet"),
+                                             NULL)))
 
-    if (identical(stat_out, "prop"))
-        traj_array <-
-            convert_country_traj_to_props(traj_array = traj_array,
-                                          denominator_counts_df = denominator_counts_df,
-                                          iso = iso)
+    } else {
 
-    ## -------* END
+        return(abind::abind(traj_array_counts[, "Modern", ] + traj_array_counts[, "Traditional", ],
+                            traj_array_counts[, "Traditional", ],
+                            traj_array_counts[, "Modern", ],
+                            traj_array_counts[, "Unmet", ],
+                            traj_array_counts[, "Modern", ] + traj_array_counts[, "Traditional", ] + traj_array_counts[, "Unmet", ],
+                            traj_array_counts[, "Traditional", ] + traj_array_counts[, "Unmet", ],
+                            denom_counts_matrix - traj_array_counts[, "Total", ] - traj_array_counts[, "Unmet", ],
+                            along = 3,
+                            new.names = list(dimnames(traj_array_counts)[[1]],
+                                             c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet", "TradPlusUnmet", "NoUse"),
+                                             NULL)))
 
-    return(traj_array)
+    }
 }
 
 
