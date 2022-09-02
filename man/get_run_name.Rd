@@ -28,6 +28,7 @@ used.
 }
 \seealso{
 Other model_run_meta_info: 
+\code{\link{get_combine_runs_args}()},
 \code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_global_post_process_args}()},

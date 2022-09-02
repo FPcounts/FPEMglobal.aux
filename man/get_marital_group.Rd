@@ -77,10 +77,11 @@ These functions get and check the marital group and age group of
 an FPEMglobal model run. \code{is_marital_group_run} is intended
 for checking if runs are either \code{"married"} or
 \code{"unmarried"} only. Use \code{is_all_women_run} to check if a
-run is an \code{"all women"} run.
+run is an \code{"all_women"} run.
 }
 \seealso{
 Other model_run_meta_info: 
+\code{\link{get_combine_runs_args}()},
 \code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_global_post_process_args}()},

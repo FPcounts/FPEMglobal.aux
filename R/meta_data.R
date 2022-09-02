@@ -93,9 +93,9 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
 ##' \code{\link{load}}s and returns the \file{global_mcmc_args.RData}
 ##' file from the output directory. This contains the values of all
 ##' arguments passed to \pkg{FPEMglobal} functions (e.g.,
-##' \code{\link[FPEMglobal]{do_global_mcmc}}). This will cause the
-##' printing of a large amount of output; it is usually much better to
-##' assign the result to a variable name.
+##' \code{\link[FPEMglobal]{do_global_mcmc}}). This function will throw
+##' an error if \code{output_dir} is an all women output
+##' directory.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -112,10 +112,43 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = FALSE)
+    if (is_all_women_run(output_dir = res_dir)) stop("'res_dir' is an all women run; 'get_global_mcmc_args' not available.")
     tmp_env <- new.env()
-    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.rda"), "'."),
+    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.RData"), "'."),
                          add = TRUE, after = FALSE)
     return(get(load(file = file.path(res_dir, "global_mcmc_args.RData"), envir = tmp_env), envir = tmp_env))
+}
+
+
+##' Get the arguments used to combine married and unmarried runs
+##'
+##' \code{\link{load}}s and returns the \file{combine_runs_args.RData}
+##' file from the output directory. This contains the values of all
+##' arguments passed to the \pkg{FPEMglobal} function
+##' \code{\link[FPEMglobal]{combine_runs}}. This function will throw
+##' an error if \code{output_dir} is not an all women output
+##' directory.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##'
+##' @return A named list.
+##'
+##' @author Mark Wheldon
+##'
+##' @family model_run_meta_info
+##' @export
+get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                 verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
+    if (!is_all_women_run(output_dir = res_dir)) stop("'res_dir' is not an all women run; 'combine_runs_args' not available.")
+    tmp_env <- new.env()
+    if (verbose) on.exit(message("Loaded '", file.path(res_dir, "combine_runs_args.RData"), "'."),
+                         add = TRUE, after = FALSE)
+    return(get(load(file = file.path(res_dir, "combine_runs_args.RData"), envir = tmp_env), envir = tmp_env))
 }
 
 
