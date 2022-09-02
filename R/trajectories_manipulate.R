@@ -71,6 +71,7 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 ##'     produced by \code{\link{get_used_denominators}}).
 ##' @param iso Numeric ISO code of the country to select from
 ##'     \code{denominator_counts_df}; see \dQuote{Details}.
+##' @param safe Elevate some warnings to errors.
 ##' @return Trajectory array.
 ##' @author Mark Wheldon
 ##'
@@ -107,15 +108,17 @@ convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_
 
 ##' @rdname convert_country_traj_to_counts
 ##' @export
-convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_df, iso = NULL) {
+convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_df, iso = NULL, safe = TRUE) {
 
     ## -------* Check Inputs
 
     stopifnot(is.array(traj_array_counts))
     stopifnot(is.data.frame(denominator_counts))
 
-    if (all(traj_array_counts <= 1))
-        warning("*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
+    if (all(traj_array_counts <= 1)) {
+        msg <- "*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?"
+        if (safe) stop(msg)
+        else warning(msg)
 
     denominator_counts_df <-
         traj_converters_arg_check(traj_array = traj_array_counts, denominator_counts_df = denominator_counts_df, iso = iso)

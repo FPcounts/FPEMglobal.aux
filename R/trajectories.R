@@ -157,7 +157,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @author Mark Wheldon
 ##' @export
 get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                iso_cod
+                                iso_code,
                                  round_down_years = FALSE,
                                 verbose = FALSE) {
     output_dir <-
