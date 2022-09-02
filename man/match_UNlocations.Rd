@@ -22,6 +22,18 @@ following the class of \code{x}.
 Converts between the country names in
 \code{\link[wpp2019]{UNlocations}} and those in the \pkg{\link{FPEMglobal}} outputs.
 }
+\seealso{
+Other String utility functions: 
+\code{\link{clean_col_names}()},
+\code{\link{clean_indic_names}()},
+\code{\link{convert_param_name}()},
+\code{\link{get_aggregate_names}()},
+\code{\link{list_indicator_names}()},
+\code{\link{make_c_names_manus}()},
+\code{\link{make_reg_names_manus}()},
+\code{\link{shorten_reg_names_manus}()}
+}
 \author{
 Mark Wheldon
 }
+\concept{String utility functions}

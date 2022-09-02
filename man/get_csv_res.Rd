@@ -8,7 +8,7 @@ get_csv_res(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  aggregate = "Country",
+  aggregate = "country",
   stat = c("perc", "count", "ratio"),
   add_stat_column = FALSE,
   adjusted = c("orig", "adj", "sub_adj"),
@@ -35,7 +35,7 @@ ignored if \code{output_dir} is supplied.}
 the directory called \dQuote{output}.}
 
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregate = "Country"} to load country results.}
+\code{aggregate = "country"} to load country results.}
 
 \item{stat}{Which statistics should be loaded? Allowable values
 are \code{c("orig", "adj", "sub_adj")}.}
@@ -53,16 +53,20 @@ are not (\code{FALSE}).}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
-\code{\link{clean_col_names}}. See \dQuote{Details} for
-a note about \dQuote{percentile} vs. \dQuote{quantile}.}
+\code{\link{clean_col_names}}. See \dQuote{Details} for a note
+about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{clean_indicator_names}{Logical; see \dQuote{Details}.}
+\item{clean_indicator_names}{Logical; use
+\code{\link{clean_indic_names}} to modify the strings used to
+name family planning indicators?}
 
 \item{round_down_years}{Should years in \dQuote{yyyy.5} format be
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
-\item{add_country_classifications}{Add on columns with geographic
-country classifications? See \dQuote{Details}.}
+\item{add_country_classifications}{Logical; add on columns with
+geographic country classifications? Only has an effect if
+\code{aggregate} is \code{"country"}. See also
+\dQuote{Details}.}
 
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
@@ -85,13 +89,6 @@ counts, and ratios. The files are read using
 \code{\link[readr]{read_csv}}.
 }
 \details{
-If \code{clean_indicator_names} is \code{TRUE}, the names of the
-family planning indicators are made all lower case and spaces (and
-other non-letter characters) are removed. \emph{Note:} This is not
-quite the same as lower snake case as spaces are not replaced with
-underscores, rather they are just removed resulting in a single
-unbroken string.
-
 \code{clean_col_names} applies \code{\link{clean_col_names}} to
 the column names. This tidies up and standardizes column
 names. \emph{Note:} An additional step is performed after calling

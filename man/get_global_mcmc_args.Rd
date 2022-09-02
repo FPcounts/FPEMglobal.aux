@@ -33,12 +33,13 @@ A named list.
 \code{\link{load}}s and returns the \file{global_mcmc_args.RData}
 file from the output directory. This contains the values of all
 arguments passed to \pkg{FPEMglobal} functions (e.g.,
-\code{\link[FPEMglobal]{do_global_mcmc}}). This will cause the
-printing of a large amount of output; it is usually much better to
-assign the result to a variable name.
+\code{\link[FPEMglobal]{do_global_mcmc}}). This function will throw
+an error if \code{output_dir} is an all women output
+directory.
 }
 \seealso{
 Other model_run_meta_info: 
+\code{\link{get_combine_runs_args}()},
 \code{\link{get_country_index}()},
 \code{\link{get_global_post_process_args}()},
 \code{\link{get_marital_group}()},

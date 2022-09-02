@@ -50,8 +50,8 @@ taken from the column names.}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
-\code{\link{clean_col_names}}. See \dQuote{Details} for
-a note about \dQuote{percentile} vs. \dQuote{quantile}.}
+\code{\link{clean_col_names}}. See \dQuote{Details} for a note
+about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
