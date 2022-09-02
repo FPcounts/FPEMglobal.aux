@@ -49,3 +49,21 @@ get_fancy_marr_group_names <- function(return_case = c("lower", "sentence", "tit
     else if (identical(return_case, "title")) return(basis)
     return(stop("Nothing selected"))
 }
+
+
+##' Lists unique parameter names in mcmc array
+##'
+##' Parameters in the mcmc.array object are named with country and
+##' region indices, e.g., \code{theta.ci[98,7]}. This function
+##' strips the indices in the square brackets, and the square brackets
+##' themselves, and returns the unique strings in what's left. This is
+##' helpful for listing the \emph{names} of the parameters.
+##'
+##' @param mcmc_array An mcmc array from a completed model run, e.g.,
+##'     of the kind retrieved by \code{\link{get_model_traj}}.
+##' @return Character vector of unique names.
+##' @author Mark Wheldon
+##' @export
+extract_model_param_names <- function(mcmc_array) {
+    unique(gsub("\\[[0-9,]+\\]", "", dimnames(mcmc_array)[[3]]))
+}
