@@ -1,5 +1,8 @@
 ###-----------------------------------------------------------------------------
-### * Work with Country Names
+### * Text Manipulation
+
+###-----------------------------------------------------------------------------
+### ** Locations
 
 ##' Standardize country names for manuscripts
 ##'
@@ -199,7 +202,7 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb"
 
 
 ###-----------------------------------------------------------------------------
-### * Parameter Names
+### ** Parameter Names
 
 ##' Convert parameter names in code to plain English
 ##'
@@ -226,7 +229,7 @@ convert_param_name <- function(x) {
 
 
 ###-----------------------------------------------------------------------------
-### * Misc Text String Manipulations
+### ** Indicators and Columns
 
 
 ##' Report all possible names of family planning indicators used in FPEMglobal
@@ -325,29 +328,37 @@ clean_col_names <- function(x, ...) {
 
 ##' @rdname clean_col_names
 ##' @export
-clean_col_names.character <- function(x, use_make.names = TRUE) {
+clean_col_names.character <- function(x, use_make.names = TRUE, clean_indicator_names = FALSE) {
     x <- lower_snake_casify(x, use_make.names = use_make.names)
     x[x == "iso_code"] <- "iso"
     x[x == "iso_country"] <- "iso"
     x[x %in% c("country", "country_or_area")] <- "name"
+    if (!clean_indicator_names) {
+        for (z in list_indicator_names()) {
+            x <- gsub(pattern = lower_snake_casify(z, use_make.names = use_make.names),
+                      replacement = z,
+                      x = x)
+        }
+    }
     return(x)
 }
 
 ##' @rdname clean_col_names
 ##' @export
-clean_col_names.data.frame <- function(x, use_make.names = TRUE) {
-    colnames(x) <- clean_col_names(colnames(x), use_make.names = use_make.names)
+clean_col_names.data.frame <- function(x, use_make.names = TRUE, clean_indicator_names = FALSE) {
+    colnames(x) <- clean_col_names(colnames(x), use_make.names = use_make.names,
+                                   clean_indicator_names = clean_indicator_names)
     return(x)
 }
 
 ##' @rdname clean_col_names
 ##' @export
-clean_col_names.list <- function(x, use_make.names = TRUE) {
+clean_col_names.list <- function(x, use_make.names = TRUE, clean_indicator_names = FALSE) {
     avail_methods <-
         gsub("clean_col_names\\.", "",
              row.names(attr(methods("clean_col_names"), "info")))
-    lapply(x, function(z, umn = use_make.names, am = avail_methods) {
+    lapply(x, function(z, umn = use_make.names, cin = clean_indicator_names, am = avail_methods) {
         if (class(z) %in% am)
-            clean_col_names(z, use_make.names = umn)
+            clean_col_names(z, use_make.names = umn, clean_indicator_names = cin)
     })
 }

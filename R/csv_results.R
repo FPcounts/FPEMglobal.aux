@@ -64,9 +64,6 @@
 ##'     are not (\code{FALSE}).
 ##' @param round_down_years Should years in \dQuote{yyyy.5} format be
 ##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
-##' @param clean_indicator_names Logical; use
-##'     \code{\link{clean_indic_names}} to modify the strings used to
-##'     name family planning indicators?
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
 ##'     \code{\link{clean_col_names}}. See \dQuote{Details} for a note
@@ -102,7 +99,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              adjusted = c("orig", "adj", "sub_adj"),
                              add_adjusted_column = identical(adjusted, "sub_adj"),
                              clean_col_names = TRUE,
-                             clean_indicator_names = clean_col_names,
                              round_down_years = FALSE,
                              add_country_classifications = FALSE,
                              table_format = c("long", "wide", "raw"),
