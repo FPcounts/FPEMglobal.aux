@@ -60,11 +60,6 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##'  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
 ##'  ..$ : NULL}
 ##'
-##' If \code{round_down_years} is \code{TRUE}, the year labels are rounded
-##' down to the nearest integer. E.g., \code{"1970.5"} becomes
-##' \code{"1970"}.This affects the \code{dimnames} of the first
-##' dimension of the result matrix.
-##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The country trajectories for all women are stored differently. Do
 ##' not use this function for all women country trajectories. Use
@@ -82,15 +77,11 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' @inheritParams get_csv_res
 ##' @param iso_code Numeric ISO code of country to get trajectories
 ##'     for.
-##' @param round_down_years Should year names within the result's dimnames
-##'     be rounded down to integer values (e.g., 1970.5 becomes 1970)?
-##'     See \dQuote{Details}.
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
 get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  iso_code,
-                                 round_down_years = FALSE,
                                  verbose = FALSE) {
 
     output_dir <-
@@ -115,8 +106,6 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
-
-    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
 
     return(obj)
 }
@@ -158,7 +147,6 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @export
 get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 iso_code,
-                                 round_down_years = FALSE,
                                 verbose = FALSE) {
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -177,8 +165,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
     if (verbose) message("Reading '", traj_full_path, "'.")
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
-    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
-
     return(obj)
 }
 
@@ -189,7 +175,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##                              iso,
 ##                              stat = c("prop", "count", "ratio"),
 ##                              indicators,
-##                              round_down_years = FALSE,
 ##                              verbose = FALSE) {
 ##     output_dir <-
 ##         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -217,7 +202,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##         if (identical(stat, "count") &&
 ##             all(indicators %in% dimnames(traj)[[2]])) {
 ##             traj <- traj[, indicators, , drop = FALSE]
-##             if (round_down_years) dimnames(traj)[[1]] <- round_down_years(dimnames(traj)[[1]])
 ##             return(traj)
 ##         }
 
@@ -240,7 +224,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##         if (identical(stat, "prop") &&
 ##             all(indicators %in% dimnames(traj)[[2]])) {
 ##             traj <- traj[, indicators, , drop = FALSE]
-##             if (round_down_years) dimnames(traj)[[1]] <- round_down_years(dimnames(traj)[[1]])
 ##             return(traj)
 ##         }
 ##     }
@@ -327,7 +310,6 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
                          marital_group = c("married", "unmarried", "all_women"),
-                                 round_down_years = FALSE,
                          verbose = FALSE) {
 
     if (missing(agg_name)) stop("Must supply 'agg_name'.")
@@ -353,8 +335,6 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
     obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)[["CP"]]
-
-    if (round_down_years) dimnames(obj)[[1]] <- round_down_years(dimnames(obj)[[1]])
 
     return(obj)
 }
