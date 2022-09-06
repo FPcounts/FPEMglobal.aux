@@ -9,7 +9,6 @@ get_country_traj_muw(
   output_dir = NULL,
   root_dir = NULL,
   iso_code,
-  round_down_years = FALSE,
   verbose = FALSE
 )
 }
@@ -26,10 +25,6 @@ the directory called \dQuote{output}.}
 
 \item{iso_code}{Numeric ISO code of country to get trajectories
 for.}
-
-\item{round_down_years}{Should year names within the result's dimnames
-be rounded down to integer values (e.g., 1970.5 becomes 1970)?
-See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
@@ -55,11 +50,6 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...
  ..$ : chr [1:3] "Traditional" "Modern" "Unmet"
  ..$ : NULL}
-
-If \code{round_down_years} is \code{TRUE}, the year labels are rounded
-down to the nearest integer. E.g., \code{"1970.5"} becomes
-\code{"1970"}.This affects the \code{dimnames} of the first
-dimension of the result matrix.
 
 \subsection{Married/unmarried vs all women trajectories}{
 The country trajectories for all women are stored differently. Do

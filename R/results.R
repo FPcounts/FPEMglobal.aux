@@ -65,7 +65,9 @@ get_country_summary_results <- function(run_name = NULL, output_dir = NULL, root
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE, countrytrajectories = FALSE,
+                           made_results = FALSE)
 
     if (is_all_women_run(output_dir = output_dir))
         fname <- "res.country.all.women.rda"

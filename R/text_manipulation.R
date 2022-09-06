@@ -225,7 +225,21 @@ convert_param_name <- function(x) {
                "Asymptote (Mod/Trad)",
                "Intercept (Z)")
     plain[x == code]
-    }
+}
+
+
+###-----------------------------------------------------------------------------
+### ** Marital Groups
+
+## Get 'long' marital group name from the acronym
+switch_marr_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
+    x <- tolower(x)
+    x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
+    if (identical(x, "awra")) x <- "wra"
+    return_case <- match.arg(return_case)
+    basis <- get_std_marr_group_names(return_case = return_case, named = TRUE)
+    return(as.character(basis[x])) # Need 'as.character' to remove names.
+}
 
 
 ###-----------------------------------------------------------------------------
@@ -242,7 +256,7 @@ convert_param_name <- function(x) {
 ##' @family String utility functions
 ##'
 ##' @export
-list_indicator_names <- function() {
+get_std_indicator_names <- function() {
     c("Modern", "ModernOverTotal", "MetDemand", "metDemGT_modMeth75pc",
       "MetDemModMeth",
       "NoUse", "Traditional", "Total", "TotalPlusUnmet", "Unmet", "Z")
@@ -264,14 +278,14 @@ list_indicator_names <- function() {
 ##' @examples
 ##'
 ##' ## Known indicators are:
-##' list_indicator_names()
+##' get_std_indicator_names()
 ##'
 ##' @export
 clean_indic_names <- function(indicator) {
     clean <- function(x) {
         tolower(gsub("[ ]+", "_", x))
     }
-    ## regexp <- paste(list_indicator_names(), collapse = "|")
+    ## regexp <- paste(get_std_indicator_names(), collapse = "|")
     ## match_list <- gregexpr(pattern = regexp, text = indicator)
     ## mapply(function(as.list(ind), mat) {
 
@@ -334,7 +348,7 @@ clean_col_names.character <- function(x, use_make.names = TRUE, clean_indicator_
     x[x == "iso_country"] <- "iso"
     x[x %in% c("country", "country_or_area")] <- "name"
     if (!clean_indicator_names) {
-        for (z in list_indicator_names()) {
+        for (z in get_std_indicator_names()) {
             x <- gsub(pattern = lower_snake_casify(z, use_make.names = use_make.names),
                       replacement = z,
                       x = x)

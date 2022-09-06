@@ -9,7 +9,6 @@ get_country_traj_aw(
   output_dir = NULL,
   root_dir = NULL,
   iso_code,
-  round_down_years = FALSE,
   verbose = FALSE
 )
 }
@@ -26,9 +25,6 @@ the directory called \dQuote{output}.}
 
 \item{iso_code}{Numeric ISO code of country to get trajectories
 for.}
-
-\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
-rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}

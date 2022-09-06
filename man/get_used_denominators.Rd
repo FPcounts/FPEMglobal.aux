@@ -9,7 +9,7 @@ get_used_denominators(
   output_dir = NULL,
   root_dir = NULL,
   filename = NULL,
-  marital_group = c("default", "married", "unmarried", "all_women"),
+  marital_group = c("default", "married", "unmarried", "all women"),
   add_marital_group = length(marital_group) > 1L,
   age_group = NULL,
   add_age_group = TRUE,
@@ -78,7 +78,7 @@ identify records accordingly (regardless the value of
 \code{add_marital_group}). Value \code{"default"} will read the
 the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
 the marital group matching that of the output is included. If
-\code{"all_women"} is included, values will be constructed by
+\code{"all women"} is included, values will be constructed by
 summing the married and unmarried denominators.
 
 If \code{table_format} is \code{"long"}, the counts are in a

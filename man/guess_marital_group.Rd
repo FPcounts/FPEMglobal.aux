@@ -11,7 +11,7 @@ guess_marital_group(run_name)
 }
 \value{
 Returns \dQuote{married}, \dQuote{unmarried}, or
-\dQuote{all_women} if only one of them was found in
+\dQuote{all women} if only one of them was found in
 \code{run_name}. Otherwise returns \code{NULL}.
 }
 \description{

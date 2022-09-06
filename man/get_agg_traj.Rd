@@ -10,8 +10,7 @@ get_agg_traj(
   root_dir = NULL,
   agg_name,
   agg_family_name = "UNPDaggregates",
-  marital_group = c("married", "unmarried", "all_women"),
-  round_down_years = FALSE,
+  marital_group = c("married", "unmarried", "all women"),
   verbose = FALSE
 )
 }
@@ -34,10 +33,6 @@ trajectories. This must match the filename \emph{exactly} (see
 retrieve trajectories. This must match the name of the
 subdirectory of \code{file.path(output_dir,
     "aggregatetrajectories")}.}
-
-\item{round_down_years}{Should year names within the result's dimnames
-be rounded down to integer values (e.g., 1970.5 becomes 1970)?
-See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}

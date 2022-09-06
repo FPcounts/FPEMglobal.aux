@@ -37,7 +37,7 @@ get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = N
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
-                           post_processed = TRUE)
+                           post_processed = FALSE)
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
                          add = TRUE, after = FALSE)
@@ -231,7 +231,7 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 ##' an FPEMglobal model run. \code{is_marital_group_run} is intended
 ##' for checking if runs are either \code{"married"} or
 ##' \code{"unmarried"} only. Use \code{is_all_women_run} to check if a
-##' run is an \code{"all_women"} run.
+##' run is an \code{"all women"} run.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -245,7 +245,7 @@ get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
                               verbose = FALSE) {
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                               verbose = verbose)$general
-    if (isTRUE(mg$all.women.run.copy)) return("all_women")
+    if (isTRUE(mg$all.women.run.copy)) return("all women")
     else return(switch_marr_group_names(mg$marital.group))
 }
 

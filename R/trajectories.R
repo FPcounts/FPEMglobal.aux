@@ -237,7 +237,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##         if (identical(stat, "prop")) {
 ##             traj <- convert_country_traj_to_props(traj,
 ##                                                   denominator_counts_df = get_used_denominators(output_dir = output_dir,
-##                                                                                                marital_group = "all_women"),
+##                                                                                                marital_group = "all women"),
 ##                                                   iso = iso, safe = FALSE)
 
 ################# HERE HERE HERE ##########################
@@ -309,7 +309,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @export
 get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
-                         marital_group = c("married", "unmarried", "all_women"),
+                         marital_group = c("married", "unmarried", "all women"),
                          verbose = FALSE) {
 
     if (missing(agg_name)) stop("Must supply 'agg_name'.")
@@ -318,7 +318,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## Marital group must match the file naming convention:
     marital_group[marital_group == "married"] <- "mwra"
     marital_group[marital_group == "unmarried"] <- "uwra"
-    marital_group[marital_group == "all_women"] <- "awra"
+    marital_group[marital_group == "all women"] <- "awra"
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -326,7 +326,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
     if (!is_all_women_run(output_dir = output_dir))
-        stop("Aggregate trajectories are stored in the 'all_women' output directory. Call this function on an 'all_women' output directory.")
+        stop("Aggregate trajectories are stored in the 'all women' output directory. Call this function on an 'all women' output directory.")
 
     traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)
