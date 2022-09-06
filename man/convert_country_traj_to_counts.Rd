@@ -26,7 +26,7 @@ convert_country_traj_to_ratios(traj_array_counts)
 \code{convert_country_traj_to_counts}).}
 
 \item{denominator_counts_df}{Data frame of denominator counts (as
-produced by \code{\link{get_used_denominators}}).}
+produced by \code{\link{get_csv_denominators}}).}
 
 \item{iso}{Numeric ISO code of the country to select from
 \code{denominator_counts_df}; see \dQuote{Details}.}
@@ -53,7 +53,7 @@ counts. Since each trajectory array is only for a single country
 or area, the denominators must match. Argument \code{iso} can be
 used to subset \code{denominator_counts_df} if needed. In that
 case, the ISOs must be in column \code{"iso"}. See
-\code{\link{get_used_denominators}}.
+\code{\link{get_csv_denominators}}.
 }
 \seealso{
 \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}

@@ -20,7 +20,7 @@ expand_country_traj_count(
 you must supply \code{denominator_counts_df}.}
 
 \item{denominator_counts_df}{Data frame of denominator counts (as
-produced by \code{\link{get_used_denominators}}).}
+produced by \code{\link{get_csv_denominators}}).}
 
 \item{iso}{Numeric ISO code of the country to select from
 \code{denominator_counts_df}; see \dQuote{Details}.}

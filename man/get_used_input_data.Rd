@@ -42,6 +42,7 @@ run. The file is read using \code{\link[readr]{read_csv}}.
 }
 \seealso{
 Other input_data_functions: 
+\code{\link{get_csv_denominators}()},
 \code{\link{get_used_denominators}()}
 }
 \author{

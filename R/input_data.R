@@ -40,22 +40,86 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 }
 
 
-######################################################################
-##
-## TO DO:
-##
-## 1. Rename existing 'get_used_denominators' to 'get_csv_denominators'.
-## 2. Create new 'get_used_denominators' that reads the W.Lg.t element of res.country.rda.
-##
-######################################################################
-
-
-
 ##' Get denominator counts actually used
 ##'
-##' Reads the '.csv' file containing the married and unmarried
-##' denominator counts used in the run.
+##' @description
+##' Reads denominators from the \file{res.country.rda} or
+##' \file{res.country.all.women.rda} files. The output directory will
+##' have to have been post-processed (i.e., the files loaded will need
+##' to have been created by \pkg{FPEMglobal} functions. If this is not
+##' the case, use \code{\link{get_csv_denominators}}.
 ##'
+##' The counts returned are in units of the individual. Those stored
+##' in the files are in units of 1000 but they are multiplied before
+##' output to match \code{\link{get_csv_denominators}.
+##'
+##' The result is a \code{\link[tibble]{tibble}} with columns \code{"iso"},
+##' \code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
+##' column will have years in \dQuote{mid-year} format because this is
+##' the format in which they are stored in the \file{res....} files.
+##'
+##' @details
+##' To match the format returned by \code{\link{get_csv_denominators},
+##' call this function with \code{round_down_years = TRUE} and use
+##' \preformatted{
+##' get_csv_denominators(...,
+##'                      add_marital_group = FALSE, ..., add_age_group = FALSE,
+##'                      clean_col_names = TRUE, table_format = "long")}
+##' \code{get_csv_denominators} cannot produce a data frame with years
+##' in \dQuote{mid-year} format.
+##'
+##' @inheritParams get_csv_res
+##' @inheritParams get_output_dir
+##' @return A \code{\link[tibble]{tibble}} with the denominators; see
+##'     \dQuote{Details}.
+##' @author Mark Wheldon
+##'
+##' @family input_data_functions
+##'
+##' @export
+get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                  round_down_years = FALSE) {
+
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE, countrytrajectories = FALSE,
+                           made_results = FALSE)
+
+    res <- get_country_summary_results(run_name = run_name, output_dir = output_dir, root_dir = root_dir)
+    iso_names <- data.frame(iso = as.numeric(res$iso.g), name = names(res$CIprop.Lg.Lcat.qt))
+    denom <- expand.grid(iso = as.numeric(res$iso.g),
+                         year = as.numeric(dimnames(res$CIprop.Lg.Lcat.qt[[1]][[1]])[[2]]),
+                         count = NA,
+                         stringsAsFactors = FALSE)
+    denom <- base::merge(denom, iso_names, all.x = TRUE)
+    denom <- denom[with(denom, order(iso, year)), ]
+    for (i in seq_along(res$W.Lg.t)) {
+        nm <- names(res$W.Lg.t)[i]
+        denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * 1000
+    }
+    if (round_down_years) denom$year <- round_down_years(denom$year)
+    return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
+}
+
+
+
+##' Get denominator counts from csv files
+##'
+##' @description
+##' Reads the '.csv' file containing the married and unmarried
+##' denominator counts used in the run. These are in units of the
+##' individual.
+##'
+##' The data frame returned has columns \code{"iso"}, \code{"name"},
+##' \code{"year"}, \code{"count"}. The \code{"year"} column will have
+##' years in \dQuote{1st Jan} format (i.e., whole number years, 1970,
+##' 1971 etc.) because this is the format in which they are stored in
+##' the \file{csv} files. This differs from
+##' \code{\link{get_used_denominators}}. There is no option to return
+##' \dQuote{mid-year} format years from \code{get_csv_denominators}.
+##'
+##' @details
 ##' One or more marital groups can be requested via argument
 ##' \code{marital_group}. If more than one, a column
 ##' \dQuote{\code{marital_group}} will be present in the output to
@@ -93,14 +157,14 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##'
-##' @return A \code{\link[tibble]{tibble}} with the requested results
-##'     in \dQuote{long} format; see \dQuote{Details}.
+##' @return A \code{\link[tibble]{tibble}} with the denominators; see
+##'     \dQuote{Details}.
 ##' @author Mark Wheldon
 ##'
 ##' @family input_data_functions
 ##'
 ##' @export
-get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   filename = NULL,
                                   marital_group = c("default", "married", "unmarried", "all women"),
                                   add_marital_group = length(marital_group) > 1L,

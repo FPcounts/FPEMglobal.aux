@@ -25,7 +25,7 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts)))
         stop("'denominator_counts_df' must have column names ",
              toString(c("iso", "name", "count", "year")),
-             ". Use 'get_used_denominators()' with 'clean_col_names = TRUE' and 'table_format = \"long\"'.")
+             ". Use 'get_csv_denominators()' with 'clean_col_names = TRUE' and 'table_format = \"long\"'.")
 
     ## Denominators must be for one country
     if (length(unique(denominator_counts_df$iso)) > 1) {
@@ -60,7 +60,7 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 ##' or area, the denominators must match. Argument \code{iso} can be
 ##' used to subset \code{denominator_counts_df} if needed. In that
 ##' case, the ISOs must be in column \code{"iso"}. See
-##' \code{\link{get_used_denominators}}.
+##' \code{\link{get_csv_denominators}}.
 ##'
 ##' @param traj_array_props Trajectory array of proportions (for
 ##'     \code{convert_country_traj_to_counts}).
@@ -68,7 +68,7 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 ##'     \code{convert_country_traj_to_props} and
 ##'     \code{convert_country_traj_to_ratios}).
 ##' @param denominator_counts_df Data frame of denominator counts (as
-##'     produced by \code{\link{get_used_denominators}}).
+##'     produced by \code{\link{get_csv_denominators}}).
 ##' @param iso Numeric ISO code of the country to select from
 ##'     \code{denominator_counts_df}; see \dQuote{Details}.
 ##' @param safe Elevate some warnings to errors.

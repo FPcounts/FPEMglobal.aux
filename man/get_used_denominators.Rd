@@ -8,15 +8,7 @@ get_used_denominators(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  filename = NULL,
-  marital_group = c("default", "married", "unmarried", "all women"),
-  add_marital_group = length(marital_group) > 1L,
-  age_group = NULL,
-  add_age_group = TRUE,
-  clean_col_names = TRUE,
-  table_format = c("long", "raw"),
-  verbose = FALSE,
-  ...
+  round_down_years = FALSE
 )
 }
 \arguments{
@@ -30,69 +22,30 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{filename}{Name of file with the counts (including
-extension). If \code{NULL}, this will be inferred from the
-meta data (see \code{\link{get_global_mcmc_args}}.}
-
-\item{marital_group}{Marital group to load denominators for. Can
-be more than one; see \dQuote{Details}. The default is the
-length 1 vector \code{"default"}.}
-
-\item{add_marital_group}{Logical. Should a column
-\dQuote{\code{marital_group}} be added to the output to
-indicate the marital group? Such a column is always added if
-\code{marital_group} has more than one element.}
-
-\item{age_group}{Age group of the counts for the output data
-frame. If the column names are of the form
-'U/MW_[aabb]_year' this is ignored and the age group is
-taken from the column names.}
-
-\item{clean_col_names}{Logical; when \code{TRUE}, the column names
-of the result are \sQuote{cleaned} by applying
-\code{\link{clean_col_names}}. See \dQuote{Details} for a note
-about \dQuote{percentile} vs. \dQuote{quantile}.}
-
-\item{table_format}{Logical or character. Should the table be
-returned in long format? See \dQuote{Details}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
-
-\item{...}{passed to \code{\link{read_csv}}.}
+\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
+rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 }
 \value{
-A \code{\link[tibble]{tibble}} with the requested results
-in \dQuote{long} format; see \dQuote{Details}.
+A data frame with denominator counts.
 }
 \description{
-Reads the '.csv' file containing the married and unmarried
-denominator counts used in the run.
+Reads denominators from the \file{res.country.rda} or
+\file{res.country.all.women.rda} files. The output directory will
+have to have been post-processed (i.e., the files loaded will need
+to have been created by \pkg{FPEMglobal} functions. If this is not
+the case, use \code{\link{get_csv_denominators}}.
+
+The result is a data frame with columns \code{"iso"},
+\code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
+column will have years in \dQuote{mid-year} format because this is
+the format in which they are stored in the \file{res....} files.
 }
 \details{
-One or more marital groups can be requested via argument
-\code{marital_group}. If more than one, a column
-\dQuote{\code{marital_group}} will be present in the output to
-identify records accordingly (regardless the value of
-\code{add_marital_group}). Value \code{"default"} will read the
-the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
-the marital group matching that of the output is included. If
-\code{"all women"} is included, values will be constructed by
-summing the married and unmarried denominators.
 
-If \code{table_format} is \code{"long"}, the counts are in a
-single column called \dQuote{\code{value}}, with the necessary
-identifying columns added. Otherwise the result is in the same
-format as the original counts files, which have one column per
-year.
-
-The poulation denominators are stored in \file{.csv} files in the
-output directory. These are read in using an unexported function
-from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 }
 \seealso{
 Other input_data_functions: 
+\code{\link{get_csv_denominators}()},
 \code{\link{get_used_input_data}()}
 }
 \author{
