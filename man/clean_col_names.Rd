@@ -9,11 +9,11 @@
 \usage{
 clean_col_names(x, ...)
 
-\method{clean_col_names}{character}(x, use_make.names = TRUE)
+\method{clean_col_names}{character}(x, use_make.names = TRUE, clean_indicator_names = FALSE)
 
-\method{clean_col_names}{data.frame}(x, use_make.names = TRUE)
+\method{clean_col_names}{data.frame}(x, use_make.names = TRUE, clean_indicator_names = FALSE)
 
-\method{clean_col_names}{list}(x, use_make.names = TRUE)
+\method{clean_col_names}{list}(x, use_make.names = TRUE, clean_indicator_names = FALSE)
 }
 \arguments{
 \item{x}{Object for which a method is defined (e.g., character

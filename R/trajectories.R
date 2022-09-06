@@ -183,6 +183,89 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 }
 
 
+
+
+## get_country_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+##                              iso,
+##                              stat = c("prop", "count", "ratio"),
+##                              indicators,
+##                              round_down_years = FALSE,
+##                              verbose = FALSE) {
+##     output_dir <-
+##         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+##                            root_dir = root_dir, verbose = verbose,
+##                            post_processed = TRUE)
+
+##     stopifnot(identical(length(iso), 1L))
+
+##     tmp_env <- new.env()
+
+##     ## -------* Load Trajectores
+
+##     ## ! Early return if 'stat' and 'indicators' satisfied
+
+##     if (is_all_women_run(output_dir = output_dir)) {
+
+##         ## ALL WOMEN
+
+##         traj_fname <- paste0("aw_ISO_", iso_code, "_counts.rda")
+##         traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
+
+##         if (verbose) message("Reading '", traj_full_path, "'.")
+##         traj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
+
+##         if (identical(stat, "count") &&
+##             all(indicators %in% dimnames(traj)[[2]])) {
+##             traj <- traj[, indicators, , drop = FALSE]
+##             if (round_down_years) dimnames(traj)[[1]] <- round_down_years(dimnames(traj)[[1]])
+##             return(traj)
+##         }
+
+##     } else {
+
+##         ## MARR / UN-MARR
+
+##         iso_code <- as.character(iso_code)
+##         traj_index <-
+##             get_country_index(run_name = run_name, output_dir = output_dir,
+##                               root_dir = root_dir, verbose = verbose)
+##         if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not found in trajectory index (see '?get_country_index').")
+##         traj_fname <-
+##             traj_index$filename[traj_index$iso.c == iso_code]
+##         traj_full_path <- file.path(output_dir, "countrytrajectories", traj_fname)
+
+##         if (verbose) message("Reading '", traj_full_path, "'.")
+##         traj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
+
+##         if (identical(stat, "prop") &&
+##             all(indicators %in% dimnames(traj)[[2]])) {
+##             traj <- traj[, indicators, , drop = FALSE]
+##             if (round_down_years) dimnames(traj)[[1]] <- round_down_years(dimnames(traj)[[1]])
+##             return(traj)
+##         }
+##     }
+
+##     ## -------* Conversions If Needed
+
+##     if (is_all_women_run(output_dir = output_dir)) {
+
+##         ## ALL WOMEN
+
+##         if (identical(stat, "prop")) {
+##             traj <- convert_country_traj_to_props(traj,
+##                                                   denominator_counts_df = get_used_denominators(output_dir = output_dir,
+##                                                                                                marital_group = "all_women"),
+##                                                   iso = iso, safe = FALSE)
+
+################# HERE HERE HERE ##########################
+
+            #### COME BACK TO THIS *AFTER* FINISHING THE .age STUFF. NOT ESSENTIAL. IF YOU USE THIS IN THE CALIBARTION FUNCTIONS, THE TRAJECTORY FILES WILL HAVE TO BE LOADED MULTIPLE TIMES
+
+##################################################
+
+
+
+
 ##' Load and return aggregate trajectories
 ##'
 ##' @description

@@ -15,7 +15,8 @@ convert_country_traj_to_counts(
 convert_country_traj_to_props(
   traj_array_counts,
   denominator_counts_df,
-  iso = NULL
+  iso = NULL,
+  safe = TRUE
 )
 
 convert_country_traj_to_ratios(traj_array_counts)
@@ -33,6 +34,8 @@ produced by \code{\link{get_used_denominators}}).}
 \item{traj_array_counts}{Trajectory array of counts (for
 \code{convert_country_traj_to_props} and
 \code{convert_country_traj_to_ratios}).}
+
+\item{safe}{Elevate some warnings to errors.}
 }
 \value{
 Trajectory array.

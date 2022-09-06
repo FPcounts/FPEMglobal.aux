@@ -40,6 +40,17 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 }
 
 
+######################################################################
+##
+## TO DO:
+##
+## 1. Rename existing 'get_used_denominators' to 'get_csv_denominators'.
+## 2. Create new 'get_used_denominators' that reads the W.Lg.t element of res.country.rda.
+##
+######################################################################
+
+
+
 ##' Get denominator counts actually used
 ##'
 ##' Reads the '.csv' file containing the married and unmarried
