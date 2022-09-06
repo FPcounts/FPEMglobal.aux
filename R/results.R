@@ -70,7 +70,7 @@ get_country_summary_results <- function(run_name = NULL, output_dir = NULL, root
     if (is_all_women_run(output_dir = output_dir))
         fname <- "res.country.all.women.rda"
     else fname <- "res.country.rda"
-    full_fpath <- file.name(output_dir, fname)
+    full_fpath <- file.path(output_dir, fname)
 
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", full_fpath, "'."), add = TRUE, after = FALSE)
