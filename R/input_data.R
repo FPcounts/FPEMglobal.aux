@@ -281,7 +281,7 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     ## -------** Determine column name format
 
     ## There are two formats in use for the value columns:
-    ## 1. E.g., MW_1549_1979 (i.e., marrital group, age group, year)
+    ## 1. E.g., MW_1549_1979 (i.e., marital group, age group, year)
     ## 2. E.g., 1549_1979 (i.e., age group, year)
 
     col_fmt1_regexp <- "^(M|U)W_[0-9]{4}_(19|20)[0-9]{2}$"

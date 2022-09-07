@@ -25,7 +25,7 @@ can be read via \code{get_csv_res(..., stat = "prop",
 
 \seealso{
 Other csv results functions: 
-\code{\link{get_csv_all_marr_res}()},
+\code{\link{get_csv_all_mar_res}()},
 \code{\link{get_csv_res}()}
 }
 \author{

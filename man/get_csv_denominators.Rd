@@ -15,6 +15,7 @@ get_csv_denominators(
   add_age_group = TRUE,
   clean_col_names = TRUE,
   table_format = c("long", "raw"),
+  units = c("units", "thousands"),
   verbose = FALSE,
   ...
 )
@@ -56,6 +57,8 @@ about \dQuote{percentile} vs. \dQuote{quantile}.}
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
 
+\item{units}{Units in which to return the counts.}
+
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
@@ -96,10 +99,17 @@ identifying columns added. Otherwise the result is in the same
 format as the original counts files, which have one column per
 year.
 
+The counts appear in the \file{.csv} files in units of 1 and, by
+default, are returned as such (\code{units = "unit"}). Use the
+\code{units} argument to return counts in multiples of 1000.
+}
+\section{Technical Note}{
+
 The poulation denominators are stored in \file{.csv} files in the
 output directory. These are read in using an unexported function
-from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
+from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.}
 }
+
 \seealso{
 Other input_data_functions: 
 \code{\link{get_used_denominators}()},

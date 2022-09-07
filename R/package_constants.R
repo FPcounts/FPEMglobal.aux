@@ -16,7 +16,7 @@
 ##' @family String constants
 ##'
 ##' @export
-get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title", "upper"), named = FALSE) {
+get_std_marital_group_names <- function(return_case = c("lower", "sentence", "title", "upper"), named = FALSE) {
     return_case <- match.arg(return_case)
     basis <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All Women")
     basis2 <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All women")
@@ -38,8 +38,8 @@ get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title
 ##' \code{\link{get_country_traj_muw}}).
 ##'
 ##' The indicator names stored in the country and aggregate trajectory
-##' arrays differ by statistic (\code{stat} argument) and marrital
-##' group (\code{marr_group}) argument. In addition, more ratio
+##' arrays differ by statistic (\code{stat} argument) and marital
+##' group (\code{marital_group}) argument. In addition, more ratio
 ##' indicators available in the all women results. The \code{aw_set}
 ##' argument provides control over whether all all women ratio names
 ##' are returned (\code{"all"}), only those in common with
@@ -47,7 +47,7 @@ get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title
 ##' that are unique to all women results (\code{"only extra"}).
 ##'
 ##' @inheritParams get_csv_res
-##' @param marr_group Marrital group for which names are required.
+##' @param marital_group Marital group for which names are required.
 ##' @param aw_set The set of all women names required; see \dQuote{Details}.
 ##' @return Character vector of indicator names.
 ##' @author Mark Wheldon
@@ -56,10 +56,10 @@ get_std_marr_group_names <- function(return_case = c("lower", "sentence", "title
 ##'
 ##' @export
 get_std_indicator_names <- function(stat = c("prop", "count", "ratio"),
-                                marr_group = get_std_marr_group_names(),
+                                marital_group = get_std_marital_group_names(),
                                 aw_set = c("all", "only common", "only extra")) {
     stat <- match.arg(stat)
-    marr_group <- match.arg(stat)
+    marital_group <- match.arg(stat)
     aw_set <- match.arg(aw_set)
 
     ## Name Strings
@@ -74,8 +74,8 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio"),
     ## Output
     if (stat %in% c("prop", "count")) return(names_prop_count)
     else { # stat must == "ratio"
-        if (!identical(marr_group, "all women")) return(names_ratio_common)
-        else { # marr_group must == "all women"
+        if (!identical(marital_group, "all women")) return(names_ratio_common)
+        else { # marital_group must == "all women"
             if (identical(aw_set, "all")) return(c(names_ratio_common, names_ratio_aw_extra))
             else if (identical(aw_set, "only common")) return(names_ratio_common)
             else return(names_ratio_aw_extra)

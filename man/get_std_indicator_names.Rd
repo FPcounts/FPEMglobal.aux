@@ -6,7 +6,7 @@
 \usage{
 get_std_indicator_names(
   stat = c("prop", "count", "ratio"),
-  marr_group = get_std_marr_group_names(),
+  marital_group = get_std_marital_group_names(),
   aw_set = c("all", "only common", "only extra")
 )
 }
@@ -14,7 +14,7 @@ get_std_indicator_names(
 \item{stat}{Which statistics should be loaded? Allowable values
 are \code{c("orig", "adj", "sub_adj")}.}
 
-\item{marr_group}{Marrital group for which names are required.}
+\item{marital_group}{Marital group for which names are required.}
 
 \item{aw_set}{The set of all women names required; see \dQuote{Details}.}
 }
@@ -29,8 +29,8 @@ aggregate trajectory arrays (e.g., see
 }
 \details{
 The indicator names stored in the country and aggregate trajectory
-arrays differ by statistic (\code{stat} argument) and marrital
-group (\code{marr_group}) argument. In addition, more ratio
+arrays differ by statistic (\code{stat} argument) and marital
+group (\code{marital_group}) argument. In addition, more ratio
 indicators available in the all women results. The \code{aw_set}
 argument provides control over whether all all women ratio names
 are returned (\code{"all"}), only those in common with
@@ -39,7 +39,7 @@ that are unique to all women results (\code{"only extra"}).
 }
 \seealso{
 Other String constants: 
-\code{\link{get_std_marr_group_names}()}
+\code{\link{get_std_marital_group_names}()}
 }
 \author{
 Mark Wheldon

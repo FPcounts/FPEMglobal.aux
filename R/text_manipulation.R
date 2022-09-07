@@ -232,12 +232,12 @@ convert_param_name <- function(x) {
 ### ** Marital Groups
 
 ## Get 'long' marital group name from the acronym
-switch_marr_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
+switch_marital_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
     x <- tolower(x)
     x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
     if (identical(x, "awra")) x <- "wra"
     return_case <- match.arg(return_case)
-    basis <- get_std_marr_group_names(return_case = return_case, named = TRUE)
+    basis <- get_std_marital_group_names(return_case = return_case, named = TRUE)
     return(as.character(basis[x])) # Need 'as.character' to remove names.
 }
 

@@ -128,7 +128,7 @@ names. \code{link{FPEMglobal.aux}} for a note about
 
 Other csv results functions: 
 \code{\link{csv_res_2_fpemdata}()},
-\code{\link{get_csv_all_marr_res}()}
+\code{\link{get_csv_all_mar_res}()}
 }
 \author{
 Mark Wheldon

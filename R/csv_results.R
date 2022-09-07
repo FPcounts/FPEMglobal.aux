@@ -385,7 +385,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##' @export
-get_csv_all_marr_res <- function(run_name_list = NULL, output_dir_list = NULL,
+get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
                                             root_dir = NULL,
                                             index_col_name = "marital_group",
                                             ...) {

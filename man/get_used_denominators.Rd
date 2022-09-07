@@ -8,7 +8,9 @@ get_used_denominators(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  round_down_years = FALSE
+  units = c("units", "thousands"),
+  round_down_years = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -22,15 +24,35 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
+\item{units}{Units in which to return the counts.}
+
 \item{round_down_years}{Should years in \dQuote{yyyy.5} format be
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}
+
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the denominators; see
 \dQuote{Details}.
 }
 \description{
+Reads denominators from the \file{res.country.rda} or
+\file{res.country.all.women.rda} files. The output directory will
+have to have been post-processed (i.e., the files loaded will need
+to have been created by \pkg{FPEMglobal} functions. If this is not
+the case, use \code{\link{get_csv_denominators}}.
 
+The counts appear in the source files in units of 1000 but are
+returned are in units of the individual by default (\code{units =
+"unit"}). Use the \code{units} argument to return counts in
+multiples of 1000.
+
+The result is a \code{\link[tibble]{tibble}} with columns \code{"iso"},
+\code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
+column will have years in \dQuote{mid-year} format because this is
+the format in which they are stored in the \file{res....} files.
 }
 \details{
 

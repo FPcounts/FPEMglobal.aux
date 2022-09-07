@@ -246,7 +246,7 @@ get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                               verbose = verbose)$general
     if (isTRUE(mg$all.women.run.copy)) return("all women")
-    else return(switch_marr_group_names(mg$marital.group))
+    else return(switch_marital_group_names(mg$marital.group))
 }
 
 ##' @rdname get_marital_group
@@ -269,7 +269,7 @@ is_marital_group_run <- function(run_name = NULL, output_dir = NULL, root_dir = 
     } else {
         mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                    verbose = verbose)$general$marital.group
-        return(identical(switch_marr_group_names(mgp), marital_group))
+        return(identical(switch_marital_group_names(mgp), marital_group))
     }
 }
 
