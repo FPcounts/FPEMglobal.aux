@@ -61,8 +61,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @details
 ##' To match the format returned by \code{\link{get_csv_denominators},
-##' call this function with \code{round_down_years = TRUE} and use
-##' \preformatted{
+##' use \preformatted{
 ##' get_csv_denominators(...,
 ##'                      add_marital_group = FALSE, ..., add_age_group = FALSE,
 ##'                      clean_col_names = TRUE, table_format = "long")}
@@ -81,7 +80,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   units = c("units", "thousands"),
-                                  round_down_years = FALSE,
+                                  years_as_midyear = TRUE,
                                   verbose = FALSE) {
 
     output_dir <-
@@ -90,7 +89,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
 
-    stopifnot(is.logical(round_down_years))
+    stopifnot(is.logical(years_as_midyear))
 
     units <- match.arg(units)
     if (identical(units, "units")) unit_mult <- 1000
@@ -108,7 +107,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
         nm <- names(res$W.Lg.t)[i]
         denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * unit_mult
     }
-    if (round_down_years) denom$year <- round_down_years(denom$year)
+    if (!years_as_midyear) denom$year <- round_down_years(denom$year)
     return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
 }
 
@@ -187,8 +186,9 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                                   age_group = NULL,
                                   add_age_group = TRUE,
                                   clean_col_names = TRUE,
-                                 table_format = c("long", "raw"),
                                  units = c("units", "thousands"),
+                                 years_as_midyear = TRUE,
+                                 table_format = c("long", "raw"),
                                   verbose = FALSE, ...) {
 
     ## -------* Set-up
@@ -255,7 +255,7 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
               identical(colnames(denom_counts_m), colnames(denom_counts_u)) &&
               identical(sort(denom_counts_m$ISO.code), sort(denom_counts_u$ISO.code))))
             stop("Cannot create all women denominators. The married and unmarried tables have different ISOs or different columns.")
-        value_cols <- colnames(denom_counts_m)[!colnames(denom_counts_m) %in% c("ISO.code", "Country")]
+        value_cols <- colnames(denom_counts_m)[value_cols_idx]
         denom_counts_a <- denom_counts_m
         denom_counts_a[, value_cols] <-
             denom_counts_m[, value_cols] +
@@ -321,15 +321,22 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     ## -------* Cleaning, Additional Columns, etc.
 
-    ##:ess-bp-start::browser@nil:##
-browser(expr=is.null(.ESSBP.[["@5@"]]));##:ess-bp-end:##
+    denom_counts[, value_cols] <- denom_counts[, value_cols] * unit_mult
 
+    if (years_as_midyear) {
+        value_cols_idx <- match(value_cols, colnames(denom_counts))
+        colnames(denom_counts)[value_cols_idx] <-
+            paste0(colnames(denom_counts)[value_cols_idx], ".5")
+        value_cols <- colnames(denom_counts)[value_cols_idx]
+        }
 
     if (identical(table_format, "long")) {
+        if (years_as_midyear) substr_offset <- 5
+        else substr_offset <- 3
         denom_counts <-
             tidyr::gather(denom_counts, tidyselect::all_of(value_cols),
                           key = "key", value = "count") %>%
-            dplyr::mutate(year = substr(key, start = nchar(key) - 3, stop = nchar(key)))
+            dplyr::mutate(year = substr(key, start = nchar(key) - substr_offset, stop = nchar(key)))
 
         denom_counts <- dplyr::select(denom_counts, -key) %>%
             dplyr::mutate(year = as.numeric(year))

@@ -62,8 +62,8 @@
 ##' @param add_adjusted_column Add a column \dQuote{\code{adjusted}}?
 ##'     Cells indicate which rows are adjusted (\code{TRUE}) and which
 ##'     are not (\code{FALSE}).
-##' @param round_down_years Should years in \dQuote{yyyy.5} format be
-##'     rounded down to integer values? (e.g., 1970.5 becomes 1970).
+##' @param years_as_midyear Logical; should years be labelled in
+##'     \dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
 ##'     \code{\link{clean_col_names}}. See \dQuote{Details} for a note
@@ -99,7 +99,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              adjusted = c("orig", "adj", "sub_adj"),
                              add_adjusted_column = identical(adjusted, "sub_adj"),
                              clean_col_names = TRUE,
-                             round_down_years = FALSE,
+                             years_as_midyear = TRUE,
                              add_country_classifications = FALSE,
                              table_format = c("long", "wide", "raw"),
                              sort = TRUE,
@@ -244,7 +244,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## -------* Modify, Merge, Etc.
 
     ## Years columns
-    if (round_down_years) {
+    if (!years_as_midyear) {
         if (adjusted %in% c("orig", "sub_adj")) {
             yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
             colnames(res)[yr_cols_idx] <- round_down_years(colnames(res)[yr_cols_idx])
