@@ -20,7 +20,7 @@ get_traj_array_indicator_names_ratio <- function() {
 
 
 ## Checks inputs to the various converter functions.
-traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL) {
+traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL, safe = FALSE) {
     ## Colnames of denominators
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts_df)))
         stop("'denominator_counts_df' must have column names ",
@@ -28,6 +28,7 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
              ". Use 'get_csv_denominators()' with 'clean_col_names = TRUE' and 'table_format = \"long\"'.")
 
     ## Denominators must be for one country
+    ## Subset on 'iso' if necessary
     if (length(unique(denominator_counts_df$iso)) > 1) {
         if (is.null(iso))
             stop("'denominator_counts_df' has counts for more than one location (ISO). Supply the 'iso' of 'traj_array' or subset 'denominator_counts_df' before using.")
@@ -37,6 +38,17 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
     ## Years are same in traj and denom
     if (!identical(dim(traj_array)[1], nrow(denominator_counts_df)))
         stop("'traj_array' and 'denominator_counts_df' do not have the same number of years.")
+
+    ## Trajectory counts are in the thousands; try to warn if it seems
+    ## they are in millions
+    if (!is.null(iso) && !iso %in% c(356, 1456)) # India, China
+        count_threshold <- 10e3
+    else count_threshold <- 20e3
+    if (any(denominator_counts_df$count > count_threshold)) {
+        msg <- "Some denominator counts exceed 20,000. Trajectory counts are stored in units of 1000; did you supply denominators in units of 1?"
+        if (safe) stop(msg)
+        else warning(msg)
+    }
 
     ## Return denom in case it was subset on iso
     return(denominator_counts_df)
