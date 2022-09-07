@@ -19,7 +19,12 @@ convert_country_traj_to_props(
   safe = TRUE
 )
 
-convert_country_traj_to_ratios(traj_array_counts)
+convert_country_traj_to_ratios(
+  traj_array_counts,
+  traj_array_counts_married = NULL,
+  traj_array_counts_unmarried = NULL,
+  safe = TRUE
+)
 }
 \arguments{
 \item{traj_array_props}{Trajectory array of proportions (for
@@ -35,7 +40,11 @@ produced by \code{\link{get_csv_denominators}}).}
 \code{convert_country_traj_to_props} and
 \code{convert_country_traj_to_ratios}).}
 
-\item{safe}{Elevate some warnings to errors.}
+\item{safe}{Logical; elevate some warnings to errors?}
+
+\item{traj_array_counts_married, traj_array_counts_unmarried}{For
+\code{convert_country_traj_to_ratios} only: trajectory array
+counts for married and unmarried women. See \dQuote{Details}.}
 }
 \value{
 Trajectory array.
@@ -54,6 +63,12 @@ or area, the denominators must match. Argument \code{iso} can be
 used to subset \code{denominator_counts_df} if needed. In that
 case, the ISOs must be in column \code{"iso"}. See
 \code{\link{get_csv_denominators}}.
+
+Ratio indicators for all women include ratios of married/unmarried
+over all women. To compute these from an all women trajectory
+array, the married \emph{and} unmarried women trajectory arrays
+must be supplied via \code{traj_array_counts_married} and
+\code{traj_array_counts_unmarried}.
 }
 \seealso{
 \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}

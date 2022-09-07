@@ -245,23 +245,6 @@ switch_marr_group_names <- function(x, return_case = c("lower", "title", "senten
 ###-----------------------------------------------------------------------------
 ### ** Indicators and Columns
 
-
-##' Report all possible names of family planning indicators used in FPEMglobal
-##'
-##' This function returns a character vector containing all possible indicator names.
-##'
-##' @return Character vector of all indicator names.
-##' @author Mark Wheldon
-##'
-##' @family String utility functions
-##'
-##' @export
-get_std_indicator_names <- function() {
-    c("Modern", "ModernOverTotal", "MetDemand", "metDemGT_modMeth75pc",
-      "MetDemModMeth",
-      "NoUse", "Traditional", "Total", "TotalPlusUnmet", "Unmet", "Z")
-}
-
 ##' Clean indicator names
 ##'
 ##' This function takes out spaces and makes the whole string lower

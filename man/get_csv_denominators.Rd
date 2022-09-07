@@ -63,12 +63,13 @@ messages.}
 \item{...}{passed to \code{\link{read_csv}}.}
 }
 \value{
-A \code{\link[tibble]{tibble}} with the requested results
-in \dQuote{long} format; see \dQuote{Details}.
+A \code{\link[tibble]{tibble}} with the denominators; see
+\dQuote{Details}.
 }
 \description{
 Reads the '.csv' file containing the married and unmarried
-denominator counts used in the run.
+denominator counts used in the run. These are in units of the
+individual.
 
 The data frame returned has columns \code{"iso"}, \code{"name"},
 \code{"year"}, \code{"count"}. The \code{"year"} column will have

@@ -29,7 +29,6 @@ Other String utility functions:
 \code{\link{clean_col_names}()},
 \code{\link{convert_param_name}()},
 \code{\link{get_aggregate_names}()},
-\code{\link{get_std_indicator_names}()},
 \code{\link{make_c_names_manus}()},
 \code{\link{make_reg_names_manus}()},
 \code{\link{match_UNlocations}()},

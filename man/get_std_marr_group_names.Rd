@@ -19,6 +19,11 @@ Character string.
 Returns a \emph{named} character vector with standard marital
 group names. The names are the abbreviations in lower case.
 }
+\seealso{
+Other String constants: 
+\code{\link{get_std_indicator_names}()}
+}
 \author{
 Mark Wheldon
 }
+\concept{String constants}

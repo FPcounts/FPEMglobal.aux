@@ -26,19 +26,11 @@ the directory called \dQuote{output}.}
 rounded down to integer values? (e.g., 1970.5 becomes 1970).}
 }
 \value{
-A data frame with denominator counts.
+A \code{\link[tibble]{tibble}} with the denominators; see
+\dQuote{Details}.
 }
 \description{
-Reads denominators from the \file{res.country.rda} or
-\file{res.country.all.women.rda} files. The output directory will
-have to have been post-processed (i.e., the files loaded will need
-to have been created by \pkg{FPEMglobal} functions. If this is not
-the case, use \code{\link{get_csv_denominators}}.
 
-The result is a data frame with columns \code{"iso"},
-\code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
-column will have years in \dQuote{mid-year} format because this is
-the format in which they are stored in the \file{res....} files.
 }
 \details{
 
