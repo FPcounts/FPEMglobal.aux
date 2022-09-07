@@ -49,9 +49,10 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' to have been created by \pkg{FPEMglobal} functions. If this is not
 ##' the case, use \code{\link{get_csv_denominators}}.
 ##'
-##' The counts returned are in units of the individual. Those stored
-##' in the files are in units of 1000 but they are multiplied before
-##' output to match \code{\link{get_csv_denominators}.
+##' The counts appear in the source files in units of 1000 but are
+##' returned are in units of the individual by default (\code{units =
+##' "unit"}). Use the \code{units} argument to return counts in
+##' multiples of 1000.
 ##'
 ##' The result is a \code{\link[tibble]{tibble}} with columns \code{"iso"},
 ##' \code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
@@ -70,6 +71,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
+##' @param units Units in which to return the counts.
 ##' @return A \code{\link[tibble]{tibble}} with the denominators; see
 ##'     \dQuote{Details}.
 ##' @author Mark Wheldon
@@ -78,13 +80,21 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                  round_down_years = FALSE) {
+                                  units = c("units", "thousands"),
+                                  round_down_years = FALSE,
+                                  verbose = FALSE) {
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
+
+    stopifnot(is.logical(round_down_years))
+
+    units <- match.arg(units)
+    if (identical(units, "units")) unit_mult <- 1000
+    else unit_mult <- 1
 
     res <- get_country_summary_results(run_name = run_name, output_dir = output_dir, root_dir = root_dir)
     iso_names <- data.frame(iso = as.numeric(res$iso.g), name = names(res$CIprop.Lg.Lcat.qt))
@@ -96,7 +106,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     denom <- denom[with(denom, order(iso, year)), ]
     for (i in seq_along(res$W.Lg.t)) {
         nm <- names(res$W.Lg.t)[i]
-        denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * 1000
+        denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * unit_mult
     }
     if (round_down_years) denom$year <- round_down_years(denom$year)
     return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
@@ -136,9 +146,14 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' format as the original counts files, which have one column per
 ##' year.
 ##'
+##' The counts appear in the \file{.csv} files in units of 1 and, by
+##' default, are returned as such (\code{units = "unit"}). Use the
+##' \code{units} argument to return counts in multiples of 1000.
+##'
+##' @section Technical Note:
 ##' The poulation denominators are stored in \file{.csv} files in the
 ##' output directory. These are read in using an unexported function
-##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
+##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.}
 ##'
 ##' @param filename Name of file with the counts (including
 ##'     extension). If \code{NULL}, this will be inferred from the
@@ -154,6 +169,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'     \dQuote{\code{marital_group}} be added to the output to
 ##'     indicate the marital group? Such a column is always added if
 ##'     \code{marital_group} has more than one element.
+##' @param units Units in which to return the counts.
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##'
@@ -171,7 +187,8 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                                   age_group = NULL,
                                   add_age_group = TRUE,
                                   clean_col_names = TRUE,
-                                  table_format = c("long", "raw"),
+                                 table_format = c("long", "raw"),
+                                 units = c("units", "thousands"),
                                   verbose = FALSE, ...) {
 
     ## -------* Set-up
@@ -192,6 +209,10 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     }
 
     table_format <- match.arg(table_format)
+
+    units <- match.arg(units)
+    if (identical(units, "units")) unit_mult <- 1
+    else unit_mult <- 1/1000
 
     data_dir_name <- "data"
     data_dir <- file.path(output_dir, data_dir_name)
@@ -299,6 +320,10 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     }
 
     ## -------* Cleaning, Additional Columns, etc.
+
+    ##:ess-bp-start::browser@nil:##
+browser(expr=is.null(.ESSBP.[["@5@"]]));##:ess-bp-end:##
+
 
     if (identical(table_format, "long")) {
         denom_counts <-
