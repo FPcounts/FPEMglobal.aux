@@ -14,7 +14,7 @@ get_csv_res(
   adjusted = c("orig", "adj", "sub_adj"),
   add_adjusted_column = identical(adjusted, "sub_adj"),
   clean_col_names = TRUE,
-  round_down_years = FALSE,
+  years_as_midyear = TRUE,
   add_country_classifications = FALSE,
   table_format = c("long", "wide", "raw"),
   sort = TRUE,
@@ -55,8 +55,8 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
-rounded down to integer values? (e.g., 1970.5 becomes 1970).}
+\item{years_as_midyear}{Logical; should years be labelled in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
 
 \item{add_country_classifications}{Logical; add on columns with
 geographic country classifications? Only has an effect if

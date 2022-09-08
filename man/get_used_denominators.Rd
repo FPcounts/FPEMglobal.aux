@@ -9,7 +9,7 @@ get_used_denominators(
   output_dir = NULL,
   root_dir = NULL,
   units = c("units", "thousands"),
-  round_down_years = FALSE,
+  years_as_midyear = TRUE,
   verbose = FALSE
 )
 }
@@ -26,8 +26,8 @@ the directory called \dQuote{output}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{round_down_years}{Should years in \dQuote{yyyy.5} format be
-rounded down to integer values? (e.g., 1970.5 becomes 1970).}
+\item{years_as_midyear}{Logical; should years be labelled in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}

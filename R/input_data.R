@@ -152,7 +152,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @section Technical Note:
 ##' The poulation denominators are stored in \file{.csv} files in the
 ##' output directory. These are read in using an unexported function
-##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.}
+##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 ##'
 ##' @param filename Name of file with the counts (including
 ##'     extension). If \code{NULL}, this will be inferred from the

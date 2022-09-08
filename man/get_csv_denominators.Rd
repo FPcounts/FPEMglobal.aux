@@ -14,8 +14,9 @@ get_csv_denominators(
   age_group = NULL,
   add_age_group = TRUE,
   clean_col_names = TRUE,
-  table_format = c("long", "raw"),
   units = c("units", "thousands"),
+  years_as_midyear = TRUE,
+  table_format = c("long", "raw"),
   verbose = FALSE,
   ...
 )
@@ -54,10 +55,13 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
+\item{units}{Units in which to return the counts.}
+
+\item{years_as_midyear}{Logical; should years be labelled in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
+
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
-
-\item{units}{Units in which to return the counts.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
@@ -107,7 +111,7 @@ default, are returned as such (\code{units = "unit"}). Use the
 
 The poulation denominators are stored in \file{.csv} files in the
 output directory. These are read in using an unexported function
-from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.}
+from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 }
 
 \seealso{
