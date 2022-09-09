@@ -32,10 +32,12 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 
 ##' Report all possible names of family planning indicators used in FPEMglobal
 ##'
-##' This function returns a character vector containing indicator
+##' These functions return character vectors containing indicator
 ##' names as used in the \code{dimnames} attribute of the country and
 ##' aggregate trajectory arrays (e.g., see
-##' \code{\link{get_country_traj_muw}}).
+##' \code{\link{get_country_traj_muw}}). \code{get_std_indicator_names}
+##' returns all valid names, \code{get_std_indicator_names_select}
+##' provides functionality to subet by statistic and marital group.
 ##'
 ##' The indicator names stored in the country and aggregate trajectory
 ##' arrays differ by statistic (\code{stat} argument) and marital
@@ -54,12 +56,13 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##'
 ##' @family String constants
 ##'
+##' @name get_std_indicator_names
 ##' @export
-get_std_indicator_names <- function(stat = c("prop", "count", "ratio"),
+get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio"),
                                 marital_group = get_std_marital_group_names(),
                                 aw_set = c("all", "only common", "only extra")) {
     stat <- match.arg(stat)
-    marital_group <- match.arg(stat)
+    marital_group <- match.arg(marital_group)
     aw_set <- match.arg(aw_set)
 
     ## Name Strings
@@ -81,4 +84,16 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio"),
             else return(names_ratio_aw_extra)
         }
     }
+}
+
+##' @rdname get_std_indicator_names
+##' @export
+get_std_indicator_names <- function() {
+    out <- character()
+    for (i in c("prop", "count", "ratio")) {
+        for (j in get_std_marital_group_names()) {
+            out <- c(out, get_std_indicator_names_select(stat = i, marital_group = j, aw_set = "all"))
+        }
+    }
+    return(unique(out))
 }

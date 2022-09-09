@@ -78,7 +78,6 @@
 ##' @param verbose Logical. Print lots of messages? See
 ##'     \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 ##'     messages.
-##' @param ... passed to \code{\link{read_csv}}.
 ##' @inheritParams get_output_dir
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
@@ -93,18 +92,18 @@
 ##' @author Mark Wheldon
 ##' @export
 get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                             aggregate = "country",
-                             stat = c("prop", "count", "ratio"),
-                             add_stat_column = FALSE,
-                             adjusted = c("orig", "adj", "sub_adj"),
-                             add_adjusted_column = identical(adjusted, "sub_adj"),
-                             clean_col_names = TRUE,
-                             years_as_midyear = TRUE,
-                             add_country_classifications = FALSE,
-                             table_format = c("long", "wide", "raw"),
-                             sort = TRUE,
-                             verbose = FALSE,
-                             ...) {
+                        aggregate = "country",
+                        add_aggregate_column = length(aggregate) > 1L,
+                        stat = c("prop", "count", "ratio"),
+                        add_stat_column = FALSE,
+                        adjusted = c("orig", "adj", "sub_adj"),
+                        add_adjusted_column = identical(adjusted, "sub_adj"),
+                        clean_col_names = TRUE,
+                        years_as_midyear = TRUE,
+                        add_country_classifications = FALSE,
+                        table_format = c("long", "wide", "raw"),
+                        sort = TRUE,
+                        verbose = FALSE) {
 
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
     on.exit(options(op), add = TRUE, after = FALSE) }
@@ -385,11 +384,14 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##' @export
-get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
-                                            root_dir = NULL,
+get_csv_all_mar_res <- function(run_names = NULL, output_dirs = NULL,
+                                            root_dirs = NULL,
                                             index_col_name = "marital_group",
-                                            ...) {
+                                ...) {
 
+    warning("!! 'get_csv_all_mar_res()' is currently breaking. Use 'get_csv_res()' instead.")
+
+    ## !!!!!!!!!!! NEEDS WORK !!!!!!!!!!!!!
     stopifnot(is.list(run_name_list))
     stopifnot(!is.null(names(run_name_list)))
     stopifnot(identical(sort(names(run_name_list)),
