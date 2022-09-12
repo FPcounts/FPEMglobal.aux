@@ -58,7 +58,7 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##'
 ##' @name get_std_indicator_names
 ##' @export
-get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio"),
+get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio", "age ratio"),
                                 marital_group = get_std_marital_group_names(),
                                 aw_set = c("all", "only common", "only extra")) {
     stat <- match.arg(stat)
@@ -75,7 +75,7 @@ get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio"),
           "Modern Unmarried Over All", "Trad Unmarried Over All", "Unmet Unmarried Over All")
 
     ## Output
-    if (stat %in% c("prop", "count")) return(names_prop_count)
+    if (stat %in% c("prop", "count", "age ratio")) return(names_prop_count)
     else { # stat must == "ratio"
         if (!identical(marital_group, "all women")) return(names_ratio_common)
         else { # marital_group must == "all women"
@@ -90,7 +90,7 @@ get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio"),
 ##' @export
 get_std_indicator_names <- function() {
     out <- character()
-    for (i in c("prop", "count", "ratio")) {
+    for (i in c("prop", "count", "ratio", "age ratio")) {
         for (j in get_std_marital_group_names()) {
             out <- c(out, get_std_indicator_names_select(stat = i, marital_group = j, aw_set = "all"))
         }

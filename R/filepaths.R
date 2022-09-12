@@ -56,7 +56,9 @@ get_output_dir <- function(run_name, root_dir = ".") {
 output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                root_dir = NULL, verbose = FALSE,
                                post_processed = TRUE, countrytrajectories = post_processed,
-                               made_results = post_processed) {
+                               made_results = post_processed,
+                               adjusted_medians = post_processed,
+                               age_ratios = FALSE) {
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'")
         out <- get_output_dir(run_name, root_dir)

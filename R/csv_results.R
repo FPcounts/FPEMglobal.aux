@@ -96,7 +96,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         add_aggregate_column = length(aggregate) > 1L,
                         stat = c("prop", "count", "ratio"),
                         add_stat_column = FALSE,
-                        adjusted = c("orig", "adj", "sub_adj"),
+                        adjusted = c("orig", "adj", "sub_adj"), #Could add 'age_ratio' here later
                         add_adjusted_column = identical(adjusted, "sub_adj"),
                         clean_col_names = TRUE,
                         years_as_midyear = TRUE,
@@ -118,7 +118,9 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
-                           post_processed = TRUE, made_results = TRUE)
+                           post_processed = TRUE, made_results = TRUE,
+                           age_ratios = FALSE,
+                           adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
     data_dir_name <- "data"
     table_dir_name <- "table"

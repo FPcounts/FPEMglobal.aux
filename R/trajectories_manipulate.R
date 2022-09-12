@@ -175,7 +175,7 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
     ## -------* Functions
 
     assert_needed_indicators <- function(arr, incl_no_use = FALSE) {
-        needed_indicators <- c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet", "TradPlusUnmet")
+        needed_indicators <- get_std_indicator_names_select(stat = "count", marital_group = "married")
         if (incl_no_use) needed_indicators <- c(needed_indicators, "NoUse")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing 'NoUse', use 'expand_country_traj_count(..., incl_no_use = TRUE, ...)'.")
@@ -240,6 +240,48 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
                                                      "Modern Unmarried Over All", "Trad Unmarried Over All", "Unmet Unmarried Over All"))),
                      c(1, 3, 2)))
     }
+}
+
+
+##' @rdname convert_country_traj_to_counts
+##' @export
+convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
+                                               traj_array_counts_1549,
+                                               safe = TRUE) {
+
+    ## -------* Functions
+
+    assert_needed_indicators <- function(arr, incl_no_use = FALSE) {
+        needed_indicators <- get_std_indicator_names_select(stat = "age ratio", marital_group = "married")
+        if (!all(needed_indicators %in% dimnames(arr)[[2]]))
+            stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing some consider 'expand_country_traj_count()'.")
+    }
+
+    check_array_lt_1 <- function(arr, safe) {
+        if (all(arr <= 1)) {
+            msg <- c("*All* elements of '", deparse(substitute(arr)), "' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
+            if (safe) stop(msg)
+            else warning(msg)
+        }
+    }
+
+    ## -------* Check Inputs
+
+    stopifnot(is.array(traj_array_counts_age))
+    assert_needed_indicators(traj_array_counts_age, incl_no_use = FALSE)
+    check_array_lt_1(traj_array_counts, safe_age)
+
+    stopifnot(is.array(traj_array_counts_1549))
+    assert_needed_indicators(traj_array_counts_1549, incl_no_use = FALSE)
+    check_array_lt_1(traj_array_counts, safe_1549)
+
+    stopifnot(identical(dim(traj_array_counts_age), dim(traj_array_counts_1549)))
+    stopifnot(identical(dimnames(traj_array_counts_age), dimnames(traj_array_counts_1549)))
+
+    ## -------* Convert to Age Ratios
+
+    return(traj_array_counts_age / traj_array_counts_1549)
+
 }
 
 
