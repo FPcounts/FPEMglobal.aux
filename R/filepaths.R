@@ -55,7 +55,7 @@ get_output_dir <- function(run_name, root_dir = ".") {
 ## Used in functions to check if user supplied the necessary arguments.
 output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                root_dir = NULL, verbose = FALSE,
-                               post_processed = TRUE, countrytrajectories = post_processed,
+                               post_processed = FALSE, countrytrajectories = post_processed,
                                made_results = post_processed,
                                adjusted_medians = post_processed,
                                age_ratios = FALSE) {

@@ -20,7 +20,7 @@ get_traj_array_indicator_names_ratio <- function() {
 
 
 ## Checks inputs to the various converter functions.
-traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL, safe = FALSE) {
+traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
     ## Colnames of denominators
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts_df)))
         stop("'denominator_counts_df' must have column names ",
@@ -100,15 +100,18 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 ##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 ##'
 ##' @export
-convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_df, iso = NULL) {
+convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_df, iso = NULL, safe = TRUE) {
 
     ## -------* Check Inputs
 
     stopifnot(is.array(traj_array_props))
     stopifnot(is.data.frame(denominator_counts_df))
 
-    if (any(traj_array_props > 1))
-        stop("Some elements of 'traj_array_props' are > 1. They should all be proportions. Did you pass in an all women trajectory array or an array of counts?")
+    if (any(traj_array_props > 1, na.rm = TRUE)) {
+        msg <- "Some elements of 'traj_array_props' are > 1. They should all be proportions. Did you pass in an all women trajectory array or an array of counts?"
+        if (safe) stop(msg)
+        else warning(msg)
+    }
 
     denominator_counts_df <-
         as.data.frame(traj_converters_arg_check(traj_array = traj_array_props,
@@ -138,11 +141,11 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
     stopifnot(is.array(traj_array_counts))
     stopifnot(is.data.frame(denominator_counts_df))
 
-    if (all(traj_array_counts <= 1)) {
-        msg <- "*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?"
-        if (safe) stop(msg)
-        else warning(msg)
-    }
+    ## if (all(traj_array_counts <= 1)) {
+    ##     msg <- "*All* elements of 'traj_array_counts' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?"
+    ##     if (safe) stop(msg)
+    ##     else warning(msg)
+    ## }
 
     denominator_counts_df <-
         as.data.frame(traj_converters_arg_check(traj_array = traj_array_counts,
@@ -182,7 +185,7 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
     }
 
     check_array_lt_1 <- function(arr, safe) {
-        if (all(arr <= 1)) {
+        if (all(arr <= 1, na.rm = TRUE)) {
             msg <- c("*All* elements of '", deparse(substitute(arr)), "' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
             if (safe) stop(msg)
             else warning(msg)
@@ -258,7 +261,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
     }
 
     check_array_lt_1 <- function(arr, safe) {
-        if (all(arr <= 1)) {
+        if (all(arr <= 1, na.rm = TRUE)) {
             msg <- c("*All* elements of '", deparse(substitute(arr)), "' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
             if (safe) stop(msg)
             else warning(msg)
@@ -269,11 +272,11 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 
     stopifnot(is.array(traj_array_counts_age))
     assert_needed_indicators(traj_array_counts_age, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts, safe_age)
+    check_array_lt_1(traj_array_counts, safe)
 
     stopifnot(is.array(traj_array_counts_1549))
     assert_needed_indicators(traj_array_counts_1549, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts, safe_1549)
+    check_array_lt_1(traj_array_counts, safe)
 
     stopifnot(identical(dim(traj_array_counts_age), dim(traj_array_counts_1549)))
     stopifnot(identical(dimnames(traj_array_counts_age), dimnames(traj_array_counts_1549)))
