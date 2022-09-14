@@ -9,6 +9,7 @@ get_csv_res(
   output_dir = NULL,
   root_dir = NULL,
   aggregate = "country",
+  add_aggregate_column = length(aggregate) > 1L,
   stat = c("prop", "count", "ratio"),
   add_stat_column = FALSE,
   adjusted = c("orig", "adj", "sub_adj"),
@@ -18,8 +19,7 @@ get_csv_res(
   add_country_classifications = FALSE,
   table_format = c("long", "wide", "raw"),
   sort = TRUE,
-  verbose = FALSE,
-  ...
+  verbose = FALSE
 )
 }
 \arguments{
@@ -71,8 +71,6 @@ returned in long format? See \dQuote{Details}.}
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
-
-\item{...}{passed to \code{\link{read_csv}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

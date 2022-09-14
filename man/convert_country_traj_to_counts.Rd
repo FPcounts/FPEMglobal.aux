@@ -4,12 +4,14 @@
 \alias{convert_country_traj_to_counts}
 \alias{convert_country_traj_to_props}
 \alias{convert_country_traj_to_ratios}
+\alias{convert_country_traj_to_age_ratios}
 \title{Transform MCMC trajectories}
 \usage{
 convert_country_traj_to_counts(
   traj_array_props,
   denominator_counts_df,
-  iso = NULL
+  iso = NULL,
+  safe = TRUE
 )
 
 convert_country_traj_to_props(
@@ -25,6 +27,12 @@ convert_country_traj_to_ratios(
   traj_array_counts_unmarried = NULL,
   safe = TRUE
 )
+
+convert_country_traj_to_age_ratios(
+  traj_array_counts_age,
+  traj_array_counts_1549,
+  safe = TRUE
+)
 }
 \arguments{
 \item{traj_array_props}{Trajectory array of proportions (for
@@ -36,11 +44,11 @@ produced by \code{\link{get_csv_denominators}}).}
 \item{iso}{Numeric ISO code of the country to select from
 \code{denominator_counts_df}; see \dQuote{Details}.}
 
+\item{safe}{Logical; elevate some warnings to errors?}
+
 \item{traj_array_counts}{Trajectory array of counts (for
 \code{convert_country_traj_to_props} and
 \code{convert_country_traj_to_ratios}).}
-
-\item{safe}{Logical; elevate some warnings to errors?}
 
 \item{traj_array_counts_married, traj_array_counts_unmarried}{For
 \code{convert_country_traj_to_ratios} only: trajectory array

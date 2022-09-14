@@ -27,8 +27,6 @@ the directory called \dQuote{output}.}
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
-
-\item{...}{passed to \code{\link{read_csv}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

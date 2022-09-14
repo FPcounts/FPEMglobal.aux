@@ -5,28 +5,25 @@
 \title{Read results csv files containing percentages, etc., for all three marital groups}
 \usage{
 get_csv_all_mar_res(
-  run_name_list = NULL,
-  output_dir_list = NULL,
-  root_dir = NULL,
+  run_names = NULL,
+  output_dirs = NULL,
+  root_dirs = NULL,
   index_col_name = "marital_group",
   ...
 )
 }
 \arguments{
+\item{index_col_name}{Character. Name of column added to output
+that identifies observations for each marital group.}
+
+\item{...}{Passed to \code{\link{get_csv_res}}.}
+
 \item{run_name_list}{List of run names for married, unmarried, and
 all women. Element names must be \dQuote{married},
 \dQuote{unmarried}, and \dQuote{all_women}.}
 
 \item{output_dir_list}{List of output directories for married,
 unmarried, and all women. See \code{run_name_list}.}
-
-\item{root_dir}{A root directory if needed, i.e., the location of
-the directory called \dQuote{output}.}
-
-\item{index_col_name}{Character. Name of column added to output
-that identifies observations for each marital group.}
-
-\item{...}{Passed to \code{\link{get_csv_res}}.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.

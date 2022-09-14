@@ -2,13 +2,16 @@
 % Please edit documentation in R/package_constants.R
 \name{get_std_indicator_names}
 \alias{get_std_indicator_names}
+\alias{get_std_indicator_names_select}
 \title{Report all possible names of family planning indicators used in FPEMglobal}
 \usage{
-get_std_indicator_names(
-  stat = c("prop", "count", "ratio"),
+get_std_indicator_names_select(
+  stat = c("prop", "count", "ratio", "age ratio"),
   marital_group = get_std_marital_group_names(),
   aw_set = c("all", "only common", "only extra")
 )
+
+get_std_indicator_names()
 }
 \arguments{
 \item{stat}{Which statistics should be loaded? Allowable values
@@ -22,10 +25,12 @@ are \code{c("orig", "adj", "sub_adj")}.}
 Character vector of indicator names.
 }
 \description{
-This function returns a character vector containing indicator
+These functions return character vectors containing indicator
 names as used in the \code{dimnames} attribute of the country and
 aggregate trajectory arrays (e.g., see
-\code{\link{get_country_traj_muw}}).
+\code{\link{get_country_traj_muw}}). \code{get_std_indicator_names}
+returns all valid names, \code{get_std_indicator_names_select}
+provides functionality to subet by statistic and marital group.
 }
 \details{
 The indicator names stored in the country and aggregate trajectory
