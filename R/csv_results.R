@@ -94,9 +94,9 @@
 get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         aggregate = "country",
                         add_aggregate_column = length(aggregate) > 1L,
-                        stat = c("prop", "count", "ratio"),
+                        stat = c("prop", "count", "ratio"),  #Could add 'age_ratio' here later
                         add_stat_column = FALSE,
-                        adjusted = c("orig", "adj", "sub_adj"), #Could add 'age_ratio' here later
+                        adjusted = c("orig", "adj", "sub_adj"),
                         add_adjusted_column = identical(adjusted, "sub_adj"),
                         clean_col_names = TRUE,
                         years_as_midyear = TRUE,

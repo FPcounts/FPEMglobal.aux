@@ -43,7 +43,7 @@ The specific parameters loaded are, \dQuote{omega.c}, \dQuote{T.c},
 }
 \seealso{
 Other Get results from rda files: 
-\code{\link{get_country_summary_results}()}
+\code{\link{get_indicator_summary_results}()}
 }
 \author{
 Mark Wheldon

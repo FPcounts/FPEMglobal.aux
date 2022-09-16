@@ -60,7 +60,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' the format in which they are stored in the \file{res....} files.
 ##'
 ##' @details
-##' To match the format returned by \code{\link{get_csv_denominators},
+##' To match the format returned by \code{\link{get_csv_denominators}},
 ##' use \preformatted{
 ##' get_csv_denominators(...,
 ##'                      add_marital_group = FALSE, ..., add_age_group = FALSE,
@@ -95,7 +95,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     if (identical(units, "units")) unit_mult <- 1000
     else unit_mult <- 1
 
-    res <- get_country_summary_results(run_name = run_name, output_dir = output_dir, root_dir = root_dir)
+    res <- get_indicator_summary_results(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                                         stat = "std", adjusted = "orig", aggregate = "country")
     iso_names <- data.frame(iso = as.numeric(res$iso.g), name = names(res$CIprop.Lg.Lcat.qt))
     denom <- expand.grid(iso = as.numeric(res$iso.g),
                          year = as.numeric(dimnames(res$CIprop.Lg.Lcat.qt[[1]][[1]])[[2]]),
@@ -189,15 +190,68 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                                  units = c("units", "thousands"),
                                  years_as_midyear = TRUE,
                                  table_format = c("long", "raw"),
-                                  verbose = FALSE, ...) {
+                                 verbose = FALSE, ...) {
+
+    ## -------* Sub-Functions
+
+    ## MUST use this _inside_ this function.
+    get_value_cols_colnames <- function(x) {
+
+        ## Determine column name format
+
+        ## There are three formats in use for the value columns:
+        ## 1. E.g., MW_1549_1979 (i.e., marital group, age group, year)
+        ## 2. E.g., 1549_1979 (i.e., age group, year)
+        ## 3. E.g., 1979 (i.e., year)
+
+        col_fmt1_regexp <- "^(M|U)W_[0-9]{4}_(19|20|21)[0-9]{2}$"
+        col_fmt2_regexp <- "^X?[0-9]{4}_(19|20|21)[0-9]{2}$"
+        col_fmt3_regexp <- "^X?(19|20|21)[0-9]{2}$"
+
+        check_fmt1 <- grep(col_fmt1_regexp, colnames(x), value = TRUE)
+        check_fmt2 <- grep(col_fmt2_regexp, colnames(x), value = TRUE)
+        check_fmt3 <- grep(col_fmt3_regexp, colnames(x), value = TRUE)
+
+        is_fmt1 <- length(check_fmt1)
+        is_fmt2 <- length(check_fmt2)
+        is_fmt3 <- length(check_fmt3)
+
+        if (is_fmt1) value_cols <- check_fmt1
+        else if (is_fmt2) value_cols <- check_fmt2
+        else if (is_fmt3) value_cols <- check_fmt3
+        else stop("Column format of '", fpath, "' cannot be determined.")
+
+        if (is_fmt1 || is_fmt2) {
+            if (is_fmt1) {
+                age_group_from_cols <-
+                    sapply(strsplit(gsub("X", "", value_cols), "_", fixed = TRUE), "[[", 2)
+            } else if (is_fmt2) {
+                age_group_from_cols <-
+                    sapply(strsplit(gsub("X", "", value_cols), "_", fixed = TRUE), "[[", 1)
+            }
+            age_group_from_cols <- paste(substr(age_group_from_cols, 1, 2),
+                                         substr(age_group_from_cols, 3,4), sep = "-")
+            if (!identical(as.character(rep(age_group_from_cols[1], length(age_group_from_cols))),
+                           as.character(age_group_from_cols)))
+                stop("Age groups implied in column names of '", fpath, "' are not all the same: ",
+                     toString(age_group_from_cols))
+            if (!identical(as.character(age_group_from_cols[1]), as.character(age_group)))
+                stop("Age group implied in column names is '", as.character(age_group_from_cols[1]),
+                     "' but 'age_group' argument is '", age_group,
+                     "'. Note: if you didn't specify 'age_group' it was read from the meta data.")
+        }
+        return(value_cols)
+    }
 
     ## -------* Set-up
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
-                           post_processed = FALSE, countrytrajectories = FALSE,
-                           made_results = FALSE)
+                           post_processed = is.null(filename), countrytrajectories = FALSE,
+                           made_results = FALSE,
+                           assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
+                           )
 
     output_age_group <- get_age_group(output_dir = output_dir)
 
@@ -255,11 +309,16 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
               identical(colnames(denom_counts_m), colnames(denom_counts_u)) &&
               identical(sort(denom_counts_m$ISO.code), sort(denom_counts_u$ISO.code))))
             stop("Cannot create all women denominators. The married and unmarried tables have different ISOs or different columns.")
-        value_cols <- colnames(denom_counts_m)[value_cols_idx]
+        value_cols <- get_value_cols_colnames(denom_counts_m)
         denom_counts_a <- denom_counts_m
         denom_counts_a[, value_cols] <-
             denom_counts_m[, value_cols] +
             denom_counts_u[match(denom_counts_m$ISO.code, denom_counts_u$ISO.code), value_cols]
+        if (all(grepl("^MW_", value_cols))) {
+            value_cols_idx <- match(value_cols, colnames(denom_counts_a))
+            colnames(denom_counts_a)[value_cols_idx] <-
+                make.names(gsub("^MW_", "", colnames(denom_counts_a)[value_cols_idx]))
+        }
     }
 
     denom_counts <- data.frame()
@@ -276,69 +335,28 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
         if (add_marital_group) denom_counts$marital_group <- "all women"
     }
 
+    value_cols <- get_value_cols_colnames(denom_counts)
+    value_cols_idx <- match(value_cols, colnames(denom_counts))
+
     denom_counts <- tibble::as_tibble(denom_counts)
-
-    ## -------** Determine column name format
-
-    ## There are two formats in use for the value columns:
-    ## 1. E.g., MW_1549_1979 (i.e., marital group, age group, year)
-    ## 2. E.g., 1549_1979 (i.e., age group, year)
-
-    col_fmt1_regexp <- "^(M|U)W_[0-9]{4}_(19|20)[0-9]{2}$"
-    col_fmt2_regexp <- "^X?[^0-9]{4}_(19|20)[0-9]{2}$"
-    col_fmt3_regexp <- "^X?(19|20)[0-9]{2}$"
-
-    check_fmt1 <- grep(col_fmt1_regexp, colnames(denom_counts), value = TRUE)
-    check_fmt2 <- grep(col_fmt2_regexp, colnames(denom_counts), value = TRUE)
-    check_fmt3 <- grep(col_fmt3_regexp, colnames(denom_counts), value = TRUE)
-
-    is_fmt1 <- length(check_fmt1)
-    is_fmt2 <- length(check_fmt2)
-    is_fmt3 <- length(check_fmt3)
-
-    if (is_fmt1) value_cols <- check_fmt1
-    else if (is_fmt2) value_cols <- check_fmt2
-    else if (is_fmt3) value_cols <- check_fmt3
-    else stop("Column format of '", fpath, "' cannot be determined.")
-
-    if (is_fmt1 || is_fmt2) {
-        if (is_fmt1) {
-            age_group_from_cols <- sapply(strsplit(value_cols, "_", fixed = TRUE), "[[", 2)
-        } else if (is_fmt2) {
-            age_group_from_cols <- sapply(strsplit(value_cols, "_", fixed = TRUE), "[[", 1)
-        }
-        age_group_from_cols <- paste(substr(age_group_from_cols, 1, 2),
-                                     substr(age_group_from_cols, 3,4), sep = "-")
-        if (!identical(as.character(rep(age_group_from_cols[1], length(age_group_from_cols))),
-                       as.character(age_group_from_cols)))
-            stop("Age groups implied in column names of '", fpath, "' are not all the same: ",
-                 toString(age_group_from_cols))
-        if (!identical(as.character(age_group_from_cols[1]), as.character(age_group)))
-            stop("Age group implied in column names is '", as.character(age_group_from_cols[1]),
-                 "' but 'age_group' argument is '", age_group,
-                 "'. Note: if you didn't specify 'age_group' it was read from the meta data.")
-    }
 
     ## -------* Cleaning, Additional Columns, etc.
 
     denom_counts[, value_cols] <- denom_counts[, value_cols] * unit_mult
 
     if (years_as_midyear) {
-        value_cols_idx <- match(value_cols, colnames(denom_counts))
         colnames(denom_counts)[value_cols_idx] <-
             paste0(colnames(denom_counts)[value_cols_idx], ".5")
-        value_cols <- colnames(denom_counts)[value_cols_idx]
+        value_cols <- paste0(value_cols, ".5")
         }
 
     if (identical(table_format, "long")) {
-        if (years_as_midyear) substr_offset <- 5
-        else substr_offset <- 3
+        value_cols <- sapply(strsplit(value_cols, "_"), function(z) z[[length(z)]])
+        colnames(denom_counts)[value_cols_idx] <- value_cols
         denom_counts <-
             tidyr::gather(denom_counts, tidyselect::all_of(value_cols),
-                          key = "key", value = "count") %>%
-            dplyr::mutate(year = substr(key, start = nchar(key) - substr_offset, stop = nchar(key)))
-
-        denom_counts <- dplyr::select(denom_counts, -key) %>%
+                          key = "year", value = "count") %>%
+        dplyr::mutate(year = gsub("X|x", "", year)) %>%
             dplyr::mutate(year = as.numeric(year))
         if (any(is.na(denom_counts$year))) stop("'year' is 'NA' for some rows.")
     }

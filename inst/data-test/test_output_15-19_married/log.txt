@@ -1,0 +1,9 @@
+
+220725_151301: Starting MCMC sampler for run 220627_122800_15-19_married
+220726_024421: MCMC sampling completed for run 220627_122800_15-19_married
+220726_024421: Post-processing run 220627_122800_15-19_married
+220726_042228: Finished post-processing run 220627_122800_15-19_married
+220726_042228: Making results for run 220627_122800_15-19_married
+220726_043800: Finished making results for run 220627_122800_15-19_married
+220726_214708: Making results for run 220627_122800_15-19_married
+220726_220309: Finished making results for run 220627_122800_15-19_married

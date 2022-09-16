@@ -69,6 +69,8 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                 message("'output_dir' has been supplied so 'root_dir' is ignored.")
                 }
         }
+        if (!is.character(output_dir) || !identical(length(output_dir), 1L))
+            stop("'output_dir' must be character, length 1.")
         out <- output_dir
     }
 

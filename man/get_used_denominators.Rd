@@ -55,7 +55,13 @@ column will have years in \dQuote{mid-year} format because this is
 the format in which they are stored in the \file{res....} files.
 }
 \details{
-
+To match the format returned by \code{\link{get_csv_denominators}},
+use \preformatted{
+get_csv_denominators(...,
+                     add_marital_group = FALSE, ..., add_age_group = FALSE,
+                     clean_col_names = TRUE, table_format = "long")}
+\code{get_csv_denominators} cannot produce a data frame with years
+in \dQuote{mid-year} format.
 }
 \seealso{
 Other input_data_functions: 
