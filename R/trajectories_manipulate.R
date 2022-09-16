@@ -42,10 +42,12 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
     ## Trajectory counts are in the thousands; try to warn if it seems
     ## they are in millions
     if (!is.null(iso) && !iso %in% c(356, 1456)) # India, China
-        count_threshold <- 10e3
-    else count_threshold <- 20e3
+        count_threshold <- 1e6
+    else count_threshold <- 1e4
     if (any(denominator_counts_df$count > count_threshold)) {
-        msg <- "Some denominator counts exceed 20,000. Trajectory counts are stored in units of 1000; did you supply denominators in units of 1?"
+        msg <- paste0("Some denominator counts exceed ",
+                      count_threshold,
+                      " 20,000. Trajectory counts are stored in units of 1000; did you supply denominators in units of 1?")
         if (safe) stop(msg)
         else warning(msg)
     }
@@ -115,7 +117,8 @@ convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_
 
     denominator_counts_df <-
         as.data.frame(traj_converters_arg_check(traj_array = traj_array_props,
-                                                denominator_counts_df = denominator_counts_df, iso = iso))
+                                                denominator_counts_df = denominator_counts_df, iso = iso,
+                                                safe = safe))
 
     ## -------* Convert to Counts
 
@@ -149,7 +152,8 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
 
     denominator_counts_df <-
         as.data.frame(traj_converters_arg_check(traj_array = traj_array_counts,
-                                                denominator_counts_df = denominator_counts_df, iso = iso))
+                                                denominator_counts_df = denominator_counts_df, iso = iso,
+                                                safe = safe))
 
     ## -------* Convert to Proportions
 
@@ -272,11 +276,11 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 
     stopifnot(is.array(traj_array_counts_age))
     assert_needed_indicators(traj_array_counts_age, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts, safe)
+    check_array_lt_1(traj_array_counts_age, safe)
 
     stopifnot(is.array(traj_array_counts_1549))
     assert_needed_indicators(traj_array_counts_1549, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts, safe)
+    check_array_lt_1(traj_array_counts_1549, safe)
 
     stopifnot(identical(dim(traj_array_counts_age), dim(traj_array_counts_1549)))
     stopifnot(identical(dimnames(traj_array_counts_age), dimnames(traj_array_counts_1549)))
@@ -307,7 +311,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 ##'
 ##' @export
 expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(denominator_counts_df),
-                                      denominator_counts_df = NULL, iso = NULL) {
+                                      denominator_counts_df = NULL, iso = NULL, safe = TRUE) {
 
     ## -------* Check Inputs
 
@@ -330,7 +334,8 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
 
         denominator_counts_df <-
             as.data.frame(traj_converters_arg_check(traj_array = traj_array_counts,
-                                      denominator_counts_df = denominator_counts_df, iso = iso))
+                                                    denominator_counts_df = denominator_counts_df, iso = iso,
+                                                    safe = safe))
 
         ## Year index
         year_vec <- round_down_years(as.numeric(dimnames(traj_array_counts)[[1]]))
