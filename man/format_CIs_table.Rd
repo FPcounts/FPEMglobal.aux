@@ -15,9 +15,6 @@ should be combined.}
 \item{...}{Passed to \code{\link{format}}. You could pass
 \code{digits} or \code{trim} here, for example.}
 }
-\value{
-
-}
 \description{
 Replace columns with lower, median, and upper limits of CIs with
 single columns containing formatted cells like "med (l, u)".

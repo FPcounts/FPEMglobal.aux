@@ -232,7 +232,7 @@ convert_param_name <- function(x) {
 ### ** Marital Groups
 
 ## Get 'long' marital group name from the acronym
-switch_marital_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
+convert_marital_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
     x <- tolower(x)
     x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
     if (identical(x, "awra")) x <- "wra"

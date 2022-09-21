@@ -41,13 +41,15 @@ traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = N
 
     ## Trajectory counts are in the thousands; try to warn if it seems
     ## they are in millions
-    if (!is.null(iso) && !iso %in% c(356, 1456)) # India, China
-        count_threshold <- 1e6
-    else count_threshold <- 1e4
+    count_threshold <- 1e9
+    if (!is.null(iso)) {
+        if (!iso %in% c(356, 1456)) # India, China
+            count_threshold <- 1e9 / 2
+    }
     if (any(denominator_counts_df$count > count_threshold)) {
-        msg <- paste0("Some denominator counts exceed ",
+        msg <- paste0("Some denominator counts for ISO '", iso, "' exceed ",
                       count_threshold,
-                      " 20,000. Trajectory counts are stored in units of 1000; did you supply denominators in units of 1?")
+                      ". Trajectory counts are stored in units of 1000; did you supply denominators in units of 1?")
         if (safe) stop(msg)
         else warning(msg)
     }
@@ -322,8 +324,12 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
 
     all_ind_names <- get_traj_array_indicator_names_count()
     if (incl_no_use) all_ind_names <- c(all_ind_names, "NoUse")
-    if (all(all_ind_names %in% dimnames(traj_array_counts)[[2]]))
-        warning("'traj_array_counts' already expanded; did you supply an all women array?")
+    if (all(all_ind_names %in% dimnames(traj_array_counts)[[2]])) {
+        msg <- "'traj_array_counts' already expanded; did you supply an all women array?"
+        if (safe) warning(msg)
+        else (message(msg))
+        return(traj_array_counts)
+    }
 
     if (incl_no_use) {
 

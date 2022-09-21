@@ -221,7 +221,10 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
             file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
             if (length(file_name) && nchar(file_name))
                 return(gsub("datainfo_total\\.pdf$", "", file_name))
-            else warning("Cannot determine run name.")
+            else {
+                warning("Cannot determine run name.")
+                return(NULL)
+            }
         }
     }
 }
@@ -248,7 +251,7 @@ get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                               verbose = verbose)$general
     if (isTRUE(mg$all.women.run.copy)) return("all women")
-    else return(switch_marital_group_names(mg$marital.group))
+    else return(convert_marital_group_names(mg$marital.group))
 }
 
 ##' @rdname get_marital_group
@@ -271,7 +274,7 @@ is_marital_group_run <- function(run_name = NULL, output_dir = NULL, root_dir = 
     } else {
         mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                    verbose = verbose)$general$marital.group
-        return(identical(switch_marital_group_names(mgp), marital_group))
+        return(identical(convert_marital_group_names(mgp), marital_group))
     }
 }
 

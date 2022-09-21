@@ -8,7 +8,8 @@ expand_country_traj_count(
   traj_array_counts,
   incl_no_use = !is.null(denominator_counts_df),
   denominator_counts_df = NULL,
-  iso = NULL
+  iso = NULL,
+  safe = TRUE
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ produced by \code{\link{get_csv_denominators}}).}
 
 \item{iso}{Numeric ISO code of the country to select from
 \code{denominator_counts_df}; see \dQuote{Details}.}
+
+\item{safe}{Logical; elevate some warnings to errors?}
 }
 \value{
 An expanded trajectory array of counts.

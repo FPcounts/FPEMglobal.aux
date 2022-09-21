@@ -24,9 +24,6 @@ plot_CP_vs_Z(
 \item{CP_data}{Data frame like that returned by
 \code{\link{get_used_input_data}}.}
 }
-\value{
-
-}
 \description{
 This is 'Figure 4' in the Appendix to Alkema at al. (2013).
 }
