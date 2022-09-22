@@ -20,7 +20,7 @@ get_traj_array_indicator_names_ratio <- function() {
 
 
 ## Checks inputs to the various converter functions.
-traj_converters_arg_check <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
+assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
     ## Colnames of denominators
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts_df)))
         stop("'denominator_counts_df' must have column names ",
@@ -108,7 +108,7 @@ convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array_props))
+    traj_array_props <- checkmate::assert_array(traj_array_props, mode = "numeric", d = 3)
     stopifnot(is.data.frame(denominator_counts_df))
 
     if (any(traj_array_props > 1, na.rm = TRUE)) {
@@ -118,7 +118,7 @@ convert_country_traj_to_counts <- function(traj_array_props, denominator_counts_
     }
 
     denominator_counts_df <-
-        as.data.frame(traj_converters_arg_check(traj_array = traj_array_props,
+        as.data.frame(assert_valid_denominator_counts(traj_array = traj_array_props,
                                                 denominator_counts_df = denominator_counts_df, iso = iso,
                                                 safe = safe))
 
@@ -143,7 +143,7 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array_counts))
+    traj_array_counts <- checkmate::assert_array(traj_array_counts, mode = "numeric", d = 3)
     stopifnot(is.data.frame(denominator_counts_df))
 
     ## if (all(traj_array_counts <= 1)) {
@@ -153,7 +153,7 @@ convert_country_traj_to_props <- function(traj_array_counts, denominator_counts_
     ## }
 
     denominator_counts_df <-
-        as.data.frame(traj_converters_arg_check(traj_array = traj_array_counts,
+        as.data.frame(assert_valid_denominator_counts(traj_array = traj_array_counts,
                                                 denominator_counts_df = denominator_counts_df, iso = iso,
                                                 safe = safe))
 
@@ -188,9 +188,10 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
         if (incl_no_use) needed_indicators <- c(needed_indicators, "NoUse")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing 'NoUse', use 'expand_country_traj_count(..., incl_no_use = TRUE, ...)'.")
+        return(invisible(arr))
     }
 
-    check_array_lt_1 <- function(arr, safe) {
+    warn_array_lt_1 <- function(arr, safe) {
         if (all(arr <= 1, na.rm = TRUE)) {
             msg <- c("*All* elements of '", deparse(substitute(arr)), "' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
             if (safe) stop(msg)
@@ -200,22 +201,24 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array_counts))
+    traj_array_counts <- checkmate::assert_array(traj_array_counts, mode = "numeric", d = 3)
 
     muw_sum <- is.null(traj_array_counts_married) + is.null(traj_array_counts_unmarried)
     if (identical(muw_sum, 1L))
         stop("'traj_array_counts_married' and 'traj_array_counts_unmarried' must either be both 'NULL' or both non-'NULL'.")
     muw_arrays <- identical(muw_sum, 0L)
 
-    assert_needed_indicators(traj_array_counts, incl_no_use = TRUE)
-    check_array_lt_1(traj_array_counts, safe)
+    traj_array_counts <- assert_needed_indicators(traj_array_counts, incl_no_use = TRUE)
+    warn_array_lt_1(traj_array_counts, safe)
 
     if (muw_arrays) {
+        traj_array_counts_married <- checkmate::assert_array(traj_array_counts_married, mode = "numeric", d = 3)
         assert_needed_indicators(traj_array_counts_married, incl_no_use = FALSE)
-        check_array_lt_1(traj_array_counts_married, safe)
+        warn_array_lt_1(traj_array_counts_married, safe)
 
+        traj_array_counts_unmarried <- checkmate::assert_array(traj_array_counts_unmarried, mode = "numeric", d = 3)
         assert_needed_indicators(traj_array_counts_unmarried, incl_no_use = FALSE)
-        check_array_lt_1(traj_array_counts_unmarried, safe)
+        warn_array_lt_1(traj_array_counts_unmarried, safe)
     }
 
     ## -------* Convert to Ratios
@@ -264,9 +267,10 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
         needed_indicators <- get_std_indicator_names_select(stat = "age ratio", marital_group = "married")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing some consider 'expand_country_traj_count()'.")
+        return(invisible(arr))
     }
 
-    check_array_lt_1 <- function(arr, safe) {
+    warn_array_lt_1 <- function(arr, safe) {
         if (all(arr <= 1, na.rm = TRUE)) {
             msg <- c("*All* elements of '", deparse(substitute(arr)), "' are <= 1. They should all be counts. Did you pass in a trajectory array of proportions?")
             if (safe) stop(msg)
@@ -276,16 +280,31 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 
     ## -------* Check Inputs
 
-    stopifnot(is.array(traj_array_counts_age))
-    assert_needed_indicators(traj_array_counts_age, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts_age, safe)
+    traj_array_counts_age <- checkmate::assert_array(traj_array_counts_age, mode = "numeric", d = 3)
+    traj_array_counts_age <- assert_needed_indicators(traj_array_counts_age, incl_no_use = FALSE)
+    warn_array_lt_1(traj_array_counts_age, safe)
 
-    stopifnot(is.array(traj_array_counts_1549))
-    assert_needed_indicators(traj_array_counts_1549, incl_no_use = FALSE)
-    check_array_lt_1(traj_array_counts_1549, safe)
+    traj_array_counts_1549 <- checkmate::assert_array(traj_array_counts_1549, mode = "numeric", d = 3)
+    traj_array_counts_1549 <- assert_needed_indicators(traj_array_counts_1549, incl_no_use = FALSE)
+    warn_array_lt_1(traj_array_counts_1549, safe)
 
     stopifnot(identical(dim(traj_array_counts_age), dim(traj_array_counts_1549)))
-    stopifnot(identical(dimnames(traj_array_counts_age), dimnames(traj_array_counts_1549)))
+
+    ## Tolerate different order of dim elements
+    dn_age <- dimnames(traj_array_counts_age)
+    dn_1549 <- dimnames(traj_array_counts_1549)
+    stopifnot(identical(lapply(dn_age, "sort"), lapply(dn_1549, "sort")))
+
+    ## Put 'traj_array_counts_1549' in same order
+    if (!identical(dn_age, dn_1549)) {
+        ## dimnames[[3]] basically always will be 'NULL'
+        if (identical(sapply(dn_age, is.null), c(FALSE, FALSE, TRUE)))
+            traj_array_counts_1549 <- traj_array_counts_1549[dn_age[[1]], dn_age[[2]], , drop = FALSE]
+        else
+            stop("Dimensions of 'traj_array_counts_age' and 'traj_array_counts_1549' are in a different order and cannot be automatically re-arranged.")
+    }
+    stopifnot(identical(dn_age, dimnames(traj_array_counts_1549)))
+
 
     ## -------* Convert to Age Ratios
 
@@ -339,7 +358,7 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
             stop("If 'incl_no_use' is 'TRUE', you must supply 'denominator_counts_df'.")
 
         denominator_counts_df <-
-            as.data.frame(traj_converters_arg_check(traj_array = traj_array_counts,
+            as.data.frame(assert_valid_denominator_counts(traj_array = traj_array_counts,
                                                     denominator_counts_df = denominator_counts_df, iso = iso,
                                                     safe = safe))
 
