@@ -52,7 +52,7 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' determined by reference to an index which must be in the file
 ##' \code{file.path(output_dir, "iso.Ptp3s.key.csv")}.
 ##'
-##' Country trajectories are 3D matrices:
+##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
 ##' - attr(*, "dimnames")=List of 3
@@ -120,7 +120,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' results directory (see below). The filename for the given country
 ##' is \code{paste0("aw_ISO_", iso_code, "_counts.rda")}.
 ##'
-##' Country trajectories are 3D matrices:
+##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:6, 1:15000] 37.2 37.3 39.2 43.6 51.9 ...
 ##' - attr(*, "dimnames")=List of 3
@@ -266,7 +266,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' a married or unmarried output directory will result in an error.
 ##'
 ##' @details
-##' Aggregate trajectories are 3D matrices:
+##' Aggregate trajectories are 3D arrays:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
 ##' - attr(*, "dimnames")=List of 3
