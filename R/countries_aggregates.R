@@ -26,7 +26,7 @@ get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
-    out <- readr::read_csv(fname)
+    out <- readr::read_csv(fname, show_col_types = verbose)
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -51,7 +51,7 @@ get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname)
+    out <- readr::read_csv(fname, show_col_types = verbose)
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -78,7 +78,7 @@ get_country_classifications <- function(UNlocations_names = TRUE,
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname)
+    out <- readr::read_csv(fname, show_col_types = verbose)
     if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -119,8 +119,8 @@ get_used_unpd_regions <-
         data_dir <- file.path(output_dir, data_dir_name)
 
         fname <- file.path(data_dir, "country_and_area_classification.csv")
-        if (verbose) message("Reading '", file.path(tbl_dir, fname), "'.")
-        out <- readr::read_csv(fname)
+        if (verbose) message("Reading '", fname, "'.")
+        out <- readr::read_csv(fname, show_col_types = verbose)
         if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -196,7 +196,7 @@ get_used_special_aggregates <-
             fpath <- file.path(data_dir, agg_csv_names[i])
             if (file.exists(fpath)) {
                 if (verbose) message("Reading '", file.path(tbl_dir, fpath), "'.")
-                y <- readr::read_csv(fpath)[,c("iso.country", "groupname")]
+                y <- readr::read_csv(fpath, show_col_types = verbose)[,c("iso.country", "groupname")]
                 colnames(y)[colnames(y) == "groupname"] <- agg_names[i]
                 out <- dplyr::full_join(out, y, by = "iso.country")
             }
