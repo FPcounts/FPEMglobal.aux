@@ -237,26 +237,30 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 
     ## Look in meta data files
     args <- get_global_run_args(output_dir = res_dir, verbose = verbose)
-    if ("run_name" %in% names(args) && !is.null(args$run_name))
-        return(args$run_name)
-    else if ("run_name_override" %in% names(args) && !is.null(args$run_name_override))
-        return(args$run_name_override)
 
-    ## Try to extract from plots and tables
-    file_name <- grep("CIs\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
-    if (length(file_name) && nchar(file_name))
-        return(gsub("CIs\\.pdf$", "", file_name))
-    else {
-        file_name <- grep("CIs_nopar\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
+    out <- try(FPEMglobal::get_run_name_from_args(args))
+
+    if (!inherits(out, "try-error")) {
+        return(out)
+
+    } else {
+
+        ## Try to extract from plots and tables
+        file_name <- grep("CIs\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
         if (length(file_name) && nchar(file_name))
-            return(gsub("CIs_nopar\\.pdf$", "", file_name))
+            return(gsub("CIs\\.pdf$", "", file_name))
         else {
-            file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
+            file_name <- grep("CIs_nopar\\.pdf$", dir(file.path(res_dir, "fig", "CI")), value = TRUE)
             if (length(file_name) && nchar(file_name))
-                return(gsub("datainfo_total\\.pdf$", "", file_name))
+                return(gsub("CIs_nopar\\.pdf$", "", file_name))
             else {
-                warning("Cannot determine run name.")
-                return(NULL)
+                file_name <- grep("datainfo_total\\.pdf$", dir(file.path(res_dir, "fig", "data_info")), value = TRUE)
+                if (length(file_name) && nchar(file_name))
+                    return(gsub("datainfo_total\\.pdf$", "", file_name))
+                else {
+                    warning("Cannot determine run name.")
+                    return(NULL)
+                }
             }
         }
     }

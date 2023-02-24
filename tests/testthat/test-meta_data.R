@@ -74,7 +74,7 @@ test_that("get_run_name works with default argument values on a 15-49 married di
         system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_run_name(output_dir = test_output_dir), "220425_181439_15-49_married")
+    expect_identical(get_run_name(output_dir = test_output_dir), "2022_15-49_mwra")
 })
 
 test_that("get_marital_group works with default argument values on a 15-49 married directory", {
@@ -179,7 +179,7 @@ test_that("get_run_name works with default argument values on a 15-49 all_women 
         system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_run_name(output_dir = test_output_dir), "220425_181439_15-49_all_women")
+    expect_identical(get_run_name(output_dir = test_output_dir), "2022_15-49_wra")
 })
 
 test_that("get_marital_group works with default argument values on a 15-49 all_women directory", {
