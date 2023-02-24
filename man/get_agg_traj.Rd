@@ -56,7 +56,7 @@ stored in an all women output directory; calling this function on
 a married or unmarried output directory will result in an error.
 }
 \details{
-Aggregate trajectories are 3D matrices:
+Aggregate trajectories are 3D arrays:
 \preformatted{str(...)
 num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
 - attr(*, "dimnames")=List of 3

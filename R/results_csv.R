@@ -382,16 +382,17 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##'     unmarried, and all women. See \code{run_name_list}.
 ##' @param index_col_name Character. Name of column added to output
 ##'     that identifies observations for each marital group.
-##' @param ... Passed to \code{\link{get_csv_res}}.
+##' @param ... Passed to \code{\link{get_csv_res}}. Must not include
+##'     arguments \code{run_name}, \code{output_dir}, \code{root_dir}.
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##' @export
-get_csv_all_mar_res <- function(run_names = NULL, output_dirs = NULL,
-                                            root_dirs = NULL,
-                                            index_col_name = "marital_group",
+get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
+                                root_dirs = NULL,
+                                index_col_name = "marital_group",
                                 ...) {
 
-    warning("!! 'get_csv_all_mar_res()' is currently breaking. Use 'get_csv_res()' instead.")
+    warning("!! 'get_csv_all_mar_res()' is currently UN-TESTED. Use 'get_csv_res()' instead.")
 
     ## !!!!!!!!!!! NEEDS WORK !!!!!!!!!!!!!
     stopifnot(is.list(run_name_list))
@@ -412,7 +413,6 @@ get_csv_all_mar_res <- function(run_names = NULL, output_dirs = NULL,
     for (i in seq_along(output_dir_list)) {
         x <- get_csv_res(run_name = run_name_list[[i]],
                          output_dir = output_dir_list[[i]], root_dir = root_dir,
-                         sort = FALSE, #< Don't sort twice
                          ...)
         if (index_col_name %in% colnames(x))
             stop("'index_col_name' is a column name in csv results table. Choose a different name.")
@@ -421,9 +421,7 @@ get_csv_all_mar_res <- function(run_names = NULL, output_dirs = NULL,
     }
 
     cols <- colnames(out)[colnames(out) != "marital_group"]
-    out <- out[,c("marital_group", cols)]
-
-    return(tibble::as_tibble(out))
+    return(tibble::as_tibble(out[,c("marital_group", cols)]))
 }
 
 

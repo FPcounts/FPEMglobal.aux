@@ -42,7 +42,7 @@ results directory (see below). The filename for the given country
 is \code{paste0("aw_ISO_", iso_code, "_counts.rda")}.
 }
 \details{
-Country trajectories are 3D matrices:
+Country trajectories are 3D arrays:
 \preformatted{str(...)
 num [1:61, 1:6, 1:15000] 37.2 37.3 39.2 43.6 51.9 ...
 - attr(*, "dimnames")=List of 3
