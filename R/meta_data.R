@@ -78,7 +78,7 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose, post_processed = TRUE)
     if (is_all_women_run(output_dir = output_dir))
-        stop("'output_dir' is an all women run; country index files are only available for married and unmarried women runs.")
+        stop("This is an all women run; country index files are only available for married and unmarried women runs.")
 
     traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c"))
 
@@ -112,7 +112,7 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = FALSE)
-    if (is_all_women_run(output_dir = res_dir)) stop("'res_dir' is an all women run; 'get_global_mcmc_args' not available.")
+    if (is_all_women_run(output_dir = res_dir)) stop("This is an all women run; 'get_global_mcmc_args' not available.")
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "global_mcmc_args.RData"), "'."),
                          add = TRUE, after = FALSE)
@@ -144,7 +144,7 @@ get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir =
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE)
-    if (!is_all_women_run(output_dir = res_dir)) stop("'res_dir' is not an all women run; 'combine_runs_args' not available.")
+    if (!is_all_women_run(output_dir = res_dir)) stop("This is not an all women run; 'combine_runs_args' not available.")
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "combine_runs_args.RData"), "'."),
                          add = TRUE, after = FALSE)
@@ -169,6 +169,10 @@ get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @export
 get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE)
     if (!is_all_women_run(output_dir = res_dir))
         return(get_global_mcmc_args(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                     verbose = verbose))
@@ -202,6 +206,7 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE)
+    if (is_all_women_run(output_dir = res_dir)) stop("This is an all women run; 'post_process_args' not available.")
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "post_process_args.RData"), "'."),
                          add = TRUE, after = FALSE)

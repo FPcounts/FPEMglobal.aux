@@ -6,3 +6,5 @@
 # Local install
 ^__install-WINDOWS.bat$
 ^__install.R$
+^_snaps
+^data-raw$
