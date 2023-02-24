@@ -80,7 +80,7 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
     if (is_all_women_run(output_dir = output_dir))
         stop("This is an all women run; country index files are only available for married and unmarried women runs.")
 
-    traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c"))
+    traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c", show_col_types = verbose))
 
     if (identical(class(traj_index), "try-error")) {
         stop("Error reading 'iso.Ptp3s.key.csv'. Did you supply a run name or output directory for an all women run?")

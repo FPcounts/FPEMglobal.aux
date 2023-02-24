@@ -36,7 +36,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
             data_dir <- file.path(output_dir, data_dir_name)
         }
     if (verbose) message("Reading '", file.path(data_dir, fname), "'.")
-        readr::read_csv(file.path(data_dir, fname), show_col_types = verbose)
+        readr::read_csv(file.path(data_dir, fname, show_col_types = verbose), show_col_types = verbose)
 }
 
 
