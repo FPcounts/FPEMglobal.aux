@@ -23,7 +23,9 @@ Imports:
     tibble,
     tidyr,
     utils
-Suggests: 
+Suggests:
+    parallel,
+    parallely,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true

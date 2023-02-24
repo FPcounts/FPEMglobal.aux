@@ -58,6 +58,9 @@ ECHO. ==========================================================================
 Rscript -e "testthat::test_package('FPEMglobal.aux')"
 if %ERRORLEVEL% GEQ 1 PAUSE
 
+Rscript "inst/slowTests/slowTest-results_get_csv_results_1549.R"
+if %ERRORLEVEL% GEQ 1 PAUSE
+
 ECHO.
 ECHO.
 ECHO.
