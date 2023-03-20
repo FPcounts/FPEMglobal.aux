@@ -17,7 +17,6 @@ args_grid <-
     expand.grid(aggregate = c("country", "UNPDaggregate"),
                 stat = c("prop", "count", "ratio"),
                 adjusted = c("orig", "adj", "sub_adj"),
-                add_adjusted_column = c(TRUE, FALSE),
                 clean_col_names = c(TRUE, FALSE),
                 years_as_midyear = c(TRUE, FALSE),
                 add_country_classifications = c(TRUE, FALSE),

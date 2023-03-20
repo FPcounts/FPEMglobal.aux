@@ -57,9 +57,6 @@
 ##' @param adjusted Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
-##' @param add_adjusted_column Add a column \dQuote{\code{adjusted}}?
-##'     Cells indicate which rows are adjusted (\code{TRUE}) and which
-##'     are not (\code{FALSE}).
 ##' @param years_as_midyear Logical; should years be labelled in
 ##'     \dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
@@ -93,7 +90,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         aggregate = "country",
                         stat = c("prop", "count", "ratio"),  #Could add 'age_ratio' here later
                         adjusted = c("orig", "adj", "sub_adj"),
-                        add_adjusted_column = identical(adjusted, "sub_adj"),
                         clean_col_names = TRUE,
                         years_as_midyear = TRUE,
                         add_country_classifications = FALSE,
@@ -259,7 +255,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  key = "Year", value = "Value")
             res$Year <- as.numeric(res$Year)
         }
-        if (add_adjusted_column) res$adjusted <- FALSE
+        res$adjusted <- FALSE
     }
 
     if (adjusted == "adj") {
@@ -270,7 +266,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                  key = "Year", value = "Value")
             res$Year <- as.numeric(res$Year)
         }
-        if (add_adjusted_column) res$adjusted <- TRUE
+        res$adjusted <- TRUE
 
     } else if (adjusted == "sub_adj") {
         if (table_format %in% c("wide", "long")) {
@@ -286,18 +282,14 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
             ## Substitute medians for adjusted medians
             res_med <- res$Percentile == 0.5
-            if (add_adjusted_column) {
-                res$adjusted <- FALSE
-                res$adjusted[res_med] <- TRUE
-            }
+            res$adjusted <- FALSE
+            res$adjusted[res_med] <- TRUE
             res$Year <- as.numeric(res$Year)
         } else {
             if (!identical(sort(colnames(res)), sort(colnames(res_adj))))
                 stop("Column names in 'orig' and 'adj' results are not the same; cannot concatenate.")
-            if (add_adjusted_column) {
-                res$adjusted <- FALSE
-                res_adj$adjusted <- TRUE
-            }
+            res$adjusted <- FALSE
+            res_adj$adjusted <- TRUE
             res <- dplyr::bind_rows(res[res$Percentile != 0.5,], res_adj)
         }
     }
@@ -436,7 +428,8 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' \item{par}{Indicator in lower case; can take values "modern", "traditional", "unmet"}
 ##' \item{1970.5, etc.}{Mid-year; multiple columns from 1970.5 up to 2030.5}}
 ##'
-##' @family csv results functions
+##' @family fpemdata converters
+##' @seealso get_csv_res
 ##'
 ##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}}.
