@@ -10,7 +10,7 @@
 test_that("get_csv_denominators works with default argument values on a 15-19, married directory", {
     ## Output directory
     test_output_dir <-
-        system.file("data-test/test_output_15-19_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-19_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
@@ -24,7 +24,7 @@ test_that("get_csv_denominators works with default argument values on a 15-19, m
 test_that("get_csv_denominators works with specified arguments on a 15-19, married directory", {
     ## Output directory
     test_output_dir <-
-        system.file("data-test/test_output_15-19_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-19_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     ## All options

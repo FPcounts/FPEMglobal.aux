@@ -9,21 +9,21 @@
 
 test_that("get_model_meta_info works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = TRUE),
-                     get(load(system.file("data-test/test_output_15-49_married/mcmc.meta.rda",
+                     get(load(system.file("data-test/15-49_married/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 
     expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = FALSE),
-                     get(load(system.file("data-test/test_output_15-49_married/mcmc.meta.rda",
+                     get(load(system.file("data-test/15-49_married/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_country_index works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_s3_class(get_country_index(output_dir = test_output_dir, verbose = TRUE),
@@ -32,17 +32,17 @@ test_that("get_country_index works with default argument values on a 15-49 marri
 
 test_that("get_global_mcmc_args works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_global_mcmc_args(output_dir = test_output_dir),
-                    get(load(system.file("data-test/test_output_15-49_married/global_mcmc_args.RData",
+                    get(load(system.file("data-test/15-49_married/global_mcmc_args.RData",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_combine_runs_args works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_error(get_combine_runs_args(output_dir = test_output_dir),
@@ -51,27 +51,27 @@ test_that("get_combine_runs_args works with default argument values on a 15-49 m
 
 test_that("get_global_run_args works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_global_run_args(output_dir = test_output_dir),
-                    get(load(system.file("data-test/test_output_15-49_married/global_mcmc_args.RData",
+                    get(load(system.file("data-test/15-49_married/global_mcmc_args.RData",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_global_post_process_args works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_global_post_process_args(output_dir = test_output_dir),
-                    get(load(system.file("data-test/test_output_15-49_married/post_process_args.RData",
+                    get(load(system.file("data-test/15-49_married/post_process_args.RData",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_run_name works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_run_name(output_dir = test_output_dir), "2022_15-49_mwra")
@@ -79,7 +79,7 @@ test_that("get_run_name works with default argument values on a 15-49 married di
 
 test_that("get_marital_group works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_marital_group(output_dir = test_output_dir), "married")
@@ -87,7 +87,7 @@ test_that("get_marital_group works with default argument values on a 15-49 marri
 
 test_that("is_all_women_run works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_all_women_run(output_dir = test_output_dir), FALSE)
@@ -95,7 +95,7 @@ test_that("is_all_women_run works with default argument values on a 15-49 marrie
 
 test_that("is_married_women_run works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_married_women_run(output_dir = test_output_dir), TRUE)
@@ -103,7 +103,7 @@ test_that("is_married_women_run works with default argument values on a 15-49 ma
 
 test_that("is_unmarried_women_run works with default argument values on a 15-49 married directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_unmarried_women_run(output_dir = test_output_dir), FALSE)
@@ -114,21 +114,21 @@ test_that("is_unmarried_women_run works with default argument values on a 15-49 
 
 test_that("get_model_meta_info works with default argument values on a 15-49 all women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = TRUE),
-                     get(load(system.file("data-test/test_output_15-49_all_women/mcmc.meta.rda",
+                     get(load(system.file("data-test/15-49_all_women/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 
     expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = FALSE),
-                     get(load(system.file("data-test/test_output_15-49_all_women/mcmc.meta.rda",
+                     get(load(system.file("data-test/15-49_all_women/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_country_index works with default argument values on a 15-49 all women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_error(get_country_index(output_dir = test_output_dir, verbose = TRUE),
@@ -137,7 +137,7 @@ test_that("get_country_index works with default argument values on a 15-49 all w
 
 test_that("get_global_mcmc_args works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_error(get_global_mcmc_args(output_dir = test_output_dir),
@@ -147,27 +147,27 @@ test_that("get_global_mcmc_args works with default argument values on a 15-49 al
 
 test_that("get_combine_runs_args works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_combine_runs_args(output_dir = test_output_dir),
-                    get(load(system.file("data-test/test_output_15-49_all_women/combine_runs_args.RData",
+                    get(load(system.file("data-test/15-49_all_women/combine_runs_args.RData",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_global_run_args works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_global_run_args(output_dir = test_output_dir),
-                    get(load(system.file("data-test/test_output_15-49_all_women/combine_runs_args.RData",
+                    get(load(system.file("data-test/15-49_all_women/combine_runs_args.RData",
                                           package = "FPEMglobal.aux"))))
 })
 
 test_that("get_global_post_process_args works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_error(get_global_post_process_args(output_dir = test_output_dir),
@@ -176,7 +176,7 @@ test_that("get_global_post_process_args works with default argument values on a 
 
 test_that("get_run_name works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_run_name(output_dir = test_output_dir), "2022_15-49_wra")
@@ -184,7 +184,7 @@ test_that("get_run_name works with default argument values on a 15-49 all_women 
 
 test_that("get_marital_group works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(get_marital_group(output_dir = test_output_dir), "all women")
@@ -192,7 +192,7 @@ test_that("get_marital_group works with default argument values on a 15-49 all_w
 
 test_that("is_all_women_run works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_all_women_run(output_dir = test_output_dir), TRUE)
@@ -200,7 +200,7 @@ test_that("is_all_women_run works with default argument values on a 15-49 all_wo
 
 test_that("is_married_women_run works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_married_women_run(output_dir = test_output_dir), FALSE)
@@ -208,7 +208,7 @@ test_that("is_married_women_run works with default argument values on a 15-49 al
 
 test_that("is_unmarried_women_run works with default argument values on a 15-49 all_women directory", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_all_women", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     expect_identical(is_unmarried_women_run(output_dir = test_output_dir), FALSE)

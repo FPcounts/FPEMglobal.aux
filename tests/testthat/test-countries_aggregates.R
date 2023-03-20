@@ -26,15 +26,15 @@ test_that("get_country_classifications works", {
 })
 
 test_that("list_world_bank_aggregates_names works", {
-    list_world_bank_aggregates_names()
+    expect_error(list_world_bank_aggregates_names(), NA)
 })
 
 test_that("list_special_aggregates_csv_filenames", {
-    list_special_aggregates_csv_filenames()
+    expect_error(list_special_aggregates_csv_filenames(), NA)
 })
 
 test_that("list_special_aggregates_names workds", {
-    list_special_aggregates_names()
+    expect_error(list_special_aggregates_names(), NA)
 })
 
 
@@ -46,7 +46,7 @@ test_that("list_special_aggregates_names workds", {
 
 test_that("get_used_unpd_regions works for 15-49, married women run", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
@@ -67,7 +67,7 @@ test_that("get_used_unpd_regions works for 15-49, married women run", {
 
 test_that("get_used_special_aggregates works for 15-49, married women run", {
     test_output_dir <-
-        system.file("data-test/test_output_15-49_married", package = "FPEMglobal.aux")
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     ## Default
