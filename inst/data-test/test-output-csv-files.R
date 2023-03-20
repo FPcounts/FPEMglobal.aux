@@ -15,22 +15,22 @@ setwd(here::here("data-raw"))
 
 mwra_1519_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Developing", "20220627-1", "220627_122800_15-19_married")
 mwra_1519_src_run_name <- "220914_1519_mw"
-mwra_1519_new_path <- file.path("..", "inst", "data-test", "test_output_15-19_married")
+mwra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_married")
 mwra_1519_new_run_name <- "220627_122800_15-19_married"
 
 wra_1519_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Developing", "20220627-1", "220627_122800_15-19_all_women")
 wra_1519_src_run_name <- "220914_1519all women"
-wra_1519_new_path <- file.path("..", "inst", "data-test", "test_output_15-19_all_women")
+wra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_all_women")
 wra_1519_new_run_name <- "220627_122800_15-19_all_women"
 
 mwra_1549_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Released", "2022", "15-49_mwra")
 mwra_1549_src_run_name <- "2022_15-49_mwra"
-mwra_1549_new_path <- file.path("..", "inst", "data-test", "test_output_15-49_married")
+mwra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_married")
 mwra_1549_new_run_name <- "2022_15-49_mwra"
 
 wra_1549_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Released", "2022", "15-49_wra")
 wra_1549_src_run_name <- "2022_15-49_wra"
-wra_1549_new_path <- file.path("..", "inst", "data-test", "test_output_15-49_all_women")
+wra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_all_women")
 wra_1549_new_run_name <- "2022_15-49_wra"
 
 src_paths <- c(mwra_1519_src_path, wra_1519_src_path, mwra_1549_src_path, wra_1549_src_path)
