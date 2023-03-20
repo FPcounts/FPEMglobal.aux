@@ -131,10 +131,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'
 ##' @details
 ##' One or more marital groups can be requested via argument
-##' \code{marital_group}. If more than one, a column
-##' \dQuote{\code{marital_group}} will be present in the output to
-##' identify records accordingly (regardless the value of
-##' \code{add_marital_group}). Value \code{"default"} will read the
+##' \code{marital_group}. Value \code{"default"} will read the
 ##' the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
 ##' the marital group matching that of the output is included. If
 ##' \code{"all women"} is included, values will be constructed by
@@ -149,6 +146,15 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' The counts appear in the \file{.csv} files in units of 1 and, by
 ##' default, are returned as such (\code{units = "unit"}). Use the
 ##' \code{units} argument to return counts in multiples of 1000.
+##'
+##'To match the format returned by \code{\link{get_used_denominators}},
+##' use \preformatted{
+##' get_csv_denominators(...,
+##'                      clean_col_names = TRUE, table_format = "long")}
+##' and remove columns \code{marital_group} and \code{age_group}.
+##'
+##' \code{get_csv_denominators} cannot produce a data frame with years
+##' in \dQuote{mid-year} format.
 ##'
 ##' @section Technical Note:
 ##' The poulation denominators are stored in \file{.csv} files in the
@@ -183,9 +189,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   filename = NULL,
                                   marital_group = c("default", "married", "unmarried", "all women"),
-                                  add_marital_group = length(marital_group) > 1L,
                                   age_group = NULL,
-                                  add_age_group = TRUE,
                                   clean_col_names = TRUE,
                                  units = c("units", "thousands"),
                                  years_as_midyear = TRUE,
@@ -252,6 +256,9 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                            made_results = FALSE,
                            assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
                            )
+
+    if (!is.null(age_group) && !identical(length(age_group), 1L))
+        stop("'age_group' must be of length '1'.")
 
     output_age_group <- get_age_group(output_dir = output_dir)
 
@@ -324,15 +331,15 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     denom_counts <- data.frame()
     if ("married" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_m)
-        if (add_marital_group) denom_counts$marital_group <- "married"
+        denom_counts$marital_group <- "married"
     }
     if ("unmarried" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_u)
-        if (add_marital_group) denom_counts$marital_group <- "unmarried"
+        denom_counts$marital_group <- "unmarried"
     }
     if ("all women" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_a)
-        if (add_marital_group) denom_counts$marital_group <- "all women"
+        denom_counts$marital_group <- "all women"
     }
 
     value_cols <- get_value_cols_colnames(denom_counts)
@@ -361,11 +368,7 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
         if (any(is.na(denom_counts$year))) stop("'year' is 'NA' for some rows.")
     }
 
-    if (add_age_group && !("age_group" %in% colnames(denom_counts)) && identical(length(age_group), 1L))
-        denom_counts$age_group <- age_group
-
-    if (add_marital_group && !("marital_group" %in% colnames(denom_counts)) && identical(length(marital_group), 1L))
-        denom_counts$marital_group <- marital_group
+    denom_counts$age_group <- age_group
 
     if (clean_col_names) {
         denom_counts <- clean_col_names(denom_counts)
@@ -411,3 +414,4 @@ read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = N
     if (verbose) message("Reading '", file.path(output_dir, file_name), "'.")
     readr::read_csv(file = file.path(output_dir, file_name), show_col_types = verbose)
 }
+
