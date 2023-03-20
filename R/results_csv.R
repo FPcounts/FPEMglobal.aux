@@ -54,8 +54,6 @@
 ##'     \code{aggregate = "country"} to load country results.
 ##' @param stat Which statistics should be loaded? Allowable values
 ##'     are \code{c("orig", "adj", "sub_adj")}.
-##' @param add_stat_column Logical. Add a column \dQuote{\code{stat}}
-##'     with value \code{stat} to the result?
 ##' @param adjusted Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
@@ -93,9 +91,7 @@
 ##' @export
 get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         aggregate = "country",
-                        add_aggregate_column = length(aggregate) > 1L,
                         stat = c("prop", "count", "ratio"),  #Could add 'age_ratio' here later
-                        add_stat_column = FALSE,
                         adjusted = c("orig", "adj", "sub_adj"),
                         add_adjusted_column = identical(adjusted, "sub_adj"),
                         clean_col_names = TRUE,
@@ -315,6 +311,11 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
         else res <- res[,c("stat", "Name", "Iso", "Year", "Percentile", ind_vals)]
     }
 
+    ## Discard the 'stat' column.
+    ## This is here for historical reasons; could probably just not
+    ## create it in the first place.
+    res <- res %>% dplyr::select(-stat)
+
     ## add classifications?
     if (add_country_classifications) {
         class_unpd_agg <-
@@ -332,11 +333,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                              by = c("Iso" = "ISO Code")) %>%
             dplyr::left_join(class_spec, by = c("Iso" = "iso.country"))
     }
-
-    ## Stat column
-    if (add_stat_column && !("stat" %in% colnames(res))) res$stat <- stat
-    else if (!add_stat_column && "stat" %in% colnames(res))
-        res <- res[, colnames(res) != "stat"]
 
     ## Sort
     if (sort) {
@@ -425,39 +421,44 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 }
 
 
-##' Convert loaded csv results to \pkg{fpemdata} format.
+##' Convert csv results to \pkg{fpemdata} format.
 ##'
 ##' This function provides for interaction with the \pkg{fpemdata}
-##' package.
+##' package. The csv results are loaded \emph{via}
+##' \code{\link{get_csv_res}} and then modified accordingly.
 ##'
-##' @section Note:
-##' \pkg{fpemdata} only requires the proportions which
-##'     can be read via \code{get_csv_res(..., stat = "prop",
-##'     ...)}.
+##' \pkg{fpemdata} expects input data in a data frame with the
+##' following columns:
+##' \describe{
+##' \item{Name}{Country name}
+##' \item{Iso}{Numeric ISO code}
+##' \item{Percentile}{\emph{Quantile}, e.g., 0.025, 0.1, etc.}
+##' \item{par}{Indicator in lower case; can take values "modern", "traditional", "unmet"}
+##' \item{1970.5, etc.}{Mid-year; multiple columns from 1970.5 up to 2030.5}}
 ##'
 ##' @family csv results functions
 ##'
-##' @param csv_tbl Results as loaded by \code{\link{get_csv_res}}.
+##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
-csv_res_2_fpemdata <- function(csv_tbl) {
+csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                               verbose = FALSE) {
 
-    csv_tbl <- clean_col_names(csv_tbl)
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = TRUE, made_results = TRUE,
+                           age_ratios = FALSE,
+                           adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
-    ## Need to account for possible renaming of 'percentile' column.
-    col_quant <- grep("[Qq]antile", colnames(csv_tbl))
-    if (length(col_quant))
-        colnames(csv_tbl)[col_quant] <- "percentile"
+    out <- get_csv_res(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                       table_format = "raw", clean_col_names = FALSE,
+                       verbose = verbose)
 
-    out <- csv_tbl %>%
-        dplyr::select(c("name", "iso", "year", "percentile",
-                        "modern", "traditional", "unmet")) %>%
-        tidyr::pivot_longer(cols = c("modern", "traditional", "unmet"),
-                            names_to = "par") %>%
-        tidyr::pivot_wider(values_from = "value",
-                           names_from = "year") %>%
-        dplyr::rename(Name = name, Iso = iso, Percentile = percentile) %>%
+    out <- out %>%
+        dplyr::mutate(indicator = tolower(indicator)) %>%
+        dplyr::rename(par = indicator) %>%
         dplyr::arrange(par, Iso, Percentile)
     return(tibble::as_tibble(out))
 }
