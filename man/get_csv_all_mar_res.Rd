@@ -43,7 +43,6 @@ See the section in \code{\link{get_csv_res}}.
 
 \seealso{
 Other csv results functions: 
-\code{\link{csv_res_2_fpemdata}()},
 \code{\link{get_csv_res}()}
 }
 \author{

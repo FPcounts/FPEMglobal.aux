@@ -62,7 +62,8 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                age_ratios = FALSE) {
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'")
-        out <- get_output_dir(run_name, root_dir)
+        else if (grepl("/", run_name)) stop("'run_name' contains '/'; did you supply 'output_dir' to the 'run_name' argument?")
+        else out <- get_output_dir(run_name, root_dir)
     } else {
         if (!is.null(root_dir)) {
             if (verbose) {

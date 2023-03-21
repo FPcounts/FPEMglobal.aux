@@ -9,11 +9,8 @@ get_csv_res(
   output_dir = NULL,
   root_dir = NULL,
   aggregate = "country",
-  add_aggregate_column = length(aggregate) > 1L,
   stat = c("prop", "count", "ratio"),
-  add_stat_column = FALSE,
   adjusted = c("orig", "adj", "sub_adj"),
-  add_adjusted_column = identical(adjusted, "sub_adj"),
   clean_col_names = TRUE,
   years_as_midyear = TRUE,
   add_country_classifications = FALSE,
@@ -39,16 +36,9 @@ the directory called \dQuote{output}.}
 \item{stat}{Which statistics should be loaded? Allowable values
 are \code{c("orig", "adj", "sub_adj")}.}
 
-\item{add_stat_column}{Logical. Add a column \dQuote{\code{stat}}
-with value \code{stat} to the result?}
-
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
-
-\item{add_adjusted_column}{Add a column \dQuote{\code{adjusted}}?
-Cells indicate which rows are adjusted (\code{TRUE}) and which
-are not (\code{FALSE}).}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
@@ -125,7 +115,6 @@ names. \code{link{FPEMglobal.aux}} for a note about
 \pkg{readr} messages.
 
 Other csv results functions: 
-\code{\link{csv_res_2_fpemdata}()},
 \code{\link{get_csv_all_mar_res}()}
 }
 \author{

@@ -2,33 +2,64 @@
 % Please edit documentation in R/results_csv.R
 \name{csv_res_2_fpemdata}
 \alias{csv_res_2_fpemdata}
-\title{Convert loaded csv results to \pkg{fpemdata} format.}
+\title{Convert csv results to \pkg{fpemdata} format.}
 \usage{
-csv_res_2_fpemdata(csv_tbl)
+csv_res_2_fpemdata(
+  run_name = NULL,
+  output_dir = NULL,
+  root_dir = NULL,
+  adjusted = c("orig", "adj", "sub_adj"),
+  ...,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{csv_tbl}{Results as loaded by \code{\link{get_csv_res}}.}
+\item{run_name}{The run name.}
+
+\item{output_dir}{Path to directory containing outputs. See
+Section \dQuote{Specifying results directory} in the help file
+for \code{\link{get_output_dir}}. Note that \code{root_dir} is
+ignored if \code{output_dir} is supplied.}
+
+\item{root_dir}{A root directory if needed, i.e., the location of
+the directory called \dQuote{output}.}
+
+\item{adjusted}{Loads original results (\dQuote{orig}), adjusted
+medians only (\dQuote{adj}), or original results with medians
+substituted with adjusted medians (\dQuote{sub_adj}).}
+
+\item{...}{passed to \code{\link{get_csv_res}}}
+
+\item{verbose}{Logical. Print lots of messages? See
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.
 }
 \description{
 This function provides for interaction with the \pkg{fpemdata}
-package.
+package. The csv results are loaded \emph{via}
+\code{\link{get_csv_res}} and then modified accordingly.
 }
-\section{Note}{
-
-\pkg{fpemdata} only requires the proportions which
-can be read via \code{get_csv_res(..., stat = "prop",
-    ...)}.
+\details{
+\pkg{fpemdata} expects input data in a data frame with the
+following columns:
+\describe{
+\item{Name}{Country name}
+\item{Iso}{Numeric ISO code}
+\item{Percentile}{\emph{Quantile}, e.g., 0.025, 0.1, etc.}
+\item{par}{Indicator in lower case; can take values "modern", "traditional", "unmet"}
+\item{1970.5, etc.}{Mid-year; multiple columns from 1970.5 up to 2030.5}}
 }
-
 \seealso{
-Other csv results functions: 
-\code{\link{get_csv_all_mar_res}()},
-\code{\link{get_csv_res}()}
+get_csv_res
+
+Other fpemdata converters: 
+\code{\link{denominators_2_fpemdata}()},
+\code{\link{input_data_2_fpemdata}()}
 }
 \author{
 Mark C Wheldon
 }
-\concept{csv results functions}
+\concept{fpemdata converters}

@@ -432,10 +432,13 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @seealso get_csv_res
 ##'
 ##' @inheritParams get_csv_res
+##' @param ... passed to \code{\link{get_csv_res}}
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
 csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                               adjusted = c("orig", "adj", "sub_adj"),
+                               ...,
                                verbose = FALSE) {
 
     output_dir <-
@@ -446,6 +449,7 @@ csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NU
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
     out <- get_csv_res(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                       adjusted = adjusted,
                        table_format = "raw", clean_col_names = FALSE,
                        verbose = verbose)
 
