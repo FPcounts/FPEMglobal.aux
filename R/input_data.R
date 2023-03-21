@@ -7,8 +7,7 @@
 ##' Reads the '.csv' file containing the prevalence data used in the
 ##' run. The file is read using \code{\link[readr]{read_csv}}.
 ##'
-##' @param processed Logical; get the input data after processing by
-##'     \pkg{\link{FPEMglobal}}, or the raw input data?
+##' @param variant Which variant of the input file to load?
 ##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
@@ -17,26 +16,27 @@
 ##'
 ##' @export
 get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-             processed = TRUE,
-             verbose = FALSE, ...) {
+                                variant = c("raw", "preprocessed", "to_model"),
+                                verbose = FALSE) {
 
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE) }
+        on.exit(options(op), add = TRUE, after = FALSE) }
 
-        output_dir <-
-            output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = verbose)
+    variant <- match.arg(variant)
 
-        if (processed) {
-            data_dir <- file.path(output_dir)
-            fname <- "dataCPmodel_input_preprocessed.csv"
-        } else {
-            fname <- "dataCPmodel_input.csv"
-            data_dir_name  <- "data"
-            data_dir <- file.path(output_dir, data_dir_name)
-        }
-    if (verbose) message("Reading '", file.path(data_dir, fname), "'.")
-        readr::read_csv(file.path(data_dir, fname, show_col_types = verbose), show_col_types = verbose)
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose)
+
+    fname <- switch(variant,
+                    raw = "dataCPmodel_input_raw.csv",
+                    preprocessed = "dataCPmodel_input_preprocessed.csv",
+                    to_model = "dataCPmodel_input_to_model.csv",
+                    stop("'variant' is invalid"))
+
+    if (verbose) message("Reading '", file.path(output_dir, fname), "'.")
+    readr::read_csv(file.path(output_dir, fname), show_col_types = verbose,
+                    name_repair = "minimal")
 }
 
 
@@ -147,14 +147,11 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' default, are returned as such (\code{units = "unit"}). Use the
 ##' \code{units} argument to return counts in multiples of 1000.
 ##'
-##'To match the format returned by \code{\link{get_used_denominators}},
+##' To match the format returned by \code{\link{get_used_denominators}},
 ##' use \preformatted{
 ##' get_csv_denominators(...,
 ##'                      clean_col_names = TRUE, table_format = "long")}
 ##' and remove columns \code{marital_group} and \code{age_group}.
-##'
-##' \code{get_csv_denominators} cannot produce a data frame with years
-##' in \dQuote{mid-year} format.
 ##'
 ##' @section Technical Note:
 ##' The poulation denominators are stored in \file{.csv} files in the
@@ -329,17 +326,21 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     }
 
     denom_counts <- data.frame()
+    mar_gp_col_nm <- switch(table_format,
+                            long = "marital_group",
+                            raw = "In.union",
+                            stop("Error in 'mar_gp_col_nm'"))
     if ("married" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_m)
-        denom_counts$marital_group <- "married"
+        denom_counts[[mar_gp_col_nm]] <- "married"
     }
     if ("unmarried" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_u)
-        denom_counts$marital_group <- "unmarried"
+        denom_counts[[mar_gp_col_nm]] <- "unmarried"
     }
     if ("all women" %in% marital_group) {
         denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_a)
-        denom_counts$marital_group <- "all women"
+        denom_counts[[mar_gp_col_nm]] <- "all women"
     }
 
     value_cols <- get_value_cols_colnames(denom_counts)
@@ -413,5 +414,245 @@ read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = N
                            made_results = FALSE)
     if (verbose) message("Reading '", file.path(output_dir, file_name), "'.")
     readr::read_csv(file = file.path(output_dir, file_name), show_col_types = verbose)
+}
+
+
+##' Convert input file to fpemdata format
+##'
+##' Takes the raw input file from an \pkg{FPEMglobal} run and returns
+##' it in \pkg{fpemdata} format. \code{\link{get_used_input_data}} is
+##' called to get the input file.
+##'
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}}.
+##' @author Mark Wheldon
+##'
+##' @family fpemdata converters
+##' @seealso get_used_input_data
+##'
+##' @importFrom gdata rename.vars
+##'
+##' @export
+input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                  verbose = FALSE) {
+
+    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                         verbose = verbose))
+        stop("Input data not stored in output of an all women run. Use 'output_dir' from a married or unmarried women run.")
+
+    ## -------* Get input file
+
+    input_df <- get_used_input_data(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                               verbose = verbose)
+
+    ## -------* Rename Columns
+
+    names_new_old <-
+        data.frame(
+            rbind(
+                c("division_numeric_code",                      "ISO.code"),
+                c("start_date",                                 "Start.year"),
+                c("end_date",                                   "End.year"),
+                c("is_in_union",                                "In.union"),#recode
+                c("is_in_union",                                "In union"),#recode
+                c("age_range",                                  "Age..range"),
+                c("data_series_type",                           "Data.series.type"),
+                c("group_type_relative_to_baseline",            "Population.type"),
+                c("contraceptive_use_modern",                   "Contraceptive.use.MODERN"),
+                c("contraceptive_use_traditional",              "Contraceptive.use.TRADITIONAL"),
+                c("contraceptive_use_any",                      "Contraceptive.use.ANY"),
+                c("unmet_need_modern",                          NA),
+                c("unmet_need_any",                             "Unmet"),
+                c("is_pertaining_to_methods_used_since_last_pregnancy",         NA),#all are 'N'
+                c("pertaining_to_methods_used_since_last_pregnancy_reason",     NA),#all are blank
+                c("has_geographical_region_bias",               NA),#based on ..._reason column
+                c("geographical_region_bias_reason",            "Note.on.country"),
+                c("has_non_pregnant_and_other_positive_biases", "Non.pregnant.and.other.positive.biases"),#based on Note.on.population and note.on.data
+                c("non_pregnant_and_other_positive_biases_reason",              NA),
+                c("age_group_bias",                             "age.cat.bias"),#Needs recoding
+                c("modern_method_bias",                         "Modern.method.bias"),#recode
+                c("has_traditional_method_bias",                NA),#from 'note.on.methods'
+                c("traditional_method_bias_reason",             NA),
+                c("has_absence_of_probing_questions_bias",      "Absence.of.probing.questions.bias...1"),
+                c("se_modern",                                  "SE.modern"),
+                c("se_traditional",                             "SE.trad"),
+                c("se_unmet_need",                              "SE.unmet"),
+                c("se_log_r_modern_no_use",                     "SE.logR.modern.nouse"),
+                c("se_log_r_traditional_no_use",                "SE.logR.trad.nouse"),
+                c("se_log_r_unmet_no_need",                     "SE.logR.unmet.noneed"),
+                c("source_id",                                  "Catalog.ID"),
+                c("record_id",                                  NA)),
+            stringsAsFactors = FALSE)
+    names(names_new_old) <- c("new", "old")
+
+    names_new_old <- names_new_old[names_new_old$old %in% colnames(input_df), ]
+
+    input_df <-
+        gdata::rename.vars(input_df,
+                           from = names_new_old$old[!is.na(names_new_old$old)],
+                           to = names_new_old$new[!is.na(names_new_old$old)],
+                           info = FALSE)
+
+    ## -------* Recode Variables
+
+    input_df$is_in_union <- c("N", "Y")[input_df$is_in_union + 1]
+
+    input_df$age_range <- "15-49"
+
+    input_df$data_series_type[input_df$data_series_type %in%
+                              c("RHS", "CPS", "WFS", "GGS", "LSMS", "GFHS",
+                                "PAPCHILD", "PAPFAM", "CCPS", "FFS")] <- "Other"
+
+    input_df$contraceptive_use_modern <- input_df$contraceptive_use_modern / 100
+    input_df$contraceptive_use_traditional <- input_df$contraceptive_use_traditional / 100
+    input_df$contraceptive_use_any <- input_df$contraceptive_use_any / 100
+    input_df$unmet_need_any <- input_df$unmet_need_any / 100
+    input_df$unmet_need_modern <- NA
+
+    input_df$is_pertaining_to_methods_used_since_last_pregnancy <- "N"
+    input_df$pertaining_to_methods_used_since_last_pregnancy_reason <- ""
+
+    input_df$age_group_bias[input_df$age_group_bias == "0"] <- "None"
+
+    input_df$modern_method_bias[is.na(input_df$modern_method_bias)] <- "None"
+
+    input_df$has_absence_of_probing_questions_bias <-
+        c("N", "Y")[input_df$has_absence_of_probing_questions_bias + 1]
+
+    input_df$record_id <- paste(input_df$is_in_union, 1:nrow(input_df), sep = "_")
+
+    ## -------* Biases
+
+    ## -------** Code Simple Biases
+
+    ## Code geographical reason bias binary indicator
+    input_df$has_geographical_region_bias <-
+        c("N", "Y")[sapply(input_df$geographical_region_bias_reason != "",
+                           "isTRUE") + 1]
+
+    ## Traditional method bias
+    input_df$has_traditional_method_bias <-
+        c("N", "Y")[sapply(input_df$Note.on.methods ==
+                           "Traditional methods include folk methods.",
+                           "isTRUE") + 1]
+    input_df$traditional_method_bias_reason <- ""
+    input_df$traditional_method_bias_reason[input_df$has_traditional_method_bias == "Y"] <-
+        "Traditional methods include folk methods."
+
+    ## Non pregnant and other positive biases
+    input_df$has_non_pregnant_and_other_positive_biases[input_df$has_non_pregnant_and_other_positive_biases == "+"] <- "Y"
+    input_df$has_non_pregnant_and_other_positive_biases[is.na(input_df$has_non_pregnant_and_other_positive_biases)] <- "N"
+
+    input_df$non_pregnant_and_other_positive_biases_reason <- ""
+    idx <- input_df$has_non_pregnant_and_other_positive_biases == "Y"
+    input_df$non_pregnant_and_other_positive_biases_reason[idx] <-
+        input_df$Note.on.population[idx]
+    input_df$non_pregnant_and_other_positive_biases_reason[idx] <-
+        input_df$Note.on.data[idx]    #so will replace 'note.on.population'
+
+    ## -------** Non Pregnant and Other Positive Biases
+
+    positive_list <-
+        c("Data pertain to non-pregnant women.", #1
+          "Data pertain to women exposed to the risk of pregnancy.", #2
+          "Data pertain to sexually active women of reproductive age.", #3 #for married change base population, see below
+          "Data pertain to women exposed to the risk of pregnancy (non-pregnant, who has ever had sex).", #4 #for married change base population, see below
+          "Data pertain to sexually active women.", #5 #for married change base population, see below
+          "Data pertain to women who were sexually active during the month prior to the interview.", #6 #for married change base population, see below
+          "Data pertain to women who were sexually active during the three months prior to the interview.", #7 #for married change base population, see below
+          "Data pertain to sexually active, non-pregnant women.", #8 #for married change base population, see below
+          "Data pertain to fecund women.", #9
+          "Including single women who have born a child.", #10
+          "Including women in cohabiting unions.", #11
+          "Contraceptive use question refers to contraceptive use in the 12 months prior to the survey.", #12
+          "Data pertain to fecund women.", #13
+          "Data pertain to women who ever had sex", #14 #for married change base population, see below
+          "Data are on contraceptive method used in the last year.") #15 -- added MCW 2020-02-11
+
+    posl_only_marr <- positive_list[10:11]
+    posl_only_unmarr <- positive_list[c(3:8,14)]
+    posl_all <- positive_list[!(positive_list %in% posl_only_marr |
+                                positive_list %in% posl_only_unmarr)]
+
+    ## Initialize with "N"s
+    input_df$has_non_pregnant_and_other_positive_biases <- "N"
+
+    ## Note.on.population
+    idx <-
+        (input_df$is_in_union == "Y" & input_df$Note.on.population %in% posl_only_marr) |
+        (input_df$is_in_union == "N" & input_df$Note.on.population %in% posl_only_unmarr) |
+        input_df$Note.on.population %in% posl_all
+    input_df$has_non_pregnant_and_other_positive_biases[idx] <- "Y"
+    input_df$non_pregnant_and_other_positive_biases_reason[idx] <-
+        input_df$Note.on.population[idx]
+
+    ## Note on data
+    idx <-
+        (input_df$is_in_union == "Y" & input_df$Note.on.data %in% posl_only_marr) |
+        (input_df$is_in_union == "N" & input_df$Note.on.data %in% posl_only_unmarr) |
+        input_df$Note.on.data %in% posl_all
+    input_df$has_non_pregnant_and_other_positive_biases[idx] <- "Y"
+    input_df$non_pregnant_and_other_positive_biases_reason[idx] <-
+        input_df$Note.on.data[idx]
+
+    ## -------** NA's
+
+    for (j in seq_len(ncol(input_df))) {
+        if (is.character(input_df[[j]]))
+            input_df[is.na(input_df[[j]]), j] <- ""
+        else if (all(is.na(input_df[[j]])))
+            input_df[[j]] <- ""
+    }
+
+    ## -------* END
+
+    return(input_df)
+}
+
+
+##' Convert input file to fpemdata format
+##'
+##' Takes the raw input file from an \pkg{FPEMglobal} run and returns
+##' it in \pkg{fpemdata} format. \code{\link{get_used_input_data}} is
+##' called to get the input file.
+##'
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}}.
+##' @author Mark Wheldon
+##'
+##' @family fpemdata converters
+##' @seealso get_used_input_data
+##'
+##' @importFrom reshape2 melt
+##'
+##' @export
+denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                  verbose = FALSE) {
+
+    ## -------* Get denominators
+
+    denom_csv <- get_csv_denominators(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                                      clean_col_names = TRUE, table_format = "long",
+                                      marital_group = c("married", "unmarried"),
+                                     processed = FALSE, verbose = verbose)
+
+    ## -------* Reformat
+
+    denom_csv <- denom_csv |>
+        dplyr::mutate(is_in_union = dplyr::case_when(marital_group == "married" ~ "Y",
+                                                     marital_group == "unmarried" ~ "N",
+                                                     TRUE ~ NA_character_)) |>
+        dplyr::rename(division_numeric_code = iso,
+                      population_count = count,
+                      age_range = age_group,
+                      mid_year = year) |>
+        dplyr::select(-marital_group, -name)
+
+    ## Remove rows with missing counts
+    denom_csv <- denom_csv[complete.cases(denom_csv),]
+
+    ## -------* END
+
+    return(denom_csv)
 }
 

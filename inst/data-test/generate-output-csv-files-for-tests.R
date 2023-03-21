@@ -45,12 +45,26 @@ keep_names <- c("Azerbaijan", "Benin", "Kiribati", "Russian Federation", "Martin
                 "Western Asia", "Eastern Europe", "Southern Asia",
                 "Latin America and the Caribbean", "Western Europe")
 
+keep_iso_c <- c(31, 204, 296, 643, 474)
+
 for (k in seq_along(src_paths)) {
     ## Paths for this iteration
     src_path <- src_paths[k]
     src_run_name <- src_run_names[k]
     new_path <- new_paths[k]
     new_run_name <- new_run_names[k]
+
+    ## input data
+    for (suff in c("raw", "preprocessed", "input_to_model")) {
+        fname <- paste0("dataCPmodel_input_", suff, ".csv")
+        fpath <- file.path(src_path, fname)
+        if (file.exists(fpath)) {
+            x <- readr::read_csv(file = fpath,
+                                 name_repair = "minimal", show_col_types = FALSE)
+            x <- x[x$ISO.code %in% keep_iso_c, ]
+            write.csv(x, file = file.path(new_path, fname), row.names = FALSE)
+        }
+    }
 
     ## 'orig' tables
     src_tbl_orig_dir <- file.path(src_path, "table", "orig")

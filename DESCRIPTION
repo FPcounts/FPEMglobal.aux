@@ -18,8 +18,10 @@ Imports:
     checkmate,
     dplyr,
     FPEMglobal (>= 1.3.0),
+    gdata,
     magrittr,
     readr,
+    reshape2,
     tibble,
     tidyr,
     utils

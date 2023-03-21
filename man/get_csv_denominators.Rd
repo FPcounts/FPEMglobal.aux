@@ -10,9 +10,7 @@ get_csv_denominators(
   root_dir = NULL,
   filename = NULL,
   marital_group = c("default", "married", "unmarried", "all women"),
-  add_marital_group = length(marital_group) > 1L,
   age_group = NULL,
-  add_age_group = TRUE,
   clean_col_names = TRUE,
   units = c("units", "thousands"),
   years_as_midyear = TRUE,
@@ -40,11 +38,6 @@ meta data (see \code{\link{get_global_mcmc_args}}.}
 be more than one; see \dQuote{Details}. The default is the
 length 1 vector \code{"default"}.}
 
-\item{add_marital_group}{Logical. Should a column
-\dQuote{\code{marital_group}} be added to the output to
-indicate the marital group? Such a column is always added if
-\code{marital_group} has more than one element.}
-
 \item{age_group}{Age group of the counts for the output data
 frame. If the column names are of the form
 'U/MW_[aabb]_year' this is ignored and the age group is
@@ -66,6 +59,11 @@ returned in long format? See \dQuote{Details}.}
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
+
+\item{add_marital_group}{Logical. Should a column
+\dQuote{\code{marital_group}} be added to the output to
+indicate the marital group? Such a column is always added if
+\code{marital_group} has more than one element.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the denominators; see
@@ -86,10 +84,7 @@ the \file{csv} files. This differs from
 }
 \details{
 One or more marital groups can be requested via argument
-\code{marital_group}. If more than one, a column
-\dQuote{\code{marital_group}} will be present in the output to
-identify records accordingly (regardless the value of
-\code{add_marital_group}). Value \code{"default"} will read the
+\code{marital_group}. Value \code{"default"} will read the
 the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
 the marital group matching that of the output is included. If
 \code{"all women"} is included, values will be constructed by
@@ -104,6 +99,12 @@ year.
 The counts appear in the \file{.csv} files in units of 1 and, by
 default, are returned as such (\code{units = "unit"}). Use the
 \code{units} argument to return counts in multiples of 1000.
+
+To match the format returned by \code{\link{get_used_denominators}},
+use \preformatted{
+get_csv_denominators(...,
+                     clean_col_names = TRUE, table_format = "long")}
+and remove columns \code{marital_group} and \code{age_group}.
 }
 \section{Technical Note}{
 
