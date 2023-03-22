@@ -485,12 +485,12 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
             stringsAsFactors = FALSE)
     names(names_new_old) <- c("new", "old")
 
-    names_new_old <- names_new_old[names_new_old$old %in% colnames(input_df), ]
+    names_old_idx <- !is.na(names_new_old$old) & names_new_old$old %in% colnames(input_df)
 
     input_df <-
         gdata::rename.vars(input_df,
-                           from = names_new_old$old[!is.na(names_new_old$old)],
-                           to = names_new_old$new[!is.na(names_new_old$old)],
+                           from = names_new_old$old[names_old_idx],
+                           to = names_new_old$new[names_old_idx],
                            info = FALSE)
 
     ## -------* Recode Variables
@@ -507,7 +507,7 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
     input_df$contraceptive_use_traditional <- input_df$contraceptive_use_traditional / 100
     input_df$contraceptive_use_any <- input_df$contraceptive_use_any / 100
     input_df$unmet_need_any <- input_df$unmet_need_any / 100
-    input_df$unmet_need_modern <- NA
+    input_df$unmet_need_modern <- NA_real_
 
     input_df$is_pertaining_to_methods_used_since_last_pregnancy <- "N"
     input_df$pertaining_to_methods_used_since_last_pregnancy_reason <- ""
@@ -595,18 +595,19 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
     input_df$non_pregnant_and_other_positive_biases_reason[idx] <-
         input_df$Note.on.data[idx]
 
+    ## Re-order columns
+    input_df <- input_df[, names_new_old$new]
+
     ## -------** NA's
 
     for (j in seq_len(ncol(input_df))) {
         if (is.character(input_df[[j]]))
             input_df[is.na(input_df[[j]]), j] <- ""
-        else if (all(is.na(input_df[[j]])))
-            input_df[[j]] <- ""
     }
 
     ## -------* END
 
-    return(input_df)
+    return(input_df[,names_new_old$new])
 }
 
 
@@ -641,7 +642,8 @@ denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir
     denom_csv <- denom_csv |>
         dplyr::mutate(is_in_union = dplyr::case_when(marital_group == "married" ~ "Y",
                                                      marital_group == "unmarried" ~ "N",
-                                                     TRUE ~ NA_character_)) |>
+                                                     TRUE ~ NA_character_),
+                      iso = as.numeric(iso)) |>
         dplyr::rename(division_numeric_code = iso,
                       population_count = count,
                       age_range = age_group,
