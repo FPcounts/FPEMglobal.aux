@@ -9,8 +9,7 @@ get_used_special_aggregates(
   output_dir = NULL,
   root_dir = NULL,
   clean_col_names = TRUE,
-  verbose = FALSE,
-  ...
+  verbose = FALSE
 )
 }
 \arguments{

@@ -33,9 +33,13 @@ test_that("list_special_aggregates_csv_filenames", {
     expect_error(list_special_aggregates_csv_filenames(), NA)
 })
 
-test_that("list_special_aggregates_names workds", {
+test_that("list_special_aggregates_names works", {
     expect_error(list_special_aggregates_names(), NA)
 })
+
+test_that("country_classifications_2_fpemdata works", {
+    expect_s3_class(country_classifications_2_fpemdata(), "tbl_df")
+    })
 
 
 ###-----------------------------------------------------------------------------

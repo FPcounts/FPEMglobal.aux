@@ -26,7 +26,7 @@ get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
-    out <- readr::read_csv(fname, show_col_types = verbose)
+    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -51,7 +51,7 @@ get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname, show_col_types = verbose)
+    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -78,7 +78,7 @@ get_country_classifications <- function(UNlocations_names = TRUE,
     if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname, show_col_types = verbose)
+    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
     if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -120,7 +120,7 @@ get_used_unpd_regions <-
 
         fname <- file.path(data_dir, "country_and_area_classification.csv")
         if (verbose) message("Reading '", fname, "'.")
-        out <- readr::read_csv(fname, show_col_types = verbose)
+        out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
         if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -176,7 +176,7 @@ list_special_aggregates_names <- function() {
 get_used_special_aggregates <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
              clean_col_names = TRUE,
-             verbose = FALSE, ...) {
+             verbose = FALSE) {
 
         if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
         on.exit(options(op), add = TRUE, after = FALSE) }
@@ -196,7 +196,7 @@ get_used_special_aggregates <-
             fpath <- file.path(data_dir, agg_csv_names[i])
             if (file.exists(fpath)) {
                 if (verbose) message("Reading '", file.path(tbl_dir, fpath), "'.")
-                y <- readr::read_csv(fpath, show_col_types = verbose)[,c("iso.country", "groupname")]
+                y <- readr::read_csv(fpath, show_col_types = verbose, name_repair = "minimal")[,c("iso.country", "groupname")]
                 colnames(y)[colnames(y) == "groupname"] <- agg_names[i]
                 out <- dplyr::full_join(out, y, by = "iso.country")
             }
@@ -224,3 +224,26 @@ get_used_special_aggregates <-
 
         return(out)
     }
+
+
+##' Convert country classifications to fpemdata format
+##'
+##' Retrieves country codes and region classifications from
+##' \pkg{FPEMglobal} and returns them in \pkg{fpemdata} format.
+##'
+##' @family fpemdata converters
+##' @seealso get_country_classifications
+##'
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}} with the requested results.
+##' @author Mark Wheldon
+##'
+##' @export
+country_classifications_2_fpemdata <-
+    function(verbose = FALSE) {
+        get_country_classifications(clean_col_names = TRUE, verbose = verbose) |>
+            dplyr::rename(division_numeric_code = iso,
+                          name_country = name,
+                          name_sub_region = region,
+                          name_region = major_area)
+        }
