@@ -596,7 +596,7 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
         input_df$Note.on.data[idx]
 
     ## Re-order columns
-    input_df <- input_df[, names_new_old$new]
+    input_df <- input_df[, unique(names_new_old$new)]
 
     ## -------** NA's
 
@@ -607,7 +607,7 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
 
     ## -------* END
 
-    return(input_df[,names_new_old$new])
+    return(input_df)
 }
 
 
