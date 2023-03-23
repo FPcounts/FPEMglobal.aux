@@ -321,27 +321,34 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
         if (all(grepl("^MW_", value_cols))) {
             value_cols_idx <- match(value_cols, colnames(denom_counts_a))
             colnames(denom_counts_a)[value_cols_idx] <-
-                make.names(gsub("^MW_", "", colnames(denom_counts_a)[value_cols_idx]))
+                make.names(gsub("^MW_", "", colnames(denom_counts_a)[value_cols_idx]), unique = TRUE)
         }
     }
 
     denom_counts <- data.frame()
+    if ("married" %in% marital_group) {
+        denom_counts <-
+            dplyr::bind_rows(denom_counts,
+                             data.frame(denom_counts_m, mar_gp = "married"))
+    }
+    if ("unmarried" %in% marital_group) {
+        denom_counts <-
+            dplyr::bind_rows(denom_counts,
+                             data.frame(denom_counts_u, mar_gp = "unmarried"))
+    }
+    if ("all women" %in% marital_group) {
+        denom_counts <-
+            dplyr::bind_rows(denom_counts,
+                             data.frame(denom_counts_a, mar_gp = "all women"))
+    }
     mar_gp_col_nm <- switch(table_format,
                             long = "marital_group",
                             raw = "In.union",
                             stop("Error in 'mar_gp_col_nm'"))
-    if ("married" %in% marital_group) {
-        denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_m)
-        denom_counts[[mar_gp_col_nm]] <- "married"
-    }
-    if ("unmarried" %in% marital_group) {
-        denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_u)
-        denom_counts[[mar_gp_col_nm]] <- "unmarried"
-    }
-    if ("all women" %in% marital_group) {
-        denom_counts <- dplyr::bind_rows(denom_counts, denom_counts_a)
-        denom_counts[[mar_gp_col_nm]] <- "all women"
-    }
+    denom_counts <-
+        gdata::rename.vars(denom_counts,
+                           from = "mar_gp", to = mar_gp_col_nm,
+                           info = FALSE)
 
     value_cols <- get_value_cols_colnames(denom_counts)
     value_cols_idx <- match(value_cols, colnames(denom_counts))
