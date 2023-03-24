@@ -19,10 +19,9 @@ the directory called \dQuote{output}.}
 Constructs the path to an output directory for a given model run
 name and a root directory. This output directory structure is now
 obsolete, but the function is retained for backward
-compatibility. The section \dQuote{Specifying the results
-directory from other functions} below constains further
-information, in particular for users who arrived here from the
-help file of another function.
+compatibility. If you arrived here from the help file of another
+function see the section \dQuote{Specifying the results directory
+from other functions} .
 }
 \section{Specifying the results directory from other functions}{
 

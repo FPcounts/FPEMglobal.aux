@@ -286,6 +286,14 @@ round_down_years <- function(x) {
     else return(out)
 }
 
+## Put years in mid-year format
+put_years_in_mid_year_fmt <- function(x) {
+    out <- as.numeric(round_down_years(x)) + 0.5
+    if (is.character(x)) return(as.character(out))
+    else return(out)
+}
+
+
 
 ## Turn strings into lower_snake_case.  Spaces and full stops are
 ## replaced with underscores and the whole thing is put in lower case.

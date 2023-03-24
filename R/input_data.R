@@ -43,30 +43,17 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' Get denominator counts actually used
 ##'
 ##' @description
-##' Reads denominators from the \file{res.country.rda} or
-##' \file{res.country.all.women.rda} files. The output directory will
-##' have to have been post-processed (i.e., the files loaded will need
-##' to have been created by \pkg{FPEMglobal} functions. If this is not
-##' the case, use \code{\link{get_csv_denominators}}.
+##' Reads denominators from the \file{.rda} file produced during a run
+##' (e.g., \file{res.country.rda}, \file{res.country.all.women.rda},
+##' etc.). The output directory must have been post-processed
+##' otherwise these files will not exist. If this is not the case, use
+##' \code{\link{get_csv_denominators}}. The result is a
+##' \code{\link[tibble]{tibble}} with columns \code{"iso"},
+##' \code{"name"}, \code{"year"}, \code{"count"}.
 ##'
-##' The counts appear in the source files in units of 1000 but are
-##' returned are in units of the individual by default (\code{units =
-##' "unit"}). Use the \code{units} argument to return counts in
-##' multiples of 1000.
-##'
-##' The result is a \code{\link[tibble]{tibble}} with columns \code{"iso"},
-##' \code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
-##' column will have years in \dQuote{mid-year} format because this is
-##' the format in which they are stored in the \file{res....} files.
-##'
-##' @details
-##' To match the format returned by \code{\link{get_csv_denominators}},
-##' use \preformatted{
-##' get_csv_denominators(...,
-##'                      add_marital_group = FALSE, ..., add_age_group = FALSE,
-##'                      clean_col_names = TRUE, table_format = "long")}
-##' \code{get_csv_denominators} cannot produce a data frame with years
-##' in \dQuote{mid-year} format.
+##' \strong{Note:} The counts appear in the source files (\file{res.country.rda}, etc.) in units of
+##' 1000 but are returned according to the value of the \code{units}
+##' argument, which is \code{"units"} by default.
 ##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
@@ -76,6 +63,9 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @author Mark Wheldon
 ##'
 ##' @family input_data_functions
+##'
+##' @seealso \code{\link{year_storage_format}} for background on
+##'     storage format of year values.
 ##'
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
@@ -88,8 +78,6 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
                            root_dir = root_dir, verbose = verbose,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
-
-    stopifnot(is.logical(years_as_midyear))
 
     units <- match.arg(units)
     if (identical(units, "units")) unit_mult <- 1000
@@ -108,7 +96,10 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
         nm <- names(res$W.Lg.t)[i]
         denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * unit_mult
     }
-    if (!years_as_midyear) denom$year <- round_down_years(denom$year)
+    if (!is.null(years_as_midyear)) {
+        if (!years_as_midyear) denom$year <- round_down_years(denom$year)
+        else denom$year <- put_years_in_mid_year_fmt(denom$year) + 0.5
+    }
     return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
 }
 
@@ -116,20 +107,11 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 
 ##' Get denominator counts from csv files
 ##'
-##' @description
 ##' Reads the '.csv' file containing the married and unmarried
-##' denominator counts used in the run. These are in units of the
-##' individual.
+##' denominator counts used in the run. The data frame returned has
+##' columns \code{"iso"}, \code{"name"}, \code{"year"},
+##' \code{"count"}.
 ##'
-##' The data frame returned has columns \code{"iso"}, \code{"name"},
-##' \code{"year"}, \code{"count"}. The \code{"year"} column will have
-##' years in \dQuote{1st Jan} format (i.e., whole number years, 1970,
-##' 1971 etc.) because this is the format in which they are stored in
-##' the \file{csv} files. This differs from
-##' \code{\link{get_used_denominators}}. There is no option to return
-##' \dQuote{mid-year} format years from \code{get_csv_denominators}.
-##'
-##' @details
 ##' One or more marital groups can be requested via argument
 ##' \code{marital_group}. Value \code{"default"} will read the
 ##' the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
@@ -144,14 +126,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' year.
 ##'
 ##' The counts appear in the \file{.csv} files in units of 1 and, by
-##' default, are returned as such (\code{units = "unit"}). Use the
-##' \code{units} argument to return counts in multiples of 1000.
-##'
-##' To match the format returned by \code{\link{get_used_denominators}},
-##' use \preformatted{
-##' get_csv_denominators(...,
-##'                      clean_col_names = TRUE, table_format = "long")}
-##' and remove columns \code{marital_group} and \code{age_group}.
+##' default, are returned as such (\code{units = "unit"}). Use
+##' \code{units = "thousands"} to return counts in multiples of 1000.
 ##'
 ##' @section Technical Note:
 ##' The poulation denominators are stored in \file{.csv} files in the
@@ -168,11 +144,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @param marital_group Marital group to load denominators for. Can
 ##'     be more than one; see \dQuote{Details}. The default is the
 ##'     length 1 vector \code{"default"}.
-##' @param add_marital_group Logical. Should a column
-##'     \dQuote{\code{marital_group}} be added to the output to
-##'     indicate the marital group? Such a column is always added if
-##'     \code{marital_group} has more than one element.
 ##' @param units Units in which to return the counts.
+##' @inheritParams get_used_denominators
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
 ##'
@@ -181,6 +154,9 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @author Mark Wheldon
 ##'
 ##' @family input_data_functions
+##'
+##' @seealso \code{\link{year_storage_format}} for background on
+##'     storage format of year values.
 ##'
 ##' @export
 get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
@@ -195,27 +171,41 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     ## -------* Sub-Functions
 
-    ## MUST use this _inside_ this function.
-    get_value_cols_colnames <- function(x) {
+    ## There are three formats in use for the value columns:
+    ## 1. E.g., MW_1549_1979 (i.e., marital group, age group, year)
+    ## 2. E.g., 1549_1979 (i.e., age group, year)
+    ## 3. E.g., 1979 (i.e., year)
 
-        ## Determine column name format
+    col_fmt1_regexp <- "^(M|U)W_[0-9]{4}_(19|20|21)[0-9]{2}$"
+    col_fmt2_regexp <- "^X?[0-9]{4}_(19|20|21)[0-9]{2}$"
+    col_fmt3_regexp <- "^X?(19|20|21)[0-9]{2}$"
 
-        ## There are three formats in use for the value columns:
-        ## 1. E.g., MW_1549_1979 (i.e., marital group, age group, year)
-        ## 2. E.g., 1549_1979 (i.e., age group, year)
-        ## 3. E.g., 1979 (i.e., year)
+    ## MUST use these _inside_ this function.
 
-        col_fmt1_regexp <- "^(M|U)W_[0-9]{4}_(19|20|21)[0-9]{2}$"
-        col_fmt2_regexp <- "^X?[0-9]{4}_(19|20|21)[0-9]{2}$"
-        col_fmt3_regexp <- "^X?(19|20|21)[0-9]{2}$"
+    ## Return column name format
+    get_value_cols_fmt <- function(x) {
 
         check_fmt1 <- grep(col_fmt1_regexp, colnames(x), value = TRUE)
         check_fmt2 <- grep(col_fmt2_regexp, colnames(x), value = TRUE)
         check_fmt3 <- grep(col_fmt3_regexp, colnames(x), value = TRUE)
 
-        is_fmt1 <- length(check_fmt1)
-        is_fmt2 <- length(check_fmt2)
-        is_fmt3 <- length(check_fmt3)
+        if (length(check_fmt1)) return(1L)
+        else if (length(check_fmt2)) return(2L)
+        else if (length(check_fmt3)) return(3L)
+    }
+
+    ## Return the character string with the colnames of the value columns
+    get_value_cols_colnames <- function(x) {
+
+        fmt <- get_value_cols_fmt(x)
+
+        is_fmt1 <- identical(fmt, 1L)
+        is_fmt2 <- identical(fmt, 2L)
+        is_fmt3 <- identical(fmt, 3L)
+
+        check_fmt1 <- grep(col_fmt1_regexp, colnames(x), value = TRUE)
+        check_fmt2 <- grep(col_fmt2_regexp, colnames(x), value = TRUE)
+        check_fmt3 <- grep(col_fmt3_regexp, colnames(x), value = TRUE)
 
         if (is_fmt1) value_cols <- check_fmt1
         else if (is_fmt2) value_cols <- check_fmt2
@@ -350,6 +340,7 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                            from = "mar_gp", to = mar_gp_col_nm,
                            info = FALSE)
 
+    value_cols_fmt <- get_value_cols_fmt(denom_counts)
     value_cols <- get_value_cols_colnames(denom_counts)
     value_cols_idx <- match(value_cols, colnames(denom_counts))
 
@@ -359,11 +350,15 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     denom_counts[, value_cols] <- denom_counts[, value_cols] * unit_mult
 
-    if (years_as_midyear) {
-        colnames(denom_counts)[value_cols_idx] <-
-            paste0(colnames(denom_counts)[value_cols_idx], ".5")
-        value_cols <- paste0(value_cols, ".5")
+    if (!is.null(years_as_midyear)) {
+        if (years_as_midyear) {
+            colnames(denom_counts)[value_cols_idx] <-
+                paste0(colnames(denom_counts)[value_cols_idx], ".5")
+        } else {
+            ## Nothing: none of the known formats use 'mid-year' format.
         }
+        value_cols <- colnames(denom_counts)[value_cols_idx]
+    }
 
     if (identical(table_format, "long")) {
         value_cols <- sapply(strsplit(value_cols, "_"), function(z) z[[length(z)]])
@@ -642,7 +637,8 @@ denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir
     denom_csv <- get_csv_denominators(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                       clean_col_names = TRUE, table_format = "long",
                                       marital_group = c("married", "unmarried"),
-                                     processed = FALSE, verbose = verbose)
+                                      years_as_midyear = FALSE,
+                                      processed = FALSE, verbose = verbose)
 
     ## -------* Reformat
 

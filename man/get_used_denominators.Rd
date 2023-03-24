@@ -26,8 +26,10 @@ the directory called \dQuote{output}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical; should years be labelled in
-\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
+\item{years_as_midyear}{Logical or \code{NULL}; should years be
+stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
+etc.? See \dQuote{Specifying year storage format in
+\pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
@@ -38,32 +40,22 @@ A \code{\link[tibble]{tibble}} with the denominators; see
 \dQuote{Details}.
 }
 \description{
-Reads denominators from the \file{res.country.rda} or
-\file{res.country.all.women.rda} files. The output directory will
-have to have been post-processed (i.e., the files loaded will need
-to have been created by \pkg{FPEMglobal} functions. If this is not
-the case, use \code{\link{get_csv_denominators}}.
+Reads denominators from the \file{.rda} file produced during a run
+(e.g., \file{res.country.rda}, \file{res.country.all.women.rda},
+etc.). The output directory must have been post-processed
+otherwise these files will not exist. If this is not the case, use
+\code{\link{get_csv_denominators}}. The result is a
+\code{\link[tibble]{tibble}} with columns \code{"iso"},
+\code{"name"}, \code{"year"}, \code{"count"}.
 
-The counts appear in the source files in units of 1000 but are
-returned are in units of the individual by default (\code{units =
-"unit"}). Use the \code{units} argument to return counts in
-multiples of 1000.
-
-The result is a \code{\link[tibble]{tibble}} with columns \code{"iso"},
-\code{"name"}, \code{"year"}, \code{"count"}. The \code{"year"}
-column will have years in \dQuote{mid-year} format because this is
-the format in which they are stored in the \file{res....} files.
-}
-\details{
-To match the format returned by \code{\link{get_csv_denominators}},
-use \preformatted{
-get_csv_denominators(...,
-                     add_marital_group = FALSE, ..., add_age_group = FALSE,
-                     clean_col_names = TRUE, table_format = "long")}
-\code{get_csv_denominators} cannot produce a data frame with years
-in \dQuote{mid-year} format.
+\strong{Note:} The counts appear in the source files in units of
+1000 but are returned according to the value of the \code{units}
+argument, which is \code{"units"} by default.
 }
 \seealso{
+\code{\link{year_storage_format}} for background on
+storage format of year values.
+
 Other input_data_functions: 
 \code{\link{get_csv_denominators}()},
 \code{\link{get_used_input_data}()}

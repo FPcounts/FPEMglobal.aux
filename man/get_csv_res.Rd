@@ -45,8 +45,10 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{years_as_midyear}{Logical; should years be labelled in
-\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
+\item{years_as_midyear}{Logical or \code{NULL}; should years be
+stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
+etc.? See \dQuote{Specifying year storage format in
+\pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{add_country_classifications}{Logical; add on columns with
 geographic country classifications? Only has an effect if
@@ -110,9 +112,10 @@ The default is \code{"long"}.
 }
 \seealso{
 \code{\link{get_output_dir}} for instructions on how to
-specify output directories and run
-names. \code{link{FPEMglobal.aux}} for a note about
-\pkg{readr} messages.
+specify output directories and run names;
+\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+messages; \code{\link{year_storage_format}} for background on
+storage format of year values.
 
 Other csv results functions: 
 \code{\link{get_csv_all_mar_res}()}

@@ -50,8 +50,10 @@ about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical; should years be labelled in
-\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.?}
+\item{years_as_midyear}{Logical or \code{NULL}; should years be
+stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
+etc.? See \dQuote{Specifying year storage format in
+\pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
@@ -59,11 +61,6 @@ returned in long format? See \dQuote{Details}.}
 \item{verbose}{Logical. Print lots of messages? See
 \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
-
-\item{add_marital_group}{Logical. Should a column
-\dQuote{\code{marital_group}} be added to the output to
-indicate the marital group? Such a column is always added if
-\code{marital_group} has more than one element.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the denominators; see
@@ -71,16 +68,9 @@ A \code{\link[tibble]{tibble}} with the denominators; see
 }
 \description{
 Reads the '.csv' file containing the married and unmarried
-denominator counts used in the run. These are in units of the
-individual.
-
-The data frame returned has columns \code{"iso"}, \code{"name"},
-\code{"year"}, \code{"count"}. The \code{"year"} column will have
-years in \dQuote{1st Jan} format (i.e., whole number years, 1970,
-1971 etc.) because this is the format in which they are stored in
-the \file{csv} files. This differs from
-\code{\link{get_used_denominators}}. There is no option to return
-\dQuote{mid-year} format years from \code{get_csv_denominators}.
+denominator counts used in the run. The data frame returned has
+columns \code{"iso"}, \code{"name"}, \code{"year"},
+\code{"count"}.
 }
 \details{
 One or more marital groups can be requested via argument
@@ -97,14 +87,8 @@ format as the original counts files, which have one column per
 year.
 
 The counts appear in the \file{.csv} files in units of 1 and, by
-default, are returned as such (\code{units = "unit"}). Use the
-\code{units} argument to return counts in multiples of 1000.
-
-To match the format returned by \code{\link{get_used_denominators}},
-use \preformatted{
-get_csv_denominators(...,
-                     clean_col_names = TRUE, table_format = "long")}
-and remove columns \code{marital_group} and \code{age_group}.
+default, are returned as such (\code{units = "unit"}). Use
+\code{units = "thousands"} to return counts in multiples of 1000.
 }
 \section{Technical Note}{
 
@@ -114,6 +98,9 @@ from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 }
 
 \seealso{
+\code{\link{year_storage_format}} for background on
+storage format of year values.
+
 Other input_data_functions: 
 \code{\link{get_used_denominators}()},
 \code{\link{get_used_input_data}()}
