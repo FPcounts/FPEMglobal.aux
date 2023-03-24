@@ -24,6 +24,9 @@ plot_CP_vs_Z(
 \item{CP_data}{Data frame like that returned by
 \code{\link{get_used_input_data}}.}
 }
+\value{
+Nothing; called for its side-effect of producing a plot.
+}
 \description{
 This is 'Figure 4' in the Appendix to Alkema at al. (2013).
 }
