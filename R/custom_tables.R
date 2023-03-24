@@ -11,7 +11,7 @@
 ##'     should be combined.
 ##' @param ... Passed to \code{\link{format}}. You could pass
 ##'     \code{digits} or \code{trim} here, for example.
-##' @return
+##' @return A data frame containing the table.
 ##' @author Mark Wheldon
 ##' @export
 format_CIs_table <- function(tbl, col_triples, round_digits = 1, ...) {
