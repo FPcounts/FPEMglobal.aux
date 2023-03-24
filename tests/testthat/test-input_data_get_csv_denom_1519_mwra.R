@@ -46,5 +46,4 @@ test_that("get_csv_denominators works with specified arguments on a 15-19, marri
             }
         }
     }
-}
 })

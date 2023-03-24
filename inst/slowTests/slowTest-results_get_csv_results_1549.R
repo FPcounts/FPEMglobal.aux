@@ -34,8 +34,7 @@ run_res <- function(z, args_grid) {
     library(testthat)
     library(FPEMglobal.aux)
     out <- try(do.call("get_csv_res",
-                       args = do.call("list", args_grid[z, ])),
-               "tbl_df")
+                       args = do.call("list", args_grid[z, ])))
     if (!inherits(out, "try-error")) return(NULL)
     else return(list(args = args_grid[z, ],
                      error = out))
