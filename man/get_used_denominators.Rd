@@ -26,13 +26,13 @@ the directory called \dQuote{output}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical or \code{NULL}; should years be
+\item{years_as_midyear}{Logical; should years be
 stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
 etc.? See \dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{
@@ -48,7 +48,7 @@ otherwise these files will not exist. If this is not the case, use
 \code{\link[tibble]{tibble}} with columns \code{"iso"},
 \code{"name"}, \code{"year"}, \code{"count"}.
 
-\strong{Note:} The counts appear in the source files in units of
+\strong{Note:} The counts appear in the source files (\file{res.country.rda}, etc.) in units of
 1000 but are returned according to the value of the \code{units}
 argument, which is \code{"units"} by default.
 }

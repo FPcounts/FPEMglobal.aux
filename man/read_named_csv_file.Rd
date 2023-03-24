@@ -28,7 +28,7 @@ the directory called \dQuote{output}.}
 subdirectory and file extension; see \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

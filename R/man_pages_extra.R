@@ -28,28 +28,10 @@
 ##' @section Specifying year storage format in FPEMglobal.aux:
 ##' When created by \pkg{FPEMglobal.aux} functions,
 ##' the format can be controlled with the argument
-##' \code{years_as_midyear}. This must be passed one of three values:
+##' \code{years_as_midyear}. This must be passed one of the following:
 ##' \describe{
 ##' \item{\code{TRUE}}{\dQuote{mid-year} format.}
-##' \item{\code{FALSE}}{\dQuote{whole-number} format.}
-##' \item{\code{NULL}}{The format in the source file will not be
-##' modified (not recommended; see below for more details).}}
-##'
-##' We do not recommend using \code{years_as_midyear = NULL}. However,
-##' if you must, when \code{years_as_midyear} is \code{NULL}, no
-##' processing on the year values is done and the storage format
-##' returned will be the same as that used in the source file, which
-##' can differ across sources. The list below indicates what to expect
-##' from each function that uses the \code{years_as_midyear} argument
-##' when \code{years_as_midyear = NULL}:
-##' \describe{
-##' \item{\code{get_used_denominators}}{Expect \dQuote{mid-year} format.}
-##' \item{\code{get_csv_denominators}}{Expect \dQuote{whole-number} format.}
-##' \item{\code{get_csv_results}}{Expect \dQuote{mid-year} format.}
-##' }
-##' To repeat: it is strongly recommended to be explicit about the
-##' year format desired and set \code{years_as_midyear} to either
-##' \code{TRUE} or \code{FALSE}.
+##' \item{\code{FALSE}}{\dQuote{whole-number} format.}}
 ##'
 ##' @section Useage in package FPEMglobal:
 ##' Package \pkg{FPEMglobal} uses the formats inconsistently.

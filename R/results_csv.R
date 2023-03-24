@@ -57,7 +57,7 @@
 ##' @param adjusted Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
-##' @param years_as_midyear Logical or \code{NULL}; should years be
+##' @param years_as_midyear Logical; should years be
 ##'     stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
 ##'     etc.? See \dQuote{Specifying year storage format in
 ##'     \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.
@@ -104,6 +104,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     on.exit(options(op), add = TRUE, after = FALSE) }
 
     stat <- match.arg(stat)
+    stopifnot(is.logical(years_as_midyear))
 
     if (add_country_classifications && !identical(aggregate, "country")) {
         warning("'add_country_classifications' only has an effect if 'aggregate' == '\"country\"'. No classifications will be added.")
@@ -240,25 +241,23 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## -------* Modify, Merge, Etc.
 
     ## Years columns
-    if (!is.null(years_as_midyear)) {
-        if (!years_as_midyear) {
-            if (adjusted %in% c("orig", "sub_adj")) {
-                yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
-                colnames(res)[yr_cols_idx] <- round_down_years(colnames(res)[yr_cols_idx])
-            }
-            if (adjusted %in% c("adj", "sub_adj")) {
-                yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
-                colnames(res_adj)[yr_cols_idx] <- round_down_years(colnames(res_adj)[yr_cols_idx])
-            }
-        } else {
-            if (adjusted %in% c("orig", "sub_adj")) {
-                yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
-                colnames(res)[yr_cols_idx] <- put_years_in_mid_year_fmt(colnames(res)[yr_cols_idx])
-            }
-            if (adjusted %in% c("adj", "sub_adj")) {
-                yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
-                colnames(res_adj)[yr_cols_idx] <- put_years_in_mid_year_fmt(colnames(res_adj)[yr_cols_idx])
-            }
+    if (!years_as_midyear) {
+        if (adjusted %in% c("orig", "sub_adj")) {
+            yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
+            colnames(res)[yr_cols_idx] <- round_down_years(colnames(res)[yr_cols_idx])
+        }
+        if (adjusted %in% c("adj", "sub_adj")) {
+            yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
+            colnames(res_adj)[yr_cols_idx] <- round_down_years(colnames(res_adj)[yr_cols_idx])
+        }
+    } else {
+        if (adjusted %in% c("orig", "sub_adj")) {
+            yr_cols_idx <- !colnames(res) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
+            colnames(res)[yr_cols_idx] <- put_years_in_mid_year_fmt(colnames(res)[yr_cols_idx])
+        }
+        if (adjusted %in% c("adj", "sub_adj")) {
+            yr_cols_idx <- !colnames(res_adj) %in% c("Name", "Iso", "Percentile", "indicator", "stat")
+            colnames(res_adj)[yr_cols_idx] <- put_years_in_mid_year_fmt(colnames(res_adj)[yr_cols_idx])
         }
     }
 

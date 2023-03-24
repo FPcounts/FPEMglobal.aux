@@ -83,6 +83,8 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     if (identical(units, "units")) unit_mult <- 1000
     else unit_mult <- 1
 
+    stopifnot(is.logical(years_as_midyear))
+
     res <- get_indicator_summary_results(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                          stat = "std", adjusted = "orig", aggregate = "country")
     iso_names <- data.frame(iso = as.numeric(res$iso.g), name = names(res$CIprop.Lg.Lcat.qt))
@@ -96,10 +98,13 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
         nm <- names(res$W.Lg.t)[i]
         denom[denom$name == nm, "count"] <- res$W.Lg.t[[i]] * unit_mult
     }
-    if (!is.null(years_as_midyear)) {
-        if (!years_as_midyear) denom$year <- round_down_years(denom$year)
-        else denom$year <- put_years_in_mid_year_fmt(denom$year) + 0.5
+
+    if (!years_as_midyear) {
+        denom$year <- round_down_years(denom$year)
+    } else {
+        denom$year <- put_years_in_mid_year_fmt(denom$year) + 0.5
     }
+
     return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
 }
 
@@ -262,6 +267,8 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     if (identical(units, "units")) unit_mult <- 1
     else unit_mult <- 1/1000
 
+    stopifnot(is.logical(years_as_midyear))
+
     data_dir_name <- "data"
     data_dir <- file.path(output_dir, data_dir_name)
 
@@ -350,15 +357,13 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     denom_counts[, value_cols] <- denom_counts[, value_cols] * unit_mult
 
-    if (!is.null(years_as_midyear)) {
-        if (years_as_midyear) {
-            colnames(denom_counts)[value_cols_idx] <-
-                paste0(colnames(denom_counts)[value_cols_idx], ".5")
-        } else {
-            ## Nothing: none of the known formats use 'mid-year' format.
-        }
-        value_cols <- colnames(denom_counts)[value_cols_idx]
+    if (years_as_midyear) {
+        colnames(denom_counts)[value_cols_idx] <-
+            paste0(colnames(denom_counts)[value_cols_idx], ".5")
+    } else {
+        ## Nothing: none of the known formats use 'mid-year' format.
     }
+    value_cols <- colnames(denom_counts)[value_cols_idx]
 
     if (identical(table_format, "long")) {
         value_cols <- sapply(strsplit(value_cols, "_"), function(z) z[[length(z)]])

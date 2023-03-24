@@ -35,7 +35,7 @@ subdirectory of \code{file.path(output_dir,
     "aggregatetrajectories")}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

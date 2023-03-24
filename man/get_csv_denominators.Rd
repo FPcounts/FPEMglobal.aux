@@ -50,7 +50,7 @@ about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical or \code{NULL}; should years be
+\item{years_as_midyear}{Logical; should years be
 stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
 etc.? See \dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
@@ -59,7 +59,7 @@ etc.? See \dQuote{Specifying year storage format in
 returned in long format? See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

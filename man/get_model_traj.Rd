@@ -26,7 +26,7 @@ the directory called \dQuote{output}.}
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

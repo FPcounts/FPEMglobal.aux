@@ -31,7 +31,7 @@ substituted with adjusted medians (\dQuote{sub_adj}).}
 \item{...}{passed to \code{\link{get_csv_res}}}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

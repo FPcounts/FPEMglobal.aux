@@ -8,7 +8,7 @@ country_classifications_2_fpemdata(verbose = FALSE)
 }
 \arguments{
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{

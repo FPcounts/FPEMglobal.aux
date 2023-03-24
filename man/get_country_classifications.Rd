@@ -21,7 +21,7 @@ of the result are \sQuote{cleaned} by applying
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{
