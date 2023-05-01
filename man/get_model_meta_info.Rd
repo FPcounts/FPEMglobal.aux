@@ -27,9 +27,7 @@ the directory called \dQuote{output}.}
 messages.}
 }
 \value{
-Either the name of the loaded object, invisibly
-(\code{load_model_meta}), or the loaded object itself
-(\code{get_model_meta_info}).
+The loaded object.
 }
 \description{
 \code{\link{load}}s and returns the \file{mcmc.meta.rda} file from

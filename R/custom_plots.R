@@ -6,7 +6,7 @@
 ##' This is 'Figure 4' in the Appendix to Alkema at al. (2013).
 ##' @param CP_data Data frame like that returned by
 ##'     \code{\link{get_used_input_data}}.
-##' @return
+##' @return A plot, interactively.
 ##' @author Mark Wheldon
 ##' @export
 plot_CP_vs_Z <- function(CP_data, main = NULL, sub = NULL, add = FALSE,
