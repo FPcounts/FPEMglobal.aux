@@ -26,93 +26,109 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                                 assert_valid_dirs = TRUE, report = TRUE,
                                 verbose = FALSE) {
 
+    ## -------* Functions
+
+    do_test <- function(name, test_fun, extract_fun) {
+        if (report) message("* Checking '", name, "' via '", test_fun, "' ... ")
+        out <- do.call(test_fun,
+                              args = list(do.call(extract_fun,
+                                                  args = list(run_name = run_name_1,
+                                                              output_dir = output_dir_1,
+                                                              root_dir = root_dir_1,
+                                                              verbose = verbose)),
+                                          do.call(extract_fun,
+                                                  args = list(run_name = run_name_2,
+                                                              output_dir = output_dir_2,
+                                                              root_dir = root_dir_2,
+                                                              verbose = verbose))))
+        if (report) {
+            if (isTRUE(out)) message("  ... '", name, "' match.")
+            else message(out)
+        }
+        return(setNames(list(out), nm = name))
+    }
+
+    ## -------* Check Inputs
+
     stopifnot(is.logical(report))
 
-    run_1_dir <- output_dir_wrapper(run_name = run_name_1,
-                                    output_dir = output_dir_1,
-                                    root_dir = root_dir_1,
-                                    verbose = verbose,
-                                    assert_valid = assert_valid_dirs)
+    mg_1 <- is_married_women_run(run_name = run_name_1, output_dir = output_dir_1,
+                                 root_dir = root_dir_1,
+                                 verbose = verbose) ||
+        is_unmarried_women_run(run_name = run_name_1, output_dir = output_dir_1,
+                               root_dir = root_dir_1,
+                               verbose = verbose)
 
-    run_2_dir <- output_dir_wrapper(run_name = run_name_2,
-                                    output_dir = output_dir_2,
-                                    root_dir = root_dir_2,
-                                    verbose = verbose,
-                                    assert_valid = assert_valid_dirs)
+    mg_2 <- is_married_women_run(run_name = run_name_2, output_dir = output_dir_2,
+                                 root_dir = root_dir_2,
+                                 verbose = verbose) ||
+        is_unmarried_women_run(run_name = run_name_2, output_dir = output_dir_2,
+                               root_dir = root_dir_2,
+                               verbose = verbose)
+
+    if (!identical(mg_1, mg_2)) stop("Runs must both be of the same marital group.")
+
+    run_1_dir <-
+        output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
+                           root_dir = root_dir_1, verbose = verbose,
+                           assert_valid = assert_valid_dirs)
+
+    run_2_dir <-
+        output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
+                           root_dir = root_dir_2, verbose = verbose,
+                           assert_valid = assert_valid_dirs)
+
+    ## -------* Tests
 
     out <- list()
 
-    if (report) message("Checking 'model.txt' via 'identical()'... ")
+    ## -------** All runs
+
     out <- c(out,
-             list(model_txt =
-                      identical(get_model_JAGS_txt(run_name = run_name_1,
-                                                           output_dir = output_dir_1,
-                                                           root_dir = root_dir_1,
-                                                          verbose = verbose),
-                                get_model_JAGS_txt(run_name = run_name_2,
-                                                           output_dir = output_dir_2,
-                                                           root_dir = root_dir_2,
-                                                           verbose = verbose))))
-    if (report) {
-        if (isTRUE(out$model_txt)) message(" ... 'model.txt' identical.")
-        else message(" ", out$model_txt)
+             do_test("par.ciq.rda", "identical", "get_model_param_quantiles"),
+             do_test("mcmc.meta.rda", "identical", "get_model_meta_info"))
+
+    ## -------** Only married/unmarried
+
+    if (mg_1 && mg_2) {
+        out <- c(out,
+                 do_test("model.txt", "identical", "get_model_JAGS_txt"),
+                 do_test("res.country.rda", "identical", "get_indicator_summary_results"),
+                 do_test("mcmc.array.rda", "identical", "get_model_traj"),
+                 do_test("global_mcmc_args.RData", "all.equal", "get_global_run_args"))
+
+        pp_1 <- try(output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
+                                 root_dir = root_dir_1,
+                                 verbose = verbose,
+                                 post_processed = TRUE))
+        pp_2 <- try(output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
+                                       root_dir = root_dir_2,
+                                       verbose = verbose,
+                                       post_processed = TRUE))
+        if (!inherits(pp_1, "try-error") && !inherits(pp_2, "try-error")) {
+            out <- c(out,
+                     do_test("post_process_args.RData", "all.equal", "get_global_post_process_args"))
+        }
     }
 
-    if (report) message("Checking 'par.ciq.rda' via 'identical()'... ")
-    out <- c(out,
-             list(par_ciq_rda =
-                      identical(get_model_param_quantiles(run_name = run_name_1,
-                                                           output_dir = output_dir_1,
-                                                           root_dir = root_dir_1,
-                                                          verbose = verbose),
-                                get_model_param_quantiles(run_name = run_name_2,
-                                                           output_dir = output_dir_2,
-                                                           root_dir = root_dir_2,
-                                                           verbose = verbose))))
-    if (report) {
-        if (isTRUE(out$par_ciq_rda)) message(" ... 'par.ciq.rda' identical.")
-        else message(" ", out$par_ciq_rda)
+    ## -------** Only All Women
+
+    if (!mg_1 && !mg_2) {
+        out <- c(out,
+                 do_test("res.country.all.women.rda", "identical", "get_indicator_summary_results"),
+                 do_test("combine_runs_args.RData", "all.equal", "get_combine_runs_args"))
     }
 
-    if (report) message("Checking 'mcmc.array.rda' via 'identical()' ...")
-    out <- c(out,
-             list(mcmc_array_rda =
-                      identical(get_model_traj(run_name = run_name_1,
-                                               output_dir = output_dir_1,
-                                               root_dir = root_dir_1,
-                                               verbose = verbose),
-                                get_model_traj(run_name = run_name_2,
-                                               output_dir = output_dir_2,
-                                               root_dir = root_dir_2,
-                                               verbose = verbose))))
-    if (report) {
-        if (isTRUE(out$mcmc_array_rda)) message(" ... 'mcmc.array.rda' identical.")
-        else if (report) message(" ", out$mcmc_array_rda)
-    }
+    ## -------** Check File Tree
 
-    if (report) message("Checking 'mcmc.meta.rda' via 'all.equal()' ...")
+    if (report) message("* Checking file names, recursively, via 'all.equal' ... ")
     out <- c(out,
-             mcmc_meta_rda = all.equal(get_model_meta_info(run_name = run_name_1,
-                                                           output_dir = output_dir_1,
-                                                           root_dir = root_dir_1,
-                                                           verbose = verbose),
-                                       get_model_meta_info(run_name = run_name_2,
-                                                           output_dir = output_dir_2,
-                                                           root_dir = root_dir_2,
-                                                           verbose = verbose)))
+             list(file.tree = all.equal(dir(run_1_dir, recursive = TRUE),
+                                        dir(run_2_dir, recursive = TRUE))))
     if (report) {
-        if (isTRUE(out$mcmc_meta_rda)) message(" ... 'mcmc.meta.rda' all equal.")
-        else if (report) message(" ", out$mcmc_meta_rda)
-    }
-
-    if (report) message("Checking file names (recursively) via 'all.equal()' ...")
-    out <- c(out,
-             list(file_names = all.equal(dir(run_1_dir, recursive = TRUE),
-                                         dir(run_2_dir, recursive = TRUE))))
-    if (report) {
-        if (isTRUE(out$file_names)) message(" ... file names all equal.")
-        else if (report) message(" ", out$file_names)
+        if (isTRUE(out$file.tree)) message("  ... file names match.")
+        else message(out$file.tree)
     }
 
     return(invisible(out))
-    }
+}
