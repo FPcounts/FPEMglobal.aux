@@ -28,8 +28,9 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
 
     ## -------* Functions
 
-    do_test <- function(name, test_fun, extract_fun) {
-        if (report) message("* Checking '", name, "' via '", test_fun, "' ... ")
+    do_test <- function(name, test_fun = c("identical", "all.equal"), extract_fun) {
+        test_fun <- match.arg(test_fun)
+        if (report) message("\n* Checking '", name, "' via '", test_fun, "' ... ")
         out <- do.call(test_fun,
                               args = list(do.call(extract_fun,
                                                   args = list(run_name = run_name_1,
@@ -43,7 +44,14 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                                                               verbose = verbose))))
         if (report) {
             if (isTRUE(out)) message("  ... '", name, "' match.")
-            else message(out)
+            else {
+                if (identical(test_fun, "identical")) {
+                    message(toString(out))
+                    out <- do_test(name = name, test_fun = "all.equal", extract_fun = extract_fun)
+                } else {
+                    message(toString(out))
+                }
+            }
         }
         return(setNames(list(out), nm = name))
     }
@@ -84,6 +92,15 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
 
     ## -------** All runs
 
+    if (report) message("\n* Checking 'log.txt' via 'all.equal' ... ")
+    out <- c(out,
+             list(log.txt = all.equal(readLines(file.path(run_1_dir, "log.txt")),
+                                      readLines(file.path(run_2_dir, "log.txt")))))
+    if (report) {
+        if (isTRUE(out$log.txt)) message("  ... 'log.txt' match.")
+        else message(toString(out$log.txt))
+    }
+
     out <- c(out,
              do_test("par.ciq.rda", "identical", "get_model_param_quantiles"),
              do_test("mcmc.meta.rda", "identical", "get_model_meta_info"))
@@ -95,7 +112,7 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                  do_test("model.txt", "identical", "get_model_JAGS_txt"),
                  do_test("res.country.rda", "identical", "get_indicator_summary_results"),
                  do_test("mcmc.array.rda", "identical", "get_model_traj"),
-                 do_test("global_mcmc_args.RData", "all.equal", "get_global_run_args"))
+                 do_test("global_mcmc_args.RData", "identical", "get_global_run_args"))
 
         pp_1 <- try(output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
                                  root_dir = root_dir_1,
@@ -107,7 +124,7 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                                        post_processed = TRUE))
         if (!inherits(pp_1, "try-error") && !inherits(pp_2, "try-error")) {
             out <- c(out,
-                     do_test("post_process_args.RData", "all.equal", "get_global_post_process_args"))
+                     do_test("post_process_args.RData", "identical", "get_global_post_process_args"))
         }
     }
 
@@ -116,18 +133,18 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
     if (!mg_1 && !mg_2) {
         out <- c(out,
                  do_test("res.country.all.women.rda", "identical", "get_indicator_summary_results"),
-                 do_test("combine_runs_args.RData", "all.equal", "get_combine_runs_args"))
+                 do_test("combine_runs_args.RData", "identical", "get_combine_runs_args"))
     }
 
     ## -------** Check File Tree
 
-    if (report) message("* Checking file names, recursively, via 'all.equal' ... ")
+    if (report) message("\n* Checking file names, recursively, via 'all.equal' ... ")
     out <- c(out,
              list(file.tree = all.equal(dir(run_1_dir, recursive = TRUE),
                                         dir(run_2_dir, recursive = TRUE))))
     if (report) {
         if (isTRUE(out$file.tree)) message("  ... file names match.")
-        else message(out$file.tree)
+        else message(toString(out$file.tree))
     }
 
     return(invisible(out))
