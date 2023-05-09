@@ -33,7 +33,7 @@ directories?}
 \item{report}{Logical; print messages reporting outcome of each check?}
 
 \item{verbose}{Logical. Print lots of messages? See
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages.}
 }
 \value{
