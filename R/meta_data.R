@@ -13,6 +13,30 @@
 ##   global workspace is not modified.
 
 
+##' Read lines of JAGS model for an FPEMglobal model run
+##'
+##' Reads (via \code{\link{readLines}} the JAGS model code from the
+##' output dirctory of an FPEMglobal run.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##'
+##' @return A character vector, as returne by \code{\link{readLines}}.
+##' @author Mark Wheldon
+##' @export
+get_model_JAGS_txt <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                           verbose = FALSE) {
+    res_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir, verbose = verbose,
+                           post_processed = FALSE)
+
+    if (verbose) on.exit(message("Read '", file.path(res_dir, "model.txt"), "'."),
+                         add = TRUE, after = FALSE)
+    return(readLines(file.path(res_dir, "model.txt")))
+}
+
+
 ##' Get the meta data for an FPEMglobal model run
 ##'
 ##' \code{\link{load}}s and returns the \file{mcmc.meta.rda} file from
@@ -24,9 +48,7 @@
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
 ##'
-##' @return Either the name of the loaded object, invisibly
-##'     (\code{load_model_meta}), or the loaded object itself
-##'     (\code{get_model_meta_info}).
+##' @return The loaded object.
 ##'
 ##' @author Mark Wheldon
 ##'

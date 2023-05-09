@@ -3,9 +3,10 @@
 ##' Constructs the path to an output directory for a given model run
 ##' name and a root directory. This output directory structure is now
 ##' obsolete, but the function is retained for backward
-##' compatibility. If you arrived here from the help file of another
-##' function see the section \dQuote{Specifying the results directory
-##' from other functions} .
+##' compatibility. The section \dQuote{Specifying the results
+##' directory from other functions} below contains further
+##' information, in particular for users who arrived here from the
+##' help file of another function.
 ##'
 ##' @section Specifying the results directory from other functions:
 ##'
@@ -22,10 +23,13 @@
 ##' The first method is recommended. Using this approach,
 ##' \code{output_dir} specifies the location of the main MCMC results
 ##' \file{.rda} file, and the \file{fig} and \file{table} directories
-##' that hold the plots and \file{.csv} tables. \code{run_name} is
-##' still required for finding the output files themselves, but it
-##' only specifies the tag at the start of the plot and table
-##' filenames. It does not specify the name of any directory.
+##' that hold the plots and \file{.csv} tables. \code{run_name} only
+##' specifies the tag at the start of the plot and table filenames
+##' (unless the run has been renamed by
+##' \code{\link[FPEMglobal]{rename_global_run}}). It does not specify
+##' the name of any directory. It will be determined automatically
+##' from \code{output_dir} by \code{\link{get_run_name}}; the user
+##' does not need to provide it when using this method.
 ##'
 ##' Using the first method, if \code{output_dir} = \dQuote{myOutputs}
 ##' and \code{run_name} = \dQuote{myRun}, the \file{.pdf} file holding
@@ -60,7 +64,7 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                adjusted_medians = FALSE,
                                age_ratios = FALSE) {
     if (is.null(output_dir)) {
-        if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'")
+        if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'; both are 'NULL'.")
         else if (grepl("/", run_name)) stop("'run_name' contains '/'; did you supply 'output_dir' to the 'run_name' argument?")
         else out <- get_output_dir(run_name, root_dir)
     } else {

@@ -7,6 +7,16 @@
 ###-----------------------------------------------------------------------------
 ### *** Married
 
+test_that("get_model_JAGS_txt works with default argument values on a 15-49 married directory", {
+    test_output_dir <-
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+
+    expect_identical(get_model_JAGS_txt(output_dir = test_output_dir, verbose = TRUE),
+                     readLines(system.file("data-test/15-49_married/model.txt",
+                                          package = "FPEMglobal.aux")))
+})
+
 test_that("get_model_meta_info works with default argument values on a 15-49 married directory", {
     test_output_dir <-
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
