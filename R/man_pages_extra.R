@@ -59,7 +59,7 @@
 ##' - attr(*, "dimnames")=List of 2
 ##'   ..$ : chr [1:5] "0.025" "0.1" "0.5" "0.9" ...
 ##'   ..$ : chr [1:61] "1970.5" "1971.5" "1972.5" "1973.5" ...}
-##' }}
+##' }
 ##'
 ##' @name year_storage_format
 ##' @rdname year_storage_format
