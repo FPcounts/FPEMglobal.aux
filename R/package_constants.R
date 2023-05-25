@@ -10,14 +10,18 @@
 ##' group names. The names are the abbreviations in lower case.
 ##'
 ##' @param return_case Case of the return value.
+##' @param snake_case Logical; use \dQuote{_} instead of spaces?
 ##' @return Character string.
 ##' @author Mark Wheldon
 ##'
 ##' @family String constants
 ##'
 ##' @export
-get_std_marital_group_names <- function(return_case = c("lower", "sentence", "title", "upper"), named = FALSE) {
+get_std_marital_group_names <- function(return_case = c("lower", "sentence", "title", "upper"),
+                                        snake_case = FALSE,
+                                        named = FALSE) {
     return_case <- match.arg(return_case)
+    stopifnot(is.logical(snake_case))
     basis <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All Women")
     basis2 <- c("mwra" = "Married", "uwra" = "Unmarried", "wra" = "All women")
     if (identical(return_case, "lower")) out <- tolower(basis)
@@ -25,6 +29,7 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
     else if (identical(return_case, "sentence")) out <- basis2
     else if (identical(return_case, "title")) out <- basis
     else stop("Nothing selected")
+    if (snake_case) out <- gsub(" ", "_", out)
     if (!named) out <- unname(out)
     return(out)
 }
