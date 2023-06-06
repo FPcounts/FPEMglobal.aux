@@ -22,11 +22,9 @@
 ##'
 ##' @export
 get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
-    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
+    out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -48,10 +46,8 @@ get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 ##' @family country_aggregates
 ##' @export
 get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
+    out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -75,10 +71,8 @@ get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 get_country_classifications <- function(UNlocations_names = TRUE,
                                         clean_col_names = TRUE,
                                         verbose = FALSE) {
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
     fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
-    out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
+    out <- readr::read_csv(fname, name_repair = "minimal")
     if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -109,9 +103,6 @@ get_used_unpd_regions <-
              clean_col_names = TRUE, UNlocations_names = TRUE,
              verbose = FALSE) {
 
-        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
-
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
@@ -120,7 +111,7 @@ get_used_unpd_regions <-
 
         fname <- file.path(data_dir, "country_and_area_classification.csv")
         if (verbose) message("Reading '", fname, "'.")
-        out <- readr::read_csv(fname, show_col_types = verbose, name_repair = "minimal")
+        out <- readr::read_csv(fname, name_repair = "minimal")
         if (UNlocations_names)
             out[, "Country or area"] <-
                 match_UNlocations(out[, "Country or area"], "UNlocations")
@@ -178,9 +169,6 @@ get_used_special_aggregates <-
              clean_col_names = TRUE,
              verbose = FALSE) {
 
-        if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
-
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                                root_dir = root_dir, verbose = verbose)
@@ -196,7 +184,7 @@ get_used_special_aggregates <-
             fpath <- file.path(data_dir, agg_csv_names[i])
             if (file.exists(fpath)) {
                 if (verbose) message("Reading '", file.path(tbl_dir, fpath), "'.")
-                y <- readr::read_csv(fpath, show_col_types = verbose, name_repair = "minimal")[,c("iso.country", "groupname")]
+                y <- readr::read_csv(fpath, name_repair = "minimal")[,c("iso.country", "groupname")]
                 colnames(y)[colnames(y) == "groupname"] <- agg_names[i]
                 out <- dplyr::full_join(out, y, by = "iso.country")
             }

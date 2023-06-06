@@ -100,9 +100,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         sort = TRUE,
                         verbose = FALSE) {
 
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE) }
-
     stat <- match.arg(stat)
     stopifnot(is.logical(years_as_midyear))
 
@@ -146,7 +143,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read the '_Total' file first
             fname1 <- paste0(fname, "_", stat_in_fname, "_Total.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
-            res <- readr::read_csv(file.path(tbl_dir, fname1), show_col_types = verbose)
+            res <- readr::read_csv(file.path(tbl_dir, fname1))
             res$stat <- stat
             res$indicator <- "Total"
 
@@ -155,7 +152,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                "Unmet")) {
                 fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, ".csv")
                 if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), show_col_types = verbose)
+                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_ind$stat <- stat
                 res_ind$indicator <- indicator
                 res <- dplyr::bind_rows(res, res_ind)
@@ -168,7 +165,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read the '_Met Demand' file first
             fname1 <- paste0(fname, "_", stat, "_Met Demand.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
-            res <- readr::read_csv(file.path(tbl_dir, fname1), show_col_types = verbose)
+            res <- readr::read_csv(file.path(tbl_dir, fname1))
             res$stat <- stat
             res$indicator <- "Met Demand"
 
@@ -177,7 +174,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             for (indicator in ind_values) {
                 fname_ind <- paste0(fname, "_", "ratio", "_", indicator, ".csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), show_col_types = verbose)
+                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_ind$stat <- stat
                 res_ind$indicator <- indicator
                 res <- dplyr::bind_rows(res, res_ind)
@@ -201,7 +198,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read the '_Total' file first
             fname1 <- paste0(fname, "_", stat_in_fname, "_Total_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
-            res_adj <- readr::read_csv(file.path(tbl_dir, fname1), show_col_types = verbose)
+            res_adj <- readr::read_csv(file.path(tbl_dir, fname1))
             res_adj$stat <- stat
             res_adj$indicator <- "Total"
 
@@ -210,7 +207,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                "Unmet")) {
                 fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, "_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), show_col_types = verbose)
+                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_adj_ind$stat <- stat
                 res_adj_ind$indicator <- indicator
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
@@ -221,7 +218,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read the '_Met Demand' file first
             fname1 <- paste0(fname, "_", stat, "_Met Demand_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
-            res_adj <- readr::read_csv(file.path(tbl_dir, fname1), show_col_types = verbose)
+            res_adj <- readr::read_csv(file.path(tbl_dir, fname1))
             res_adj$stat <- stat
             res_adj$indicator <- "Met Demand"
 
@@ -230,7 +227,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             for (indicator in ind_values) {
                 fname_ind <- paste0(fname, "_", "ratio", "_", indicator, "_Adj.csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind), show_col_types = verbose)
+                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
                 res_adj_ind$stat <- stat
                 res_adj_ind$indicator <- indicator
                 res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
