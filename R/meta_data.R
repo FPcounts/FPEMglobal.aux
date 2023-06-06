@@ -303,11 +303,14 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 ##' @family model_run_meta_info
 ##' @export
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                              lower_snake_casify = FALSE,
                               verbose = FALSE) {
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                               verbose = verbose)$general
-    if (isTRUE(mg$all.women.run.copy)) return("all women")
-    else return(convert_marital_group_names(mg$marital.group))
+    if (isTRUE(mg$all.women.run.copy)) out <- "all women"
+    else out <- convert_marital_group_names(mg$marital.group)
+    if (lower_snake_casify) out <- lower_snake_casify(out)
+    return(out)
 }
 
 ##' @rdname get_marital_group
