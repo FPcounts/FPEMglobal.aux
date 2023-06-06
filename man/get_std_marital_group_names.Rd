@@ -6,11 +6,14 @@
 \usage{
 get_std_marital_group_names(
   return_case = c("lower", "sentence", "title", "upper"),
+  snake_case = FALSE,
   named = FALSE
 )
 }
 \arguments{
 \item{return_case}{Case of the return value.}
+
+\item{snake_case}{Logical; use \dQuote{_} instead of spaces?}
 }
 \value{
 Character string.
