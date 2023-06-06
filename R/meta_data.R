@@ -93,16 +93,13 @@ get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = N
 get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                               verbose = FALSE) {
 
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
-
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose, post_processed = TRUE)
     if (is_all_women_run(output_dir = output_dir))
         stop("This is an all women run; country index files are only available for married and unmarried women runs.")
 
-    traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c", show_col_types = verbose))
+    traj_index <- try(readr::read_csv(file.path(output_dir, "iso.Ptp3s.key.csv"), col_types = "c"))
 
     if (identical(class(traj_index), "try-error")) {
         stop("Error reading 'iso.Ptp3s.key.csv'. Did you supply a run name or output directory for an all women run?")
@@ -306,11 +303,14 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 ##' @family model_run_meta_info
 ##' @export
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                              lower_snake_casify = FALSE,
                               verbose = FALSE) {
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                               verbose = verbose)$general
-    if (isTRUE(mg$all.women.run.copy)) return("all women")
-    else return(convert_marital_group_names(mg$marital.group))
+    if (isTRUE(mg$all.women.run.copy)) out <- "all women"
+    else out <- convert_marital_group_names(mg$marital.group)
+    if (lower_snake_casify) out <- lower_snake_casify(out)
+    return(out)
 }
 
 ##' @rdname get_marital_group

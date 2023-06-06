@@ -19,9 +19,6 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
                                 variant = c("raw", "preprocessed", "to_model"),
                                 verbose = FALSE) {
 
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-        on.exit(options(op), add = TRUE, after = FALSE) }
-
     variant <- match.arg(variant)
 
     output_dir <-
@@ -35,7 +32,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
                     stop("'variant' is invalid"))
 
     if (verbose) message("Reading '", file.path(output_dir, fname), "'.")
-    readr::read_csv(file.path(output_dir, fname), show_col_types = verbose,
+    readr::read_csv(file.path(output_dir, fname),
                     name_repair = "minimal")
 }
 
@@ -411,16 +408,13 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                 file_name, verbose = FALSE, ...) {
 
-    if (!verbose) { op <- options(readr.show_progress = verbose, readr.show_col_types = verbose)
-    on.exit(options(op), add = TRUE, after = FALSE) }
-
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir, verbose = verbose,
                            post_processed = FALSE, countrytrajectories = FALSE,
                            made_results = FALSE)
     if (verbose) message("Reading '", file.path(output_dir, file_name), "'.")
-    readr::read_csv(file = file.path(output_dir, file_name), show_col_types = verbose)
+    readr::read_csv(file = file.path(output_dir, file_name))
 }
 
 
