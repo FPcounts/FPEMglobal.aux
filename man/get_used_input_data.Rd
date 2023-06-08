@@ -8,8 +8,7 @@ get_used_input_data(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  variant = c("raw", "preprocessed", "to_model"),
-  verbose = FALSE
+  variant = c("raw", "preprocessed", "to_model")
 )
 }
 \arguments{
@@ -24,10 +23,6 @@ ignored if \code{output_dir} is supplied.}
 the directory called \dQuote{output}.}
 
 \item{variant}{Which variant of the input file to load?}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

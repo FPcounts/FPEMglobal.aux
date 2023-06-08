@@ -8,8 +8,7 @@ get_model_traj(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  name_dims = TRUE,
-  verbose = FALSE
+  name_dims = TRUE
 )
 }
 \arguments{
@@ -24,10 +23,6 @@ ignored if \code{output_dir} is supplied.}
 the directory called \dQuote{output}.}
 
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 The loaded object.

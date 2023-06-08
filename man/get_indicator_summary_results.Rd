@@ -10,8 +10,7 @@ get_indicator_summary_results(
   root_dir = NULL,
   aggregate = c("country", "aggregate"),
   stat = c("std", "age_ratio"),
-  adjusted = c("orig", "adj"),
-  verbose = FALSE
+  adjusted = c("orig", "adj")
 )
 }
 \arguments{
@@ -34,10 +33,6 @@ are \code{"std"} for \dQuote{standard} statistics, and
 
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}).}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A list with posterior quantiles of indicators, by country.

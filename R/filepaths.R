@@ -57,12 +57,13 @@ get_output_dir <- function(run_name, root_dir = ".") {
 
 ## Used in functions to check if user supplied the necessary arguments.
 output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
-                               root_dir = NULL, verbose = FALSE,
+                               root_dir = NULL,
                                assert_valid = FALSE,
                                post_processed = FALSE, countrytrajectories = FALSE,
                                made_results = FALSE,
                                adjusted_medians = FALSE,
                                age_ratios = FALSE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'; both are 'NULL'.")
         else if (grepl("/", run_name)) stop("'run_name' contains '/'; did you supply 'output_dir' to the 'run_name' argument?")
@@ -90,7 +91,8 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
 }
 
 ## Select the 'orig' or 'adj' subdirectory of the table directory.
-table_orig_adj_dir <- function(tbl_dir, adj, verbose = FALSE) {
+table_orig_adj_dir <- function(tbl_dir, adj) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     if (adj) {
         tbl_dir <- file.path(tbl_dir, "adj")
     } else {

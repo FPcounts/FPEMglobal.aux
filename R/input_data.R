@@ -16,14 +16,14 @@
 ##'
 ##' @export
 get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                variant = c("raw", "preprocessed", "to_model"),
-                                verbose = FALSE) {
+                                variant = c("raw", "preprocessed", "to_model")) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     variant <- match.arg(variant)
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir)
 
     fname <- switch(variant,
                     raw = "dataCPmodel_input_raw.csv",
@@ -67,12 +67,12 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @export
 get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   units = c("units", "thousands"),
-                                  years_as_midyear = TRUE,
-                                  verbose = FALSE) {
+                                  years_as_midyear = TRUE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
 
@@ -168,8 +168,9 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
                                   clean_col_names = TRUE,
                                  units = c("units", "thousands"),
                                  years_as_midyear = TRUE,
-                                 table_format = c("long", "raw"),
-                                 verbose = FALSE, ...) {
+                                 table_format = c("long", "raw"), ...) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## -------* Sub-Functions
 
@@ -240,7 +241,7 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = is.null(filename), countrytrajectories = FALSE,
                            made_results = FALSE,
                            assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
@@ -406,11 +407,13 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @seealso get_used_input_data, get_csv_res
 ##' @export
 read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                file_name, verbose = FALSE, ...) {
+                                file_name, ...) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = FALSE, countrytrajectories = FALSE,
                            made_results = FALSE)
     if (verbose) message("Reading '", file.path(output_dir, file_name), "'.")
@@ -434,17 +437,16 @@ read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @importFrom gdata rename.vars
 ##'
 ##' @export
-input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                  verbose = FALSE) {
+input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
 
-    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                         verbose = verbose))
+    verbose <- getOption("FPEMglobal.aux.verbose")
+
+    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir))
         stop("Input data not stored in output of an all women run. Use 'output_dir' from a married or unmarried women run.")
 
     ## -------* Get input file
 
-    input_df <- get_used_input_data(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                               verbose = verbose)
+    input_df <- get_used_input_data(run_name = run_name, output_dir = output_dir, root_dir = root_dir)
 
     ## -------* Rename Columns
 
@@ -628,8 +630,9 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @importFrom reshape2 melt
 ##'
 ##' @export
-denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                  verbose = FALSE) {
+denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## -------* Get denominators
 
@@ -637,7 +640,7 @@ denominators_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir
                                       clean_col_names = TRUE, table_format = "long",
                                       marital_group = c("married", "unmarried"),
                                       years_as_midyear = FALSE,
-                                      processed = FALSE, verbose = verbose)
+                                      processed = FALSE)
 
     ## -------* Reformat
 

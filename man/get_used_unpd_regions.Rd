@@ -9,8 +9,7 @@ get_used_unpd_regions(
   output_dir = NULL,
   root_dir = NULL,
   clean_col_names = TRUE,
-  UNlocations_names = TRUE,
-  verbose = FALSE
+  UNlocations_names = TRUE
 )
 }
 \arguments{
@@ -27,10 +26,6 @@ the directory called \dQuote{output}.}
 \item{UNlocations_names}{Logical; should
 \code{\link{match_UNlocations}(..., return_names = "UNlocations")} be
 run to standardize country and area names?}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

@@ -13,44 +13,23 @@ get_marital_group(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  verbose = FALSE
+  lower_snake_casify = FALSE
 )
 
-is_all_women_run(
-  run_name = NULL,
-  output_dir = NULL,
-  root_dir = NULL,
-  verbose = FALSE
-)
+is_all_women_run(run_name = NULL, output_dir = NULL, root_dir = NULL)
 
 is_marital_group_run(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  marital_group = c("married", "unmarried"),
-  verbose = FALSE
+  marital_group = c("married", "unmarried")
 )
 
-is_married_women_run(
-  run_name = NULL,
-  output_dir = NULL,
-  root_dir = NULL,
-  verbose = FALSE
-)
+is_married_women_run(run_name = NULL, output_dir = NULL, root_dir = NULL)
 
-is_unmarried_women_run(
-  run_name = NULL,
-  output_dir = NULL,
-  root_dir = NULL,
-  verbose = FALSE
-)
+is_unmarried_women_run(run_name = NULL, output_dir = NULL, root_dir = NULL)
 
-get_age_group(
-  run_name = NULL,
-  output_dir = NULL,
-  root_dir = NULL,
-  verbose = FALSE
-)
+get_age_group(run_name = NULL, output_dir = NULL, root_dir = NULL)
 }
 \arguments{
 \item{run_name}{The run name.}
@@ -62,10 +41,6 @@ ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 
 \item{marital_group}{Character string; the marital group to check against.}
 }

@@ -9,8 +9,7 @@ get_used_denominators(
   output_dir = NULL,
   root_dir = NULL,
   units = c("units", "thousands"),
-  years_as_midyear = TRUE,
-  verbose = FALSE
+  years_as_midyear = TRUE
 )
 }
 \arguments{
@@ -30,10 +29,6 @@ the directory called \dQuote{output}.}
 stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
 etc.? See \dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the denominators; see

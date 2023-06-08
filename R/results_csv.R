@@ -97,8 +97,9 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         years_as_midyear = TRUE,
                         add_country_classifications = FALSE,
                         table_format = c("long", "wide", "raw"),
-                        sort = TRUE,
-                        verbose = FALSE) {
+                        sort = TRUE) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     stat <- match.arg(stat)
     stopifnot(is.logical(years_as_midyear))
@@ -110,7 +111,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE, made_results = TRUE,
                            age_ratios = FALSE,
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
@@ -120,7 +121,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     tbl_dir0 <- file.path(output_dir, table_dir_name)
 
-    if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir, verbose = verbose)
+    if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir)
     fname <- paste(run_name, aggregate, sep = "_")
 
     adjusted <- match.arg(adjusted)
@@ -132,8 +133,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (adjusted %in% c("orig", "sub_adj")) {
 
         tbl_dir <-
-            table_orig_adj_dir(tbl_dir = tbl_dir0, adj = FALSE,
-                               verbose = verbose)
+            table_orig_adj_dir(tbl_dir = tbl_dir0, adj = FALSE)
 
         if (stat %in% c("prop", "count")) {
 
@@ -187,8 +187,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (adjusted %in% c("adj", "sub_adj")) {
 
         tbl_dir <-
-            table_orig_adj_dir(tbl_dir = tbl_dir0, adj = TRUE,
-                               verbose = verbose)
+            table_orig_adj_dir(tbl_dir = tbl_dir0, adj = TRUE)
 
         if (stat %in% c("prop", "count")) {
 
@@ -322,13 +321,11 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (add_country_classifications) {
         class_unpd_agg <-
             get_used_unpd_regions(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                  clean_col_names = FALSE,
-                                  verbose = verbose)
+                                  clean_col_names = FALSE)
 
         class_spec <-
             get_used_special_aggregates(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                        clean_col_names = FALSE,
-                                        verbose = verbose)
+                                        clean_col_names = FALSE)
 
         res <- res %>%
             dplyr::left_join(dplyr::select(class_unpd_agg, -`Country or area`),
@@ -392,6 +389,8 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 
     warning("!! 'get_csv_all_mar_res()' is currently UN-TESTED. Use 'get_csv_res()' instead.")
 
+    verbose <- getOption("FPEMglobal.aux.verbose")
+
     ## !!!!!!!!!!! NEEDS WORK !!!!!!!!!!!!!
     stopifnot(is.list(run_name_list))
     stopifnot(!is.null(names(run_name_list)))
@@ -448,20 +447,20 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @export
 csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                adjusted = c("orig", "adj", "sub_adj"),
-                               ...,
-                               verbose = FALSE) {
+                               ...) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE, made_results = TRUE,
                            age_ratios = FALSE,
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
     out <- get_csv_res(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                        adjusted = adjusted,
-                       table_format = "raw", clean_col_names = FALSE,
-                       verbose = verbose)
+                       table_format = "raw", clean_col_names = FALSE)
 
     out <- out %>%
         dplyr::mutate(indicator = tolower(indicator)) %>%

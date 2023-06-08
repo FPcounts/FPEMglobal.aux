@@ -4,17 +4,13 @@
 \alias{get_185_countries}
 \title{Read table of the \dQuote{185} countries}
 \usage{
-get_185_countries(clean_col_names = TRUE, verbose = FALSE)
+get_185_countries(clean_col_names = TRUE)
 }
 \arguments{
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.

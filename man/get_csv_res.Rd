@@ -15,8 +15,7 @@ get_csv_res(
   years_as_midyear = TRUE,
   add_country_classifications = FALSE,
   table_format = c("long", "wide", "raw"),
-  sort = TRUE,
-  verbose = FALSE
+  sort = TRUE
 )
 }
 \arguments{

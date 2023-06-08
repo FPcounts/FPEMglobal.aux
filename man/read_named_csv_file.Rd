@@ -9,7 +9,6 @@ read_named_csv_file(
   output_dir = NULL,
   root_dir = NULL,
   file_name,
-  verbose = FALSE,
   ...
 )
 }
@@ -26,10 +25,6 @@ the directory called \dQuote{output}.}
 
 \item{file_name}{Name of file to read, \emph{including} any
 subdirectory and file extension; see \dQuote{Details}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the file contents.

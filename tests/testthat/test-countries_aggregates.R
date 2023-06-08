@@ -16,11 +16,8 @@ test_that("get_country_classifications works", {
     ## Specified args
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
-            for (vrb in c(TRUE, FALSE)) {
                 expect_s3_class(get_country_classifications(UNlocations_names = unl,
-                                                            clean_col_names = ccn,
-                                                            verbose = vrb), "tbl_df")
-            }
+                                                            clean_col_names = ccn), "tbl_df")
         }
     }
 })
@@ -59,12 +56,9 @@ test_that("get_used_unpd_regions works for 15-49, married women run", {
     ## Specified args
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
-            for (vrb in c(TRUE, FALSE)) {
                 expect_s3_class(get_used_unpd_regions(output_dir = test_output_dir,
                                                       UNlocations_names = unl,
-                                                      clean_col_names = ccn,
-                                                      verbose = vrb), "tbl_df")
-            }
+                                                      clean_col_names = ccn), "tbl_df")
         }
     }
 })
@@ -79,10 +73,7 @@ test_that("get_used_special_aggregates works for 15-49, married women run", {
 
     ## Specified args
     for (ccn in c(TRUE, FALSE)) {
-        for (vrb in c(TRUE, FALSE)) {
             expect_s3_class(get_used_special_aggregates(output_dir = test_output_dir,
-                                                        clean_col_names = ccn,
-                                                        verbose = vrb), "tbl_df")
-        }
+                                                        clean_col_names = ccn), "tbl_df")
     }
 })

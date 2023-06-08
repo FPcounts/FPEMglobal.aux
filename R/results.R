@@ -21,12 +21,13 @@
 ##' @family Get results from rda files
 ##'
 ##' @export
-get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                      verbose = FALSE) {
+get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose)
+                           root_dir = root_dir)
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(output_dir, "par.ciq.rda"), "'."),
                          add = TRUE, after = FALSE)
@@ -70,14 +71,15 @@ get_countries_model_params_q <- function(...) {
 get_indicator_summary_results <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                           aggregate = c("country", "aggregate"),
                                           stat = c("std", "age_ratio"),
-                                          adjusted = c("orig", "adj"),
-                                          verbose = FALSE) {
+                                          adjusted = c("orig", "adj")) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## Checks
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
     aggregate <- match.arg(aggregate)

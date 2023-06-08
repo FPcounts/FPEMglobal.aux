@@ -22,7 +22,6 @@ args_grid <-
                 add_country_classifications = c(TRUE, FALSE),
                 table_format = c("long", "wide", "raw"),
                 sort = c(TRUE, FALSE),
-                verbose = c(TRUE, FALSE),
                 stringsAsFactors = FALSE)
 
 ## Remove dis-allowed combinations

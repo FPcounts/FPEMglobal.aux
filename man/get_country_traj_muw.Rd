@@ -8,8 +8,7 @@ get_country_traj_muw(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  iso_code,
-  verbose = FALSE
+  iso_code
 )
 }
 \arguments{
@@ -25,10 +24,6 @@ the directory called \dQuote{output}.}
 
 \item{iso_code}{Numeric ISO code of country to get trajectories
 for.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 The loaded country trajectory object.

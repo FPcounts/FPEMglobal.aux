@@ -10,8 +10,7 @@ get_agg_traj(
   root_dir = NULL,
   agg_name,
   agg_family_name = "UNPDaggregates",
-  marital_group = c("married", "unmarried", "all women"),
-  verbose = FALSE
+  marital_group = c("married", "unmarried", "all women")
 )
 }
 \arguments{
@@ -33,10 +32,6 @@ trajectories. This must match the filename \emph{exactly} (see
 retrieve trajectories. This must match the name of the
 subdirectory of \code{file.path(output_dir,
     "aggregatetrajectories")}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 The loaded aggregate trajectory object.

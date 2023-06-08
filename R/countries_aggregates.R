@@ -21,7 +21,8 @@
 ##' @family country_aggregates
 ##'
 ##' @export
-get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
+get_195_countries <- function(clean_col_names = TRUE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
     out <- readr::read_csv(fname, name_repair = "minimal")
@@ -45,7 +46,8 @@ get_195_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 ##'
 ##' @family country_aggregates
 ##' @export
-get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
+get_185_countries <- function(clean_col_names = TRUE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
@@ -69,8 +71,8 @@ get_185_countries <- function(clean_col_names = TRUE, verbose = FALSE) {
 ##' @family country_aggregates
 ##' @export
 get_country_classifications <- function(UNlocations_names = TRUE,
-                                        clean_col_names = TRUE,
-                                        verbose = FALSE) {
+                                        clean_col_names = TRUE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (UNlocations_names)
@@ -100,12 +102,13 @@ get_country_classifications <- function(UNlocations_names = TRUE,
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-             clean_col_names = TRUE, UNlocations_names = TRUE,
-             verbose = FALSE) {
+             clean_col_names = TRUE, UNlocations_names = TRUE) {
+
+        verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = verbose)
+                               root_dir = root_dir)
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
@@ -166,12 +169,13 @@ list_special_aggregates_names <- function() {
 ##' @export
 get_used_special_aggregates <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-             clean_col_names = TRUE,
-             verbose = FALSE) {
+             clean_col_names = TRUE) {
+
+        verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-
             output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir, verbose = verbose)
+                               root_dir = root_dir)
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
@@ -228,8 +232,9 @@ get_used_special_aggregates <-
 ##'
 ##' @export
 country_classifications_2_fpemdata <-
-    function(verbose = FALSE) {
-        get_country_classifications(clean_col_names = TRUE, verbose = verbose) |>
+    function() {
+        verbose <- getOption("FPEMglobal.aux.verbose")
+        get_country_classifications(clean_col_names = TRUE) |>
             dplyr::rename(division_numeric_code = iso,
                           name_country = name,
                           name_sub_region = region,

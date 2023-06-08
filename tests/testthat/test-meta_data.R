@@ -12,7 +12,7 @@ test_that("get_model_JAGS_txt works with default argument values on a 15-49 marr
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_model_JAGS_txt(output_dir = test_output_dir, verbose = TRUE),
+    expect_identical(get_model_JAGS_txt(output_dir = test_output_dir),
                      readLines(system.file("data-test/15-49_married/model.txt",
                                           package = "FPEMglobal.aux")))
 })
@@ -22,11 +22,7 @@ test_that("get_model_meta_info works with default argument values on a 15-49 mar
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = TRUE),
-                     get(load(system.file("data-test/15-49_married/mcmc.meta.rda",
-                                          package = "FPEMglobal.aux"))))
-
-    expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = FALSE),
+    expect_identical(get_model_meta_info(output_dir = test_output_dir),
                      get(load(system.file("data-test/15-49_married/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 })
@@ -36,7 +32,7 @@ test_that("get_country_index works with default argument values on a 15-49 marri
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_s3_class(get_country_index(output_dir = test_output_dir, verbose = TRUE),
+    expect_s3_class(get_country_index(output_dir = test_output_dir),
                     "tbl_df")
 })
 
@@ -127,11 +123,7 @@ test_that("get_model_meta_info works with default argument values on a 15-49 all
         system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = TRUE),
-                     get(load(system.file("data-test/15-49_all_women/mcmc.meta.rda",
-                                          package = "FPEMglobal.aux"))))
-
-    expect_identical(get_model_meta_info(output_dir = test_output_dir, verbose = FALSE),
+    expect_identical(get_model_meta_info(output_dir = test_output_dir),
                      get(load(system.file("data-test/15-49_all_women/mcmc.meta.rda",
                                           package = "FPEMglobal.aux"))))
 })
@@ -141,7 +133,7 @@ test_that("get_country_index works with default argument values on a 15-49 all w
         system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_error(get_country_index(output_dir = test_output_dir, verbose = TRUE),
+    expect_error(get_country_index(output_dir = test_output_dir),
                  "all women run")
 })
 

@@ -23,8 +23,9 @@
 ##' @export
 identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir_1 = NULL,
                                 run_name_2 = NULL, output_dir_2 = NULL, root_dir_2 = NULL,
-                                assert_valid_dirs = TRUE, report = TRUE,
-                                verbose = FALSE) {
+                                assert_valid_dirs = TRUE, report = TRUE) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## -------* Functions
 
@@ -35,13 +36,11 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                               args = list(do.call(extract_fun,
                                                   args = list(run_name = run_name_1,
                                                               output_dir = output_dir_1,
-                                                              root_dir = root_dir_1,
-                                                              verbose = verbose)),
+                                                              root_dir = root_dir_1)),
                                           do.call(extract_fun,
                                                   args = list(run_name = run_name_2,
                                                               output_dir = output_dir_2,
-                                                              root_dir = root_dir_2,
-                                                              verbose = verbose))))
+                                                              root_dir = root_dir_2))))
         if (report) {
             if (isTRUE(out)) message("  ... '", name, "' match.")
             else {
@@ -61,29 +60,25 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
     stopifnot(is.logical(report))
 
     mg_1 <- is_married_women_run(run_name = run_name_1, output_dir = output_dir_1,
-                                 root_dir = root_dir_1,
-                                 verbose = verbose) ||
+                                 root_dir = root_dir_1) ||
         is_unmarried_women_run(run_name = run_name_1, output_dir = output_dir_1,
-                               root_dir = root_dir_1,
-                               verbose = verbose)
+                               root_dir = root_dir_1)
 
     mg_2 <- is_married_women_run(run_name = run_name_2, output_dir = output_dir_2,
-                                 root_dir = root_dir_2,
-                                 verbose = verbose) ||
+                                 root_dir = root_dir_2) ||
         is_unmarried_women_run(run_name = run_name_2, output_dir = output_dir_2,
-                               root_dir = root_dir_2,
-                               verbose = verbose)
+                               root_dir = root_dir_2)
 
     if (!identical(mg_1, mg_2)) stop("Runs must both be of the same marital group.")
 
     run_1_dir <-
         output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
-                           root_dir = root_dir_1, verbose = verbose,
+                           root_dir = root_dir_1,
                            assert_valid = assert_valid_dirs)
 
     run_2_dir <-
         output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
-                           root_dir = root_dir_2, verbose = verbose,
+                           root_dir = root_dir_2,
                            assert_valid = assert_valid_dirs)
 
     ## -------* Tests
@@ -116,11 +111,9 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
 
         pp_1 <- try(output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
                                  root_dir = root_dir_1,
-                                 verbose = verbose,
                                  post_processed = TRUE))
         pp_2 <- try(output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
                                        root_dir = root_dir_2,
-                                       verbose = verbose,
                                        post_processed = TRUE))
         if (!inherits(pp_1, "try-error") && !inherits(pp_2, "try-error")) {
             out <- c(out,

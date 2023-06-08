@@ -8,8 +8,7 @@ get_used_special_aggregates(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
-  clean_col_names = TRUE,
-  verbose = FALSE
+  clean_col_names = TRUE
 )
 }
 \arguments{
@@ -22,10 +21,6 @@ ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

@@ -15,7 +15,6 @@ get_csv_denominators(
   units = c("units", "thousands"),
   years_as_midyear = TRUE,
   table_format = c("long", "raw"),
-  verbose = FALSE,
   ...
 )
 }
@@ -57,10 +56,6 @@ etc.? See \dQuote{Specifying year storage format in
 
 \item{table_format}{Logical or character. Should the table be
 returned in long format? See \dQuote{Details}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the denominators; see

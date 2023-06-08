@@ -4,17 +4,13 @@
 \alias{get_run_name}
 \title{Attempt to get the run name of an FPEM run from output files}
 \usage{
-get_run_name(output_dir = NULL, verbose = FALSE)
+get_run_name(output_dir = NULL)
 }
 \arguments{
 \item{output_dir}{Path to directory containing outputs. See
 Section \dQuote{Specifying results directory} in the help file
 for \code{\link{get_output_dir}}. Note that \code{root_dir} is
 ignored if \code{output_dir} is supplied.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 The run name as a character string.

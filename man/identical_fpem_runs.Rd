@@ -12,8 +12,7 @@ identical_fpem_runs(
   output_dir_2 = NULL,
   root_dir_2 = NULL,
   assert_valid_dirs = TRUE,
-  report = TRUE,
-  verbose = FALSE
+  report = TRUE
 )
 }
 \arguments{
@@ -31,10 +30,6 @@ checked to make sure they are valid \pkg{FPEMglobal} output
 directories?}
 
 \item{report}{Logical; print messages reporting outcome of each check?}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A list with the results of various comparisons, returned

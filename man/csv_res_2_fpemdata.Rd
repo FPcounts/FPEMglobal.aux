@@ -9,8 +9,7 @@ csv_res_2_fpemdata(
   output_dir = NULL,
   root_dir = NULL,
   adjusted = c("orig", "adj", "sub_adj"),
-  ...,
-  verbose = FALSE
+  ...
 )
 }
 \arguments{
@@ -29,10 +28,6 @@ medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
 
 \item{...}{passed to \code{\link{get_csv_res}}}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.

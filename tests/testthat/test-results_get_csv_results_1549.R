@@ -14,9 +14,7 @@ test_that("get_csv_results works with default argument values on a 15-49, marrie
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
-    expect_s3_class(get_csv_res(output_dir = test_output_dir, verbose = TRUE),
-                    "data.frame")
-    expect_s3_class(get_csv_res(output_dir = test_output_dir, verbose = FALSE),
+    expect_s3_class(get_csv_res(output_dir = test_output_dir),
                     "data.frame")
 })
 
@@ -30,9 +28,7 @@ test_that("get_csv_results works with default argument values on a 15-49, all_wo
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
-    expect_s3_class(get_csv_res(output_dir = test_output_dir, verbose = TRUE),
-                    "data.frame")
-    expect_s3_class(get_csv_res(output_dir = test_output_dir, verbose = FALSE),
+    expect_s3_class(get_csv_res(output_dir = test_output_dir),
                     "data.frame")
 })
 

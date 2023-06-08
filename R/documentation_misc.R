@@ -1,7 +1,3 @@
-### Extra pages for man/ folder with notes on various issues.
-
-
-
 ##' Storage format of years
 ##'
 ##' @description

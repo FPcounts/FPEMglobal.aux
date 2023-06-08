@@ -4,12 +4,7 @@
 \alias{country_classifications_2_fpemdata}
 \title{Convert country classifications to fpemdata format}
 \usage{
-country_classifications_2_fpemdata(verbose = FALSE)
-}
-\arguments{
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
+country_classifications_2_fpemdata()
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.

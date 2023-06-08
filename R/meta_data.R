@@ -24,11 +24,11 @@
 ##' @return A character vector, as returne by \code{\link{readLines}}.
 ##' @author Mark Wheldon
 ##' @export
-get_model_JAGS_txt <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                           verbose = FALSE) {
+get_model_JAGS_txt <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = FALSE)
 
     if (verbose) on.exit(message("Read '", file.path(res_dir, "model.txt"), "'."),
@@ -54,11 +54,11 @@ get_model_JAGS_txt <- function(run_name = NULL, output_dir = NULL, root_dir = NU
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                           verbose = FALSE) {
+get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = FALSE)
     tmp_env <- new.env()
     if (verbose) on.exit(message("Loaded '", file.path(res_dir, "mcmc.meta.rda"), "'."),
@@ -90,12 +90,13 @@ get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @family model_run_meta_info
 ##'
 ##' @export
-get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                              verbose = FALSE) {
+get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose, post_processed = TRUE)
+                           root_dir = root_dir, post_processed = TRUE)
     if (is_all_women_run(output_dir = output_dir))
         stop("This is an all women run; country index files are only available for married and unmarried women runs.")
 
@@ -125,11 +126,11 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
+get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = FALSE)
     if (is_all_women_run(output_dir = res_dir)) stop("This is an all women run; 'get_global_mcmc_args' not available.")
     tmp_env <- new.env()
@@ -157,11 +158,11 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
+get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE)
     if (!is_all_women_run(output_dir = res_dir)) stop("This is not an all women run; 'combine_runs_args' not available.")
     tmp_env <- new.env()
@@ -186,18 +187,16 @@ get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                verbose = FALSE) {
+get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE)
     if (!is_all_women_run(output_dir = res_dir))
-        return(get_global_mcmc_args(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                    verbose = verbose))
+        return(get_global_mcmc_args(run_name = run_name, output_dir = output_dir, root_dir = root_dir))
     else
-        return(get_combine_runs_args(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                    verbose = verbose))
+        return(get_combine_runs_args(run_name = run_name, output_dir = output_dir, root_dir = root_dir))
 }
 
 
@@ -219,11 +218,11 @@ get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
+get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir, verbose = verbose,
+                           root_dir = root_dir,
                            post_processed = TRUE)
     if (is_all_women_run(output_dir = res_dir)) stop("This is an all women run; 'post_process_args' not available.")
     tmp_env <- new.env()
@@ -249,13 +248,15 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
 ##'
 ##' @family model_run_meta_info
 ##' @export
-get_run_name <- function(output_dir = NULL, verbose = FALSE) {
+get_run_name <- function(output_dir = NULL) {
 
-    res_dir <- output_dir_wrapper(output_dir = output_dir, verbose = verbose,
+    verbose <- getOption("FPEMglobal.aux.verbose")
+
+    res_dir <- output_dir_wrapper(output_dir = output_dir,
                                   post_processed = FALSE)
 
     ## Look in meta data files
-    args <- get_global_run_args(output_dir = res_dir, verbose = verbose)
+    args <- get_global_run_args(output_dir = res_dir)
 
     out <- try(FPEMglobal::get_run_name_from_args(args))
 
@@ -303,10 +304,8 @@ get_run_name <- function(output_dir = NULL, verbose = FALSE) {
 ##' @family model_run_meta_info
 ##' @export
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                              lower_snake_casify = FALSE,
-                              verbose = FALSE) {
-    mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                              verbose = verbose)$general
+                              lower_snake_casify = FALSE) {
+    mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general
     if (isTRUE(mg$all.women.run.copy)) out <- "all women"
     else out <- convert_marital_group_names(mg$marital.group)
     if (lower_snake_casify) out <- lower_snake_casify(out)
@@ -315,51 +314,45 @@ get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
 
 ##' @rdname get_marital_group
 ##' @export
-is_all_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
-    isTRUE(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                              verbose = verbose)$general$all.women.run.copy)
+is_all_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
+    isTRUE(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general$all.women.run.copy)
 }
 
 ##' @rdname get_marital_group
 ##' @export
 is_marital_group_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 marital_group = c("married", "unmarried"),
-                                 verbose = FALSE) {
+                                 marital_group = c("married", "unmarried")) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     marital_group <- match.arg(marital_group)
-    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                         verbose = verbose)) {
+    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir)) {
         return(FALSE)
     } else {
-        mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                                   verbose = verbose)$general$marital.group
+        mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general$marital.group
         return(identical(convert_marital_group_names(mgp), marital_group))
     }
 }
 
 ##' @rdname get_marital_group
 ##' @export
-is_married_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
+is_married_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     is_marital_group_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                         marital_group = "married",
-                         verbose = verbose)
+                         marital_group = "married")
 }
 
 ##' @rdname get_marital_group
 ##' @export
-is_unmarried_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
+is_unmarried_women_run <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
     is_marital_group_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                         marital_group = "unmarried",
-                         verbose = verbose)
+                         marital_group = "unmarried")
 }
 
 ##' @rdname get_marital_group
 ##' @export
-get_age_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                 verbose = FALSE) {
-    return(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
-                              verbose = verbose)$general$age.group)
+get_age_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
+    return(get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general$age.group)
 }
 

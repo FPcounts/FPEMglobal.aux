@@ -4,11 +4,7 @@
 \alias{get_country_classifications}
 \title{Get country geographic classifications}
 \usage{
-get_country_classifications(
-  UNlocations_names = TRUE,
-  clean_col_names = TRUE,
-  verbose = FALSE
-)
+get_country_classifications(UNlocations_names = TRUE, clean_col_names = TRUE)
 }
 \arguments{
 \item{UNlocations_names}{Logical; should
@@ -19,10 +15,6 @@ run to standardize country and area names?}
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
-
-\item{verbose}{Logical. Print lots of messages? See
-\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
-messages.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the aggregates.
