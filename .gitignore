@@ -45,4 +45,5 @@ rsconnect/
 # Mac OS
 .DS_Store
 
-
+# Test set data
+inst/data-test/*
