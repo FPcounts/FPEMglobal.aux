@@ -3,7 +3,6 @@
 ^\.Rproj\.user$
 ^R/_obsolete\.R$
 
-^inst/data-test.*
 ^inst/in_development.*
 
 # Local install

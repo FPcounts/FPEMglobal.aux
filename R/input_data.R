@@ -106,6 +106,37 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 }
 
 
+##' Get the file path to the denominator population .csv file
+##'
+##' Returns the path to the \file{.csv} file containing the
+##' denominator counts (including the extension). The path returned is
+##' relative to the directory containing \code{output_dir}; i.e., of
+##' the form \file{<output-dir>/data/<filename>.csv}.
+##'
+##' @inheritParams get_csv_res
+##' @inheritParams get_output_dir
+##' @return Character string containing the file path.
+##' @author Mark Wheldon
+##' @export
+get_csv_denominators_filepath <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+    output_dir <-
+        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
+                           root_dir = root_dir,
+                           post_processed = TRUE, countrytrajectories = FALSE,
+                           made_results = FALSE,
+                           assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
+                           )
+
+    if (is_all_women_run(output_dir = output_dir))
+        denom_file_name_meta <- get_combine_runs_args(output_dir = output_dir)$denominator_counts_csv_filename
+    else
+        denom_file_name_meta <- get_global_post_process_args(output_dir = output_dir)$denominator_counts_csv_filename
+    if (length(denom_file_name_meta) && nchar(denom_file_name_meta))
+        return(file.path(output_dir, "data", basename(denom_file_name_meta)))
+    else stop("File path to denominator .csv file could not be determined from meta data.")
+}
+
+
 
 ##' Get denominator counts from csv files
 ##'
@@ -136,9 +167,10 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' output directory. These are read in using an unexported function
 ##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 ##'
-##' @param filename Name of file with the counts (including
-##'     extension). If \code{NULL}, this will be inferred from the
-##'     meta data (see \code{\link{get_global_mcmc_args}}.
+##' @param filename Name of file with the counts (including extension,
+##'     excluding any parent directories). If \code{NULL}, this will
+##'     be inferred from the meta data (see
+##'     \code{\link{get_global_mcmc_args}}.
 ##' @param age_group Age group of the counts for the output data
 ##'     frame. If the column names are of the form
 ##'     'U/MW_\[aabb\]_year' this is ignored and the age group is
@@ -271,24 +303,24 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
     data_dir <- file.path(output_dir, data_dir_name)
 
     if (is.null(filename)) {
-        if (is_all_women_run(output_dir = output_dir))
-            denom_file_name_meta <- get_combine_runs_args(output_dir = output_dir)$denominator_counts_csv_filename
-        else
-            denom_file_name_meta <- get_global_post_process_args(output_dir = output_dir)$denominator_counts_csv_filename
-        if (length(denom_file_name_meta) && nchar(denom_file_name_meta)) {
-            filename <- basename(denom_file_name_meta)
+        try_fn <-
+            try(get_csv_denominators_filepath(run_name = run_name, output_dir = output_dir, root_dir = root_dir),
+                silent = TRUE)
 
-            ## Since filename auto-determined, read the age group as well.
-            age_group_from_args <- output_age_group
-            if (!is.null(age_group) && !identical(as.character(age_group), as.character(age_group_from_args)))
-                warning("'age_group' = '", age_group, "', but output directory is a run for age group '",
-                        age_group_from_args, "'. Argument 'age_group' reset to the latter.\n\nIf you want to load an age group different from the age group of the output directory, you must specify 'filename'.")
-            age_group <- age_group_from_args
-        }
-        else stop("'filename' could not be determined from meta data; you must be supply it via the 'filename' argument.")
+        if (inherits(try_fn, "try-error"))
+            stop("'filename' could not be determined from meta data; you must be supply it via the 'filename' argument.")
+        else fpath <- try_fn
+
+        ## Since filename auto-determined, read the age group as well.
+        age_group_from_args <- output_age_group
+        if (!is.null(age_group) && !identical(as.character(age_group), as.character(age_group_from_args)))
+            warning("'age_group' = '", age_group, "', but output directory is a run for age group '",
+                    age_group_from_args, "'. Argument 'age_group' reset to the latter.\n\nIf you want to load an age group different from the age group of the output directory, you must specify 'filename'.")
+        age_group <- age_group_from_args
+
+    } else {
+        fpath <- file.path(data_dir, filename)
     }
-
-    fpath <- file.path(data_dir, filename)
 
     ## If 'age_group' still 'NULL', use mcmc args
     if (is.null(age_group)) age_group <- output_age_group

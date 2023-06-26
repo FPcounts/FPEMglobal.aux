@@ -55,6 +55,7 @@ get_output_dir <- function(run_name, root_dir = ".") {
     file.path(root_dir, "output", run_name)
 }
 
+
 ## Used in functions to check if user supplied the necessary arguments.
 output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                root_dir = NULL,

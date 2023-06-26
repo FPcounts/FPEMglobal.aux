@@ -7,6 +7,15 @@
 ###-----------------------------------------------------------------------------
 ### *** All Women
 
+test_that("'get_csv_denominators_filepath' works with default argument values on a 15-49, all women directory", {
+    ## Output directory
+    test_output_dir <-
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+
+    expect_true(file.exists(get_csv_denominators_filepath(output_dir = test_output_dir)))
+    })
+
 test_that("get_csv_denominators works with default argument values on a 15-49, all women directory", {
     ## Output directory
     test_output_dir <-

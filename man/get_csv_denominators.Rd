@@ -29,9 +29,10 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{filename}{Name of file with the counts (including
-extension). If \code{NULL}, this will be inferred from the
-meta data (see \code{\link{get_global_mcmc_args}}.}
+\item{filename}{Name of file with the counts (including extension,
+excluding any parent directories). If \code{NULL}, this will
+be inferred from the meta data (see
+\code{\link{get_global_mcmc_args}}.}
 
 \item{marital_group}{Marital group to load denominators for. Can
 be more than one; see \dQuote{Details}. The default is the
