@@ -12,7 +12,7 @@
 
     op <- options()
     op.FPEMglobal.aux <- list(
-        FPEMglobal.aux.verbose = TRUE
+        FPEMglobal.aux.verbose = FALSE
     )
     toset <- !(names(op.FPEMglobal.aux) %in% names(op))
     if(any(toset)) options(op.FPEMglobal.aux[toset])
