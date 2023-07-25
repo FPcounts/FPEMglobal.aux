@@ -260,15 +260,14 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' from \file{.rda} files found in subdirectories of the the
 ##' subdirectory \file{aggregatetrajectories} of the results directory
 ##' (see below). The directory and file names for the given aggregate
-##' are determined from \code{agg_family_name} and
-##' \code{agg_name}.
+##' are determined from \code{marital_group} and \code{agg_family_name}.
 ##'
 ##' \emph{Note:} Aggregate trajectories are only
 ##' stored in an all women output directory; calling this function on
 ##' a married or unmarried output directory will result in an error.
 ##'
 ##' @details
-##' Aggregate trajectories are 3D arrays:
+##' Aggregate trajectories are 3D arrays, for example:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
 ##' - attr(*, "dimnames")=List of 3
@@ -277,10 +276,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'  ..$ : NULL}
 ##'
 ##' \subsection{Aggregate names}{
-##' It is recommended to check the actual output files to get the
-##' aggregate family names and aggregate names correct. The aggregate
-##' names in particular may not be guessable because many will have
-##' been abbreviated to create valid, short(ish) filenames.}
+##' \code{agg_name} must be a valid name. Aggregates are stored in named lists with one element per aggregate. An error will be thrown if the aggregate is not valid.}
 ##'
 ##' \subsection{Married/unmarried vs all women trajectories}{
 ##' The aggregate trajectories for all marital groups are saved only
@@ -298,8 +294,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'     subdirectory of \code{file.path(output_dir,
 ##'     "aggregatetrajectories")}.
 ##' @param agg_name Name of the aggregate for which to retrieve
-##'     trajectories. This must match the filename \emph{exactly} (see
-##'     \dQuote{Description}).
+##'     trajectories. This must match the element name in the aggregate list.
 ##' @inheritParams get_country_traj_muw
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -331,15 +326,20 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (!is_all_women_run(output_dir = output_dir))
         stop("Aggregate trajectories are stored in the 'all women' output directory. Call this function on an 'all women' output directory.")
 
-    traj_fname <- paste0(marital_group, "_CP_counts_agg_li_", agg_name, ".RData")
+    traj_fname <- paste0(marital_group, "_CP_counts_agg_li.RData")
     traj_full_path <- file.path(output_dir, "aggregatetrajectories", agg_family_name, traj_fname)
     if (!file.exists(traj_full_path)) stop("File '", traj_full_path, "' does not exist.")
 
     tmp_env <- new.env()
     if (verbose) message("Reading '", traj_full_path, "'.")
-    obj <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)[["CP"]]
+    agg_li <- get(load(file = traj_full_path, envir = tmp_env), envir = tmp_env)
 
-    return(obj)
+    if (!agg_name %in% names(agg_li))
+        stop("'agg_name' is not a valid aggregate name. Available aggregates for family '",
+             agg_family_name,
+             "' are: '", toString(names(agg_li)), "'.")
+
+    return(agg_li[[agg_name]][["CP"]])
 }
 
 
