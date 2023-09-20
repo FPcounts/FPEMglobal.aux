@@ -12,7 +12,8 @@
 
     op <- options()
     op.FPEMglobal.aux <- list(
-        FPEMglobal.aux.verbose = FALSE
+        FPEMglobal.aux.verbose = FALSE,
+        readr.show_col_types = FALSE
     )
     toset <- !(names(op.FPEMglobal.aux) %in% names(op))
     if(any(toset)) options(op.FPEMglobal.aux[toset])

@@ -18,13 +18,14 @@
 ##'
 ##' @section Reading csv files:
 ##'
-##' Almost everywhere, \code{\link[readr]{read_csv}} is used to read
-##' csv files. This can result in lots of messages if you set argument
-##' \code{verbose} to \code{TRUE}. To turn these off, either set
-##' \code{verbose} to \code{FALSE}, or set the options
-##' \code{readr.show_progress} and \code{readr.show_col_types} to
-##' \code{FALSE}. The former will also suppress function-specific
-##' messages, whereas the latter will only affect \pkg{readr} messages.
+#' Almost everywhere, \code{\link[readr]{read_csv}} is used to read
+#' csv files. This will result in lots of messages if option
+#' \code{"FPEMglobal.aux.verbose"} is \code{TRUE}. To turn these off,
+#' either set option \code{"FPEMglobal.aux.verbose"} to \code{FALSE}
+#' (the default), or set the options \code{"readr.show_progress"} and
+#' \code{"readr.show_col_types"} to \code{FALSE}. The former will also
+#' suppress function-specific messages, whereas the latter will only
+#' affect \pkg{readr} messages.
 ##'
 ##' @name messaging
 ##' @rdname messaging

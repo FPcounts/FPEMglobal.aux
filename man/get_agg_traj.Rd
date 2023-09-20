@@ -25,8 +25,7 @@ ignored if \code{output_dir} is supplied.}
 the directory called \dQuote{output}.}
 
 \item{agg_name}{Name of the aggregate for which to retrieve
-trajectories. This must match the filename \emph{exactly} (see
-\dQuote{Description}).}
+trajectories. This must match the element name in the aggregate list.}
 
 \item{agg_family_name}{Name of the aggregate family for which to
 retrieve trajectories. This must match the name of the
@@ -43,15 +42,14 @@ aggregate and returns it as an R object. Trajectories are loaded
 from \file{.rda} files found in subdirectories of the the
 subdirectory \file{aggregatetrajectories} of the results directory
 (see below). The directory and file names for the given aggregate
-are determined from \code{agg_family_name} and
-\code{agg_name}.
+are determined from \code{marital_group} and \code{agg_family_name}.
 
 \emph{Note:} Aggregate trajectories are only
 stored in an all women output directory; calling this function on
 a married or unmarried output directory will result in an error.
 }
 \details{
-Aggregate trajectories are 3D arrays:
+Aggregate trajectories are 3D arrays, for example:
 \preformatted{str(...)
 num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
 - attr(*, "dimnames")=List of 3
@@ -60,10 +58,7 @@ num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
  ..$ : NULL}
 
 \subsection{Aggregate names}{
-It is recommended to check the actual output files to get the
-aggregate family names and aggregate names correct. The aggregate
-names in particular may not be guessable because many will have
-been abbreviated to create valid, short(ish) filenames.}
+\code{agg_name} must be a valid name. Aggregates are stored in named lists with one element per aggregate. An error will be thrown if the aggregate is not valid.}
 
 \subsection{Married/unmarried vs all women trajectories}{
 The aggregate trajectories for all marital groups are saved only
