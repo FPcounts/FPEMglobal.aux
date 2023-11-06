@@ -53,6 +53,10 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' determined by reference to an index which must be in the file
 ##' \code{file.path(output_dir, "iso.Ptp3s.key.csv")}.
 ##'
+##' \code{\link{load}} is called is such a way that ensures nothing is
+##' added to the global environment; the only copy of the loaded
+##' object is that returned by the function.
+##'
 ##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)
 ##' num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...
@@ -121,6 +125,10 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' found in the subdirectory \file{countrytrajectories} of the
 ##' results directory (see below). The filename for the given country
 ##' is \code{paste0("aw_ISO_", iso_code, "_counts.rda")}.
+##'
+##' \code{\link{load}} is called is such a way that ensures nothing is
+##' added to the global environment; the only copy of the loaded
+##' object is that returned by the function.
 ##'
 ##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)

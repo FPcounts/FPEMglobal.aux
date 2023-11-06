@@ -99,7 +99,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
     if (!years_as_midyear) {
         denom$year <- round_down_years(denom$year)
     } else {
-        denom$year <- put_years_in_mid_year_fmt(denom$year) + 0.5
+        denom$year <- put_years_in_mid_year_fmt(denom$year)
     }
 
     return(tibble::as_tibble(denom[, c("iso", "name", "year", "count")]))
