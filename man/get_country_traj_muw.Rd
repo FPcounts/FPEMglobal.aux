@@ -38,6 +38,10 @@ determined by reference to an index which must be in the file
 \code{file.path(output_dir, "iso.Ptp3s.key.csv")}.
 }
 \details{
+\code{\link{load}} is called is such a way that ensures nothing is
+added to the global environment; the only copy of the loaded
+object is that returned by the function.
+
 Country trajectories are 3D arrays:
 \preformatted{str(...)
 num [1:61, 1:3, 1:13344] 0.0622 0.0725 0.0879 0.0633 0.1078 ...

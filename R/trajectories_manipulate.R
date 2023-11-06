@@ -93,7 +93,8 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 ##'     \code{convert_country_traj_to_ratios} only: trajectory array
 ##'     counts for married and unmarried women. See \dQuote{Details}.
 ##' @param denominator_counts_df Data frame of denominator counts (as
-##'     produced by \code{\link{get_csv_denominators}}).
+##'     produced by \code{\link{get_csv_denominators}}). These
+##'     \emph{must} in units of 1000!!
 ##' @param iso Numeric ISO code of the country to select from
 ##'     \code{denominator_counts_df}; see \dQuote{Details}.
 ##' @param safe Logical; elevate some warnings to errors?

@@ -39,7 +39,8 @@ convert_country_traj_to_age_ratios(
 \code{convert_country_traj_to_counts}).}
 
 \item{denominator_counts_df}{Data frame of denominator counts (as
-produced by \code{\link{get_csv_denominators}}).}
+produced by \code{\link{get_csv_denominators}}). These
+\emph{must} in units of 1000!!}
 
 \item{iso}{Numeric ISO code of the country to select from
 \code{denominator_counts_df}; see \dQuote{Details}.}
