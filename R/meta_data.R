@@ -13,6 +13,52 @@
 ##   global workspace is not modified.
 
 
+##' Get JAGS model parameter names
+##'
+##' Returns a character vector of JAGS model parameter names for a
+##' marital group model run. The names are taken from the
+##' \file{mcmc.array.rda} file in the output directory. This list is
+##' extremely long (over 12,000 elements) because there is a complete
+##' set of parameter names for each country. Setting \code{abbrev =
+##' TRUE} will shorten the list considerably, and this is the default.
+##'
+##' Parameter names are in the form \code{"XXX[y]"}, where
+##' \code{"XXX"} is the name of the parameter and \code{"y"} is a
+##' (possibly compound) country index (see
+##' \code{\link{get_country_index}}). When \code{abbreviate = TRUE}
+##' (the default), the \code{"[y]"} is replaced with a generic marker
+##' and only the unique elements of this modified list are
+##' returned. The result is a vector of stylized parameter names in a
+##' format that indicates their dimensionality: parameters that
+##' are 1D vectors have \dQuote{\code{[.]}} appended, parameters that
+##' are 2D arrays have \dQuote{\code{[.,.]}} appended, and scalar
+##' parameters have nothing appended.
+##'
+##' Note that output directories for all women runs do not contain
+##' \file{mcmc.array.rda} files, so using this function on them
+##' results in an error.
+##'
+##' @inheritParams get_output_dir
+##' @inheritParams get_csv_res
+##' @param abbreviate Logical; should parameter names be abbreviated?
+##'     See \dQuote{Details}. Note that the default is \code{TRUE}.
+##' @return A character vector of parameter names.
+##' @author Mark Wheldon
+##' @export
+get_JAGS_model_param_names <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                                       abbreviate = TRUE) {
+    verbose <- getOption("FPEMglobal.aux.verbose")
+    if (is_all_women_run(run_name = run_name, output_dir = output_dir, root_dir = root_dir))
+        stop("JAGS model parameter names cannot be extracted from an all women run; apply to a marital group run instead.")
+    dmn <- dimnames(get_model_traj(run_name = run_name, output_dir = output_dir, root_dir = root_dir))[[3]]
+    if (abbreviate)
+        dmn <- unique(gsub(pattern = "\\[[0-9]+,[0-9]+\\]",
+                       replacement = "[.,.]",
+                       x = gsub(pattern = "\\[[0-9]+\\]", replacement = "[.]", x = dmn)))
+    return(dmn)
+    }
+
+
 ##' Read lines of JAGS model for an FPEMglobal model run
 ##'
 ##' Reads (via \code{\link{readLines}} the JAGS model code from the
