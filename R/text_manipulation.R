@@ -317,10 +317,19 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}
 ##' }
 ##'
+##' If \code{clean_indicator_names} is \code{FALSE}, any strings
+##' matching the known standard indicator names are \emph{not}
+##' cleaned. The known standard indicator names are defined by
+##' \code{\link{get_std_indicator_names}}.
+##'
 ##' @param x Object for which a method is defined (e.g., character
 ##'     string or data frame).
-##' @param use_make.names Logical; apply \code{\link[base]{make.names}} to
-##'     \code{x} \emph{before} doing anything else?
+##' @param use_make.names Logical; apply
+##'     \code{\link[base]{make.names}} to \code{x} \emph{before} doing
+##'     anything else?
+##' @param clean_indicator_names Logical; should the procedure be
+##'     applied to standard indicator names as well? See
+##'     \dQuote{Details} for more information.
 ##' @return Formatted version of \code{x}.
 ##' @author Mark Wheldon
 ##'
@@ -334,17 +343,13 @@ clean_col_names <- function(x, ...) {
 ##' @rdname clean_col_names
 ##' @export
 clean_col_names.character <- function(x, use_make.names = TRUE, clean_indicator_names = FALSE) {
-    x <- lower_snake_casify(x, use_make.names = use_make.names)
+    if (!clean_indicator_names) {
+        idx <- !(x %in% get_std_indicator_names())
+    } else { idx <- rep.int(TRUE, length(x)) }
+    if (sum(idx)) x[idx] <- lower_snake_casify(x[idx], use_make.names = use_make.names)
     x[x == "iso_code"] <- "iso"
     x[x == "iso_country"] <- "iso"
     x[x %in% c("country", "country_or_area")] <- "name"
-    if (!clean_indicator_names) {
-        for (z in get_std_indicator_names()) {
-            x <- gsub(pattern = lower_snake_casify(z, use_make.names = use_make.names),
-                      replacement = z,
-                      x = x)
-        }
-    }
     return(x)
 }
 

@@ -30,11 +30,12 @@ arguments \code{run_name}, \code{output_dir}, \code{root_dir}.}
 A \code{\link[tibble]{tibble}}.
 }
 \description{
-Calls \code{\link{get_csv_res}} sequentially on first
-elements of \code{run_name_list} and \code{output_dir_list}, second
-elements of \code{run_name_list} and \code{output_dir_list}, etc.,
-to load \emph{all} results for all marital groups. Binds the three
-into data frame.
+A wrapper for \code{\link{get_csv_res}}. Calls
+\code{\link{get_csv_res}} sequentially on first elements of
+\code{run_name_list} and \code{output_dir_list}, second elements
+of \code{run_name_list} and \code{output_dir_list}, etc., to load
+\emph{all} results for all marital groups. Binds the three into
+single object.
 }
 \section{Specifying results directory}{
 

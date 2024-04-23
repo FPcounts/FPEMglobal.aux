@@ -19,8 +19,13 @@ clean_col_names(x, ...)
 \item{x}{Object for which a method is defined (e.g., character
 string or data frame).}
 
-\item{use_make.names}{Logical; apply \code{\link[base]{make.names}} to
-\code{x} \emph{before} doing anything else?}
+\item{use_make.names}{Logical; apply
+\code{\link[base]{make.names}} to \code{x} \emph{before} doing
+anything else?}
+
+\item{clean_indicator_names}{Logical; should the procedure be
+applied to standard indicator names as well? See
+\dQuote{Details} for more information.}
 }
 \value{
 Formatted version of \code{x}.
@@ -35,6 +40,12 @@ made \emph{after} all re-formats:
 \item{\code{iso_code}}{replaced with \code{iso}}
 \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}
 }
+}
+\details{
+If \code{clean_indicator_names} is \code{FALSE}, any strings
+matching the known standard indicator names are \emph{not}
+cleaned. The known standard indicator names are defined by
+\code{\link{get_std_indicator_names}}.
 }
 \seealso{
 Other String utility functions: 
