@@ -41,8 +41,12 @@ run_res <- function(z, args_grid) {
 ###-----------------------------------------------------------------------------
 ### ** 15-49 ("Age Total") Directories
 
+message("15-49 ('Age Total') Directories")
+
 ###-----------------------------------------------------------------------------
 ### *** Married
+
+message("Married")
 
 ## Output directory
 test_output_dir <-
@@ -62,6 +66,8 @@ mwra_res <- Filter(Negate(is.null), mwra_res)
 ###-----------------------------------------------------------------------------
 ### *** All women
 
+message("All women")
+
 ## Output directory
 test_output_dir <-
     system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
@@ -79,6 +85,8 @@ wra_res <- Filter(Negate(is.null), wra_res)
 
 ###-----------------------------------------------------------------------------
 ### ** CHECK
+
+message("Error checks (if no output, no errors):")
 
 ###-----------------------------------------------------------------------------
 ### *** Married Women
