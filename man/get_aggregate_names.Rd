@@ -4,7 +4,10 @@
 \alias{get_aggregate_names}
 \title{Return names of members of aggregate families}
 \usage{
-get_aggregate_names(family = c("geog_maj", "geog_subr", "sdg1", "wb"))
+get_aggregate_names(
+  family = c("geog_maj", "geog_subr", "development_v1", "development_v2", "sdg1", "sdg2",
+    "sdg_geog", "wb", "fp2020")
+)
 }
 \arguments{
 \item{family}{Code naming the aggregate family.}

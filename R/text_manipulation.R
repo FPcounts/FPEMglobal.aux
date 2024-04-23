@@ -169,37 +169,139 @@ shorten_reg_names_manus <- function(x) {
 ##' @family String utility functions
 ##'
 ##' @export
-get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "sdg1", "wb")) {
+get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "development_v1", "development_v2",
+                                           "sdg1", "sdg2", "sdg_geog", "wb", "fp2020")) {
 
     family <- match.arg(family)
 
     if (identical(family, "geog_maj")) {
-
         c("Africa", "Asia", "Europe", "Latin America and the Caribbean", "Northern America", "Oceania")
+
     } else if (identical(family, "geog_subr")) {
         c("Northern Africa", "Eastern Africa", "Middle Africa", "Western Africa",
-      "Southern Africa",
-      "Central Asia", "Eastern Asia", "South-eastern Asia", "Western Asia", "Southern Asia",
-      "Northern Europe", "Eastern Europe", "Western Europe", "Southern Europe",
-      "Caribbean", "Central America", "South America",
-      "Northern America",
-      "Mela-Micro-Polynesia", "Australia and New Zealand")
+          "Southern Africa",
+          "Central Asia", "Eastern Asia", "South-eastern Asia", "Western Asia", "Southern Asia",
+          "Northern Europe", "Eastern Europe", "Western Europe", "Southern Europe",
+          "Caribbean", "Central America", "South America",
+          "Northern America",
+          "Mela-Micro-Polynesia", "Australia and New Zealand")
 
     } else if (identical(family, "sdg1")) {
-    c("Sub-Saharan Africa",
-      "Western Asia and Northern Africa",
-      "Central Asia and Southern Asia",
-      "Eastern Asia and South-eastern Asia",
-      "Latin America and the Caribbean",
-      "Oceania",
-      "Northern America and Europe")
+        c("Sub-Saharan Africa",
+          "Western Asia and Northern Africa",
+          "Central Asia and Southern Asia",
+          "Eastern Asia and South-eastern Asia",
+          "Latin America and the Caribbean",
+          "Oceania",
+          "Northern America and Europe")
+
+    } else if (identical(family, "sdg2")) {
+        ## NB: 'Sub-Saharan Africa' is also in the level 2 files
+       c("Australia and New Zealand", "Caribbean", "Central America",
+        "Central Asia", "Eastern Asia", "Europe", "Northern Africa",
+        "Northern America", "Oceania excluding Australia and New Zealand",
+        "South-eastern Asia", "South America", "Southern Asia", "Western Asia")
+
+    } else if (identical(family, "sdg_geog")) {
+        c("Landlocked developing countries (LLDCs)",
+          "Small island developing States (SIDS)")
 
     } else if (identical(family, "wb")) {
         c("High-income countries", "Upper-middle-income countries", "Middle-income countries",
-          "Lower-middle-income countries", "Low-income countries")
+          "Lower-middle-income countries", "Low-income countries", "No income group")
+
+    } else if (identical(family, "development_v1")) {
+        c("Developed countries", "Developing countries", "Developing (excl. China)")
+
+    } else if (identical(family, "development_v2")) {
+        c("More developed countries", "Less developed countries", "Least developed countries",
+          "Other developing countries", "Less developed countries, excluding China")
+
+    } else if (identical(family, "fp2020")) {
+        "FP2020 69 Countries"
     }
 }
 
+
+##' Convert between SDG region name schemes
+##'
+##' The SDG Data and Metadata Submission Form (UN Statistics Division) has different versions
+##' of SDG region names. This function will convert between them.
+##'
+##' @param x Vector of region names to convert
+##' @param convert_to Direction of conversion; convert to SDG Annex
+##'     format or convert to FPEM format?
+##' @return \code{x} converted.
+##' @author Mark Wheldon
+convert_SDG_region_names <- function(x, convert_to = c("SDG_annex", "FPEM")) {
+    stopifnot(is.character(x))
+    convert_to <- match.arg(convert_to)
+    convert_from <- c("SDG_annex", "FPEM")[c("SDG_annex", "FPEM") != convert_to]
+
+    key <- data.frame(
+        FPEM = c(
+            ## in 'UNPDaggregate' files:
+            "World",
+            ## in 'SDG_regions_level_1' files:
+            "Central Asia and Southern Asia", "Eastern Asia and South-eastern Asia",
+            "Latin America and the Caribbean", "Northern America and Europe",
+            "Oceania", "Sub-Saharan Africa", "Western Asia and Northern Africa",
+            ## in 'SDG_regions_level_2' files:
+            ## NB: 'Sub-Saharan Africa' is also in the level 2 files
+            "Australia and New Zealand", "Caribbean", "Central America",
+            "Central Asia", "Eastern Asia", "Europe", "Northern Africa",
+            "Northern America", "Oceania excluding Australia and New Zealand",
+            "South-eastern Asia", "South America", "Southern Asia", "Western Asia",
+            ## in 'SDG_regions_LLDCs_SIDS' files:
+            "Landlocked developing countries (LLDCs)",
+            "Small island developing States (SIDS)",
+            ## in 'UNPDaggregate' files:
+            "Least developed countries"
+        ),
+        SDG_annex = c("World", "Central and Southern Asia", "Eastern and South-Eastern Asia",
+                      "Latin America and the Caribbean", "Europe and Northern America",
+                      "Oceania", "Sub-Saharan Africa", "Northern Africa and Western Asia",
+                      "Australia and New Zealand", "Caribbean", "Central America",
+                      "Central Asia", "Eastern Asia", "Europe", "Northern Africa",
+                      "Northern America", "Oceania (exc. Australia and New Zealand)",
+                      "South-Eastern Asia", "South America", "Southern Asia", "Western Asia",
+                      "Landlocked developing countries", "Small island developing States",
+                      "Least developed countries"))
+
+    x_not_in <- x[!x %in% key[[convert_from]]]
+    if (length(x_not_in))
+        warning("The following elements of 'x' are not members of the '", convert_from,
+                "' naming scheme: '", toString(x_not_in), "'.")
+
+    x_idx <- match(x, key[[convert_from]])
+    key[x_idx, convert_to]
+
+    x[match(key[[convert_from]], key[[convert_to]])]
+}
+
+
+##' Convert country classifications to fpemdata format
+##'
+##' Retrieves country codes and region classifications from
+##' \pkg{FPEMglobal} and returns them in \pkg{fpemdata} format.
+##'
+##' @family fpemdata converters
+##' @seealso get_country_classifications
+##'
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}} with the requested results.
+##' @author Mark Wheldon
+##'
+##' @export
+country_classifications_2_fpemdata <-
+    function() {
+        verbose <- getOption("FPEMglobal.aux.verbose")
+        get_country_classifications(clean_col_names = TRUE) |>
+            dplyr::rename(division_numeric_code = iso,
+                          name_country = name,
+                          name_sub_region = region,
+                          name_region = major_area)
+        }
 
 ###-----------------------------------------------------------------------------
 ### ** Parameter Names

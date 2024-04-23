@@ -4,21 +4,6 @@
 ###-----------------------------------------------------------------------------
 ### ** Support Functions
 
-## traj_array Indicator names in countrytrajectories arrays
-get_traj_array_indicator_names_count <- function() {
-    c("Total", "Traditional", "Modern", "Unmet", "TotalPlusUnmet",
-      "TradPlusUnmet")
-}
-
-get_traj_array_indicator_names_prop <- function() {
-    get_traj_array_indicator_names_count()
-}
-
-get_traj_array_indicator_names_ratio <- function() {
-    c("Modern/Total", "Met Demand", "Z", "Met Demand with Modern Methods")
-}
-
-
 ## Checks inputs to the various converter functions.
 assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
     ## Colnames of denominators
@@ -342,7 +327,7 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
     if (!all(c("Modern", "Traditional", "Unmet") %in% dimnames(traj_array_counts)[[2]]))
         stop("'traj_array_counts' must have indicators ", toString(c("Modern", "Traditional", "Unmet")), ".")
 
-    all_ind_names <- get_traj_array_indicator_names_count()
+    all_ind_names <- get_std_indicator_names_select(stat = "count")
     if (incl_no_use) all_ind_names <- c(all_ind_names, "NoUse")
     if (all(all_ind_names %in% dimnames(traj_array_counts)[[2]])) {
         msg <- "'traj_array_counts' already expanded; did you supply an all women array?"

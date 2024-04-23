@@ -216,27 +216,3 @@ get_used_special_aggregates <-
 
         return(out)
     }
-
-
-##' Convert country classifications to fpemdata format
-##'
-##' Retrieves country codes and region classifications from
-##' \pkg{FPEMglobal} and returns them in \pkg{fpemdata} format.
-##'
-##' @family fpemdata converters
-##' @seealso get_country_classifications
-##'
-##' @inheritParams get_csv_res
-##' @return A \code{\link[tibble]{tibble}} with the requested results.
-##' @author Mark Wheldon
-##'
-##' @export
-country_classifications_2_fpemdata <-
-    function() {
-        verbose <- getOption("FPEMglobal.aux.verbose")
-        get_country_classifications(clean_col_names = TRUE) |>
-            dplyr::rename(division_numeric_code = iso,
-                          name_country = name,
-                          name_sub_region = region,
-                          name_region = major_area)
-        }
