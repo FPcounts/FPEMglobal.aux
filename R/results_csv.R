@@ -106,6 +106,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         table_format = c("long", "wide", "raw"),
                         sort = TRUE) {
 
+### NOTE !!! 'clean_col_names' ONLY KNOWS THE INDICATOR NAMES IN THE TRAJECTORY ARRAYS, NOT THE .CSV RESULTS FILES!! THE COLUMN NAMES IN THE RESULT WHEN 'table_format' = "wide" WILL BE INCONSISTENTLY REFORMATTED. NEED TO ADD LIST OF INDICATOR NAMES AS THEY APPEAR IN THE RESULTS FILS AND MODIFE 'clean_col_names' ACCORDINGLY.
+
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     stat <- match.arg(stat)
@@ -453,7 +455,7 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
-csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+convert_csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                adjusted = c("orig", "adj", "sub_adj"),
                                ...) {
 

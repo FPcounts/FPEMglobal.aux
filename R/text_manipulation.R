@@ -228,17 +228,30 @@ get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "development
 ##' The SDG Data and Metadata Submission Form (UN Statistics Division) has different versions
 ##' of SDG region names. This function will convert between them.
 ##'
+##' If \code{subset_and_order = TRUE}, the output is filtered and
+##' ordered such that only the region names in the 2024 version of the
+##' SDG Annex Data and Metadata submission form are retained, and in
+##' the correct order. This will only operate if \code{convert_to =
+##' "SDG_Data"}.
+##'
 ##' @param x Vector of region names to convert
 ##' @param convert_to Direction of conversion; convert to SDG Annex
 ##'     format or convert to FPEM format?
+##' @param subset_and_order Logical; if \code{convert_to =
+##'     "SDG_Data"}, filter and order the result according to the
+##'     format in the SDG Annex Data and Metadata submission form?
+##'     See \dQuote{Details} for more information.
+##' @param region_column_name For the data frame method, the name of
+##'     the column in \code{x} containing the region names to convert.
 ##' @return \code{x} converted.
 ##' @author Mark Wheldon
-convert_SDG_region_names <- function(x, convert_to = c("SDG_annex", "FPEM")) {
-    stopifnot(is.character(x))
-    convert_to <- match.arg(convert_to)
-    convert_from <- c("SDG_annex", "FPEM")[c("SDG_annex", "FPEM") != convert_to]
+##' @export
+convert_SDG_region_names_2_SDG_Data <- function(x, ...) {
+    UseMethod("convert_SDG_region_names_2_SDG_Data")
+}
 
-    key <- data.frame(
+get_SDG_region_data_submission_convert_df <- function() {
+    data.frame(
         FPEM = c(
             ## in 'UNPDaggregate' files:
             "World",
@@ -258,7 +271,7 @@ convert_SDG_region_names <- function(x, convert_to = c("SDG_annex", "FPEM")) {
             ## in 'UNPDaggregate' files:
             "Least developed countries"
         ),
-        SDG_annex = c("World", "Central and Southern Asia", "Eastern and South-Eastern Asia",
+        SDG_Data = c("World", "Central and Southern Asia", "Eastern and South-Eastern Asia",
                       "Latin America and the Caribbean", "Europe and Northern America",
                       "Oceania", "Sub-Saharan Africa", "Northern Africa and Western Asia",
                       "Australia and New Zealand", "Caribbean", "Central America",
@@ -266,17 +279,51 @@ convert_SDG_region_names <- function(x, convert_to = c("SDG_annex", "FPEM")) {
                       "Northern America", "Oceania (exc. Australia and New Zealand)",
                       "South-Eastern Asia", "South America", "Southern Asia", "Western Asia",
                       "Landlocked developing countries", "Small island developing States",
-                      "Least developed countries"))
+                     "Least developed countries"),
+        rank_order = c(1, 6, 9, 12, 16, 13, 2, 3, 14, NA, NA, 7, 10, 17, 4, 18, 15, 11,
+                       NA, 8, 5, 19, 21, 20))
+}
 
-    x_not_in <- x[!x %in% key[[convert_from]]]
+##' @rdname convert_SDG_region_names_2_SDG_Data
+##' @export
+convert_SDG_region_names_2_SDG_Data.data.frame <- function(x, convert_to = c("SDG_Data", "FPEM"),
+                                                   subset_and_order = FALSE, region_column_name = "name") {
+
+    stopifnot(is.data.frame(x))
+    convert_to <- match.arg(convert_to)
+    convert_from <- c("SDG_Data", "FPEM")[c("SDG_Data", "FPEM") != convert_to]
+    stopifnot(is.logical(subset_and_order))
+    stopifnot(region_column_name %in% colnames(x))
+
+    ## KEY to convert region names
+    key <- get_SDG_region_data_submission_convert_df()
+
+    ## Check input region names
+    x_not_in <- x[!x[[region_column_name]] %in% key[[convert_from]], region_column_name]
     if (length(x_not_in))
         warning("The following elements of 'x' are not members of the '", convert_from,
                 "' naming scheme: '", toString(x_not_in), "'.")
 
-    x_idx <- match(x, key[[convert_from]])
-    key[x_idx, convert_to]
+    ## Convert the names
+    x_idx <- match(x[[region_column_name]], key[[convert_from]])
+    x[[region_column_name]] <- key[x_idx, convert_to]
 
-    x[match(key[[convert_from]], key[[convert_to]])]
+    ## Subset and re-order
+    if (subset_and_order) {
+        x_rank_order <- key[x_idx, "rank_order"]
+        x <- x[order(x_rank_order), , drop = FALSE][!is.na(x_rank_order)[order(x_rank_order)], , drop = FALSE]
+    }
+
+    return(x)
+}
+
+##' @rdname convert_SDG_region_names_2_SDG_Data
+##' @export
+convert_SDG_region_names_2_SDG_Data.character <- function(x, convert_to = c("SDG_Data", "FPEM"),
+                                                          subset_and_order = FALSE) {
+    convert_SDG_region_names_2_SDG_Data(data.frame(name = x),
+                                        convert_to = convert_to,
+                                        subset_and_order = subset_and_order)$name
 }
 
 
@@ -293,7 +340,7 @@ convert_SDG_region_names <- function(x, convert_to = c("SDG_annex", "FPEM")) {
 ##' @author Mark Wheldon
 ##'
 ##' @export
-country_classifications_2_fpemdata <-
+convert_country_classifications_2_fpemdata <-
     function() {
         verbose <- getOption("FPEMglobal.aux.verbose")
         get_country_classifications(clean_col_names = TRUE) |>

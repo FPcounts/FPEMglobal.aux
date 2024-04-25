@@ -1,6 +1,8 @@
 ###-----------------------------------------------------------------------------
 ### * Work with Countries and Aggregates
 
+### NOTE: See also 'text_manipulation.R' for more functions that deal with region/aggregate names.
+
 ##' Read table of the \dQuote{195} countries
 ##'
 ##' These are the 195 countries in the original married women

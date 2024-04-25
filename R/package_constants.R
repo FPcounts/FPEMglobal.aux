@@ -66,6 +66,9 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio", "age ratio"),
                                 marital_group = get_std_marital_group_names(),
                                 aw_set = c("all", "only common", "only extra")) {
+
+### NOTE !!! THESE ARE THE NAMES IN THE TRAJECTORY ARRAYS, NOT THE .CSV RESULTS FILES!!
+
     stat <- match.arg(stat)
     marital_group <- match.arg(marital_group)
     aw_set <- match.arg(aw_set)
