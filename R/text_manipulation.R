@@ -410,14 +410,14 @@ convert_marital_group_names <- function(x, return_case = c("lower", "title", "se
 ##' @examples
 ##'
 ##' ## Known indicators are:
-##' get_std_indicator_names()
+##' get_traj_array_indicator_names()
 ##'
 ##' @export
 clean_indic_names <- function(indicator) {
     clean <- function(x) {
         tolower(gsub("[ ]+", "_", x))
     }
-    ## regexp <- paste(get_std_indicator_names(), collapse = "|")
+    ## regexp <- paste(get_traj_array_indicator_names(), collapse = "|")
     ## match_list <- gregexpr(pattern = regexp, text = indicator)
     ## mapply(function(as.list(ind), mat) {
 
@@ -469,7 +469,7 @@ lower_snake_casify <- function(x, use_make.names = TRUE) {
 ##' If \code{clean_indicator_names} is \code{FALSE}, any strings
 ##' matching the known standard indicator names are \emph{not}
 ##' cleaned. The known standard indicator names are defined by
-##' \code{\link{get_std_indicator_names}}.
+##' \code{\link{get_traj_array_indicator_names}}.
 ##'
 ##' @param x Object for which a method is defined (e.g., character
 ##'     string or data frame).
@@ -493,7 +493,7 @@ clean_col_names <- function(x, ...) {
 ##' @export
 clean_col_names.character <- function(x, use_make.names = TRUE, clean_indicator_names = FALSE) {
     if (!clean_indicator_names) {
-        idx <- !(x %in% get_std_indicator_names())
+        idx <- !(x %in% get_traj_array_indicator_names())
     } else { idx <- rep.int(TRUE, length(x)) }
     if (sum(idx)) x[idx] <- lower_snake_casify(x[idx], use_make.names = use_make.names)
     x[x == "iso_code"] <- "iso"

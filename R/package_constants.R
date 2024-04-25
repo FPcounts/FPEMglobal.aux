@@ -35,13 +35,13 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 }
 
 
-##' Report all possible names of family planning indicators used in FPEMglobal
+##' Report family planning indicator names as used in trajectory arrays
 ##'
 ##' These functions return character vectors containing indicator
 ##' names as used in the \code{dimnames} attribute of the country and
 ##' aggregate trajectory arrays (e.g., see
-##' \code{\link{get_country_traj_muw}}). \code{get_std_indicator_names}
-##' returns all valid names, \code{get_std_indicator_names_select}
+##' \code{\link{get_country_traj_muw}}). \code{get_traj_array_indicator_names}
+##' returns all valid names, \code{get_traj_array_indicator_names_select}
 ##' provides functionality to subet by statistic and marital group.
 ##'
 ##' The indicator names stored in the country and aggregate trajectory
@@ -61,9 +61,9 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##'
 ##' @family String constants
 ##'
-##' @name get_std_indicator_names
+##' @name get_traj_array_indicator_names
 ##' @export
-get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio", "age ratio"),
+get_traj_array_indicator_names_select <- function(stat = c("prop", "count", "ratio", "age ratio"),
                                 marital_group = get_std_marital_group_names(),
                                 aw_set = c("all", "only common", "only extra")) {
 
@@ -94,13 +94,13 @@ get_std_indicator_names_select <- function(stat = c("prop", "count", "ratio", "a
     }
 }
 
-##' @rdname get_std_indicator_names
+##' @rdname get_traj_array_indicator_names
 ##' @export
-get_std_indicator_names <- function() {
+get_traj_array_indicator_names <- function() {
     out <- character()
     for (i in c("prop", "count", "ratio", "age ratio")) {
         for (j in get_std_marital_group_names()) {
-            out <- c(out, get_std_indicator_names_select(stat = i, marital_group = j, aw_set = "all"))
+            out <- c(out, get_traj_array_indicator_names_select(stat = i, marital_group = j, aw_set = "all"))
         }
     }
     return(unique(out))
