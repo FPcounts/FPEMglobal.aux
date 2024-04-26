@@ -16,7 +16,7 @@ test_that("get_country_classifications works", {
     ## Specified args
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
-                expect_s3_class(get_country_classifications(UNlocations_names = unl,
+                expect_s3_class(get_country_classifications(M49_region_names = unl,
                                                             clean_col_names = ccn), "tbl_df")
         }
     }
@@ -34,8 +34,8 @@ test_that("list_special_aggregates_names works", {
     expect_error(list_special_aggregates_names(), NA)
 })
 
-test_that("country_classifications_2_fpemdata works", {
-    expect_s3_class(country_classifications_2_fpemdata(), "tbl_df")
+test_that("convert_country_classifications_2_fpemdata works", {
+    expect_s3_class(convert_country_classifications_2_fpemdata(), "tbl_df")
     })
 
 
@@ -57,7 +57,7 @@ test_that("get_used_unpd_regions works for 15-49, married women run", {
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
                 expect_s3_class(get_used_unpd_regions(output_dir = test_output_dir,
-                                                      UNlocations_names = unl,
+                                                      M49_region_names = unl,
                                                       clean_col_names = ccn), "tbl_df")
         }
     }

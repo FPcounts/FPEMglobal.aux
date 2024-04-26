@@ -1,4 +1,4 @@
-!###-----------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
 ### * meta_data.csv
 
 ###-----------------------------------------------------------------------------
@@ -6,6 +6,24 @@
 
 ###-----------------------------------------------------------------------------
 ### *** Married
+
+test_that("get_JAGS_model_param_names works with default argument values on a 15-49 married directory", {
+    test_output_dir <-
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+    x <- get_JAGS_model_param_names(output_dir = test_output_dir)
+    expect_true(is.character(x))
+    expect_true(length(x) <= dim(get(load(file.path(test_output_dir, "mcmc.array.rda"))))[3])
+})
+test_that("get_JAGS_model_param_names works with 'abbreviate = FALSE' on a 15-49 married directory", {
+    test_output_dir <-
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+    x <- get_JAGS_model_param_names(output_dir = test_output_dir, abbreviate = FALSE)
+    expect_true(is.character(x))
+    expect_identical(length(x),
+                     dim(get(load(file.path(test_output_dir, "mcmc.array.rda"))))[3])
+    })
 
 test_that("get_model_JAGS_txt works with default argument values on a 15-49 married directory", {
     test_output_dir <-
@@ -117,6 +135,19 @@ test_that("is_unmarried_women_run works with default argument values on a 15-49 
 
 ###-----------------------------------------------------------------------------
 ### *** All Women
+
+test_that("get_JAGS_model_param_names works with default argument values on a 15-49 married directory", {
+    test_output_dir <-
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+    expect_error(get_JAGS_model_param_names(output_dir = test_output_dir))
+})
+test_that("get_JAGS_model_param_names works with 'abbreviate = FALSE' on a 15-49 married directory", {
+    test_output_dir <-
+        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+    expect_error(get_JAGS_model_param_names(output_dir = test_output_dir, abbreviate = FALSE))
+    })
 
 test_that("get_model_meta_info works with default argument values on a 15-49 all women directory", {
     test_output_dir <-

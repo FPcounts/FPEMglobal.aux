@@ -13,22 +13,24 @@ setwd(here::here("data-raw"))
 ###-----------------------------------------------------------------------------
 ### * Paths
 
-mwra_1519_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Developing", "20220627-1", "220627_122800_15-19_married")
+mwra_1519_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing",
+                                "20220627-1 (RES ONLY)", "220627_122800_15-19_married")
 mwra_1519_src_run_name <- "220914_1519_mw"
 mwra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_married")
 mwra_1519_new_run_name <- "220627_122800_15-19_married"
 
-wra_1519_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Developing", "20220627-1", "220627_122800_15-19_all_women")
+wra_1519_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing",
+                               "20220627-1 (RES ONLY)", "220627_122800_15-19_all_women")
 wra_1519_src_run_name <- "220914_1519all women"
 wra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_all_women")
 wra_1519_new_run_name <- "220627_122800_15-19_all_women"
 
-mwra_1549_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Released", "2022", "15-49_mwra")
+mwra_1549_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022", "15-49_mwra")
 mwra_1549_src_run_name <- "2022_15-49_mwra"
 mwra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_married")
 mwra_1549_new_run_name <- "2022_15-49_mwra"
 
-wra_1549_src_path <- file.path(Sys.getenv("SHAREPOINT_PDU_FPEM_RESULTS"), "Released", "2022", "15-49_wra")
+wra_1549_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022", "15-49_wra")
 wra_1549_src_run_name <- "2022_15-49_wra"
 wra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_all_women")
 wra_1549_new_run_name <- "2022_15-49_wra"
@@ -69,6 +71,15 @@ for (k in seq_along(src_paths)) {
             x <- x[x[[iso_col]] %in% keep_iso_c, ]
             write.csv(x, file = file.path(new_path, fname), row.names = FALSE)
         }
+    }
+
+    ## mcmc array
+    mcmc_file_path <- file.path(src_path, "mcmc.array.rda")
+    if (file.exists(mcmc_file_path)) {
+    mcmc.array <- get(load(mcmc_file_path))
+    dims <- dim(mcmc.array)
+    mcmc.array <- mcmc.array[1:min(5, dims[1]), 1:min(2, dims[2]), , drop = FALSE]
+    save(mcmc.array, file = file.path(new_path, "mcmc.array.rda"))
     }
 
     ## 'orig' tables

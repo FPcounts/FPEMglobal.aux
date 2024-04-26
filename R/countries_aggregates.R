@@ -1,6 +1,8 @@
 ###-----------------------------------------------------------------------------
 ### * Work with Countries and Aggregates
 
+### NOTE: See also 'text_manipulation.R' for more functions that deal with region/aggregate names.
+
 ##' Read table of the \dQuote{195} countries
 ##'
 ##' These are the 195 countries in the original married women
@@ -70,14 +72,14 @@ get_185_countries <- function(clean_col_names = TRUE) {
 ##'
 ##' @family country_aggregates
 ##' @export
-get_country_classifications <- function(UNlocations_names = TRUE,
+get_country_classifications <- function(M49_region_names_names = TRUE,
                                         clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
-    if (UNlocations_names)
+    if (M49_region_names_names)
             out[, "Country or area"] <-
-                match_UNlocations(out[, "Country or area"], "UNlocations")
+                convert_M49_region_names(out[, "Country or area"], "M49_region_names")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
@@ -90,8 +92,8 @@ get_country_classifications <- function(UNlocations_names = TRUE,
 ##'
 ##' @family countries, regions and aggregates functions
 ##'
-##' @param UNlocations_names Logical; should
-##'     \code{\link{match_UNlocations}(..., return_names = "UNlocations")} be
+##' @param M49_region_names_names Logical; should
+##'     \code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
 ##'     run to standardize country and area names?
 ##'
 ##' @inheritParams get_used_input_data
@@ -102,7 +104,7 @@ get_country_classifications <- function(UNlocations_names = TRUE,
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-             clean_col_names = TRUE, UNlocations_names = TRUE) {
+             clean_col_names = TRUE, M49_region_names_names = TRUE) {
 
         verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -115,9 +117,9 @@ get_used_unpd_regions <-
         fname <- file.path(data_dir, "country_and_area_classification.csv")
         if (verbose) message("Reading '", fname, "'.")
         out <- readr::read_csv(fname, name_repair = "minimal")
-        if (UNlocations_names)
+        if (M49_region_names_names)
             out[, "Country or area"] <-
-                match_UNlocations(out[, "Country or area"], "UNlocations")
+                convert_M49_region_names(out[, "Country or area"], "M49_region_names")
         if (clean_col_names) out <- clean_col_names(out)
 
         return(out)
@@ -216,27 +218,3 @@ get_used_special_aggregates <-
 
         return(out)
     }
-
-
-##' Convert country classifications to fpemdata format
-##'
-##' Retrieves country codes and region classifications from
-##' \pkg{FPEMglobal} and returns them in \pkg{fpemdata} format.
-##'
-##' @family fpemdata converters
-##' @seealso get_country_classifications
-##'
-##' @inheritParams get_csv_res
-##' @return A \code{\link[tibble]{tibble}} with the requested results.
-##' @author Mark Wheldon
-##'
-##' @export
-country_classifications_2_fpemdata <-
-    function() {
-        verbose <- getOption("FPEMglobal.aux.verbose")
-        get_country_classifications(clean_col_names = TRUE) |>
-            dplyr::rename(division_numeric_code = iso,
-                          name_country = name,
-                          name_sub_region = region,
-                          name_region = major_area)
-        }

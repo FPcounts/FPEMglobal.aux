@@ -19,8 +19,13 @@ clean_col_names(x, ...)
 \item{x}{Object for which a method is defined (e.g., character
 string or data frame).}
 
-\item{use_make.names}{Logical; apply \code{\link[base]{make.names}} to
-\code{x} \emph{before} doing anything else?}
+\item{use_make.names}{Logical; apply
+\code{\link[base]{make.names}} to \code{x} \emph{before} doing
+anything else?}
+
+\item{clean_indicator_names}{Logical; should the procedure be
+applied to standard indicator names as well? See
+\dQuote{Details} for more information.}
 }
 \value{
 Formatted version of \code{x}.
@@ -36,14 +41,19 @@ made \emph{after} all re-formats:
 \item{\code{country}, \code{country_or_area}}{replaced with \code{name}}
 }
 }
+\details{
+If \code{clean_indicator_names} is \code{FALSE}, any strings
+matching the known standard indicator names are \emph{not}
+cleaned. The known standard indicator names are defined by
+\code{\link{get_traj_array_indicator_names}}.
+}
 \seealso{
 Other String utility functions: 
 \code{\link{clean_indic_names}()},
+\code{\link{convert_M49_region_names}()},
+\code{\link{convert_country_names_2_latex}()},
 \code{\link{convert_param_name}()},
 \code{\link{get_aggregate_names}()},
-\code{\link{make_c_names_manus}()},
-\code{\link{make_reg_names_manus}()},
-\code{\link{match_UNlocations}()},
 \code{\link{shorten_reg_names_manus}()}
 }
 \author{

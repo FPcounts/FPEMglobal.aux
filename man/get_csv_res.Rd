@@ -67,12 +67,19 @@ messages.}
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Reads \emph{all} results \file{.csv} files from a results
-directory for a given country or region that contain proportions,
-counts, and ratios. The files are read using
+Reads \file{.csv} files from a results directory of an
+\pkg{FPEMglobal} run for a single marital group. The geography
+(countries or aggregates) and statistic(s) loaded (proportions,
+counts, ratios) can be specified. The files are read using
 \code{\link[readr]{read_csv}}.
 }
 \details{
+The results directory is passed via the \code{output_dir} argument
+and must point to a set of results for a single marital
+group. This is the recommended way to specify the results set to
+load; the \code{run_name} and \code{root_dir} arguments are
+deprecated. See \code{\link{get_output_dir}} for more details.
+
 The \code{stat} argument specifies the type of results to
 return. Results are stored separately for prevalence proportions,
 ratio indicators, and number of users. These can be requested by,
@@ -112,7 +119,7 @@ The default is \code{"long"}.
 \seealso{
 \code{\link{get_output_dir}} for instructions on how to
 specify output directories and run names;
-\code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+\code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 messages; \code{\link{year_storage_format}} for background on
 storage format of year values.
 

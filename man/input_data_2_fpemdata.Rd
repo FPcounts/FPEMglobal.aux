@@ -29,8 +29,8 @@ called to get the input file.
 get_used_input_data
 
 Other fpemdata converters: 
-\code{\link{country_classifications_2_fpemdata}()},
-\code{\link{csv_res_2_fpemdata}()},
+\code{\link{convert_country_classifications_2_fpemdata}()},
+\code{\link{convert_csv_res_2_fpemdata}()},
 \code{\link{denominators_2_fpemdata}()}
 }
 \author{

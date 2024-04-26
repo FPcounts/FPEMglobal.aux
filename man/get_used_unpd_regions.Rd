@@ -9,7 +9,7 @@ get_used_unpd_regions(
   output_dir = NULL,
   root_dir = NULL,
   clean_col_names = TRUE,
-  UNlocations_names = TRUE
+  M49_region_names_names = TRUE
 )
 }
 \arguments{
@@ -23,8 +23,8 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
-\item{UNlocations_names}{Logical; should
-\code{\link{match_UNlocations}(..., return_names = "UNlocations")} be
+\item{M49_region_names_names}{Logical; should
+\code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
 run to standardize country and area names?}
 }
 \value{

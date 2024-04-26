@@ -3,10 +3,17 @@
 
 ##' Read results csv files containing percentages, counts, and ratios
 ##'
-##' Reads \emph{all} results \file{.csv} files from a results
-##' directory for a given country or region that contain proportions,
-##' counts, and ratios. The files are read using
+##' Reads \file{.csv} files from a results directory of an
+##' \pkg{FPEMglobal} run for a single marital group. The geography
+##' (countries or aggregates) and statistic(s) loaded (proportions,
+##' counts, ratios) can be specified. The files are read using
 ##' \code{\link[readr]{read_csv}}.
+##'
+##' The results directory is passed via the \code{output_dir} argument
+##' and must point to a set of results for a single marital
+##' group. This is the recommended way to specify the results set to
+##' load; the \code{run_name} and \code{root_dir} arguments are
+##' deprecated. See \code{\link{get_output_dir}} for more details.
 ##'
 ##' The \code{stat} argument specifies the type of results to
 ##' return. Results are stored separately for prevalence proportions,
@@ -83,7 +90,7 @@
 ##'
 ##' @seealso \code{\link{get_output_dir}} for instructions on how to
 ##'     specify output directories and run names;
-##'     \code{link{FPEMglobal.aux}} for a note about \pkg{readr}
+##'     \code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 ##'     messages; \code{\link{year_storage_format}} for background on
 ##'     storage format of year values.
 ##'
@@ -98,6 +105,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         add_country_classifications = FALSE,
                         table_format = c("long", "wide", "raw"),
                         sort = TRUE) {
+
+### NOTE !!! 'clean_col_names' ONLY KNOWS THE INDICATOR NAMES IN THE TRAJECTORY ARRAYS, NOT THE .CSV RESULTS FILES!! THE COLUMN NAMES IN THE RESULT WHEN 'table_format' = "wide" WILL BE INCONSISTENTLY REFORMATTED. NEED TO ADD LIST OF INDICATOR NAMES AS THEY APPEAR IN THE RESULTS FILS AND MODIFE 'clean_col_names' ACCORDINGLY.
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -346,7 +355,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## Clean column names
     if (clean_col_names) {
         res <- clean_col_names(res)
-        ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE
+        ## Fix the 'percentile' / 'quantile' mess (only if 'clean_col_names' = TRUE)
         colnames(res)[colnames(res) == "percentile"] <- "quantile"
     }
 
@@ -357,11 +366,12 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
 ##' Read results csv files containing percentages, etc., for all three marital groups
 ##'
-##' Calls \code{\link{get_csv_res}} sequentially on first
-##' elements of \code{run_name_list} and \code{output_dir_list}, second
-##' elements of \code{run_name_list} and \code{output_dir_list}, etc.,
-##' to load \emph{all} results for all marital groups. Binds the three
-##' into data frame.
+##' A wrapper for \code{\link{get_csv_res}}. Calls
+##' \code{\link{get_csv_res}} sequentially on first elements of
+##' \code{run_name_list} and \code{output_dir_list}, second elements
+##' of \code{run_name_list} and \code{output_dir_list}, etc., to load
+##' \emph{all} results for all marital groups. Binds the three into
+##' single object.
 ##'
 ##' @family csv results functions
 ##'
@@ -445,7 +455,7 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
-csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+convert_csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                adjusted = c("orig", "adj", "sub_adj"),
                                ...) {
 

@@ -106,7 +106,6 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 }
 
 
-
 ##' Get denominator counts from csv files
 ##'
 ##' Reads the '.csv' file containing the married and unmarried
