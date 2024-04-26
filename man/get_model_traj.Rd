@@ -41,7 +41,9 @@ The dimensions are not named by \pkg{FPEMglobal}. If
 \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 }
 \seealso{
-Other trajectory functions: 
+Other Trajectory functions: 
+\code{\link{convert_country_traj_to_counts}()},
+\code{\link{expand_country_traj_count}()},
 \code{\link{get_agg_traj}()},
 \code{\link{get_country_traj_aw}()},
 \code{\link{get_country_traj_muw}()}
@@ -49,4 +51,4 @@ Other trajectory functions:
 \author{
 Mark Wheldon
 }
-\concept{trajectory functions}
+\concept{Trajectory functions}

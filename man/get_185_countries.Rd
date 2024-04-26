@@ -22,14 +22,9 @@ UNPD. The file is read using \code{\link[readr]{read_csv}}. See
 \code{\link{get_195_countries}}.
 }
 \seealso{
-Other countries, regions and aggregates functions: 
+Other Country and region/aggregate names: 
 \code{\link{get_195_countries}()},
-\code{\link{get_country_classifications}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()}
-
-Other country_aggregates: 
-\code{\link{get_195_countries}()},
+\code{\link{get_aggregate_names}()},
 \code{\link{get_country_classifications}()},
 \code{\link{get_used_special_aggregates}()},
 \code{\link{get_used_unpd_regions}()}
@@ -37,5 +32,4 @@ Other country_aggregates:
 \author{
 Mark Wheldon
 }
-\concept{countries, regions and aggregates functions}
-\concept{country_aggregates}
+\concept{Country and region/aggregate names}

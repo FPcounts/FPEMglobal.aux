@@ -86,7 +86,7 @@
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##'
-##' @family csv results functions
+##' @family Get results from csv files
 ##'
 ##' @seealso \code{\link{get_output_dir}} for instructions on how to
 ##'     specify output directories and run names;
@@ -373,7 +373,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##' \emph{all} results for all marital groups. Binds the three into
 ##' single object.
 ##'
-##' @family csv results functions
+##' @family Get results from csv files
 ##'
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.

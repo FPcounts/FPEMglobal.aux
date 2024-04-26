@@ -42,6 +42,13 @@ and \code{"Total"}. This function will add \code{"Total"},
 \seealso{
 \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 
+Other Trajectory functions: 
+\code{\link{convert_country_traj_to_counts}()},
+\code{\link{get_agg_traj}()},
+\code{\link{get_country_traj_aw}()},
+\code{\link{get_country_traj_muw}()},
+\code{\link{get_model_traj}()}
+
 Other Trajectory conversion functions: 
 \code{\link{convert_country_traj_to_counts}()}
 }
@@ -49,3 +56,4 @@ Other Trajectory conversion functions:
 Mark Wheldon
 }
 \concept{Trajectory conversion functions}
+\concept{Trajectory functions}

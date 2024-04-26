@@ -44,6 +44,7 @@ that are unique to all women results (\code{"only extra"}).
 }
 \seealso{
 Other String constants: 
+\code{\link{get_aggregate_names}()},
 \code{\link{get_std_marital_group_names}()}
 }
 \author{

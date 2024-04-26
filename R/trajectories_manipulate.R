@@ -86,6 +86,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 ##' @return Trajectory array.
 ##' @author Mark Wheldon
 ##'
+##' @family Trajectory functions
 ##' @family Trajectory conversion functions
 ##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 ##'
@@ -313,6 +314,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 ##' @return An expanded trajectory array of counts.
 ##' @author Mark Wheldon
 ##'
+##' @family Trajectory functions
 ##' @family Trajectory conversion functions
 ##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 ##'

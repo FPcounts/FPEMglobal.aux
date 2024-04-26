@@ -15,7 +15,7 @@
 ##' \code{name_dims} is \code{TRUE} they are given the names
 ##' \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 ##'
-##' @family trajectory functions
+##' @family Trajectory functions
 ##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
@@ -73,7 +73,7 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 ##' The country trajectories for all women are \emph{counts}. Those
 ##' for married and unmarried are \emph{proportions}.}
 ##'
-##' @family trajectory functions
+##' @family Trajectory functions
 ##'
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.
@@ -147,7 +147,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' The country trajectories for all women are \emph{counts}. Those
 ##' for married and unmarried are \emph{proportions}.}
 ##'
-##' @family trajectory functions
+##' @family Trajectory functions
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -308,7 +308,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @inheritParams get_csv_res
 ##' @return The loaded aggregate trajectory object.
 ##'
-##' @family trajectory functions
+##' @family Trajectory functions
 ##'
 ##' @author Mark Wheldon
 ##' @export

@@ -28,20 +28,14 @@ using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
 documentation for \code{\link{get_195_countries}}.
 }
 \seealso{
-Other countries, regions and aggregates functions: 
+Other Country and region/aggregate names: 
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()}
-
-Other country_aggregates: 
-\code{\link{get_185_countries}()},
-\code{\link{get_195_countries}()},
+\code{\link{get_aggregate_names}()},
 \code{\link{get_used_special_aggregates}()},
 \code{\link{get_used_unpd_regions}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{countries, regions and aggregates functions}
-\concept{country_aggregates}
+\concept{Country and region/aggregate names}

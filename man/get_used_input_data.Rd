@@ -32,11 +32,11 @@ Reads the '.csv' file containing the prevalence data used in the
 run. The file is read using \code{\link[readr]{read_csv}}.
 }
 \seealso{
-Other input_data_functions: 
+Other Input data functions: 
 \code{\link{get_csv_denominators}()},
 \code{\link{get_used_denominators}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{input_data_functions}
+\concept{Input data functions}

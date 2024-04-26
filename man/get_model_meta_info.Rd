@@ -28,7 +28,7 @@ output; it is usually much better to assign the result to a
 variable name.
 }
 \seealso{
-Other model_run_meta_info: 
+Other Model run meta info functions: 
 \code{\link{get_combine_runs_args}()},
 \code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
@@ -40,4 +40,4 @@ Other model_run_meta_info:
 \author{
 Mark Wheldon
 }
-\concept{model_run_meta_info}
+\concept{Model run meta info functions}

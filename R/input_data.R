@@ -12,7 +12,7 @@
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'
-##' @family input_data_functions
+##' @family Input data functions
 ##'
 ##' @export
 get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
@@ -59,7 +59,7 @@ get_used_input_data <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'     \dQuote{Details}.
 ##' @author Mark Wheldon
 ##'
-##' @family input_data_functions
+##' @family Input data functions
 ##'
 ##' @seealso \code{\link{year_storage_format}} for background on
 ##'     storage format of year values.
@@ -155,7 +155,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'     \dQuote{Details}.
 ##' @author Mark Wheldon
 ##'
-##' @family input_data_functions
+##' @family Input data functions
 ##'
 ##' @seealso \code{\link{year_storage_format}} for background on
 ##'     storage format of year values.
@@ -430,7 +430,7 @@ read_named_csv_file <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##'
-##' @family fpemdata converters
+##' @family FPEM data converters
 ##' @seealso get_used_input_data
 ##'
 ##' @importFrom gdata rename.vars
@@ -623,7 +623,7 @@ input_data_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##'
-##' @family fpemdata converters
+##' @family FPEM data converters
 ##' @seealso get_used_input_data
 ##'
 ##' @importFrom reshape2 melt
