@@ -17,9 +17,7 @@ Retrieves country codes and region classifications from
 get_country_classifications
 
 Other fpemdata converters: 
-\code{\link{convert_csv_res_2_fpemdata}()},
-\code{\link{denominators_2_fpemdata}()},
-\code{\link{input_data_2_fpemdata}()}
+\code{\link{convert_csv_res_2_fpemdata}()}
 }
 \author{
 Mark Wheldon

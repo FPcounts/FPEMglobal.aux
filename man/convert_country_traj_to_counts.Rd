@@ -82,6 +82,13 @@ must be supplied via \code{traj_array_counts_married} and
 \seealso{
 \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 
+Other Trajectory functions: 
+\code{\link{expand_country_traj_count}()},
+\code{\link{get_agg_traj}()},
+\code{\link{get_country_traj_aw}()},
+\code{\link{get_country_traj_muw}()},
+\code{\link{get_model_traj}()}
+
 Other Trajectory conversion functions: 
 \code{\link{expand_country_traj_count}()}
 }
@@ -89,3 +96,4 @@ Other Trajectory conversion functions:
 Mark Wheldon
 }
 \concept{Trajectory conversion functions}
+\concept{Trajectory functions}

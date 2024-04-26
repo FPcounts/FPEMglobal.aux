@@ -24,6 +24,7 @@ group names. The names are the abbreviations in lower case.
 }
 \seealso{
 Other String constants: 
+\code{\link{get_aggregate_names}()},
 \code{\link{get_traj_array_indicator_names}()}
 }
 \author{

@@ -123,10 +123,10 @@ specify output directories and run names;
 messages; \code{\link{year_storage_format}} for background on
 storage format of year values.
 
-Other csv results functions: 
+Other Get results from csv files: 
 \code{\link{get_csv_all_mar_res}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{csv results functions}
+\concept{Get results from csv files}

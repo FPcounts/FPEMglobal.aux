@@ -26,15 +26,19 @@ e.g., \dQuote{Eastern Africa}, not the names of the countries in
 the aggregates.
 }
 \seealso{
-Other String utility functions: 
-\code{\link{clean_col_names}()},
-\code{\link{clean_indic_names}()},
-\code{\link{convert_M49_region_names}()},
-\code{\link{convert_country_names_2_latex}()},
-\code{\link{convert_param_name}()},
-\code{\link{shorten_reg_names_manus}()}
+Other String constants: 
+\code{\link{get_std_marital_group_names}()},
+\code{\link{get_traj_array_indicator_names}()}
+
+Other Country and region/aggregate names: 
+\code{\link{get_185_countries}()},
+\code{\link{get_195_countries}()},
+\code{\link{get_country_classifications}()},
+\code{\link{get_used_special_aggregates}()},
+\code{\link{get_used_unpd_regions}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{String utility functions}
+\concept{Country and region/aggregate names}
+\concept{String constants}

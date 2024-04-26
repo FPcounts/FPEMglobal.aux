@@ -14,13 +14,11 @@
 ##' aggregates used in a specific model run (although, as of
 ##' 2022-08-25, this is unlikely).
 ##'
-##' @family countries, regions and aggregates functions
-##'
 ##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'
-##' @family country_aggregates
+##' @family Country and region/aggregate names
 ##'
 ##' @export
 get_195_countries <- function(clean_col_names = TRUE) {
@@ -40,13 +38,11 @@ get_195_countries <- function(clean_col_names = TRUE) {
 ##' \dQuote{Note} in the documentation for
 ##' \code{\link{get_195_countries}}.
 ##'
-##' @family countries, regions and aggregates functions
-##'
 ##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'
-##' @family country_aggregates
+##' @family Country and region/aggregate names
 ##' @export
 get_185_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -62,15 +58,12 @@ get_185_countries <- function(clean_col_names = TRUE) {
 ##' Returns a table of geographic country groupings. The file is read
 ##' using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
 ##' documentation for \code{\link{get_195_countries}}.
-##'
-##' @family countries, regions and aggregates functions
-##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_used_unpd_regions
 ##' @return A \code{\link[tibble]{tibble}} with the aggregates.
 ##' @author Mark Wheldon
 ##'
-##' @family country_aggregates
+##' @family Country and region/aggregate names
 ##' @export
 get_country_classifications <- function(M49_region_names_names = TRUE,
                                         clean_col_names = TRUE) {
@@ -90,8 +83,6 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
 ##' Loads the country classifications actually used in a model
 ##' run. The files are read using \code{\link[readr]{read_csv}}.
 ##'
-##' @family countries, regions and aggregates functions
-##'
 ##' @param M49_region_names_names Logical; should
 ##'     \code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
 ##'     run to standardize country and area names?
@@ -100,7 +91,7 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'
-##' @family country_aggregates
+##' @family Country and region/aggregate names
 ##' @export
 get_used_unpd_regions <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,
@@ -161,13 +152,11 @@ list_special_aggregates_names <- function() {
 ##' the results. The files are read using
 ##' \code{\link[readr]{read_csv}}.
 ##'
-##' @family countries, regions and aggregates functions
-##'
 ##' @inheritParams get_used_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'
-##' @family country_aggregates
+##' @family Country and region/aggregate names
 ##' @export
 get_used_special_aggregates <-
     function(run_name = NULL, output_dir = NULL, root_dir = NULL,

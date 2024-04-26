@@ -98,7 +98,7 @@ get_model_JAGS_txt <- function(run_name = NULL, output_dir = NULL, root_dir = NU
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -133,7 +133,7 @@ get_model_meta_info <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##'
 ##' @export
 get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
@@ -170,7 +170,7 @@ get_country_index <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -202,7 +202,7 @@ get_global_mcmc_args <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -231,7 +231,7 @@ get_combine_runs_args <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -262,7 +262,7 @@ get_global_run_args <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -292,7 +292,7 @@ get_global_post_process_args <- function(run_name = NULL, output_dir = NULL, roo
 ##' @return The run name as a character string.
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_run_name <- function(output_dir = NULL) {
 
@@ -347,7 +347,7 @@ get_run_name <- function(output_dir = NULL) {
 ##' @return A character string (\code{get_...}) or logical value (\code{is_...}).
 ##' @author Mark Wheldon
 ##'
-##' @family model_run_meta_info
+##' @family Model run meta info functions
 ##' @export
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                               lower_snake_casify = FALSE) {

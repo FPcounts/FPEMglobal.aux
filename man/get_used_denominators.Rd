@@ -51,11 +51,11 @@ argument, which is \code{"units"} by default.
 \code{\link{year_storage_format}} for background on
 storage format of year values.
 
-Other input_data_functions: 
+Other Input data functions: 
 \code{\link{get_csv_denominators}()},
 \code{\link{get_used_input_data}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{input_data_functions}
+\concept{Input data functions}

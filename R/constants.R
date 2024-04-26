@@ -128,7 +128,8 @@ get_traj_array_indicator_names <- function() {
 ##' @return Character vector of family members.
 ##' @author Mark Wheldon
 ##'
-##' @family String utility functions
+##' @family String constants
+##' @family Country and region/aggregate names
 ##'
 ##' @export
 get_aggregate_names <- function(family = c("geog_maj", "geog_subr", "development_v1", "development_v2",
