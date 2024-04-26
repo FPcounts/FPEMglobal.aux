@@ -6,6 +6,7 @@
 ###
 ################################################################################
 
+library(parallelly)
 library(testthat)
 library(FPEMglobal.aux)
 
@@ -55,7 +56,7 @@ expect_true(dir.exists(test_output_dir))
 
 args_grid_mwra <- cbind(output_dir = test_output_dir, args_grid)
 
-cl <- parallel::makeCluster(parallelly::availableCores(omit = 1))
+cl <- parallel::makeCluster(parallelly::availableCores(omit = 2))
 parallel::clusterExport(cl, varlist = c("args_grid_mwra", "run_res"), envir = environment())
 mwra_res <- parallel::parLapply(cl = cl, X = seq_len(nrow(args_grid_mwra)),
                                 fun = "run_res", args_grid = args_grid_mwra)
@@ -75,7 +76,7 @@ expect_true(dir.exists(test_output_dir))
 
 args_grid_wra <- cbind(output_dir = test_output_dir, args_grid)
 
-cl <- parallel::makeCluster(parallelly::availableCores(omit = 1))
+cl <- parallel::makeCluster(parallelly::availableCores(omit = 2))
 parallel::clusterExport(cl, varlist = c("args_grid_wra", "run_res"), envir = environment())
 wra_res <- parallel::parLapply(cl = cl, X = seq_len(nrow(args_grid_wra)),
                                 fun = "run_res", args_grid = args_grid_wra)

@@ -353,7 +353,7 @@ get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NUL
                               lower_snake_casify = FALSE) {
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general
     if (isTRUE(mg$all.women.run.copy)) out <- "all women"
-    else out <- convert_marital_group_names(mg$marital.group)
+    else out <- expand_marital_group_acronyms(mg$marital.group)
     if (lower_snake_casify) out <- lower_snake_casify(out)
     return(out)
 }
@@ -375,7 +375,7 @@ is_marital_group_run <- function(run_name = NULL, output_dir = NULL, root_dir = 
         return(FALSE)
     } else {
         mgp <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general$marital.group
-        return(identical(convert_marital_group_names(mgp), marital_group))
+        return(identical(expand_marital_group_acronyms(mgp), marital_group))
     }
 }
 

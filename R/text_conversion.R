@@ -5,7 +5,7 @@
 ### ** Marital Groups
 
 ## Get 'long' marital group name from the acronym
-convert_marital_group_names <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
+expand_marital_group_acronyms <- function(x, return_case = c("lower", "title", "sentence", "upper")) {
     x <- tolower(x)
     x <- match.arg(x, choices = c("mwra", "uwra", "wra", "awra"))
     if (identical(x, "awra")) x <- "wra"
@@ -29,7 +29,7 @@ convert_marital_group_names <- function(x, return_case = c("lower", "title", "se
 ##' @family String utility functions
 ##'
 ##' @export
-make_c_names_manus <- function(x) {
+convert_country_names_2_latex <- function(x) {
 x[grep("^Bolivia \\(Plurinational State of\\)", x)] <- "Bolivia, Plurinational State of"
 x[grep("^C.+e d'Ivoire$", x)] <- "C{\\^o}te d'Ivoire"
 x[grep("^China, Hong Kong \\(SAR\\)", x)] <- "China, Hong Kong SAR"
@@ -57,11 +57,11 @@ x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian 
 ##' Match UN locations country names
 ##'
 ##' Converts between the country names in
-##' \code{\link[wpp2019]{UNlocations}} and those in the \pkg{\link{FPEMglobal}} outputs.
+##' \code{\link[wpp2019]{M49_region_names}} and those in the \pkg{\link{FPEMglobal}} outputs.
 ##'
 ##' @param x Vector of names, factor or character.
-##' @param return_names If \dQuote{UNlocations}, converts \emph{from}
-##'     \pkg{\link{FPEMglobal}} names to \code{\link[wpp2019]{UNlocations}}
+##' @param convert_to If \dQuote{M49_region_names}, converts \emph{from}
+##'     \pkg{\link{FPEMglobal}} names to \code{\link[wpp2019]{M49_region_names}}
 ##'     names. Converts the other way if \dQuote{FPEMglobal}. Note that this
 ##'     means \code{x} should be in the opposite format.
 ##' @return Vector of converted country names, character or factor
@@ -71,16 +71,16 @@ x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian 
 ##' @family String utility functions
 ##'
 ##' @export
-match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) {
+convert_M49_region_names <- function(x, convert_to = c("M49_region_names", "FPEMglobal")) {
 
     x_fac <- is.factor(x)
     if (x_fac) x <- as.character(x)
 
-    return_names <- match.arg(return_names)
-    from_names <- c("UNlocations", "FPEMglobal")
+    convert_to <- match.arg(convert_to)
+    from_names <- c("M49_region_names", "FPEMglobal")
 
     names_df <-
-        data.frame(UNlocations = c("Reunion",
+        data.frame(M49_region_names = c("Reunion",
                                    "Eswatini",
                                    "Cote d'Ivoire",
                                    "China, Hong Kong SAR",
@@ -111,38 +111,21 @@ match_UNlocations <- function(x, return_names = c("UNlocations", "FPEMglobal")) 
                             "Other non-specified areas"),
                    stringsAsFactors = FALSE)
 
-    if (identical(return_names, "UNlocations")) {
+    if (identical(convert_to, "M49_region_names")) {
         for (i in 1:nrow(names_df)) {
             if (!is.na(names_df[i, "FPEMglobal"])) {
-                x[grep(paste0("^", names_df[i, "FPEMglobal"], "$"), x)] <- names_df[i, "UNlocations"]
+                x[grep(paste0("^", names_df[i, "FPEMglobal"], "$"), x)] <- names_df[i, "M49_region_names"]
             }
         }
-    } else if (identical(return_names, "FPEMglobal")) {
+    } else if (identical(convert_to, "FPEMglobal")) {
         for (i in 1:nrow(names_df)) {
-            if (!is.na(names_df[i, "UNlocations"])) {
-                x[grep(paste0("^", names_df[i, "UNlocations"], "$"), x)] <- names_df[i, "FPEMglobal"]
+            if (!is.na(names_df[i, "M49_region_names"])) {
+                x[grep(paste0("^", names_df[i, "M49_region_names"], "$"), x)] <- names_df[i, "FPEMglobal"]
             }
         }
     }
 
     if (x_fac) x <- factor(x)
-    return(x)
-}
-
-
-##' Standardize (sub)region names for manuscripts
-##'
-##' Standardizes names of regions and subregions for use in tables and plots.
-##'
-##' @param x Vector of country names to be standardized.
-##' @return Vector of standardized country names.
-##' @author Mark Wheldon
-##'
-##' @family String utility functions
-##'
-##' @export
-make_reg_names_manus <- function(x) {
-    x[grep("^Federated States of Micronesia", x)] <- "Micronesia, Fed.\\ States of"
     return(x)
 }
 
@@ -159,6 +142,7 @@ make_reg_names_manus <- function(x) {
 ##'
 ##' @export
 shorten_reg_names_manus <- function(x) {
+    x[grep("^Federated States of Micronesia", x)] <- "Micronesia, Fed.\\ States of"
     x[grep("^Latin America and the Caribbean"    , x)] <- "LAC"
     x[grep("^Northern America"                   , x)] <- "N. America"
     return(x)
@@ -173,13 +157,13 @@ shorten_reg_names_manus <- function(x) {
 ##' If \code{subset_and_order = TRUE}, the output is filtered and
 ##' ordered such that only the region names in the 2024 version of the
 ##' SDG Annex Data and Metadata submission form are retained, and in
-##' the correct order. This will only operate if \code{convert_to =
+##' the correct order. This will only operate if \code{convert_from =
 ##' "SDG_Data"}.
 ##'
 ##' @param x Vector of region names to convert
-##' @param convert_to Direction of conversion; convert to SDG Annex
+##' @param convert_from Direction of conversion; convert from SDG Annex
 ##'     format or convert to FPEM format?
-##' @param subset_and_order Logical; if \code{convert_to =
+##' @param subset_and_order Logical; if \code{convert_from =
 ##'     "SDG_Data"}, filter and order the result according to the
 ##'     format in the SDG Annex Data and Metadata submission form?
 ##'     See \dQuote{Details} for more information.
@@ -188,8 +172,8 @@ shorten_reg_names_manus <- function(x) {
 ##' @return \code{x} converted.
 ##' @author Mark Wheldon
 ##' @export
-convert_SDG_region_names_2_SDG_Data <- function(x, ...) {
-    UseMethod("convert_SDG_region_names_2_SDG_Data")
+convert_SDG_region_names <- function(x, ...) {
+    UseMethod("convert_SDG_region_names")
 }
 
 get_SDG_region_data_submission_convert_df <- function() {
@@ -226,14 +210,14 @@ get_SDG_region_data_submission_convert_df <- function() {
                        NA, 8, 5, 19, 21, 20))
 }
 
-##' @rdname convert_SDG_region_names_2_SDG_Data
+##' @rdname convert_SDG_region_names
 ##' @export
-convert_SDG_region_names_2_SDG_Data.data.frame <- function(x, convert_to = c("SDG_Data", "FPEM"),
+convert_SDG_region_names.data.frame <- function(x, convert_from = c("FPEM", "SDG_Data"),
                                                    subset_and_order = FALSE, region_column_name = "name") {
 
     stopifnot(is.data.frame(x))
-    convert_to <- match.arg(convert_to)
-    convert_from <- c("SDG_Data", "FPEM")[c("SDG_Data", "FPEM") != convert_to]
+    convert_from <- match.arg(convert_from)
+    convert_to <- c("FPEM", "SDG_Data")[c("FPEM", "SDG_Data") != convert_from]
     stopifnot(is.logical(subset_and_order))
     stopifnot(region_column_name %in% colnames(x))
 
@@ -259,13 +243,14 @@ convert_SDG_region_names_2_SDG_Data.data.frame <- function(x, convert_to = c("SD
     return(x)
 }
 
-##' @rdname convert_SDG_region_names_2_SDG_Data
+##' @rdname convert_SDG_region_names
 ##' @export
-convert_SDG_region_names_2_SDG_Data.character <- function(x, convert_to = c("SDG_Data", "FPEM"),
+convert_SDG_region_names.character <- function(x, convert_from = c("FPEM", "SDG_Data"),
                                                           subset_and_order = FALSE) {
-    convert_SDG_region_names_2_SDG_Data(data.frame(name = x),
-                                        convert_to = convert_to,
-                                        subset_and_order = subset_and_order)$name
+    convert_SDG_region_names(data.frame(name = x),
+                                        convert_from = convert_from,
+                                        subset_and_order = subset_and_order,
+                                        region_column_name = "name")$name
 }
 
 
@@ -277,7 +262,6 @@ convert_SDG_region_names_2_SDG_Data.character <- function(x, convert_to = c("SDG
 ##' @family fpemdata converters
 ##' @seealso get_country_classifications
 ##'
-##' @inheritParams get_csv_res
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'

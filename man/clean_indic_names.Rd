@@ -27,11 +27,10 @@ get_traj_array_indicator_names()
 \seealso{
 Other String utility functions: 
 \code{\link{clean_col_names}()},
+\code{\link{convert_M49_region_names}()},
+\code{\link{convert_country_names_2_latex}()},
 \code{\link{convert_param_name}()},
 \code{\link{get_aggregate_names}()},
-\code{\link{make_c_names_manus}()},
-\code{\link{make_reg_names_manus}()},
-\code{\link{match_UNlocations}()},
 \code{\link{shorten_reg_names_manus}()}
 }
 \author{

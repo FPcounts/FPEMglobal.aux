@@ -16,7 +16,6 @@
 ##'     checked to make sure they are valid \pkg{FPEMglobal} output
 ##'     directories?
 ##' @param report Logical; print messages reporting outcome of each check?
-##' @inheritParams get_csv_res
 ##' @return A list with the results of various comparisons, returned
 ##'     invisibly.
 ##' @author Mark Wheldon
