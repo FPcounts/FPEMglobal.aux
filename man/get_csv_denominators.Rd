@@ -50,9 +50,9 @@ about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical; should years be
-stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
-etc.? See \dQuote{Specifying year storage format in
+\item{years_as_midyear}{Logical; should years be stored in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.? See
+\dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{table_format}{Logical or character. Should the table be

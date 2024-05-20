@@ -23,6 +23,22 @@
 ##' @export
 get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
 
+    ## TO-DO: Automatically add quantiles not in par.ciq (need an argument 'quantiles').
+    ##
+    ## mcmc_array <- get(load(file.path(output_dir, "mcmc.array.rda")))
+    ## par_ciq <- get(load(file.path(output_dir, "par.ciq.rda"))[1])
+    ## par <- array(NA, dim = c(dim(par_ciq)[1:2], length(quantiles)),
+    ##              dimnames = list(name = dimnames(par_ciq)[[1]],
+    ##                              parameter = dimnames(par_ciq)[[2]],
+    ##                              quantile = paste0(quantiles * 100, "%")))
+    ## model_parnames <- dimnames(par_ciq)[[2]]
+    ## for(c in seq_len(dim(par)[1])) {
+    ##     parnames <- paste0(model_parnames, "[", c, "]")
+    ##     for(p in seq_along(parnames)) {
+    ##         par[c, p, ] <- quantile(mcmc_array[, , parnames[p]], quantiles)}
+    ## }
+    ## return(par)
+
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-

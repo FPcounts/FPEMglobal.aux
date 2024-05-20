@@ -6,9 +6,10 @@
 ###
 ################################################################################
 
+library(FPEMglobal.aux)
+library(parallel)
 library(parallelly)
 library(testthat)
-library(FPEMglobal.aux)
 
 ###-----------------------------------------------------------------------------
 ### * get_csv_results
@@ -19,6 +20,7 @@ args_grid <-
                 stat = c("prop", "count", "ratio"),
                 adjusted = c("orig", "adj", "sub_adj"),
                 clean_col_names = c(TRUE, FALSE),
+                indicator_name_format = c("clean", "traj_array", "csv_results_file_names"),
                 years_as_midyear = c(TRUE, FALSE),
                 add_country_classifications = c(TRUE, FALSE),
                 table_format = c("long", "wide", "raw"),
@@ -47,7 +49,7 @@ message("15-49 ('Age Total') Directories")
 ###-----------------------------------------------------------------------------
 ### *** Married
 
-message("Married")
+message("  Married")
 
 ## Output directory
 test_output_dir <-
@@ -57,6 +59,10 @@ expect_true(dir.exists(test_output_dir))
 args_grid_mwra <- cbind(output_dir = test_output_dir, args_grid)
 
 cl <- parallel::makeCluster(parallelly::availableCores(omit = 2))
+
+message("    Testing ", nrow(args_grid_mwra), " argument combinations with ",
+        length(cl), " nodes")
+
 parallel::clusterExport(cl, varlist = c("args_grid_mwra", "run_res"), envir = environment())
 mwra_res <- parallel::parLapply(cl = cl, X = seq_len(nrow(args_grid_mwra)),
                                 fun = "run_res", args_grid = args_grid_mwra)
@@ -67,7 +73,7 @@ mwra_res <- Filter(Negate(is.null), mwra_res)
 ###-----------------------------------------------------------------------------
 ### *** All women
 
-message("All women")
+message("  All women")
 
 ## Output directory
 test_output_dir <-
@@ -77,6 +83,10 @@ expect_true(dir.exists(test_output_dir))
 args_grid_wra <- cbind(output_dir = test_output_dir, args_grid)
 
 cl <- parallel::makeCluster(parallelly::availableCores(omit = 2))
+
+message("    Testing ", nrow(args_grid_wra), " argument combinations with ",
+        length(cl), " nodes")
+
 parallel::clusterExport(cl, varlist = c("args_grid_wra", "run_res"), envir = environment())
 wra_res <- parallel::parLapply(cl = cl, X = seq_len(nrow(args_grid_wra)),
                                 fun = "run_res", args_grid = args_grid_wra)
@@ -85,23 +95,23 @@ parallel::stopCluster(cl)
 wra_res <- Filter(Negate(is.null), wra_res)
 
 ###-----------------------------------------------------------------------------
-### ** CHECK
+### *** CHECK
 
-message("Error checks (if no output, no errors):")
+message("  Error checks (if no output, no errors):")
 
 ###-----------------------------------------------------------------------------
-### *** Married Women
+### **** Married Women
 
 if (length(mwra_res)) mwra_res
 
 ###-----------------------------------------------------------------------------
-### *** All women
+### **** All women
 
 if (length(wra_res)) wra_res
 
 ###-----------------------------------------------------------------------------
-### *** Error
+### **** Error
 
-if (length(mwra_res) || length(wra_res)) stop("Some errors found: see above.")
+if (length(mwra_res) || length(wra_res)) stop("  Some errors found: see above.")
 
 

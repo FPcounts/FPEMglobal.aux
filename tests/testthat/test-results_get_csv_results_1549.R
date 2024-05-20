@@ -18,6 +18,82 @@ test_that("get_csv_results works with default argument values on a 15-49, marrie
                     "data.frame")
 })
 
+test_that("get_csv_results produces data frame without duplicates", {
+    ## Output directory
+    test_output_dir <-
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+
+    args_list <- lapply(as.list(args(get_csv_res)), "eval")
+
+    argvals_grid <- expand.grid(STAT = args_list$stat,
+                                ADJ = args_list$adjusted,
+                                INF = args_list$indicator_name_format,
+                                ACC = c(TRUE, FALSE),
+                                stringsAsFactors = FALSE)
+
+    if (requireNamespace("parallel", quietly = TRUE)) {
+
+        if (requireNamespace("parallelly", quietly = TRUE)) {
+            nodes <- parallelly::availableCores(omit = 2)
+        } else nodes <- 1
+        cl <- parallel::makeCluster(nodes)
+
+        parallel::clusterExport(cl = cl, varlist = c("argvals_grid", "test_output_dir"),
+                                envir = environment())
+
+        dump <- parallel::parLapply(cl = cl, X = 1:nrow(argvals_grid), fun = function(i) {
+            library(testthat)
+            library(FPEMglobal.aux)
+
+            ## for (STAT in args_list$stat) {
+            ##     for (ADJ in args_list$adjusted) {
+            ##         for (INF in args_list$indicator_name_format) {
+            ##             for (ACC in c(TRUE, FALSE)) {
+
+            ##                 ## UNCOMMENT for debugging:
+            ##                 ## cat("\nstat = ", STAT)
+            ##                 ## cat("\nadjusted = ", ADJ)
+            ##                 ## cat("\ninf = ", INF)
+            ##                 ## cat("\nacc = ", ACC)
+
+            ## NO Aggregates:
+
+            ## Long
+            res_df <- get_csv_res(output_dir = test_output_dir,
+                                  aggregate = "country",
+                                  adjusted = argvals_grid$ADJ[i],
+                                  table_format = "long",
+                                  indicator_name_format = argvals_grid$INF[i],
+                                  add_country_classifications = argvals_grid$ACC[i])
+            expect_s3_class(res_df, "data.frame")
+            expect_identical(nrow(
+                res_df[res_df$iso == unique(res_df$iso)[1] &
+                       res_df$year == unique(res_df$year)[1] &
+                       res_df$indicator == unique(res_df$indicator)[1] &
+                       res_df$quantile == unique(res_df$quantile)[1], , drop = FALSE]),
+                1L)
+
+            ## Wide
+            res_df <- get_csv_res(output_dir = test_output_dir,
+                                  aggregate = "country",
+                                  adjusted = argvals_grid$ADJ[i],
+                                  table_format = "wide",
+                                  indicator_name_format = argvals_grid$INF[i],
+                                  add_country_classifications = argvals_grid$ACC[i])
+            expect_s3_class(res_df, "data.frame")
+            expect_identical(nrow(
+                res_df[res_df$iso == unique(res_df$iso)[1] &
+                       res_df$year == unique(res_df$year)[1] &
+                       res_df$quantile == unique(res_df$quantile)[1], , drop = FALSE]),
+                1L)
+        })
+        parallel::stopCluster(cl)
+
+    } else warning("Package 'parallel' not installed - test not done.")
+
+})
+
 ###-----------------------------------------------------------------------------
 ### *** All women
 

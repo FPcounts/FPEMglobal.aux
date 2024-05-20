@@ -45,7 +45,7 @@ made \emph{after} all re-formats:
 If \code{clean_indicator_names} is \code{FALSE}, any strings
 matching the known standard indicator names are \emph{not}
 cleaned. The known standard indicator names are defined by
-\code{\link{get_traj_array_indicator_names}}.
+\code{\link{list_all_std_indicator_names}}.
 }
 \seealso{
 Other String utility functions: 

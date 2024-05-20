@@ -21,7 +21,7 @@ resulting in a single unbroken string.
 \examples{
 
 ## Known indicators are:
-get_traj_array_indicator_names()
+list_all_std_indicator_names()
 
 }
 \seealso{

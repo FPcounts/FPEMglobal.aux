@@ -27,8 +27,8 @@ the aggregates.
 }
 \seealso{
 Other String constants: 
-\code{\link{get_std_marital_group_names}()},
-\code{\link{get_traj_array_indicator_names}()}
+\code{\link{get_std_indicator_names}()},
+\code{\link{get_std_marital_group_names}()}
 
 Other Country and region/aggregate names: 
 \code{\link{get_185_countries}()},

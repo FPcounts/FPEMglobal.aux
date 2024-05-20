@@ -131,7 +131,12 @@ list_world_bank_aggregates_names <- function() {
 ## List of special aggregates
 list_special_aggregates_csv_filenames <- function() {
     ## This just has to be a hard-coded list of all possible special aggregate csv file names.
-    c("WB_Income_2020-w_middle.csv",
+    c("ECA_regions.csv",
+      "ECE_regions.csv",
+      "ECLAC_regions.csv",
+      "ESCWA_regions.csv",
+      "ESCWA_regions_extended.csv",
+        "WB_Income_2020-w_middle.csv",
       "WB_IncomeGroup_8June2022-w_middle.csv",
       "SDG_regions_LDCs.csv",
       "SDG_regions_LLDCs_SIDS.csv",
