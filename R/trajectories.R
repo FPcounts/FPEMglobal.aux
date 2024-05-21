@@ -7,7 +7,10 @@
 ##' This function \code{\link{load}}s and returns MCMC trajectories
 ##' stored in the file \file{mcmc.array.rda} in the output directory
 ##' \code{output_dir}. This contains MCMC trajectories for the model
-##' parameters. If you want country trajectories, use
+##' parameters. This function simply returns the loaded object; if you
+##' want quantiles of model parameters, see
+##' \code{\link{get_model_param_quantiles}}. If you want country
+##' trajectories of CP indicators use
 ##' \code{\link{get_country_traj_muw}} or
 ##' \code{\link{get_country_traj_aw}}.
 ##'
@@ -43,7 +46,7 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, 
 }
 
 
-##' Load and return country-level trajectories for married and unmarried women
+##' Load and return country-level trajectories of CP indicators for married and unmarried women
 ##'
 ##' This function \code{\link{load}}s the MCMC sample from the
 ##' posterior sample for married or unmarried for a single country and returns it as an R

@@ -2,7 +2,7 @@
 % Please edit documentation in R/trajectories.R
 \name{get_country_traj_muw}
 \alias{get_country_traj_muw}
-\title{Load and return country-level trajectories for married and unmarried women}
+\title{Load and return country-level trajectories of CP indicators for married and unmarried women}
 \usage{
 get_country_traj_muw(
   run_name = NULL,

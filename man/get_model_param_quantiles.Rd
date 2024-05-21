@@ -2,9 +2,14 @@
 % Please edit documentation in R/results.R
 \name{get_model_param_quantiles}
 \alias{get_model_param_quantiles}
-\title{Load and return quantiles of country-specific model parameters.}
+\title{Get quantiles of country-specific model parameters.}
 \usage{
-get_model_param_quantiles(run_name = NULL, output_dir = NULL, root_dir = NULL)
+get_model_param_quantiles(
+  run_name = NULL,
+  output_dir = NULL,
+  root_dir = NULL,
+  percentiles = c(2.5, 50, 97.5)
+)
 }
 \arguments{
 \item{run_name}{The run name.}
@@ -16,21 +21,53 @@ ignored if \code{output_dir} is supplied.}
 
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
+
+\item{percentiles}{Percentiles of parameter distributions to be included in the output.}
 }
 \value{
 The \code{\link{load}}ed object.
 }
 \description{
-This function \code{\link{load}}s and returns the object in the
-file \file{par.ciq.rda} found in
-\code{file.path{output_dir}}. These are the quantiles of the
-country-specific model parameters, such as the asymptotes, rate
-paratmeters, timing parameters, etc.
+Posterior distributions of a subset of the FPEMglobal model's
+country-specific parameters are saved to the file
+\file{par.ciq.rda} in the main output directory
+(\code{output_dir}). Only the 2.5, 50, and 97.5 percentiles are
+saved. If others are requested via the \code{percentiles} argument
+they will be calculated from the full set of MCMC trajectories
+(loaded by \code{link{get_model_traj}}).
 }
 \details{
-The specific parameters loaded are, \dQuote{omega.c}, \dQuote{T.c},
-\dQuote{pmax.c}, \dQuote{Romega.c}, \dQuote{RT.c}, \dQuote{Rmax.c},
-\dQuote{unmet.intercept.c}.
+These are the the country-specific model parameters, such as the
+asymptotes, rate paratmeters, timing parameters, etc. File
+\file{par.ciq.rda} contains a 3-dimensional array with structure:
+
+\begin{preformatted}
+num \link{1:248, 1:7, 1:3} 0.0259 0.0112 0.0163 0.015 0.0332 ...
+\itemize{
+\item attr(*, "dimnames")=List of 3
+..$ : chr \link{1:248} "Afghanistan" "Albania" "Algeria" "Angola" ...
+..$ : chr \link{1:7} "omega.c" "pmax.c" "setlevel.c" "Romega.c" ...
+..$ : chr \link{1:3} "2.5\%" "50\%" "97.5\%"
+\end{preformatted}
+}
+
+The parameter names in the array correspond to the notation used
+in \cite{Kantorová et al. (2020)}. Only the parameters listed in
+the table below are stored in \file{par.ciq.rda}.
+
+\begin{tabular}{rl}{
+\code{omega.c} \tab \eqn{$\omega_c$}{omega_c} \tab Pace parameter for increase of contraceptive prevalence (any method) \cr
+\code{pmax.c} \tab \eqn{$\tilde{P}_c$}{\tilde{P}_c} \tab Asymptote of contraceptive prevalence (any method) \cr
+\code{setlevel.c} \tab \eqn{$P_{c,t^*}$}{P_c,t*} \tab Set-level of prevalence, \eqn{$t^*=1990$}{t* = 1990} \cr
+\code{Romega.c} \tab \eqn{$\psi_c$}{psi_c} \tab Pace parameter for increase of the ratio of modern to traditional prevalence \cr
+\code{RT.c} \tab \eqn{$\Psi_c$}{Psi_c} \tab Midpoint for increase in the ratio of modern to traditional prevalence \cr
+\code{Rmax.c} \tab \eqn{$\tilde{R}_c$}{tilde{R}_c} \tab Asymptote of increase of the ratio of modern to traditional prevalence \cr
+\code{unmet.intercept.c} \tab \eqn{$z_c$}{z_c} \tab Intercept of the parametric model for the ratio of unmet need to no contraceptive use
+}
+
+\references{
+Kantorová, V., Wheldon, M. C., Ueffing, P., and Dasgupta, A. N. Z. (2020), Estimating progress towards meeting women’s contraceptive needs in 185 countries: A Bayesian hierarchical modelling study, \emph{PLOS Medicine}, 17, e1003026. \doi{10/ggk3cf}.
+}
 }
 \seealso{
 Other Get results from rda files: 

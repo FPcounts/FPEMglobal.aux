@@ -31,7 +31,10 @@ The loaded object.
 This function \code{\link{load}}s and returns MCMC trajectories
 stored in the file \file{mcmc.array.rda} in the output directory
 \code{output_dir}. This contains MCMC trajectories for the model
-parameters. If you want country trajectories, use
+parameters. This function simply returns the loaded object; if you
+want quantiles of model parameters, see
+\code{\link{get_model_param_quantiles}}. If you want country
+trajectories of CP indicators use
 \code{\link{get_country_traj_muw}} or
 \code{\link{get_country_traj_aw}}.
 }
