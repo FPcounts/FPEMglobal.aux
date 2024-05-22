@@ -2,7 +2,7 @@
 ### * Work with Trajectories
 
 
-##' Get model parameter trajectory array
+##' Get MCMC trajectories of FPEMglobal model parameters
 ##'
 ##' This function \code{\link{load}}s and returns MCMC trajectories
 ##' stored in the file \file{mcmc.array.rda} in the output directory
@@ -18,47 +18,220 @@
 ##' \code{name_dims} is \code{TRUE} they are given the names
 ##' \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
 ##'
+##' The array of trajectories has the following structure (dimnames
+##' are named only if \code{name_dims = TRUE}):
+##' \preformatted{
+##'  num [1:832, 1:20, 1:12234] 1952 1939 1957 1940 1924 ...
+##'  - attr(*, "dimnames")=List of 3
+##'   ..$ iteration: NULL
+##'   ..$ chain    : NULL
+##'   ..$ parameter: chr [1:12234] "RT.c[1]" "RT.c[2]" "RT.c[3]" "RT.c[4]" ...
+##' }
+##'
+##' \subsection{Contraceptive prevalence timing parameter}{
+##'
+##' The timing parameter of the increase in contraceptive prevalence
+##' (CP timing parameter) was a model parameter in the original
+##' formulation of Alkema et al.\sspace{}(2013), where it was denoted
+##' \eqn{\Omega_c}{Omega_c}. This was replaced with the "set-level"
+##' parameter (\eqn{P_{c,t^*}}{P_c,t*}) in the update by Cahill et
+##' al.\sspace{}(2017) and maintained in Kantorová et
+##' al.\sspace{}(2020). If the output directory is from a run of a
+##' version of FPEMglobal that uses the Cahill et al.\sspace{}(2017)
+##' modification, the array returned by
+##' \code{get_model_param_quantiles} will not contain results for the
+##' CP timing parameter.
+##'
+##' To include the CP timing parameter, set logical argument
+##' \code{add_cp_timing_param} to \code{TRUE}. It will be calculated
+##' from the other model parameters via the following
+##' expression (the calculation is applied to each trajectory):
+##'
+##' \deqn{\Omega_c = 1990 + \frac{1}{\omega_c} \log \left(\frac{\tilde{P}_c}{\exp(S_c^*)} - 1 + \tilde{P}_c \right)}{Omega_c = 1990 + 1 / omega_c * log[tilde{P}_c / exp(S_c^*) - 1 + tilde{P}_c]}
+##' where
+##' \deqn{S_c^* = S_c - \epsilon_{c,1990}}{S_c^* = S_c - epsilon_c,1990}
+##'
+##' This expression is due to N. Cahill (pers. comm.); see also Dasgupta et al.\sspace{}(2022), Appendix A, Sect. 1.4.1.}
+##'
 ##' @family Trajectory functions
 ##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_output_dir
+##' @param add_cp_timing_param Logical; add the CP timing parameter? See \dQuote{Details}.
 ##' @param name_dims Logical; should the dimensions be given informative names? See \dQuote{Details}.
-##' @return The loaded object.
+##' @return An array of trajectories.
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL, name_dims = TRUE) {
+get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+                           add_cp_timing_param = FALSE,
+                           name_dims = TRUE) {
+
+    ## -------* Functions
+
+    name_dimnames <- function(x, name_dims) {
+        if (name_dims) names(dimnames(x)) <- c("iteration", "chain", "parameter")
+        return(x)
+    }
+
+    ## -------** CP Timing Parameter
+
+    ## Note that the timing parameter is only available for countries
+    ## with observations, and even then, only for that subset that is
+    ## not at the asymptote level already.
+
+    ## Checks that parameter names generated from country and year
+    ## indices are actually in the trajectory array.
+    validate_par_names <- function(par_names, traj_array, return_value = c("indices", "names")) {
+        return_value <- match.arg(return_value)
+        par_names_not_in <- par_names[!par_names %in% dimnames(traj_array)[[3]]]
+        if (length(par_names_not_in)) {
+            stop(paste0("The following parameters were not found in the trajectory array: '",
+                        toString(par_names_not_in), "'."))
+        } else {
+            if (identical(return_value, "indices"))
+                return(which(dimnames(traj_array)[[3]] %in% par_names))
+            else
+                return(par_names)
+        }
+    }
+
+    ## Next two functions create the parameter names for which timing
+    ## parameter can be calculated.
+    get_c_param_dim_idx <- function(parname_prefix, #< including the '.c' at the end
+                                    traj_array, meta_info, return_value = c("indices", "names")) {
+        return_value <- match.arg(return_value)
+        cseq <- 1:meta_info$winbugs.data$C
+        par_names <- paste0(parname_prefix, "[", cseq, "]")
+        par_names_not_in <- par_names[!par_names %in% dimnames(traj_array)[[3]]]
+        return(validate_par_names(par_names, traj_array, return_value = return_value))
+    }
+    get_eps_1990_idx <- function(traj_array, meta_info, return_value = c("indices", "names")) {
+        return_value <- match.arg(return_value)
+        cseq <- 1:meta_info$winbugs.data$C
+        sl_year_seq <- meta_info$winbugs.data$year.set.index
+        stopifnot(identical(length(cseq), length(sl_year_seq)))
+        par_names <- paste0("eps.ci[", cseq, ",", sl_year_seq, "]")
+        return(validate_par_names(par_names, traj_array, return_value = return_value))
+    }
+
+    ## 'cp_timing' computs the timing parameter. 'Sstar_c' generates input for 'cp_timing'.
+    Sstar_c <- function(eps, setlev) {
+        stopifnot(is.array(eps) && is.array(setlev))
+        stopifnot(identical(unname(dim(eps)), unname(dim(setlev))))
+        out <- setlev - eps
+        if(is.array(out)) {
+            dimnames(out)[[3]] <-
+                gsub("^setlevel\\.c\\[", "setlevelStar.[", dimnames(out)[[3]])
+        } else {
+            names(out)[[3]] <-
+                gsub("^setlevel\\.c\\[", "setlevelStar.[", names(out)[[3]])
+        }
+        return(out)
+    }
+
+    cp_timing <- function(omega, pmax, Sstar) {
+        stopifnot(is.array(omega), is.array(pmax), is.array(Sstar))
+        stopifnot(identical(unname(dim(omega)), unname(dim(pmax))),
+                  identical(unname(dim(pmax)), unname(dim(Sstar))))
+        out <- array(NA, dim = dim(omega))
+        dimnames(out) <- dimnames(omega)
+        valid <- invlogit(Sstar) < pmax
+        out[valid] <- 1990 +
+            1/omega[valid] *
+            log( pmax[valid] / exp(Sstar[valid]) - 1 + pmax[valid] )
+        if(is.array(out)) {
+            dimnames(out)[[3]] <-
+                gsub("^omega\\.c\\[", "T.c[", dimnames(out)[[3]])
+        } else {
+            names(out)[[3]] <-
+                gsub("^omega\\.c\\[", "T.c[", names(out)[[3]])
+        }
+
+        return(out)
+    }
+
+    ## Expand cp_timing
+    expand_cp_timing <- function(cp_timing, traj_array) {
+        stopifnot(is.array(cp_timing), is.array(traj_array))
+        stopifnot(identical(dim(cp_timing)[1:2], dim(traj_array)[1:2]))
+
+        ## The final length of cp_timing should match omega_c
+        length_c_param <- length(grep("^omega\\.c\\[[0-9]+]$", dimnames(traj_array)[[3]]))
+
+        ## New array
+        abind::abind(cp_timing,
+                     array(NA,
+                           dim = c(dim(cp_timing)[1], dim(cp_timing)[2],
+                                   length_c_param - dim(cp_timing)[3]),
+                           dimnames = c(dimnames(cp_timing)[1:2],
+                                        list(paste0("T.c[", (dim(cp_timing)[3] + 1):length_c_param, "]")))))
+    }
+
+    ## -------* Checks and House-keeping
+
+    stopifnot(is.logical(add_cp_timing_param))
+    stopifnot(is.logical(name_dims))
 
     verbose <- getOption("FPEMglobal.aux.verbose")
+
+    ## -------* Get trajectories
 
     res_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
                            root_dir = root_dir)
-
     tmp_env <- new.env()
     if (verbose) message("Reading '", file.path(res_dir, "mcmc.array.rda"), "'.")
     out <- get(load(file = file.path(res_dir, "mcmc.array.rda"), envir = tmp_env),
                envir = tmp_env)
 
-    if (name_dims) names(dimnames(out)) <- c("iteration", "chain", "parameter")
+    ## -------* CP timing?
 
-    return(out)
+    if (add_cp_timing_param) {
+
+        meta_info <- get_model_meta_info(output_dir = output_dir)
+
+        ## (Reverse-Polish
+        out <-
+            abind::abind(out,
+                         expand_cp_timing(
+                             cp_timing(omega = out[, ,
+                                                   get_c_param_dim_idx("omega.c", out, meta_info = meta_info),
+                                                   drop = FALSE],
+                                       pmax = out[, ,
+                                                  get_c_param_dim_idx("pmax.c", out, meta_info = meta_info),
+                                                  drop = FALSE],
+                                       Sstar = Sstar_c(eps = out[, ,
+                                                                 get_eps_1990_idx(out, meta_info = meta_info),
+                                                                 drop = FALSE],
+                                                       setlev = out[, ,
+                                                                    get_c_param_dim_idx("setlevel.c", out,
+                                                                                        meta_info = meta_info),
+                                                                    drop = FALSE])),
+                             traj_array = out),
+                         along = 3)
+    }
+
+    ## -------* Finish
+
+    return(name_dimnames(out, name_dims = name_dims))
 }
 
 
-##' Load and return country-level trajectories of CP indicators for married and unmarried women
+##' Get MCMC trajectories of contraceptive prevalence indicators for married and unmarried women
 ##'
-##' This function \code{\link{load}}s the MCMC sample from the
-##' posterior sample for married or unmarried for a single country and returns it as an R
-##' object. Trajectories are loaded from \file{.rda} files found in
+##' This function \code{\link{load}}s and returns the MCMC
+##' trajectories of contraceptive prevalence indicators for married or
+##' unmarried women for a single country. Trajectories are loaded from \file{.rda} files found in
 ##' the subdirectory \file{countrytrajectories} of the results
 ##' directory (see below). The filename for the given country is
 ##' determined by reference to an index which must be in the file
 ##' \code{file.path(output_dir, "iso.Ptp3s.key.csv")}.
 ##'
 ##' \code{\link{load}} is called is such a way that ensures nothing is
-##' added to the global environment; the only copy of the loaded
-##' object is that returned by the function.
+##' added to the global environment. Instead, the loaded object is
+##' returned by the function (so it's a good idea to assign to result
+##' to an object).
 ##'
 ##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)
@@ -120,18 +293,18 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 }
 
 
-##' Load and return country-level trajectories for all women
+##' Get MCMC trajectories of contraceptive prevalence indicators for all women
 ##'
-##' This function \code{\link{load}}s the MCMC sample from the
-##' posterior sample for all women for a single country and returns it
-##' as an R object. Trajectories are loaded from \file{.rda} files
+##' This function \code{\link{load}}s and returns the MCMC
+##' trajectories of contraceptive prevalence indicators for for all women. Trajectories are loaded from \file{.rda} files
 ##' found in the subdirectory \file{countrytrajectories} of the
 ##' results directory (see below). The filename for the given country
 ##' is \code{paste0("aw_ISO_", iso_code, "_counts.rda")}.
 ##'
 ##' \code{\link{load}} is called is such a way that ensures nothing is
-##' added to the global environment; the only copy of the loaded
-##' object is that returned by the function.
+##' added to the global environment. Instead, the loaded object is
+##' returned by the function (so it's a good idea to assign to result
+##' to an object).
 ##'
 ##' Country trajectories are 3D arrays:
 ##' \preformatted{str(...)

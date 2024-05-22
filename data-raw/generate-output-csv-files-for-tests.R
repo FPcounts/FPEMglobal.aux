@@ -78,6 +78,9 @@ for (k in seq_along(src_paths)) {
     if (file.exists(mcmc_file_path)) {
     mcmc.array <- get(load(mcmc_file_path))
     dims <- dim(mcmc.array)
+    ## Only keep 5 trajectories and 2 chains. Don't subset the
+    ## countries because that would result in inconsistencies with all
+    ## the meta data and don't want to have to modify that.
     mcmc.array <- mcmc.array[1:min(5, dims[1]), 1:min(2, dims[2]), , drop = FALSE]
     save(mcmc.array, file = file.path(new_path, "mcmc.array.rda"))
     }

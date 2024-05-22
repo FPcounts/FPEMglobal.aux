@@ -1,8 +1,7 @@
-###-----------------------------------------------------------------------------
-### * Convert and Expand Trajectories
+### Convert and Expand Trajectories
 
 ###-----------------------------------------------------------------------------
-### ** Support Functions
+### * Support Functions
 
 ## Checks inputs to the various converter functions.
 assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
@@ -45,7 +44,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 
 
 ###-----------------------------------------------------------------------------
-### ** Conversion Functions
+### * Conversion Functions
 
 
 ##' Transform MCMC trajectories

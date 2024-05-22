@@ -3,59 +3,104 @@
 
 ##' Get quantiles of country-specific model parameters.
 ##'
-##' Posterior distributions of a subset of the FPEMglobal model's
-##' country-specific parameters are saved to the file
+##' Posterior distributions of a subset of the country-specific model
+##' parameters are stored in an array and saved to the file
 ##' \file{par.ciq.rda} in the main output directory
-##' (\code{output_dir}). Only the 2.5, 50, and 97.5 percentiles are
-##' saved. If others are requested via the \code{percentiles} argument
-##' they will be calculated from the full set of MCMC trajectories
-##' (loaded by \code{link{get_model_traj}}).
+##' (\code{output_dir}). This function loads that file and returns the
+##' array. Only the 2.5, 50, and 97.5 percentiles are saved. If others
+##' are requested via the \code{percentiles} argument they will be
+##' calculated from the full set of MCMC trajectories (loaded by
+##' \code{\link{get_model_traj}}) and included in the array returned.
 ##'
-##' These are the the country-specific model parameters, such as the
-##' asymptotes, rate paratmeters, timing parameters, etc. File
-##' \file{par.ciq.rda} contains a 3-dimensional array with structure:
+##' The parameters returned are the the country-specific model parameters, such as the
+##' asymptotes, rate paratmeters, timing parameters, etc (see Kantorová et al., 2020, S1 Appendix).
 ##'
-##' \begin{preformatted}
+##' The array has three dimensions with structure (dimnames
+##' are named only if \code{name_dims = TRUE}):
+##' \preformatted{
 ##' num [1:248, 1:7, 1:3] 0.0259 0.0112 0.0163 0.015 0.0332 ...
 ##' - attr(*, "dimnames")=List of 3
 ##' ..$ : chr [1:248] "Afghanistan" "Albania" "Algeria" "Angola" ...
 ##' ..$ : chr [1:7] "omega.c" "pmax.c" "setlevel.c" "Romega.c" ...
 ##' ..$ : chr [1:3] "2.5%" "50%" "97.5%"
-##' \end{preformatted}
+##' }
+##' The default behaviour is to load and return this array from \file{par.ciq.rda}.
 ##'
-##' The parameter names in the array correspond to the notation used
-##' in \cite{Kantorová et al. (2020)}. Only the parameters listed in
-##' the table below are stored in \file{par.ciq.rda}.
+##' Only the parameters listed in the table below are stored in
+##' \file{par.ciq.rda}. The parameter names in the mathematical
+##' notation used by Kantorová et al.\sspace{}(2020) are also included
+##' for reference. An additional parameter, the midpoint of the
+##' increase in contraceptive prevalence (CP timing) can be added; see
+##' Section \dQuote{CP Timing Parameter} below.
 ##'
-##' \begin{tabular}{rl}{
-##' \code{omega.c} \tab \eqn{$\omega_c$}{omega_c} \tab Pace parameter for increase of contraceptive prevalence (any method) \cr
-##' \code{pmax.c} \tab \eqn{$\tilde{P}_c$}{\tilde{P}_c} \tab Asymptote of contraceptive prevalence (any method) \cr
-##' \code{setlevel.c} \tab \eqn{$P_{c,t^*}$}{P_c,t*} \tab Set-level of prevalence, \eqn{$t^*=1990$}{t* = 1990} \cr
-##' \code{Romega.c} \tab \eqn{$\psi_c$}{psi_c} \tab Pace parameter for increase of the ratio of modern to traditional prevalence \cr
-##' \code{RT.c} \tab \eqn{$\Psi_c$}{Psi_c} \tab Midpoint for increase in the ratio of modern to traditional prevalence \cr
-##' \code{Rmax.c} \tab \eqn{$\tilde{R}_c$}{tilde{R}_c} \tab Asymptote of increase of the ratio of modern to traditional prevalence \cr
-##' \code{unmet.intercept.c} \tab \eqn{$z_c$}{z_c} \tab Intercept of the parametric model for the ratio of unmet need to no contraceptive use
+##' \tabular{rll}{
+##' \emph{Dimname}      \tab \emph{Notation} \tab \emph{Description} \cr
+##' \code{omega.c} \tab \eqn{\omega_c}{omega_c} \tab Pace parameter for increase \cr
+##'                \tab                         \tab of contraceptive prevalence \cr
+##'                \tab                         \tab  (any method) \cr
+##' \code{pmax.c} \tab \eqn{\tilde{P}_c}{tilde{P}_c} \tab Asymptote of contraceptive \cr
+##'                \tab                              \tab prevalence (any method) \cr
+##' \code{setlevel.c} \tab \eqn{P_{c,t^*}}{P_c,t*} \tab Set-level of prevalence, \cr
+##'                   \tab                         \tab \eqn{t^*=1990}{t* = 1990} \cr
+##' \code{Romega.c} \tab \eqn{\psi_c}{psi_c} \tab Pace parameter for increase \cr
+##'                  \tab                     \tab of the ratio of modern to \cr
+##'                  \tab                     \tab traditional prevalence \cr
+##' \code{RT.c} \tab \eqn{\Psi_c}{Psi_c} \tab Midpoint for increase \cr
+##'             \tab                      \tab  in the ratio of modern to \cr
+##'            \tab                       \tab  traditional prevalence \cr
+##' \code{Rmax.c} \tab \eqn{\tilde{R}_c}{tilde{R}_c} \tab Asymptote of increase of \cr
+##'               \tab                               \tab the ratio of modern to \cr
+##'               \tab                               \tab traditional prevalence \cr
+##' \code{unmet.intercept.c} \tab \eqn{z_c}{z_c} \tab Intercept of the parametric \cr
+##'                          \tab                 \tab model for the ratio of unmet \cr
+##'                          \tab                 \tab model to no contraceptive use \cr
+##' \code{T.c} \tab \eqn{\Omega_c}{Omega_c} \tab Midpoint for increase \cr
+##'             \tab                        \tab of contraceptive prevalence \cr
+##'             \tab                        \tab (any method) \cr
+##'             \tab                        \tab \emph{only if} \cr
+##'             \tab                        \tab \code{add_cp_timing_param = TRUE}
 ##' }
 ##'
-##' \references{
+##' \subsection{Contraceptive prevalence timing parameter}{ If
+##' \code{add_cp_timing_param = TRUE}, quantiles of the contraceptive
+##' prevalence timing parameter will be added. For details, see this
+##' same subsection under \dQuote{Details} in the documentation for
+##' \code{\link{get_model_traj}}.}
+##'
+##'
+##' @references
+##'
+##'Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. The Lancet, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
+##'
+##' Cahill, N., Sonneveldt, E., Stover, J., Weinberger, M., Williamson, J., Wei, C., Brown, W., & Alkema, L. (2017). Modern Contraceptive Use, Unmet Need, and Demand Satisfied Among Women of Reproductive Age Who Are Married or in a Union in the Focus Countries of the Family Planning 2020 Initiative: A Systematic Analysis Using the Family Planning Estimation Tool. \emph{The Lancet}, 391(10123), 870–882. \doi{10.1016/S0140-6736(17)33104-5}.
+##'
+##' Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. Demographic Research, 46(4), 97–130. \doi{10.4054/DemRes.2022.46.4}.
+##'
 ##' Kantorová, V., Wheldon, M. C., Ueffing, P., and Dasgupta, A. N. Z. (2020), Estimating progress towards meeting women’s contraceptive needs in 185 countries: A Bayesian hierarchical modelling study, \emph{PLOS Medicine}, 17, e1003026. \doi{10/ggk3cf}.
-##' }
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
+##' @inheritParams get_model_traj
 ##' @param percentiles Percentiles of parameter distributions to be included in the output.
-##' @return The \code{\link{load}}ed object.
+##' @return An array of quantiles.
 ##' @author Mark Wheldon
 ##'
 ##' @family Get results from rda files
 ##'
 ##' @export
 get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
-                                      percentiles = c(2.5, 50, 97.5)) {
+                                      percentiles = c(2.5, 50, 97.5), add_cp_timing_param = FALSE,
+                                      name_dims = TRUE) {
 
-    ## TO-DO: Add timing parameter, as calculated in TFR & CP paper (Demog Res).
+    ## Sub-functions
+    name_dimnames <- function(x, name_dims) {
+        if (name_dims) names(dimnames(x)) <- c("name", "parameter", "percentile")
+        return(x)
+    }
 
+    ## Checks
     stopifnot("'percentiles' must be numeric" = is.numeric(percentiles))
+    if (add_cp_timing_param) stop("'add_cp_timing_param' not yet implemented; set to 'FALSE'.")
 
     verbose <- getOption("FPEMglobal.aux.verbose")
     if (verbose) on.exit(message("Loaded '", file.path(output_dir, "par.ciq.rda"), "'."),
@@ -87,7 +132,8 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
                     for(c in seq_len(dim(new_par_ciq)[1])) {
                         parnames <- paste0(model_parnames, "[", c, "]")
                         for(p in seq_along(parnames)) {
-                            new_par_ciq[c, p, quant_dim_name] <- quantile(mcmc_array[, , parnames[p]], percentiles[q] / 100)}
+                            new_par_ciq[c, p, quant_dim_name] <-
+                                quantile(mcmc_array[, , parnames[p]], percentiles[q] / 100, na.rm = TRUE)}
                     }
                 }
                 par_ciq <- new_par_ciq
@@ -95,7 +141,7 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
         }
     }
 
-    return(par_ciq)
+    return(name_dimnames(par_ciq, name_dims))
 }
 
 ##' DEPRECATED
