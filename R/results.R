@@ -99,19 +99,43 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
         return(x)
     }
 
+    add_cells <- function(param_names, percentiles, par_ciq, mcmc_array, na_rm = FALSE) {
+        percentiles_nm <- paste0(percentiles, "%")
+        extra_par_ciq <- array(NA,
+                               dim = c(dim(par_ciq)[1], #countries
+                                       length(param_names), #parameters
+                                       length(percentiles)), #percentiles
+                               dimnames = list(dimnames(par_ciq)[[1]],
+                                               param_names,
+                                               percentiles_nm))
+        for (c_idx in seq_len(dim(par_ciq)[1])) { #countries
+            for (par_nm in param_names) { #parameters
+                extra_par_ciq[c_idx, par_nm, percentiles_nm] <-
+                    quantile(mcmc_array[,, paste0(par_nm, "[", c_idx, "]")],
+                             probs = percentiles / 100, na.rm = na_rm)
+            }
+        }
+        return(extra_par_ciq)
+    }
+
     ## -------* House-keep and Argument Checks
 
     checkmate::assert_numeric(percentiles)
     stopifnot("You must request at least one percentile" = length(percentiles) > 0)
 
-    if (!all(percentiles %in% c(2.5, 50, 97.5))) add_extra_percentiles <- TRUE
-    else add_extra_percentiles <- FALSE
-
     verbose <- getOption("FPEMglobal.aux.verbose")
     if (verbose) on.exit(message("Loaded '", file.path(output_dir, "par.ciq.rda"), "'."),
                          add = TRUE, after = FALSE)
 
-    ## -------* Create Percentiles
+    new_percentiles <- percentiles[!percentiles %in% c(2.5, 50, 97.5)]
+    if (length(new_percentiles)) add_percentiles <- TRUE
+    else add_percentiles <- FALSE
+
+    retained_percentiles <- c(2.5, 50, 97.5)[c(2.5, 50, 97.5) %in% percentiles]
+    if (length(retained_percentiles) < 3) remove_percentiles <- TRUE
+    else remove_percentiles <- FALSE
+
+    ## -------* Inputs
 
     ## -------** Load par.ciq.rda
 
@@ -124,69 +148,47 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
     ## -------** Load MCMC Trajectories
 
     ## Only do it if necessary
-    if (add_cp_timing_param || add_extra_percentiles)
+    if (add_cp_timing_param || add_percentiles)
         mcmc_array <- get_model_traj(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
                                      add_cp_timing_param = add_cp_timing_param, name_dims = FALSE)
 
-    ## -------** Extra Percentiles & CP Timing Parameter
+    ## -------* Create Percentiles
 
-    if (add_extra_percentiles || add_cp_timing_param) {
+    ## -------** Discarded Percentiles
 
-        model_parnames <- dimnames(par_ciq)[[2]]
-        if (add_cp_timing_param) model_parnames <- c(model_parnames, "T.c")
-        new_par_ciq <- array(NA,
-                             dim = c(dim(par_ciq)[1],
-                                     dim(par_ciq)[2] + add_cp_timing_param,
-                                     length(percentiles)),
-                             dimnames = list(dimnames(par_ciq)[[1]],
-                                             model_parnames,
-                                             paste0(percentiles, "%")))
-        for (q in seq_along(percentiles)) {
-            perc_dim_name <- paste0(percentiles[q], "%")
+    if (remove_percentiles) par_ciq <- par_ciq[, , paste0(retained_percentiles, "%"), drop = FALSE]
 
-            ## Copy all you can from par_ciq.
-            ##
-            ## par_ciq is an array, so all combinations of parameters
-            ## and percentiles will be present.
-            mod_pars_ex <- model_parnames[model_parnames %in% dimnames(par_ciq)[[2]]]
-            perc_dim_name_ex <- perc_dim_name[percentiles %in% c(2.5, 50, 97.5)]
+    ## -------** Extra Percentiles
 
-            new_par_ciq[, mod_pars_ex, perc_dim_name_ex] <-
-                par_ciq[, mod_pars_ex, perc_dim_name_ex, drop = FALSE]
-
-            ## Do remaining percentiles and parameters
-            new_cells <-
-                data.frame(mod_pars_new = model_parnames[!model_parnames %in% dimnames(par_ciq)[[2]]],
-
-            perc_dim_name_new <- perc_dim_name[!percentiles %in% c(2.5, 50, 97.5)]
-
-            ## New parameters and new percentiles
-            if (length(mod_pars_new) && length(perc_dim_new)) {
-
-
-                for(c in seq_len(dim(new_par_ciq)[1])) {
-                    parnames <- paste0(mod_pars_new, "[", c, "]")
-                    for(p in seq_along(parnames)) {
-
-
-            if (percentiles[q] %in% c(2.5, 50, 97.5)) {
-                new_par_ciq[, dim(par_ciq)[2], perc_dim_name] <- par_ciq[, dim(par_ciq)[2], perc_dim_name]
-            } else {
-
-                        new_par_ciq[c, p, perc_dim_name] <-
-                            quantile(mcmc_array[, , parnames[p]], percentiles[q] / 100, na.rm = TRUE)}
-                }
-            }
-        }
-        par_ciq <- new_par_ciq
-        rm(new_par_ciq)
-    } else {
-        ## If just need to remove some percentiles:
-        if (!all(c(2.5, 50, 97.5) %in% percentiles)) par_ciq <- par_ciq[, , paste0(percentiles, "%"), drop = FALSE]
+    if (add_percentiles) {
+        ## Add new percentiles and re-order
+        par_ciq <-
+            abind::abind(par_ciq,
+                         add_cells(param_names = dimnames(par_ciq)[[2]],
+                                   percentiles = new_percentiles,
+                                   par_ciq = par_ciq, mcmc_array = mcmc_array),
+                         along = 3)[, , order(percentiles), drop = FALSE]
     }
 
-    return(name_dimnames(par_ciq, name_dims))
+    ## -------** Timing Parameter
+
+    if (add_cp_timing_param) {
+        ## Add T.c and order it consistently
+        par_ciq <-
+            abind::abind(par_ciq,
+                         add_cells(param_names = "T.c",
+                                   percentiles = percentiles,
+                                   par_ciq = par_ciq, mcmc_array = mcmc_array,
+                                   na_rm = TRUE), # < have to use this because some params have 'NA' timing
+                         along = 2)[, c("omega.c", "pmax.c", "T.c", dimnames(par_ciq)[[2]][-(1:2)]), , drop = FALSE]
+    }
+
+    ## -------* Rename and return
+
+    if (name_dims) names(dimnames(par_ciq)) <- c("name", "parameter", "percentile")
+    return(par_ciq)
 }
+
 
 ##' DEPRECATED
 ##'
