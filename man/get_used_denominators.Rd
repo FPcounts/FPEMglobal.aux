@@ -25,9 +25,9 @@ the directory called \dQuote{output}.}
 
 \item{units}{Units in which to return the counts.}
 
-\item{years_as_midyear}{Logical; should years be
-stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
-etc.? See \dQuote{Specifying year storage format in
+\item{years_as_midyear}{Logical; should years be stored in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.? See
+\dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 }
 \value{
@@ -51,11 +51,11 @@ argument, which is \code{"units"} by default.
 \code{\link{year_storage_format}} for background on
 storage format of year values.
 
-Other input_data_functions: 
+Other Input data functions: 
 \code{\link{get_csv_denominators}()},
 \code{\link{get_used_input_data}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{input_data_functions}
+\concept{Input data functions}

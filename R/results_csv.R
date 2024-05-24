@@ -61,12 +61,15 @@
 ##'     \code{aggregate = "country"} to load country results.
 ##' @param stat Which statistics should be loaded? Allowable values
 ##'     are \code{c("orig", "adj", "sub_adj")}.
+##' @param indicator_name_format Character; the format to use for
+##'     indicator names. It is highly recommended to use the first
+##'     (default) option, maybe the second.
 ##' @param adjusted Loads original results (\dQuote{orig}), adjusted
 ##'     medians only (\dQuote{adj}), or original results with medians
 ##'     substituted with adjusted medians (\dQuote{sub_adj}).
-##' @param years_as_midyear Logical; should years be
-##'     stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
-##'     etc.? See \dQuote{Specifying year storage format in
+##' @param years_as_midyear Logical; should years be stored in
+##'     \dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.? See
+##'     \dQuote{Specifying year storage format in
 ##'     \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.
 ##' @param clean_col_names Logical; when \code{TRUE}, the column names
 ##'     of the result are \sQuote{cleaned} by applying
@@ -86,7 +89,7 @@
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##'
-##' @family csv results functions
+##' @family Get results from csv files
 ##'
 ##' @seealso \code{\link{get_output_dir}} for instructions on how to
 ##'     specify output directories and run names;
@@ -101,22 +104,43 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                         stat = c("prop", "count", "ratio"),  #Could add 'age_ratio' here later
                         adjusted = c("orig", "adj", "sub_adj"),
                         clean_col_names = TRUE,
+                        indicator_name_format = c("clean", "traj_array", "csv_results_file_names"),
                         years_as_midyear = TRUE,
                         add_country_classifications = FALSE,
                         table_format = c("long", "wide", "raw"),
                         sort = TRUE) {
 
-### NOTE !!! 'clean_col_names' ONLY KNOWS THE INDICATOR NAMES IN THE TRAJECTORY ARRAYS, NOT THE .CSV RESULTS FILES!! THE COLUMN NAMES IN THE RESULT WHEN 'table_format' = "wide" WILL BE INCONSISTENTLY REFORMATTED. NEED TO ADD LIST OF INDICATOR NAMES AS THEY APPEAR IN THE RESULTS FILS AND MODIFE 'clean_col_names' ACCORDINGLY.
+    ## -------* Set Up
+
+    ## -------** Check arguments
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     stat <- match.arg(stat)
+    indicator_name_format <- match.arg(indicator_name_format)
     stopifnot(is.logical(years_as_midyear))
+    adjusted <- match.arg(adjusted)
+    table_format <- match.arg(table_format)
 
     if (add_country_classifications && !identical(aggregate, "country")) {
         warning("'add_country_classifications' only has an effect if 'aggregate' == '\"country\"'. No classifications will be added.")
         add_country_classifications <- FALSE
     }
+
+    ## -------** Constants
+
+    marital_group <- get_marital_group(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+                                       lower_snake_casify = FALSE)
+    ind_names_filenames <-
+        get_std_indicator_names(stat = stat, marital_group = marital_group,
+                                adjusted = c(orig = "orig", adj = "adj", sub_adj = "adj")[adjusted],
+                                indicator_name_format = "csv_results_file_names")
+    ind_names_df <-
+        get_std_indicator_names(stat = stat, marital_group = marital_group,
+                                adjusted = c(orig = "orig", adj = "adj", sub_adj = "adj")[adjusted],
+                                indicator_name_format = indicator_name_format)
+
+    ## -------** Directories
 
     output_dir <-
         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
@@ -133,10 +157,6 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir)
     fname <- paste(run_name, aggregate, sep = "_")
 
-    adjusted <- match.arg(adjusted)
-
-    table_format <- match.arg(table_format)
-
     ## -------* Load the 'orig' results
 
     if (adjusted %in% c("orig", "sub_adj")) {
@@ -150,21 +170,25 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             else stat_in_fname <- stat
 
             ## Read the '_Total' file first
-            fname1 <- paste0(fname, "_", stat_in_fname, "_Total.csv")
+            fname1 <- paste0(fname, "_", stat_in_fname, "_", ind_names_filenames["total"], ".csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res <- readr::read_csv(file.path(tbl_dir, fname1))
             res$stat <- stat
-            res$indicator <- "Total"
+            res$indicator <- ind_names_df["total"]
 
             ## Read in rest of indicators
-            for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
-                               "Unmet")) {
-                fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, ".csv")
+            for (indicator in names(ind_names_filenames)[names(ind_names_filenames) != "total"]) {
+                fname_ind <- paste0(fname, "_", stat_in_fname, "_",
+                                    ind_names_filenames[indicator], ".csv")
                 if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
-                res_ind$stat <- stat
-                res_ind$indicator <- indicator
-                res <- dplyr::bind_rows(res, res_ind)
+                res_ind <- try(readr::read_csv(file.path(tbl_dir, fname_ind)), silent = TRUE)
+                if (identical(class(res_ind), "try-error")) {
+                    if (verbose) message("Note: '", fname_ind, "' does not exist.")
+                } else {
+                    res_ind$stat <- stat
+                    res_ind$indicator <- ind_names_df[indicator]
+                    res <- dplyr::bind_rows(res, res_ind)
+                }
             }
 
         } else if (identical(stat, "ratio")) {
@@ -172,21 +196,24 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             ## Read in 'ratio'
 
             ## Read the '_Met Demand' file first
-            fname1 <- paste0(fname, "_", stat, "_Met Demand.csv")
+            fname1 <- paste0(fname, "_", stat, "_", ind_names_filenames["met_demand"], ".csv")
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res <- readr::read_csv(file.path(tbl_dir, fname1))
             res$stat <- stat
-            res$indicator <- "Met Demand"
+            res$indicator <- ind_names_df["met_demand"]
 
-            ind_values <- c("MetDemModMeth", "ModernOverTotal")
-            if (adjusted == "orig") ind_values <- c(ind_values, "Z")
-            for (indicator in ind_values) {
-                fname_ind <- paste0(fname, "_", "ratio", "_", indicator, ".csv")
-            if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
-                res_ind$stat <- stat
-                res_ind$indicator <- indicator
-                res <- dplyr::bind_rows(res, res_ind)
+            for (indicator in names(ind_names_filenames)[names(ind_names_filenames) != "met_demand"]) {
+                fname_ind <- paste0(fname, "_", "ratio", "_",
+                                    ind_names_filenames[indicator], ".csv")
+                if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
+                res_ind <- try(readr::read_csv(file.path(tbl_dir, fname_ind)))
+                if (identical(class(res_ind), "try-error")) {
+                    if (verbose) message("Note: '", fname_ind, "' does not exist.")
+                } else {
+                    res_ind$stat <- stat
+                    res_ind$indicator <- ind_names_df[indicator]
+                    res <- dplyr::bind_rows(res, res_ind)
+                }
             }
         }
     }
@@ -208,17 +235,21 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res_adj <- readr::read_csv(file.path(tbl_dir, fname1))
             res_adj$stat <- stat
-            res_adj$indicator <- "Total"
+            res_adj$indicator <- ind_names_df["total"]
 
             ## Read in rest of indicators
-            for (indicator in c("Modern", "TotalPlusUnmet", "Traditional", "TradPlusUnmet",
-                               "Unmet")) {
-                fname_ind <- paste0(fname, "_", stat_in_fname, "_", indicator, "_Adj.csv")
-            if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
-                res_adj_ind$stat <- stat
-                res_adj_ind$indicator <- indicator
-                res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
+            for (indicator in names(ind_names_filenames)[names(ind_names_filenames) != "total"]) {
+                fname_ind <- paste0(fname, "_", stat_in_fname, "_",
+                                    ind_names_filenames[indicator], "_Adj.csv")
+                if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
+                res_adj_ind <- try(readr::read_csv(file.path(tbl_dir, fname_ind)))
+                if (identical(class(res_adj_ind), "try-error")) {
+                    if (verbose) message("Note: '", fname_ind, "' does not exist.")
+                } else {
+                    res_adj_ind$stat <- stat
+                    res_adj_ind$indicator <- ind_names_df[indicator]
+                    res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
+                }
             }
 
         } else if (identical(stat, "ratio")) {
@@ -228,17 +259,21 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
             if (verbose) message("Reading '", file.path(tbl_dir, fname1), "'.")
             res_adj <- readr::read_csv(file.path(tbl_dir, fname1))
             res_adj$stat <- stat
-            res_adj$indicator <- "Met Demand"
+            res_adj$indicator <- ind_names_df["met_demand"]
 
             ## Read in 'ratio'
-            ind_values <- c("MetDemModMeth", "ModernOverTotal")
-            for (indicator in ind_values) {
-                fname_ind <- paste0(fname, "_", "ratio", "_", indicator, "_Adj.csv")
-            if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
-                res_adj_ind <- readr::read_csv(file.path(tbl_dir, fname_ind))
-                res_adj_ind$stat <- stat
-                res_adj_ind$indicator <- indicator
-                res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
+            for (indicator in names(ind_names_filenames)[names(ind_names_filenames) != "met_demand"]) {
+                fname_ind <- paste0(fname, "_", "ratio", "_",
+                                    ind_names_filenames[indicator], "_Adj.csv")
+                if (verbose) message("Reading '", file.path(tbl_dir, fname_ind), "'.")
+                res_adj_ind <- try(readr::read_csv(file.path(tbl_dir, fname_ind)))
+                if (identical(class(res_adj_ind), "try-error")) {
+                    if (verbose) message("Note: '", fname_ind, "' does not exist.")
+                } else {
+                    res_adj_ind$stat <- stat
+                    res_adj_ind$indicator <- ind_names_df[indicator]
+                    res_adj <- dplyr::bind_rows(res_adj, res_adj_ind)
+                }
             }
         }
     }
@@ -373,7 +408,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##' \emph{all} results for all marital groups. Binds the three into
 ##' single object.
 ##'
-##' @family csv results functions
+##' @family Get results from csv files
 ##'
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.

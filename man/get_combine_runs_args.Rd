@@ -29,7 +29,7 @@ an error if \code{output_dir} is not an all women output
 directory.
 }
 \seealso{
-Other model_run_meta_info: 
+Other Model run meta info functions: 
 \code{\link{get_country_index}()},
 \code{\link{get_global_mcmc_args}()},
 \code{\link{get_global_post_process_args}()},
@@ -41,4 +41,4 @@ Other model_run_meta_info:
 \author{
 Mark Wheldon
 }
-\concept{model_run_meta_info}
+\concept{Model run meta info functions}

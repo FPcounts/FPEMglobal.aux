@@ -45,7 +45,7 @@ made \emph{after} all re-formats:
 If \code{clean_indicator_names} is \code{FALSE}, any strings
 matching the known standard indicator names are \emph{not}
 cleaned. The known standard indicator names are defined by
-\code{\link{get_traj_array_indicator_names}}.
+\code{\link{list_all_std_indicator_names}}.
 }
 \seealso{
 Other String utility functions: 
@@ -53,7 +53,6 @@ Other String utility functions:
 \code{\link{convert_M49_region_names}()},
 \code{\link{convert_country_names_2_latex}()},
 \code{\link{convert_param_name}()},
-\code{\link{get_aggregate_names}()},
 \code{\link{shorten_reg_names_manus}()}
 }
 \author{

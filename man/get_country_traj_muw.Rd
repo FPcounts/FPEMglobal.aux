@@ -2,7 +2,7 @@
 % Please edit documentation in R/trajectories.R
 \name{get_country_traj_muw}
 \alias{get_country_traj_muw}
-\title{Load and return country-level trajectories for married and unmarried women}
+\title{Get MCMC trajectories of contraceptive prevalence indicators for married and unmarried women}
 \usage{
 get_country_traj_muw(
   run_name = NULL,
@@ -29,9 +29,9 @@ for.}
 The loaded country trajectory object.
 }
 \description{
-This function \code{\link{load}}s the MCMC sample from the
-posterior sample for married or unmarried for a single country and returns it as an R
-object. Trajectories are loaded from \file{.rda} files found in
+This function \code{\link{load}}s and returns the MCMC
+trajectories of contraceptive prevalence indicators for married or
+unmarried women for a single country. Trajectories are loaded from \file{.rda} files found in
 the subdirectory \file{countrytrajectories} of the results
 directory (see below). The filename for the given country is
 determined by reference to an index which must be in the file
@@ -39,8 +39,9 @@ determined by reference to an index which must be in the file
 }
 \details{
 \code{\link{load}} is called is such a way that ensures nothing is
-added to the global environment; the only copy of the loaded
-object is that returned by the function.
+added to the global environment. Instead, the loaded object is
+returned by the function (so it's a good idea to assign to result
+to an object).
 
 Country trajectories are 3D arrays:
 \preformatted{str(...)
@@ -64,7 +65,9 @@ See the section in \code{\link{get_csv_res}}.
 }
 
 \seealso{
-Other trajectory functions: 
+Other Trajectory functions: 
+\code{\link{convert_country_traj_to_counts}()},
+\code{\link{expand_country_traj_count}()},
 \code{\link{get_agg_traj}()},
 \code{\link{get_country_traj_aw}()},
 \code{\link{get_model_traj}()}
@@ -72,4 +75,4 @@ Other trajectory functions:
 \author{
 Mark Wheldon
 }
-\concept{trajectory functions}
+\concept{Trajectory functions}

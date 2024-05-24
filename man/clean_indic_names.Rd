@@ -21,7 +21,7 @@ resulting in a single unbroken string.
 \examples{
 
 ## Known indicators are:
-get_traj_array_indicator_names()
+list_all_std_indicator_names()
 
 }
 \seealso{
@@ -30,7 +30,6 @@ Other String utility functions:
 \code{\link{convert_M49_region_names}()},
 \code{\link{convert_country_names_2_latex}()},
 \code{\link{convert_param_name}()},
-\code{\link{get_aggregate_names}()},
 \code{\link{shorten_reg_names_manus}()}
 }
 \author{

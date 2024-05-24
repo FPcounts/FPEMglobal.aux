@@ -1,8 +1,7 @@
-###-----------------------------------------------------------------------------
-### * Convert and Expand Trajectories
+### Convert and Expand Trajectories
 
 ###-----------------------------------------------------------------------------
-### ** Support Functions
+### * Support Functions
 
 ## Checks inputs to the various converter functions.
 assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, iso = NULL, safe = TRUE) {
@@ -45,7 +44,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 
 
 ###-----------------------------------------------------------------------------
-### ** Conversion Functions
+### * Conversion Functions
 
 
 ##' Transform MCMC trajectories
@@ -86,6 +85,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 ##' @return Trajectory array.
 ##' @author Mark Wheldon
 ##'
+##' @family Trajectory functions
 ##' @family Trajectory conversion functions
 ##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 ##'
@@ -170,7 +170,7 @@ convert_country_traj_to_ratios <- function(traj_array_counts,
     ## -------* Functions
 
     assert_needed_indicators <- function(arr, incl_no_use = FALSE) {
-        needed_indicators <- get_traj_array_indicator_names_select(stat = "count", marital_group = "married")
+        needed_indicators <- get_std_indicator_names(stat = "count", marital_group = "married")
         if (incl_no_use) needed_indicators <- c(needed_indicators, "NoUse")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing 'NoUse', use 'expand_country_traj_count(..., incl_no_use = TRUE, ...)'.")
@@ -250,7 +250,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
     ## -------* Functions
 
     assert_needed_indicators <- function(arr, incl_no_use = FALSE) {
-        needed_indicators <- get_traj_array_indicator_names_select(stat = "age ratio", marital_group = "married")
+        needed_indicators <- get_std_indicator_names(stat = "age ratio", marital_group = "married")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing some consider 'expand_country_traj_count()'.")
         return(invisible(arr))
@@ -313,6 +313,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
 ##' @return An expanded trajectory array of counts.
 ##' @author Mark Wheldon
 ##'
+##' @family Trajectory functions
 ##' @family Trajectory conversion functions
 ##' @seealso \code{\link{get_country_traj_muw}}, \code{link{get_country_traj_aw}}
 ##'
@@ -327,7 +328,7 @@ expand_country_traj_count <- function(traj_array_counts, incl_no_use = !is.null(
     if (!all(c("Modern", "Traditional", "Unmet") %in% dimnames(traj_array_counts)[[2]]))
         stop("'traj_array_counts' must have indicators ", toString(c("Modern", "Traditional", "Unmet")), ".")
 
-    all_ind_names <- get_traj_array_indicator_names_select(stat = "count")
+    all_ind_names <- get_std_indicator_names(stat = "count")
     if (incl_no_use) all_ind_names <- c(all_ind_names, "NoUse")
     if (all(all_ind_names %in% dimnames(traj_array_counts)[[2]])) {
         msg <- "'traj_array_counts' already expanded; did you supply an all women array?"

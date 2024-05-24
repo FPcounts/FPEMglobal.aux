@@ -28,7 +28,6 @@ Other String utility functions:
 \code{\link{clean_indic_names}()},
 \code{\link{convert_country_names_2_latex}()},
 \code{\link{convert_param_name}()},
-\code{\link{get_aggregate_names}()},
 \code{\link{shorten_reg_names_manus}()}
 }
 \author{

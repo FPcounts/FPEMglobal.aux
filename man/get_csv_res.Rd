@@ -12,6 +12,7 @@ get_csv_res(
   stat = c("prop", "count", "ratio"),
   adjusted = c("orig", "adj", "sub_adj"),
   clean_col_names = TRUE,
+  indicator_name_format = c("clean", "traj_array", "csv_results_file_names"),
   years_as_midyear = TRUE,
   add_country_classifications = FALSE,
   table_format = c("long", "wide", "raw"),
@@ -44,9 +45,13 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{years_as_midyear}{Logical; should years be
-stored in \dQuote{mid-year} format, e.g., 1970.5, 1971.5,
-etc.? See \dQuote{Specifying year storage format in
+\item{indicator_name_format}{Character; the format to use for
+indicator names. It is highly recommended to use the first
+(default) option, maybe the second.}
+
+\item{years_as_midyear}{Logical; should years be stored in
+\dQuote{mid-year} format, e.g., 1970.5, 1971.5, etc.? See
+\dQuote{Specifying year storage format in
 \pkg{FPEMglobal.aux}} in \code{\link{year_storage_format}}.}
 
 \item{add_country_classifications}{Logical; add on columns with
@@ -123,10 +128,10 @@ specify output directories and run names;
 messages; \code{\link{year_storage_format}} for background on
 storage format of year values.
 
-Other csv results functions: 
+Other Get results from csv files: 
 \code{\link{get_csv_all_mar_res}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{csv results functions}
+\concept{Get results from csv files}

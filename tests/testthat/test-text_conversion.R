@@ -15,7 +15,8 @@ test_that("Conversion of SDG region names works", {
             ## Names exist
             expect_identical(
                 convert_SDG_region_names(
-                    x = data.frame(name = c("World", "Small island developing States (SIDS)"), z = 1:2),
+                    x = data.frame(name = c("World", "Small island developing States (SIDS)"),
+                                   z = 1:2),
                     convert_from = "FPEM"),
                 data.frame(name = c("World", "Small island developing States"), z = 1:2))
 

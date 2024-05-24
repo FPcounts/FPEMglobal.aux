@@ -1,12 +1,16 @@
 Package: FPEMglobal.aux
 Title: Auxillary Functions for FPEMglobal
-Version: 0.0.11
+Version: 0.0.12
 Authors@R: 
-    person(given = "Mark",
+    c(person(given = "Mark",
            family = "Wheldon",
            role = c("aut", "cre"),
            email = "wheldon@un.org",
-           comment = c(ORCID = "0000-0002-6897-9644"))
+           comment = c(ORCID = "0000-0002-6897-9644")),
+      person(given = "Niamh",
+           family = "Cahill",
+           role = c("ctb"))
+	   )
 Description: Provides functions for working with files and objects associated with FPEMglobal. 
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -17,7 +21,7 @@ Imports:
     abind,
     checkmate,
     dplyr,
-    FPEMglobal (>= 1.5.0),
+    FPEMglobal (>= 1.5.0.9000),
     gdata,
     magrittr,
     readr,
@@ -27,7 +31,8 @@ Imports:
     utils
 Suggests:
     parallel,
-    parallely,
+    parallelly,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
+Config/testthat/start-first: results_get_csv_results_1549

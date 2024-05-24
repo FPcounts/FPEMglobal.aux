@@ -51,9 +51,7 @@ following columns:
 get_csv_res
 
 Other fpemdata converters: 
-\code{\link{convert_country_classifications_2_fpemdata}()},
-\code{\link{denominators_2_fpemdata}()},
-\code{\link{input_data_2_fpemdata}()}
+\code{\link{convert_country_classifications_2_fpemdata}()}
 }
 \author{
 Mark C Wheldon

@@ -43,10 +43,10 @@ See the section in \code{\link{get_csv_res}}.
 }
 
 \seealso{
-Other csv results functions: 
+Other Get results from csv files: 
 \code{\link{get_csv_res}()}
 }
 \author{
 Mark Wheldon
 }
-\concept{csv results functions}
+\concept{Get results from csv files}
