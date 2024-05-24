@@ -2,7 +2,7 @@
 % Please edit documentation in R/trajectories.R
 \name{get_country_traj_aw}
 \alias{get_country_traj_aw}
-\title{Load and return country-level trajectories for all women}
+\title{Get MCMC trajectories of contraceptive prevalence indicators for all women}
 \usage{
 get_country_traj_aw(
   run_name = NULL,
@@ -29,17 +29,17 @@ for.}
 The loaded country trajectory object.
 }
 \description{
-This function \code{\link{load}}s the MCMC sample from the
-posterior sample for all women for a single country and returns it
-as an R object. Trajectories are loaded from \file{.rda} files
+This function \code{\link{load}}s and returns the MCMC
+trajectories of contraceptive prevalence indicators for for all women. Trajectories are loaded from \file{.rda} files
 found in the subdirectory \file{countrytrajectories} of the
 results directory (see below). The filename for the given country
 is \code{paste0("aw_ISO_", iso_code, "_counts.rda")}.
 }
 \details{
 \code{\link{load}} is called is such a way that ensures nothing is
-added to the global environment; the only copy of the loaded
-object is that returned by the function.
+added to the global environment. Instead, the loaded object is
+returned by the function (so it's a good idea to assign to result
+to an object).
 
 Country trajectories are 3D arrays:
 \preformatted{str(...)

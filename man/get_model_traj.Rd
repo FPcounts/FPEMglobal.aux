@@ -2,12 +2,13 @@
 % Please edit documentation in R/trajectories.R
 \name{get_model_traj}
 \alias{get_model_traj}
-\title{Get model parameter trajectory array}
+\title{Get MCMC trajectories of FPEMglobal model parameters}
 \usage{
 get_model_traj(
   run_name = NULL,
   output_dir = NULL,
   root_dir = NULL,
+  add_cp_timing_param = FALSE,
   name_dims = TRUE
 )
 }
@@ -22,10 +23,12 @@ ignored if \code{output_dir} is supplied.}
 \item{root_dir}{A root directory if needed, i.e., the location of
 the directory called \dQuote{output}.}
 
+\item{add_cp_timing_param}{Logical; add the CP timing parameter? See \dQuote{Details}.}
+
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
 }
 \value{
-The loaded object.
+An array of trajectories.
 }
 \description{
 This function \code{\link{load}}s and returns MCMC trajectories
@@ -42,6 +45,41 @@ trajectories of CP indicators use
 The dimensions are not named by \pkg{FPEMglobal}. If
 \code{name_dims} is \code{TRUE} they are given the names
 \dQuote{iteration}, \dQuote{chain}, \dQuote{parameter}.
+
+The array of trajectories has the following structure (dimnames
+are named only if \code{name_dims = TRUE}):
+\preformatted{
+ num [1:832, 1:20, 1:12234] 1952 1939 1957 1940 1924 ...
+ - attr(*, "dimnames")=List of 3
+  ..$ iteration: NULL
+  ..$ chain    : NULL
+  ..$ parameter: chr [1:12234] "RT.c[1]" "RT.c[2]" "RT.c[3]" "RT.c[4]" ...
+}
+
+\subsection{Contraceptive prevalence timing parameter}{
+
+The timing parameter of the increase in contraceptive prevalence
+(CP timing parameter) was a model parameter in the original
+formulation of Alkema et al.\sspace{}(2013), where it was denoted
+\eqn{\Omega_c}{Omega_c}. This was replaced with the "set-level"
+parameter (\eqn{P_{c,t^*}}{P_c,t*}) in the update by Cahill et
+al.\sspace{}(2017) and maintained in Kantorová et
+al.\sspace{}(2020). If the output directory is from a run of a
+version of FPEMglobal that uses the Cahill et al.\sspace{}(2017)
+modification, the array returned by
+\code{get_model_param_quantiles} will not contain results for the
+CP timing parameter.
+
+To include the CP timing parameter, set logical argument
+\code{add_cp_timing_param} to \code{TRUE}. It will be calculated
+from the other model parameters via the following
+expression (the calculation is applied to each trajectory):
+
+\deqn{\Omega_c = 1990 + \frac{1}{\omega_c} \log \left(\frac{\tilde{P}_c}{\exp(S_c^*)} - 1 + \tilde{P}_c \right)}{Omega_c = 1990 + 1 / omega_c * log[tilde{P}_c / exp(S_c^*) - 1 + tilde{P}_c]}
+where
+\deqn{S_c^* = S_c - \epsilon_{c,1990}}{S_c^* = S_c - epsilon_c,1990}
+
+This expression is due to N. Cahill (pers. comm.); see also Dasgupta et al.\sspace{}(2022), Appendix A, Sect. 1.4.1.}
 }
 \seealso{
 Other Trajectory functions: 

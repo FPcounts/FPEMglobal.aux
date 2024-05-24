@@ -9,7 +9,8 @@ get_model_param_quantiles(
   output_dir = NULL,
   root_dir = NULL,
   percentiles = c(2.5, 50, 97.5),
-  add_cp_timing_param = FALSE
+  add_cp_timing_param = FALSE,
+  name_dims = TRUE
 )
 }
 \arguments{
@@ -25,17 +26,19 @@ the directory called \dQuote{output}.}
 
 \item{percentiles}{Percentiles of parameter distributions to be included in the output.}
 
-\item{add_cp_timing_param}{Logical; add the CP timing parameter? See \dQuote{CP Timing Parameter}.}
+\item{add_cp_timing_param}{Logical; add the CP timing parameter? See \dQuote{Details}.}
+
+\item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
 }
 \value{
-An array.
+An array of quantiles.
 }
 \description{
 Posterior distributions of a subset of the country-specific model
 parameters are stored in an array and saved to the file
 \file{par.ciq.rda} in the main output directory
 (\code{output_dir}). This function loads that file and returns the
-array. Only the 2.5, 50, and 97.5 percentiles are saved. If others
+array. Only the 2.5, 50, and 97.5 percentiles are saved by \pkg{FPEMglobal}. If others
 are requested via the \code{percentiles} argument they will be
 calculated from the full set of MCMC trajectories (loaded by
 \code{\link{get_model_traj}}) and included in the array returned.
@@ -44,7 +47,8 @@ calculated from the full set of MCMC trajectories (loaded by
 The parameters returned are the the country-specific model parameters, such as the
 asymptotes, rate paratmeters, timing parameters, etc (see Kantorová et al., 2020, S1 Appendix).
 
-The array has three dimensions with structure:
+The array has three dimensions with structure (dimnames
+are named only if \code{name_dims = TRUE}):
 \preformatted{
 num [1:248, 1:7, 1:3] 0.0259 0.0112 0.0163 0.015 0.0332 ...
 - attr(*, "dimnames")=List of 3
@@ -65,50 +69,36 @@ Section \dQuote{CP Timing Parameter} below.
 \emph{Dimname}      \tab \emph{Notation} \tab \emph{Description} \cr
 \code{omega.c} \tab \eqn{\omega_c}{omega_c} \tab Pace parameter for increase \cr
 \tab                         \tab of contraceptive prevalence \cr
-\tab                         tab  (any method) \cr
+\tab                         \tab  (any method) \cr
 \code{pmax.c} \tab \eqn{\tilde{P}_c}{tilde{P}_c} \tab Asymptote of contraceptive \cr
 \tab                              \tab prevalence (any method) \cr
 \code{setlevel.c} \tab \eqn{P_{c,t^*}}{P_c,t*} \tab Set-level of prevalence, \cr
 \tab                         \tab \eqn{t^*=1990}{t* = 1990} \cr
 \code{Romega.c} \tab \eqn{\psi_c}{psi_c} \tab Pace parameter for increase \cr
-\tab                     \tab of the ratio of modern to traditional \cr
-\tab                     \tab prevalence \cr
+\tab                     \tab of the ratio of modern to \cr
+\tab                     \tab traditional prevalence \cr
 \code{RT.c} \tab \eqn{\Psi_c}{Psi_c} \tab Midpoint for increase \cr
 \tab                      \tab  in the ratio of modern to \cr
 \tab                       \tab  traditional prevalence \cr
 \code{Rmax.c} \tab \eqn{\tilde{R}_c}{tilde{R}_c} \tab Asymptote of increase of \cr
 \tab                               \tab the ratio of modern to \cr
 \tab                               \tab traditional prevalence \cr
-\code{unmet.intercept.c} \tab \eqn{z_c}{z_c} \tab Intercept of the parametric model \cr
-\tab                 \tab for the ratio of unmet need \cr
-\tab                 \tab to no contraceptive use
-}
-}
-\section{CP Timing Parameter}{
-
-
-The timing parameter of the increase in contraceptive prevalence
-(CP timing parameter) was a model parameter in the original
-formulation of Alkema et al.\sspace{}(2013), where it was
-denoted \eqn{\Omega_c}{Omega_c}. This was replaced with the
-"set-level" parameter (\eqn{P_{c,t^*}}{P_c,t*}) in the update by
-Cahill et al.\sspace{}(2017) and maintained in Kantorová et al.\sspace{}(2020). If the output directory is from a run of a version of
-FPEMglobal that uses the Cahill et al.\sspace{}(2017) modification,
-the array returned by \code{get_model_param_quantiles} will not
-contain results for the CP timing parameter.
-
-To include the CP timing parameter, set logical argument
-\code{add_cp_timing_param} to \code{TRUE}. It will be calculated
-from the other model parameters via the following
-expression (the calculation is applied to each trajectory):
-
-\deqn{\Omega_c = 1990 + \frac{1}{\omega_c} \log \left(\frac{\tilde{P}_c}{\exp(S_c^*)} - 1 + \tilde{P}_c \right)}{Omega_c = 1990 + 1 / omega_c * log[tilde{P}_c / exp(S_c^*) - 1 + tilde{P}_c]}
-where
-\deqn{S_c^* = S_c - \epsilon_{c,1990}}{S_c^* = S_c - epsilon_c,1990}
-
-This expression is due to N. Cahill (pers. comm.); see also Dasgupta et al.\sspace{}(2022), Appendix A, Sect. 1.4.1.
+\code{unmet.intercept.c} \tab \eqn{z_c}{z_c} \tab Intercept of the parametric \cr
+\tab                 \tab model for the ratio of unmet \cr
+\tab                 \tab model to no contraceptive use \cr
+\code{T.c} \tab \eqn{\Omega_c}{Omega_c} \tab Midpoint for increase \cr
+\tab                        \tab of contraceptive prevalence \cr
+\tab                        \tab (any method) \cr
+\tab                        \tab \emph{only if} \cr
+\tab                        \tab \code{add_cp_timing_param = TRUE}
 }
 
+\subsection{Contraceptive prevalence timing parameter}{ If
+\code{add_cp_timing_param = TRUE}, quantiles of the contraceptive
+prevalence timing parameter will be added. For details, see this
+same subsection under \dQuote{Details} in the documentation for
+\code{\link{get_model_traj}}.}
+}
 \references{
 Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. The Lancet, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
 
