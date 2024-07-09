@@ -2,6 +2,7 @@
 % Please edit documentation in R/FPEMglobal.aux.R
 \docType{package}
 \name{FPEMglobal.aux}
+\alias{FPEMglobal.aux-package}
 \alias{FPEMglobal.aux}
 \title{FPEMglobal.aux: Auxillary functions for FPEMglobal}
 \description{
@@ -21,3 +22,12 @@ suppress function-specific messages, whereas the latter will only
 affect \pkg{readr} messages.
 }
 
+\author{
+\strong{Maintainer}: Mark Wheldon \email{wheldon@un.org} (\href{https://orcid.org/0000-0002-6897-9644}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Niamh Cahill [contributor]
+}
+
+}

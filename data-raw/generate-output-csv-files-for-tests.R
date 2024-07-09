@@ -10,27 +10,43 @@
 ### !!! Set working directory to the directory of this file.
 setwd(here::here("data-raw"))
 
+## Need to know where results are kept on SharePoint. Use system environment variable.
+if (identical(Sys.getenv("SharePoint_DESA_POP_PDU"), "")) stop("Env. var. 'SharePoint_DESA_POP_PDU' is undefined.")
+
+## Check paths exist.
+valid_path <- function(...) {
+    path <- file.path(...)
+    path_passed <- deparse(substitute(path))
+    if (dir.exists(path)) return(path)
+    else stop("Path '", path, "' [", path_passed, "] does not exist.")
+}
+
+## Results taken from here:
+FPEM_res_path_1519 <-
+    valid_path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing", "2022",
+              "20220627-1 (RES ONLY)")
+FPEM_res_path_1549 <-
+    valid_path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022")
+
 ###-----------------------------------------------------------------------------
 ### * Paths
 
-mwra_1519_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing",
-                                "20220627-1 (RES ONLY)", "220627_122800_15-19_married")
+mwra_1519_src_path <- valid_path(FPEM_res_path_1519, "220627_122800_15-19_married")
 mwra_1519_src_run_name <- "220914_1519_mw"
 mwra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_married")
 mwra_1519_new_run_name <- "220627_122800_15-19_married"
 
-wra_1519_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing",
-                               "20220627-1 (RES ONLY)", "220627_122800_15-19_all_women")
+wra_1519_src_path <- valid_path(FPEM_res_path_1519, "220627_122800_15-19_all_women")
 wra_1519_src_run_name <- "220914_1519all women"
 wra_1519_new_path <- file.path("..", "inst", "data-test", "15-19_all_women")
 wra_1519_new_run_name <- "220627_122800_15-19_all_women"
 
-mwra_1549_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022", "15-49_mwra")
+mwra_1549_src_path <- valid_path(FPEM_res_path_1549, "15-49_mwra")
 mwra_1549_src_run_name <- "2022_15-49_mwra"
 mwra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_married")
 mwra_1549_new_run_name <- "2022_15-49_mwra"
 
-wra_1549_src_path <- file.path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022", "15-49_wra")
+wra_1549_src_path <- valid_path(FPEM_res_path_1549, "15-49_wra")
 wra_1549_src_run_name <- "2022_15-49_wra"
 wra_1549_new_path <- file.path("..", "inst", "data-test", "15-49_all_women")
 wra_1549_new_run_name <- "2022_15-49_wra"
@@ -70,6 +86,8 @@ for (k in seq_along(src_paths)) {
                                  name_repair = "minimal", show_col_types = FALSE)
             x <- x[x[[iso_col]] %in% keep_iso_c, ]
             write.csv(x, file = file.path(new_path, fname), row.names = FALSE)
+        } else {
+            warning("File '", fpath, "' not found.")
         }
     }
 
