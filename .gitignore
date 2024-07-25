@@ -42,8 +42,11 @@ _snap/
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 
+# Test set data
+inst/data-test/*
+
 # Mac OS
 .DS_Store
 
-# Test set data
-inst/data-test/*
+# Windows
+desktop.ini
