@@ -9,7 +9,7 @@ get_csv_denominators(
   output_dir = NULL,
   root_dir = NULL,
   filename = NULL,
-  marital_group = c("default", "married", "unmarried", "all women"),
+  marital_group = c("default", "married", "unmarried", "all_women"),
   age_group = NULL,
   clean_col_names = TRUE,
   units = c("units", "thousands"),
@@ -73,7 +73,7 @@ One or more marital groups can be requested via argument
 \code{marital_group}. Value \code{"default"} will read the
 the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
 the marital group matching that of the output is included. If
-\code{"all women"} is included, values will be constructed by
+\code{"all_women"} is included, values will be constructed by
 summing the married and unmarried denominators.
 
 If \code{table_format} is \code{"long"}, the counts are in a

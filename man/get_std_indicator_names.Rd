@@ -6,10 +6,10 @@
 \title{Report family planning indicator names}
 \usage{
 get_std_indicator_names(
-  stat = c("prop", "count", "ratio", "age ratio"),
+  stat = c("prop", "count", "ratio", "age_ratio"),
   marital_group = get_std_marital_group_names(),
   adjusted = c("orig", "adj"),
-  aw_set = c("all", "only common", "only extra"),
+  aw_set = c("all", "only_common", "only_extra"),
   indicator_name_format = c("traj_array", "csv_results_file_names", "clean")
 )
 
@@ -53,13 +53,13 @@ In addition, more ratio indicators are available in the all women
 results if \code{adjusted = "orig"}. The \code{aw_set} argument
 provides control over whether all all-women ratio names are
 returned (\code{"all"}), only those in common with
-married/unmarried results (\code{"only common"}), or only those
-that are unique to all women results (\code{"only extra"}).
+married/unmarried results (\code{"only_common"q}), or only those
+that are unique to all women results (\code{"only_extra"}).
 
 The extra all women indicators are not available if \code{adjusted
 = "adj"}. In this case, \code{aw_set = "all"} and \code{aw_set =
-"only common"} return the same thing, and \code{aw_set =
-"only extra"} is an error.
+"only_common"} return the same thing, and \code{aw_set =
+"only_extra"} is an error.
 }
 \seealso{
 Other String constants: 

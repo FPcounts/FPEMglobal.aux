@@ -339,7 +339,7 @@ get_run_name <- function(output_dir = NULL) {
 ##' an FPEMglobal model run. \code{is_marital_group_run} is intended
 ##' for checking if runs are either \code{"married"} or
 ##' \code{"unmarried"} only. Use \code{is_all_women_run} to check if a
-##' run is an \code{"all women"} run.
+##' run is an \code{"all_women"} run.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
@@ -352,7 +352,7 @@ get_run_name <- function(output_dir = NULL) {
 get_marital_group <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                               lower_snake_casify = FALSE) {
     mg <- get_model_meta_info(run_name = run_name, output_dir = output_dir, root_dir = root_dir)$general
-    if (isTRUE(mg$all.women.run.copy)) out <- "all women"
+    if (isTRUE(mg$all.women.run.copy)) out <- "all_women"
     else out <- expand_marital_group_acronyms(mg$marital.group)
     if (lower_snake_casify) out <- lower_snake_casify(out)
     return(out)

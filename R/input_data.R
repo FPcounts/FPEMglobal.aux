@@ -117,7 +117,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' \code{marital_group}. Value \code{"default"} will read the
 ##' the meta data (see \code{\link{get_global_mcmc_args}}) and ensure
 ##' the marital group matching that of the output is included. If
-##' \code{"all women"} is included, values will be constructed by
+##' \code{"all_women"} is included, values will be constructed by
 ##' summing the married and unmarried denominators.
 ##'
 ##' If \code{table_format} is \code{"long"}, the counts are in a
@@ -163,7 +163,7 @@ get_used_denominators <- function(run_name = NULL, output_dir = NULL, root_dir =
 ##' @export
 get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
                                   filename = NULL,
-                                  marital_group = c("default", "married", "unmarried", "all women"),
+                                  marital_group = c("default", "married", "unmarried", "all_women"),
                                   age_group = NULL,
                                   clean_col_names = TRUE,
                                  units = c("units", "thousands"),
@@ -295,15 +295,15 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
 
     ## -------* Load .csv
 
-    if (any(marital_group %in% c("married", "all women"))) {
+    if (any(marital_group %in% c("married", "all_women"))) {
         denom_counts_m <-
             FPEMglobal:::extractDenominators(fpath, in_union = 1)
     }
-    if (any(marital_group %in% c("unmarried", "all women"))) {
+    if (any(marital_group %in% c("unmarried", "all_women"))) {
         denom_counts_u <-
             FPEMglobal:::extractDenominators(fpath, in_union = 0)
     }
-    if ("all women" %in% marital_group) {
+    if ("all_women" %in% marital_group) {
         if (!(identical(dim(denom_counts_m), dim(denom_counts_u)) &&
               identical(colnames(denom_counts_m), colnames(denom_counts_u)) &&
               identical(sort(denom_counts_m$ISO.code), sort(denom_counts_u$ISO.code))))
@@ -331,10 +331,10 @@ get_csv_denominators <- function(run_name = NULL, output_dir = NULL, root_dir = 
             dplyr::bind_rows(denom_counts,
                              data.frame(denom_counts_u, mar_gp = "unmarried"))
     }
-    if ("all women" %in% marital_group) {
+    if ("all_women" %in% marital_group) {
         denom_counts <-
             dplyr::bind_rows(denom_counts,
-                             data.frame(denom_counts_a, mar_gp = "all women"))
+                             data.frame(denom_counts_a, mar_gp = "all_women"))
     }
     mar_gp_col_nm <- switch(table_format,
                             long = "marital_group",

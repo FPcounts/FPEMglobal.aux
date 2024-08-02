@@ -10,7 +10,7 @@ get_agg_traj(
   root_dir = NULL,
   agg_name,
   agg_family_name = "UNPDaggregates",
-  marital_group = c("married", "unmarried", "all women")
+  marital_group = c("married", "unmarried", "all_women")
 )
 }
 \arguments{

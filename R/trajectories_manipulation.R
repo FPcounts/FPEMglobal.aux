@@ -250,7 +250,7 @@ convert_country_traj_to_age_ratios <- function(traj_array_counts_age,
     ## -------* Functions
 
     assert_needed_indicators <- function(arr, incl_no_use = FALSE) {
-        needed_indicators <- get_std_indicator_names(stat = "age ratio", marital_group = "married")
+        needed_indicators <- get_std_indicator_names(stat = "age_ratio", marital_group = "married")
         if (!all(needed_indicators %in% dimnames(arr)[[2]]))
             stop("'", deparse(substitute(arr)), "' must have at least the indicators ", toString(needed_indicators), ". If you are missing some consider 'expand_country_traj_count()'.")
         return(invisible(arr))

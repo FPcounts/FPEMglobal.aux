@@ -220,7 +220,7 @@ test_that("get_marital_group works with default argument values on a 15-49 all_w
         system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
-    expect_identical(get_marital_group(output_dir = test_output_dir), "all women")
+    expect_identical(get_marital_group(output_dir = test_output_dir), "all_women")
 })
 
 test_that("is_all_women_run works with default argument values on a 15-49 all_women directory", {

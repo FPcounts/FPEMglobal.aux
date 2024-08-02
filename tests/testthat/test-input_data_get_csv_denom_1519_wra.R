@@ -35,7 +35,7 @@ test_that("get_csv_denominators works with specified arguments on a 15-19, all w
     expect_true(dir.exists(test_output_dir))
 
     ## All options
-    for (mg in c("default", "married", "unmarried", "all women")) {
+    for (mg in c("default", "married", "unmarried", "all_women")) {
         for (ccn in c(TRUE, FALSE)) {
             for (un in c("units", "thousands")) {
                 for (yrs_as_mid in c(TRUE, FALSE)) {

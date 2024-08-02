@@ -6,7 +6,7 @@
 \usage{
 get_std_marital_group_names(
   return_case = c("lower", "sentence", "title", "upper"),
-  snake_case = FALSE,
+  snake_case = TRUE,
   named = FALSE
 )
 }

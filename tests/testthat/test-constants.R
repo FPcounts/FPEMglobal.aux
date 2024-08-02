@@ -6,7 +6,7 @@ test_that("Standard indicator names are properly returned", {
             for (ADJ in args_list$adjusted) {
                 for (AW in args_list$aw_set) {
                     for (V in args_list$indicator_name_format) {
-                        if (identical(STAT, "ratio") && identical(MG, "all women") &&
+                        if (identical(STAT, "ratio") && identical(MG, "all_women") &&
                             identical(ADJ, "adj") && identical(AW, "only extra")) {
                             expect_error(get_std_indicator_names(stat = STAT, marital_group = MG,
                                                                  adjusted = ADJ,

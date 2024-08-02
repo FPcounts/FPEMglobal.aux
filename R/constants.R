@@ -21,7 +21,7 @@
 ##'
 ##' @export
 get_std_marital_group_names <- function(return_case = c("lower", "sentence", "title", "upper"),
-                                        snake_case = FALSE,
+                                        snake_case = TRUE,
                                         named = FALSE) {
     return_case <- match.arg(return_case)
     stopifnot(is.logical(snake_case))
@@ -58,13 +58,13 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##' results if \code{adjusted = "orig"}. The \code{aw_set} argument
 ##' provides control over whether all all-women ratio names are
 ##' returned (\code{"all"}), only those in common with
-##' married/unmarried results (\code{"only common"}), or only those
-##' that are unique to all women results (\code{"only extra"}).
+##' married/unmarried results (\code{"only_common"q}), or only those
+##' that are unique to all women results (\code{"only_extra"}).
 ##'
 ##' The extra all women indicators are not available if \code{adjusted
 ##' = "adj"}. In this case, \code{aw_set = "all"} and \code{aw_set =
-##' "only common"} return the same thing, and \code{aw_set =
-##' "only extra"} is an error.
+##' "only_common"} return the same thing, and \code{aw_set =
+##' "only_extra"} is an error.
 ##'
 ##' @inheritParams get_csv_res
 ##' @param marital_group Character; marital group for which names are
@@ -83,10 +83,10 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##'
 ##' @name get_std_indicator_names
 ##' @export
-get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age ratio"),
+get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age_ratio"),
                                     marital_group = get_std_marital_group_names(),
                                     adjusted = c("orig", "adj"),
-                                    aw_set = c("all", "only common", "only extra"),
+                                    aw_set = c("all", "only_common", "only_extra"),
                                     indicator_name_format = c("traj_array", "csv_results_file_names", "clean")) {
 
     stat <- match.arg(stat)
@@ -126,17 +126,17 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age rati
     }
 
     ## Output
-    if (stat %in% c("prop", "count", "age ratio")) return(prop_count)
+    if (stat %in% c("prop", "count", "age_ratio")) return(prop_count)
     else { # stat must == "ratio"
-        if (!identical(marital_group, "all women")) return(ratio_common)
-        else { # marital_group must == "all women"
+        if (!identical(marital_group, "all_women")) return(ratio_common)
+        else { # marital_group must == "all_women"
             if (identical(adjusted, "orig")) {
                 if (identical(aw_set, "all")) return(c(ratio_common, ratio_aw_extra))
-                else if (identical(aw_set, "only common")) return(ratio_common)
+                else if (identical(aw_set, "only_common")) return(ratio_common)
                 else return(ratio_aw_extra)
             } else { # adjusted must == "adj"
-                if (aw_set %in% c("all", "only common")) return(ratio_common)
-                else { # aw_set must == "only extra"
+                if (aw_set %in% c("all", "only_common")) return(ratio_common)
+                else { # aw_set must == "only_extra"
                     stop("'only extra' is not a valid option for 'aw_set' when 'adjusted = \"adj\"'.")
                 }
             }
@@ -148,7 +148,7 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age rati
 ##' @export
 list_all_std_indicator_names <- function() {
     out <- character()
-    for (i in c("prop", "count", "ratio", "age ratio")) {
+    for (i in c("prop", "count", "ratio", "age_ratio")) {
         for (j in get_std_marital_group_names()) {
             out <- c(out, get_std_indicator_names(stat = i, marital_group = j, aw_set = "all"))
         }

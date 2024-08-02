@@ -16,7 +16,7 @@ guess_marital_group <- function(run_name) {
     if (identical(m + u + a, 1L)) {
         if (m) "married"
         else if (u) "unmarried"
-        else if (a) "all women"
+        else if (a) "all_women"
     } else NULL
 }
 
