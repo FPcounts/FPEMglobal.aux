@@ -109,10 +109,14 @@ get_used_unpd_regions <-
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <- output_dir_wrapper(output_dir = output_dir)
+
+        file_path <- get_global_mcmc_args(output_dir = output_dir)$region_information_csv_filename
+        file_name <- basename(file_path)
+
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
-        fname <- file.path(data_dir, get_FPEMglobal_extdata_filenames()["country_classifications"])
+        fname <- file.path(data_dir, file_name)
         if (verbose) message("Reading '", fname, "'.")
         out <- readr::read_csv(fname, name_repair = "minimal")
         if (M49_region_names_names)
