@@ -6,12 +6,8 @@
 ##' filenames ended up being too long for runs in deeply nested
 ##' folders.
 ##'
-##' @param run_name_1,run_name_2 See \code{run_name} in help file for
-##'     \code{\link{get_output_dir}}.
 ##' @param output_dir_1,output_dir_2 See \code{output_dir} in help
 ##'     file for \code{\link{get_csv_res}}.
-##' @param root_dir_1,root_dir_2 See \code{root_dir} in help file for
-##'     \code{\link{get_output_dir}}.
 ##' @param assert_valid_dirs Logical; should the run directories be
 ##'     checked to make sure they are valid \pkg{FPEMglobal} output
 ##'     directories?
@@ -20,8 +16,8 @@
 ##'     invisibly.
 ##' @author Mark Wheldon
 ##' @export
-identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir_1 = NULL,
-                                run_name_2 = NULL, output_dir_2 = NULL, root_dir_2 = NULL,
+identical_fpem_runs <- function(output_dir_1 = NULL,
+                                output_dir_2 = NULL,
                                 assert_valid_dirs = TRUE, report = TRUE) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
@@ -33,13 +29,9 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
         if (report) message("\n* Checking '", name, "' via '", test_fun, "' ... ")
         out <- do.call(test_fun,
                               args = list(do.call(extract_fun,
-                                                  args = list(run_name = run_name_1,
-                                                              output_dir = output_dir_1,
-                                                              root_dir = root_dir_1)),
+                                                  args = list(output_dir = output_dir_1)),
                                           do.call(extract_fun,
-                                                  args = list(run_name = run_name_2,
-                                                              output_dir = output_dir_2,
-                                                              root_dir = root_dir_2))))
+                                                  args = list(output_dir = output_dir_2))))
         if (report) {
             if (isTRUE(out)) message("  ... '", name, "' match.")
             else {
@@ -58,26 +50,20 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
 
     stopifnot(is.logical(report))
 
-    mg_1 <- is_married_women_run(run_name = run_name_1, output_dir = output_dir_1,
-                                 root_dir = root_dir_1) ||
-        is_unmarried_women_run(run_name = run_name_1, output_dir = output_dir_1,
-                               root_dir = root_dir_1)
+    mg_1 <- is_married_women_run(output_dir = output_dir_1) ||
+        is_unmarried_women_run(output_dir = output_dir_1)
 
-    mg_2 <- is_married_women_run(run_name = run_name_2, output_dir = output_dir_2,
-                                 root_dir = root_dir_2) ||
-        is_unmarried_women_run(run_name = run_name_2, output_dir = output_dir_2,
-                               root_dir = root_dir_2)
+    mg_2 <- is_married_women_run(output_dir = output_dir_2) ||
+        is_unmarried_women_run(output_dir = output_dir_2)
 
     if (!identical(mg_1, mg_2)) stop("Runs must both be of the same marital group.")
 
     run_1_dir <-
-        output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
-                           root_dir = root_dir_1,
+        output_dir_wrapper(output_dir = output_dir_1,
                            assert_valid = assert_valid_dirs)
 
     run_2_dir <-
-        output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
-                           root_dir = root_dir_2,
+        output_dir_wrapper(output_dir = output_dir_2,
                            assert_valid = assert_valid_dirs)
 
     ## -------* Tests
@@ -108,11 +94,9 @@ identical_fpem_runs <- function(run_name_1 = NULL, output_dir_1 = NULL, root_dir
                  do_test("mcmc.array.rda", "identical", "get_model_traj"),
                  do_test("global_mcmc_args.RData", "identical", "get_global_run_args"))
 
-        pp_1 <- try(output_dir_wrapper(run_name = run_name_1, output_dir = output_dir_1,
-                                 root_dir = root_dir_1,
+        pp_1 <- try(output_dir_wrapper(output_dir = output_dir_1,
                                  post_processed = TRUE))
-        pp_2 <- try(output_dir_wrapper(run_name = run_name_2, output_dir = output_dir_2,
-                                       root_dir = root_dir_2,
+        pp_2 <- try(output_dir_wrapper(output_dir = output_dir_2,
                                        post_processed = TRUE))
         if (!inherits(pp_1, "try-error") && !inherits(pp_2, "try-error")) {
             out <- c(out,

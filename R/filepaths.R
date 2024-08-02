@@ -123,10 +123,9 @@ table_orig_adj_dir <- function(tbl_dir, adj) {
 ##' @return Character string containing the file path.
 ##' @author Mark Wheldon
 ##' @export
-get_csv_denominators_filepath <- function(run_name = NULL, output_dir = NULL, root_dir = NULL) {
+get_csv_denominators_filepath <- function(output_dir = NULL) {
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE,
                            assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL

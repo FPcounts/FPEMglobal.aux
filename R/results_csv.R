@@ -7,13 +7,9 @@
 ##' \pkg{FPEMglobal} run for a single marital group. The geography
 ##' (countries or aggregates) and statistic(s) loaded (proportions,
 ##' counts, ratios) can be specified. The files are read using
-##' \code{\link[readr]{read_csv}}.
-##'
-##' The results directory is passed via the \code{output_dir} argument
-##' and must point to a set of results for a single marital
-##' group. This is the recommended way to specify the results set to
-##' load; the \code{run_name} and \code{root_dir} arguments are
-##' deprecated. See \code{\link{get_output_dir}} for more details.
+##' \code{\link[readr]{read_csv}}. The results directory is passed via
+##' the \code{output_dir} argument and must point to a set of results
+##' for a single marital group.
 ##'
 ##' The \code{stat} argument specifies the type of results to
 ##' return. Results are stored separately for prevalence proportions,
@@ -53,8 +49,7 @@
 ##'
 ##' @param output_dir Path to directory containing outputs. See
 ##'     Section \dQuote{Specifying results directory} in the help file
-##'     for \code{\link{get_output_dir}}. Note that \code{root_dir} is
-##'     ignored if \code{output_dir} is supplied.
+##'     for \code{\link{get_output_dir}}.
 ##' @param verbose Logical; report the path, filename, and object name
 ##'     in a message?
 ##' @param aggregate Name of the 'aggregate' to load. Note: use
@@ -99,7 +94,7 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_csv_res <- function(output_dir = NULL,
                         aggregate = "country",
                         stat = c("prop", "count", "ratio"),  #Could add 'age_ratio' here later
                         adjusted = c("orig", "adj", "sub_adj"),
@@ -129,7 +124,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     ## -------** Constants
 
-    marital_group <- get_marital_group(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+    marital_group <- get_marital_group(output_dir = output_dir,
                                        lower_snake_casify = FALSE)
     ind_names_filenames <-
         get_std_indicator_names(stat = stat, marital_group = marital_group,
@@ -143,8 +138,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## -------** Directories
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, made_results = TRUE,
                            age_ratios = FALSE,
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
@@ -154,7 +148,7 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 
     tbl_dir0 <- file.path(output_dir, table_dir_name)
 
-    if (is.null(run_name)) run_name <- get_run_name(output_dir = output_dir)
+    run_name <- get_run_name(output_dir = output_dir)
     fname <- paste(run_name, aggregate, sep = "_")
 
     ## -------* Load the 'orig' results
@@ -364,11 +358,11 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## add classifications?
     if (add_country_classifications) {
         class_unpd_agg <-
-            get_used_unpd_regions(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+            get_used_unpd_regions(output_dir = output_dir,
                                   clean_col_names = FALSE)
 
         class_spec <-
-            get_used_special_aggregates(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+            get_used_special_aggregates(output_dir = output_dir,
                                         clean_col_names = FALSE)
 
         res <- res %>%
@@ -403,8 +397,8 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##'
 ##' A wrapper for \code{\link{get_csv_res}}. Calls
 ##' \code{\link{get_csv_res}} sequentially on first elements of
-##' \code{run_name_list} and \code{output_dir_list}, second elements
-##' of \code{run_name_list} and \code{output_dir_list}, etc., to load
+##' \code{output_dir_list}, second elements
+##' of \code{output_dir_list}, etc., to load
 ##' \emph{all} results for all marital groups. Binds the three into
 ##' single object.
 ##'
@@ -415,20 +409,17 @@ get_csv_res <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
-##' @param run_name_list List of run names for married, unmarried, and
-##'     all women. Element names must be \dQuote{married},
-##'     \dQuote{unmarried}, and \dQuote{all_women}.
 ##' @param output_dir_list List of output directories for married,
-##'     unmarried, and all women. See \code{run_name_list}.
+##'     unmarried, and all women. Element names must be \dQuote{married},
+##'     \dQuote{unmarried}, and \dQuote{all_women}.
 ##' @param index_col_name Character. Name of column added to output
 ##'     that identifies observations for each marital group.
 ##' @param ... Passed to \code{\link{get_csv_res}}. Must not include
-##'     arguments \code{run_name}, \code{output_dir}, \code{root_dir}.
+##'     argument \code{output_dir}.
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##' @export
-get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
-                                root_dirs = NULL,
+get_csv_all_mar_res <- function(output_dir_list = NULL,
                                 index_col_name = "marital_group",
                                 ...) {
 
@@ -437,10 +428,6 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## !!!!!!!!!!! NEEDS WORK !!!!!!!!!!!!!
-    stopifnot(is.list(run_name_list))
-    stopifnot(!is.null(names(run_name_list)))
-    stopifnot(identical(sort(names(run_name_list)),
-                             sort(c("married", "unmarried", "all_women"))))
 
     stopifnot(is.list(output_dir_list))
     stopifnot(!is.null(names(output_dir_list)))
@@ -453,9 +440,7 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
     out <- data.frame()
 
     for (i in seq_along(output_dir_list)) {
-        x <- get_csv_res(run_name = run_name_list[[i]],
-                         output_dir = output_dir_list[[i]], root_dir = root_dir,
-                         ...)
+        x <- get_csv_res(output_dir = output_dir_list[[i]], ...)
         if (index_col_name %in% colnames(x))
             stop("'index_col_name' is a column name in csv results table. Choose a different name.")
         x[, index_col_name] <- names(output_dir_list)[[i]]
@@ -490,20 +475,19 @@ get_csv_all_mar_res <- function(run_name_list = NULL, output_dir_list = NULL,
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
-convert_csv_res_2_fpemdata <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+convert_csv_res_2_fpemdata <- function(output_dir = NULL,
                                adjusted = c("orig", "adj", "sub_adj"),
                                ...) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, made_results = TRUE,
                            age_ratios = FALSE,
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
-    out <- get_csv_res(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+    out <- get_csv_res(output_dir = output_dir,
                        adjusted = adjusted,
                        table_format = "raw", clean_col_names = FALSE)
 

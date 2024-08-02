@@ -94,14 +94,13 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
 ##' @family Country and region/aggregate names
 ##' @export
 get_used_unpd_regions <-
-    function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+    function(output_dir = NULL,
              clean_col_names = TRUE, M49_region_names_names = TRUE) {
 
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-
-            output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir)
+            output_dir_wrapper(output_dir = output_dir)
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
@@ -164,14 +163,13 @@ list_special_aggregates_names <- function() {
 ##' @family Country and region/aggregate names
 ##' @export
 get_used_special_aggregates <-
-    function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+    function(output_dir = NULL,
              clean_col_names = TRUE) {
 
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-
-            output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                               root_dir = root_dir)
+            output_dir_wrapper(output_dir = output_dir)
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 

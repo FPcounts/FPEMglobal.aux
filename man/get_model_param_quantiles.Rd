@@ -5,24 +5,16 @@
 \title{Get quantiles of country-specific model parameters.}
 \usage{
 get_model_param_quantiles(
-  run_name = NULL,
   output_dir = NULL,
-  root_dir = NULL,
   percentiles = c(2.5, 50, 97.5),
   add_cp_timing_param = FALSE,
   name_dims = TRUE
 )
 }
 \arguments{
-\item{run_name}{The run name.}
-
 \item{output_dir}{Path to directory containing outputs. See
 Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}. Note that \code{root_dir} is
-ignored if \code{output_dir} is supplied.}
-
-\item{root_dir}{A root directory if needed, i.e., the location of
-the directory called \dQuote{output}.}
+for \code{\link{get_output_dir}}.}
 
 \item{percentiles}{Percentiles of parameter distributions to be included in the output.}
 

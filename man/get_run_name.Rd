@@ -9,8 +9,7 @@ get_run_name(output_dir = NULL)
 \arguments{
 \item{output_dir}{Path to directory containing outputs. See
 Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}. Note that \code{root_dir} is
-ignored if \code{output_dir} is supplied.}
+for \code{\link{get_output_dir}}.}
 }
 \value{
 The run name as a character string.

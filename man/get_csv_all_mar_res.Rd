@@ -5,26 +5,21 @@
 \title{Read results csv files containing percentages, etc., for all three marital groups}
 \usage{
 get_csv_all_mar_res(
-  run_name_list = NULL,
   output_dir_list = NULL,
-  root_dirs = NULL,
   index_col_name = "marital_group",
   ...
 )
 }
 \arguments{
-\item{run_name_list}{List of run names for married, unmarried, and
-all women. Element names must be \dQuote{married},
-\dQuote{unmarried}, and \dQuote{all_women}.}
-
 \item{output_dir_list}{List of output directories for married,
-unmarried, and all women. See \code{run_name_list}.}
+unmarried, and all women. Element names must be \dQuote{married},
+\dQuote{unmarried}, and \dQuote{all_women}.}
 
 \item{index_col_name}{Character. Name of column added to output
 that identifies observations for each marital group.}
 
 \item{...}{Passed to \code{\link{get_csv_res}}. Must not include
-arguments \code{run_name}, \code{output_dir}, \code{root_dir}.}
+argument \code{output_dir}.}
 }
 \value{
 A \code{\link[tibble]{tibble}}.
@@ -32,8 +27,8 @@ A \code{\link[tibble]{tibble}}.
 \description{
 A wrapper for \code{\link{get_csv_res}}. Calls
 \code{\link{get_csv_res}} sequentially on first elements of
-\code{run_name_list} and \code{output_dir_list}, second elements
-of \code{run_name_list} and \code{output_dir_list}, etc., to load
+\code{output_dir_list}, second elements
+of \code{output_dir_list}, etc., to load
 \emph{all} results for all marital groups. Binds the three into
 single object.
 }

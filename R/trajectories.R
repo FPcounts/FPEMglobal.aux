@@ -63,7 +63,7 @@
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_model_traj <- function(output_dir = NULL,
                            add_cp_timing_param = FALSE,
                            name_dims = TRUE) {
 
@@ -178,8 +178,7 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     ## -------* Get trajectories
 
     res_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir)
+        output_dir_wrapper(output_dir = output_dir)
     tmp_env <- new.env()
     if (verbose) message("Reading '", file.path(res_dir, "mcmc.array.rda"), "'.")
     out <- get(load(file = file.path(res_dir, "mcmc.array.rda"), envir = tmp_env),
@@ -261,14 +260,13 @@ get_model_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
-get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_country_traj_muw <- function(output_dir = NULL,
                                  iso_code) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
     if (is_all_women_run(output_dir = output_dir))
@@ -278,8 +276,7 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
     iso_code <- as.character(iso_code)
 
     traj_index <-
-        get_country_index(run_name = run_name, output_dir = output_dir,
-                          root_dir = root_dir)
+        get_country_index(output_dir = output_dir)
     if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not found in trajectory index (see '?get_country_index').")
     traj_fname <-
         traj_index$filename[traj_index$iso.c == iso_code]
@@ -331,12 +328,11 @@ get_country_traj_muw <- function(run_name = NULL, output_dir = NULL, root_dir = 
 ##' @return The loaded country trajectory object.
 ##' @author Mark Wheldon
 ##' @export
-get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_country_traj_aw <- function(output_dir = NULL,
                                 iso_code) {
     verbose <- getOption("FPEMglobal.aux.verbose")
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE)
 
     if (!is_all_women_run(output_dir = output_dir))
@@ -357,14 +353,13 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 
 
 
-## get_country_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+## get_country_traj <- function(output_dir = NULL,
 ##                              iso,
 ##                              stat = c("prop", "count", "ratio"),
 ##                              indicators) {
 ## verbose <- getOption("FPEMglobal.aux.verbose")
 ##     output_dir <-
-##         output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-##                            root_dir = root_dir,
+##         output_dir_wrapper(output_dir = output_dir,
 ##                            post_processed = TRUE)
 
 ##     stopifnot(identical(length(iso), 1L))
@@ -397,8 +392,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 
 ##         iso_code <- as.character(iso_code)
 ##         traj_index <-
-##             get_country_index(run_name = run_name, output_dir = output_dir,
-##                               root_dir = root_dir)
+##             get_country_index(output_dir = output_dir)
 ##         if (!(iso_code %in% traj_index$iso.c)) stop("'iso_code' not found in trajectory index (see '?get_country_index').")
 ##         traj_fname <-
 ##             traj_index$filename[traj_index$iso.c == iso_code]
@@ -488,7 +482,7 @@ get_country_traj_aw <- function(run_name = NULL, output_dir = NULL, root_dir = N
 ##'
 ##' @author Mark Wheldon
 ##' @export
-get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_agg_traj <- function(output_dir = NULL,
                          agg_name, agg_family_name = "UNPDaggregates",
                          marital_group = c("married", "unmarried", "all_women")) {
 
@@ -503,8 +497,7 @@ get_agg_traj <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
     marital_group[marital_group == "all_women"] <- "awra"
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, countrytrajectories = TRUE)
 
     if (!is_all_women_run(output_dir = output_dir))

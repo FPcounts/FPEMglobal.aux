@@ -5,23 +5,15 @@
 \title{Convert csv results to \pkg{fpemdata} format.}
 \usage{
 convert_csv_res_2_fpemdata(
-  run_name = NULL,
   output_dir = NULL,
-  root_dir = NULL,
   adjusted = c("orig", "adj", "sub_adj"),
   ...
 )
 }
 \arguments{
-\item{run_name}{The run name.}
-
 \item{output_dir}{Path to directory containing outputs. See
 Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}. Note that \code{root_dir} is
-ignored if \code{output_dir} is supplied.}
-
-\item{root_dir}{A root directory if needed, i.e., the location of
-the directory called \dQuote{output}.}
+for \code{\link{get_output_dir}}.}
 
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians

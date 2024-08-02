@@ -88,7 +88,7 @@
 ##' @family Get results from rda files
 ##'
 ##' @export
-get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_model_param_quantiles <- function(output_dir = NULL,
                                       percentiles = c(2.5, 50, 97.5), add_cp_timing_param = FALSE,
                                       name_dims = TRUE) {
 
@@ -140,8 +140,7 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
     ## -------** Load par.ciq.rda
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir)
+        output_dir_wrapper(output_dir = output_dir)
     tmp_env <- new.env()
     par_ciq <- get(load(file.path(output_dir, "par.ciq.rda"), envir = tmp_env)[1], envir = tmp_env)
 
@@ -149,7 +148,7 @@ get_model_param_quantiles <- function(run_name = NULL, output_dir = NULL, root_d
 
     ## Only do it if necessary
     if (add_cp_timing_param || add_percentiles)
-        mcmc_array <- get_model_traj(run_name = run_name, output_dir = output_dir, root_dir = root_dir,
+        mcmc_array <- get_model_traj(output_dir = output_dir,
                                      add_cp_timing_param = add_cp_timing_param, name_dims = FALSE)
 
     ## -------* Create Percentiles
@@ -224,7 +223,7 @@ get_countries_model_params_q <- function(...) {
 ##' @family Get results from rda files
 ##'
 ##' @export
-get_indicator_summary_results <- function(run_name = NULL, output_dir = NULL, root_dir = NULL,
+get_indicator_summary_results <- function(output_dir = NULL,
                                           aggregate = c("country", "aggregate"),
                                           stat = c("std", "age_ratio"),
                                           adjusted = c("orig", "adj")) {
@@ -234,8 +233,7 @@ get_indicator_summary_results <- function(run_name = NULL, output_dir = NULL, ro
     ## Checks
 
     output_dir <-
-        output_dir_wrapper(run_name = run_name, output_dir = output_dir,
-                           root_dir = root_dir,
+        output_dir_wrapper(output_dir = output_dir,
                            post_processed = TRUE, countrytrajectories = FALSE,
                            made_results = FALSE)
     aggregate <- match.arg(aggregate)

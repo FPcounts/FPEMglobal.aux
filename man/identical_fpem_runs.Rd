@@ -5,25 +5,15 @@
 \title{Check if two FPEMglobal runs are identical}
 \usage{
 identical_fpem_runs(
-  run_name_1 = NULL,
   output_dir_1 = NULL,
-  root_dir_1 = NULL,
-  run_name_2 = NULL,
   output_dir_2 = NULL,
-  root_dir_2 = NULL,
   assert_valid_dirs = TRUE,
   report = TRUE
 )
 }
 \arguments{
-\item{run_name_1, run_name_2}{See \code{run_name} in help file for
-\code{\link{get_output_dir}}.}
-
 \item{output_dir_1, output_dir_2}{See \code{output_dir} in help
 file for \code{\link{get_csv_res}}.}
-
-\item{root_dir_1, root_dir_2}{See \code{root_dir} in help file for
-\code{\link{get_output_dir}}.}
 
 \item{assert_valid_dirs}{Logical; should the run directories be
 checked to make sure they are valid \pkg{FPEMglobal} output
