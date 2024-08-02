@@ -55,11 +55,16 @@ get_std_marital_group_names <- function(return_case = c("lower", "sentence", "ti
 ##' group (\code{marital_group}) argument.
 ##'
 ##' In addition, more ratio indicators are available in the all women
-##' results if \code{adjusted = "orig"}. The \code{aw_set} argument provides control over whether
-##' all all-women ratio names are returned (\code{"all"}), only those
-##' in common with married/unmarried results (\code{"only common"}),
-##' or only those that are unique to all women results
-##' (\code{"only extra"}).
+##' results if \code{adjusted = "orig"}. The \code{aw_set} argument
+##' provides control over whether all all-women ratio names are
+##' returned (\code{"all"}), only those in common with
+##' married/unmarried results (\code{"only common"}), or only those
+##' that are unique to all women results (\code{"only extra"}).
+##'
+##' The extra all women indicators are not available if \code{adjusted
+##' = "adj"}. In this case, \code{aw_set = "all"} and \code{aw_set =
+##' "only common"} return the same thing, and \code{aw_set =
+##' "only extra"} is an error.
 ##'
 ##' @inheritParams get_csv_res
 ##' @param marital_group Character; marital group for which names are
@@ -96,24 +101,28 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age rati
           unmet = "Unmet", total_plus_unmet = "TotalPlusUnmet", trad_plus_unmet = "TradPlusUnmet")
     ratio_common <-
         c(modern_over_total = "Modern/Total", met_demand = "Met Demand",
-          met_demand_with_modern_methods = "Met Demand with Modern Methods")
-    if (identical(adjusted, "orig")) ratio_common <- c(ratio_common, c(z = "Z"))
-    ratio_aw_extra <-
-        c(modern_married_over_all = "Modern Married Over All",
-          trad_married_over_all = "Trad Married Over All", unmet_married_over_all = "Unmet Married Over All",
-          modern_unmarried_over_all = "Modern Unmarried Over All",
-          trad_unmarried_over_all = "Trad Unmarried Over All",
-          unmet_unmarried_over_all = "Unmet Unmarried Over All")
+          met_demand_with_modern_methods = "Met Demand with Modern Methods",
+          z = "Z")
+    if (identical(adjusted, "orig")) {
+        ratio_aw_extra <-
+            c(modern_married_over_all = "Modern Married Over All",
+              trad_married_over_all = "Trad Married Over All", unmet_married_over_all = "Unmet Married Over All",
+              modern_unmarried_over_all = "Modern Unmarried Over All",
+              trad_unmarried_over_all = "Trad Unmarried Over All",
+              unmet_unmarried_over_all = "Unmet Unmarried Over All")
+    }
 
     if (identical(indicator_name_format, "csv_results_file_names")) {
         prop_count <- FPEMglobal:::makeShortIndicatorFileName(prop_count)
         ratio_common <-
             FPEMglobal:::makeShortIndicatorFileName(gsub("Modern/Total", "ModernOverTotal", x = ratio_common))
-        ratio_aw_extra <- FPEMglobal:::makeShortIndicatorFileName(ratio_aw_extra)
+        if (identical(adjusted, "orig"))
+            ratio_aw_extra <- FPEMglobal:::makeShortIndicatorFileName(ratio_aw_extra)
     } else if (identical(indicator_name_format, "clean")) {
         prop_count[] <- names(prop_count)
         ratio_common[] <- names(ratio_common)
-        ratio_aw_extra[] <- names(ratio_aw_extra)
+        if (identical(adjusted, "orig"))
+            ratio_aw_extra[] <- names(ratio_aw_extra)
     }
 
     ## Output
@@ -121,9 +130,16 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age rati
     else { # stat must == "ratio"
         if (!identical(marital_group, "all women")) return(ratio_common)
         else { # marital_group must == "all women"
-            if (identical(aw_set, "all")) return(c(ratio_common, ratio_aw_extra))
-            else if (identical(aw_set, "only common")) return(ratio_common)
-            else return(ratio_aw_extra)
+            if (identical(adjusted, "orig")) {
+                if (identical(aw_set, "all")) return(c(ratio_common, ratio_aw_extra))
+                else if (identical(aw_set, "only common")) return(ratio_common)
+                else return(ratio_aw_extra)
+            } else { # adjusted must == "adj"
+                if (aw_set %in% c("all", "only common")) return(ratio_common)
+                else { # aw_set must == "only extra"
+                    stop("'only extra' is not a valid option for 'aw_set' when 'adjusted = \"adj\"'.")
+                }
+            }
         }
     }
 }

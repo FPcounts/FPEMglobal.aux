@@ -50,11 +50,16 @@ arrays differ by statistic (\code{stat} argument) and marital
 group (\code{marital_group}) argument.
 
 In addition, more ratio indicators are available in the all women
-results if \code{adjusted = "orig"}. The \code{aw_set} argument provides control over whether
-all all-women ratio names are returned (\code{"all"}), only those
-in common with married/unmarried results (\code{"only common"}),
-or only those that are unique to all women results
-(\code{"only extra"}).
+results if \code{adjusted = "orig"}. The \code{aw_set} argument
+provides control over whether all all-women ratio names are
+returned (\code{"all"}), only those in common with
+married/unmarried results (\code{"only common"}), or only those
+that are unique to all women results (\code{"only extra"}).
+
+The extra all women indicators are not available if \code{adjusted
+= "adj"}. In this case, \code{aw_set = "all"} and \code{aw_set =
+"only common"} return the same thing, and \code{aw_set =
+"only extra"} is an error.
 }
 \seealso{
 Other String constants: 
