@@ -1,3 +1,23 @@
+test_that("FPEMglobal ext data file names are returned properly", {
+        out <- get_FPEMglobal_extdata_filenames(file_ext = TRUE, "1.5.3")
+        expect_type(out, "character")
+        expect_true(!is.null(names(out)) && length(names(out)) > 0)
+        expect_true(all(grepl(pattern = "\\.csv", x = out)))
+        expect_true(all(grepl(pattern = "_pre2024", x = out)))
+
+        out <- get_FPEMglobal_extdata_filenames(file_ext = FALSE, "1.5.3")
+        expect_type(out, "character")
+        expect_true(!is.null(names(out)) && length(names(out)) > 0)
+        expect_true(all(!grepl(pattern = "\\.csv", x = out)))
+        expect_true(all(grepl(pattern = "_pre2024", x = out)))
+
+        out <- get_FPEMglobal_extdata_filenames(FPEMglobal_version = "1.5.2")
+        expect_type(out, "character")
+        expect_true(!is.null(names(out)) && length(names(out)) > 0)
+        expect_true(all(!grepl(pattern = "_pre2024", x = out)))
+})
+
+
 test_that("Standard indicator names are properly returned", {
     args_list <- lapply(head(as.list(args(get_std_indicator_names)), -1), "eval")
     expect_type(args_list, "list")
@@ -24,3 +44,4 @@ test_that("Standard indicator names are properly returned", {
         }
     }
 })
+

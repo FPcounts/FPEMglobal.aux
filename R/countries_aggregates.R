@@ -3,6 +3,9 @@
 
 ### NOTE: See also 'text_manipulation.R' for more functions that deal with region/aggregate names.
 
+
+
+
 ##' Read table of the \dQuote{195} countries
 ##'
 ##' These are the 195 countries in the original married women
@@ -23,7 +26,9 @@
 ##' @export
 get_195_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
-    fname <- system.file("extdata/countries_mwra_195.csv", package = "FPEMglobal")
+    fname <- system.file("extdata",
+                         get_FPEMglobal_extdata_filenames()["countries_mwra_195"],
+                         package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
@@ -46,7 +51,9 @@ get_195_countries <- function(clean_col_names = TRUE) {
 ##' @export
 get_185_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
-    fname <- system.file("extdata/countries_unpd_185.csv", package = "FPEMglobal")
+    fname <- system.file("extdata",
+                         get_FPEMglobal_extdata_filenames()["countries_unpd_185"],
+                         package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
@@ -68,7 +75,9 @@ get_185_countries <- function(clean_col_names = TRUE) {
 get_country_classifications <- function(M49_region_names_names = TRUE,
                                         clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
-    fname <- system.file("extdata/country_and_area_classification.csv", package = "FPEMglobal")
+    fname <- system.file("extdata",
+                         get_FPEMglobal_extdata_filenames()["country_classifications"],
+                         package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (M49_region_names_names)
             out[, "Country or area"] <-
@@ -99,12 +108,11 @@ get_used_unpd_regions <-
 
         verbose <- getOption("FPEMglobal.aux.verbose")
 
-        output_dir <-
-            output_dir_wrapper(output_dir = output_dir)
+        output_dir <- output_dir_wrapper(output_dir = output_dir)
         data_dir_name <- "data"
         data_dir <- file.path(output_dir, data_dir_name)
 
-        fname <- file.path(data_dir, "country_and_area_classification.csv")
+        fname <- file.path(data_dir, get_FPEMglobal_extdata_filenames()["country_classifications"])
         if (verbose) message("Reading '", fname, "'.")
         out <- readr::read_csv(fname, name_repair = "minimal")
         if (M49_region_names_names)

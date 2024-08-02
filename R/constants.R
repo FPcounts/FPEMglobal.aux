@@ -5,6 +5,27 @@
 ### ** String Constants
 
 ###-----------------------------------------------------------------------------
+### ** File Names in FPEMglobal
+
+get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE,
+                                             FPEMglobal_version = packageVersion("FPEMglobal")) {
+    out <-  c(countries_mwra_195 = "countries_mwra_195",
+              countries_unpd_185 = "countries_unpd_185",
+              country_classifications = "country_and_area_classification",
+              number_of_women_15_49 = "number_of_women_15-49")
+
+    nm_out <- names(out)
+
+    if (FPEMglobal_version > "1.5.2")
+        out <- paste(out, "_pre2024", sep = "")
+    if (file_ext)
+        out <- paste(out, ".csv", sep = "")
+
+    names(out) <- nm_out
+    return(out)
+    }
+
+###-----------------------------------------------------------------------------
 ### *** Marital Groups
 
 ##' Standard marital group names
