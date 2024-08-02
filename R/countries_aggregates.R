@@ -110,7 +110,12 @@ get_used_unpd_regions <-
 
         output_dir <- output_dir_wrapper(output_dir = output_dir)
 
-        file_path <- get_global_mcmc_args(output_dir = output_dir)$region_information_csv_filename
+        if (!is_all_women_run(output_dir = output_dir)) {
+            file_path <- get_global_mcmc_args(output_dir = output_dir)$region_information_csv_filename
+        } else {
+            file_path <- get_combine_runs_args(output_dir = output_dir)$region_information_csv_filename
+        }
+
         file_name <- basename(file_path)
 
         data_dir_name <- "data"
