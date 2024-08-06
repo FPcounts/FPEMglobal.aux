@@ -9,6 +9,7 @@
 
 get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE,
                                              FPEMglobal_version = packageVersion("FPEMglobal")) {
+    warning("'get_FPEMglobal_extdata_filenames' needs updating: should be using 'FPEMglobal::pkg_files_included()`.")
     out <-  c(countries_mwra_195 = "countries_mwra_195",
               countries_unpd_185 = "countries_unpd_185",
               country_classifications = "country_and_area_classification",
@@ -23,7 +24,7 @@ get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE,
 
     names(out) <- nm_out
     return(out)
-    }
+}
 
 ###-----------------------------------------------------------------------------
 ### *** Marital Groups

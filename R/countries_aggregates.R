@@ -163,8 +163,12 @@ list_special_aggregates_csv_filenames <- function() {
       "UNICEF_regions_level_2.csv",
       "WHO_regions.csv")
 }
+
+make_special_aggregates_names <- function(csv_filenames) {
+    gsub("\\.csv", "", csv_filenames)
+}
 list_special_aggregates_names <- function() {
-    gsub("\\.csv", "", list_special_aggregates_csv_filenames())
+    make_special_aggregates_names(list_special_aggregates_csv_filenames())
 }
 
 ##' Get special aggregate country classifications
@@ -182,7 +186,7 @@ list_special_aggregates_names <- function() {
 get_used_special_aggregates <-
     function(output_dir = NULL,
              clean_col_names = TRUE) {
-
+ warning("'get_used_special_aggregates()' needs updating: should be using 'FPEMglobal::pkg_files_included()`.")
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-

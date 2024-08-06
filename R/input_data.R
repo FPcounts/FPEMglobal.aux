@@ -104,12 +104,44 @@ get_used_denominators <- function(output_dir = NULL,
 }
 
 
+##' Get the file path to the denominator population .csv file
+##'
+##' Returns the path to the \file{.csv} file containing the
+##' denominator counts that was used in the global run (including the extension). The path returned is
+##' relative to the directory containing \code{output_dir}; i.e., of
+##' the form \file{<output-dir>/data/<filename>.csv}.
+##'
+##' @inheritParams get_csv_res
+##' @inheritParams get_output_dir
+##' @return Character string containing the file path.
+##' @author Mark Wheldon
+##' @export
+get_used_csv_denominators_filepath <- function(output_dir = NULL) {
+    output_dir <-
+        output_dir_wrapper(output_dir = output_dir,
+                           post_processed = TRUE, countrytrajectories = FALSE,
+                           made_results = FALSE,
+                           assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
+                           )
+
+    if (is_all_women_run(output_dir = output_dir))
+        denom_file_name_meta <- get_combine_runs_args(output_dir = output_dir)$denominator_counts_csv_filename
+    else
+        denom_file_name_meta <- get_global_post_process_args(output_dir = output_dir)$denominator_counts_csv_filename
+    if (length(denom_file_name_meta) && nchar(denom_file_name_meta))
+        return(file.path(output_dir, "data", basename(denom_file_name_meta)))
+    else stop("File path to denominator .csv file could not be determined from meta data.")
+}
+
+
 ##' Get denominator counts from csv files
 ##'
 ##' Reads the '.csv' file containing the married and unmarried
 ##' denominator counts used in the run. The data frame returned has
 ##' columns \code{"iso"}, \code{"name"}, \code{"year"},
-##' \code{"count"}.
+##' \code{"count"}. By default, the filename will be taken from the
+##' meta info of the run. Alternatively, a specific file can be read
+##' by specifying the path via \code{filename}.
 ##'
 ##' One or more marital groups can be requested via argument
 ##' \code{marital_group}. Value \code{"default"} will read the
@@ -136,7 +168,8 @@ get_used_denominators <- function(output_dir = NULL,
 ##' @param filename Name of file with the counts (including extension,
 ##'     excluding any parent directories). If \code{NULL}, this will
 ##'     be inferred from the meta data (see
-##'     \code{\link{get_global_mcmc_args}}.
+##'     \code{\link{get_global_mcmc_args}} and
+##'     \code{\link{get_used_csv_denominators_filepath}}).
 ##' @param age_group Age group of the counts for the output data
 ##'     frame. If the column names are of the form
 ##'     'U/MW_\[aabb\]_year' this is ignored and the age group is
@@ -269,7 +302,7 @@ get_csv_denominators <- function(output_dir = NULL,
 
     if (is.null(filename)) {
         try_fn <-
-            try(get_csv_denominators_filepath(output_dir = output_dir),
+            try(get_used_csv_denominators_filepath(output_dir = output_dir),
                 silent = TRUE)
 
         if (inherits(try_fn, "try-error"))

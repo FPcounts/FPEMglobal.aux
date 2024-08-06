@@ -110,33 +110,3 @@ table_orig_adj_dir <- function(tbl_dir, adj) {
     }
 }
 
-
-##' Get the file path to the denominator population .csv file
-##'
-##' Returns the path to the \file{.csv} file containing the
-##' denominator counts (including the extension). The path returned is
-##' relative to the directory containing \code{output_dir}; i.e., of
-##' the form \file{<output-dir>/data/<filename>.csv}.
-##'
-##' @inheritParams get_csv_res
-##' @inheritParams get_output_dir
-##' @return Character string containing the file path.
-##' @author Mark Wheldon
-##' @export
-get_csv_denominators_filepath <- function(output_dir = NULL) {
-    output_dir <-
-        output_dir_wrapper(output_dir = output_dir,
-                           post_processed = TRUE, countrytrajectories = FALSE,
-                           made_results = FALSE,
-                           assert_valid = FALSE #<<<<<<<<<<<< IF THIS IS TRUE TESTS WILL PROBABLY FAIL
-                           )
-
-    if (is_all_women_run(output_dir = output_dir))
-        denom_file_name_meta <- get_combine_runs_args(output_dir = output_dir)$denominator_counts_csv_filename
-    else
-        denom_file_name_meta <- get_global_post_process_args(output_dir = output_dir)$denominator_counts_csv_filename
-    if (length(denom_file_name_meta) && nchar(denom_file_name_meta))
-        return(file.path(output_dir, "data", basename(denom_file_name_meta)))
-    else stop("File path to denominator .csv file could not be determined from meta data.")
-}
-
