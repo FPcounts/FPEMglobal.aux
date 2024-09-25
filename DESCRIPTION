@@ -1,6 +1,6 @@
 Package: FPEMglobal.aux
 Title: Auxillary Functions for FPEMglobal
-Version: 1.0.0.9000
+Version: 1.1.0
 Authors@R: 
     c(person(given = "Mark",
            family = "Wheldon",
@@ -21,13 +21,14 @@ Imports:
     abind,
     checkmate,
     dplyr,
-    FPEMglobal (>= 1.5.0.9000),
+    FPEMglobal (>= 1.5.2),
     gdata,
     magrittr,
     readr,
     reshape2,
     tibble,
     tidyr,
+    tools,
     utils
 Suggests:
     parallel,

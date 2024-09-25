@@ -7,22 +7,18 @@
 ###-----------------------------------------------------------------------------
 ### ** File Names in FPEMglobal
 
-get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE,
-                                             FPEMglobal_version = packageVersion("FPEMglobal")) {
-    warning("'get_FPEMglobal_extdata_filenames' needs updating: should be using 'FPEMglobal::pkg_files_included()`.")
-    out <-  c(countries_mwra_195 = "countries_mwra_195",
-              countries_unpd_185 = "countries_unpd_185",
-              country_classifications = "country_and_area_classification",
-              number_of_women_15_49 = "number_of_women_15-49")
+get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE) {
 
-    nm_out <- names(out)
+    FPEMglobal_files <- FPEMglobal::pkg_files_included(result = "filename")
 
-    if (FPEMglobal_version > "1.5.2")
-        out <- paste(out, "_pre2024", sep = "")
-    if (file_ext)
-        out <- paste(out, ".csv", sep = "")
+    out <-  list(countries_mwra_195 = FPEMglobal_files$post_process_inputs$countries_for_aggregates,
+              countries_unpd_185 = FPEMglobal_files$post_process_inputs$countries_for_output_unpd_185,
+              country_classifications = FPEMglobal_files$model_run_inputs$region_information,
+              number_of_women_15_49 = FPEMglobal_files$post_process_inputs$denominator_counts_1549,
+              special_aggregates = FPEMglobal_files$special_aggregates)
 
-    names(out) <- nm_out
+    if (!file_ext) out <- lapply(out, tools::file_path_sans_ext)
+
     return(out)
 }
 

@@ -25,7 +25,7 @@ run. The file is read using \code{\link[readr]{read_csv}}.
 }
 \seealso{
 Other Input data functions: 
-\code{\link{get_csv_denominators}()},
+\code{\link{get_used_csv_denominators}()},
 \code{\link{get_used_denominators}()}
 }
 \author{

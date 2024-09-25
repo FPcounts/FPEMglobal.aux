@@ -361,14 +361,14 @@ get_csv_res <- function(output_dir = NULL,
             get_used_unpd_regions(output_dir = output_dir,
                                   clean_col_names = FALSE)
 
-        class_spec <-
-            get_used_special_aggregates(output_dir = output_dir,
-                                        clean_col_names = FALSE)
+        ## class_spec <-
+        ##     get_used_special_aggregates(output_dir = output_dir,
+        ##                                 clean_col_names = FALSE)
 
         res <- res %>%
             dplyr::left_join(dplyr::select(class_unpd_agg, -`Country or area`),
-                             by = c("Iso" = "ISO Code")) %>%
-            dplyr::left_join(class_spec, by = c("Iso" = "iso.country"))
+                             by = c("Iso" = "ISO Code"))##  %>%
+            ## dplyr::left_join(class_spec, by = c("Iso" = "iso.country"))
     }
 
     ## Sort

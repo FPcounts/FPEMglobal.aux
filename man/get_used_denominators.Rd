@@ -31,7 +31,7 @@ Reads denominators from the \file{.rda} file produced during a run
 (e.g., \file{res.country.rda}, \file{res.country.all.women.rda},
 etc.). The output directory must have been post-processed
 otherwise these files will not exist. If this is not the case, use
-\code{\link{get_csv_denominators}}. The result is a
+\code{\link{get_used_csv_denominators}}. The result is a
 \code{\link[tibble]{tibble}} with columns \code{"iso"},
 \code{"name"}, \code{"year"}, \code{"count"}.
 
@@ -44,7 +44,7 @@ argument, which is \code{"units"} by default.
 storage format of year values.
 
 Other Input data functions: 
-\code{\link{get_csv_denominators}()},
+\code{\link{get_used_csv_denominators}()},
 \code{\link{get_used_input_data}()}
 }
 \author{

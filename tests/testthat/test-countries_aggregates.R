@@ -69,7 +69,9 @@ test_that("get_used_special_aggregates works for 15-49, married women run", {
     expect_true(dir.exists(test_output_dir))
 
     ## Default
-    get_used_special_aggregates(output_dir = test_output_dir)
+    agg <- get_used_special_aggregates(output_dir = test_output_dir)
+    expect_s3_class(agg, "tbl_df")
+    expect_true(nrow(agg) > 0)
 
     ## Specified args
     for (ccn in c(TRUE, FALSE)) {

@@ -39,7 +39,7 @@ convert_country_traj_to_age_ratios(
 \code{convert_country_traj_to_counts}).}
 
 \item{denominator_counts_df}{Data frame of denominator counts (as
-produced by \code{\link{get_csv_denominators}}). These
+produced by \code{\link{get_used_csv_denominators}}). These
 \emph{must} in units of 1000!!}
 
 \item{iso}{Numeric ISO code of the country to select from
@@ -71,7 +71,7 @@ counts. Since each trajectory array is only for a single country
 or area, the denominators must match. Argument \code{iso} can be
 used to subset \code{denominator_counts_df} if needed. In that
 case, the ISOs must be in column \code{"iso"}. See
-\code{\link{get_csv_denominators}}.
+\code{\link{get_used_csv_denominators}}.
 
 Ratio indicators for all women include ratios of married/unmarried
 over all women. To compute these from an all women trajectory

@@ -7,8 +7,9 @@ ECHO. ==========================================================================
 ECHO. DATA
 ECHO. ================================================================================
 
-Rscript -e "setwd('data-raw'); example(source); sourceDir('.')"
-if %ERRORLEVEL% GEQ 1 PAUSE
+REM Takes too long; needs to read 'mcmc.array.rda' file which is large (and probably only remote), and lots of other files.
+rem Rscript -e "setwd('data-raw'); example(source); sourceDir('.')"
+rem if %ERRORLEVEL% GEQ 1 PAUSE
 
 ECHO.
 ECHO.

@@ -19,6 +19,12 @@ test_that("get_csv_results works with default argument values on a 15-49, marrie
 })
 
 test_that("get_csv_results produces data frame without duplicates", {
+
+    ## NOTE: This uses the _installed_ version of the package, so if
+    ## you have updated relevant code you will either need to use the
+    ## non-parallel version by uncommenting (see below) or reinstall
+    ## the package.
+
     ## Output directory
     test_output_dir <-
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
@@ -35,7 +41,7 @@ test_that("get_csv_results produces data frame without duplicates", {
     if (requireNamespace("parallel", quietly = TRUE)) {
 
         if (requireNamespace("parallelly", quietly = TRUE)) {
-            nodes <- parallelly::availableCores(omit = 2)
+            nodes <- parallelly::availableCores(omit = 2) #one for system, one for testthat parallel runner
         } else nodes <- 1
         cl <- parallel::makeCluster(nodes)
 
@@ -46,16 +52,20 @@ test_that("get_csv_results produces data frame without duplicates", {
             library(testthat)
             library(FPEMglobal.aux)
 
+            ## ## UNCOMMENT for debugging: -->
+
+            ## for (i in 1:nrow(argvals_grid)) {
             ## for (STAT in args_list$stat) {
             ##     for (ADJ in args_list$adjusted) {
             ##         for (INF in args_list$indicator_name_format) {
             ##             for (ACC in c(TRUE, FALSE)) {
 
-            ##                 ## UNCOMMENT for debugging:
-            ##                 ## cat("\nstat = ", STAT)
-            ##                 ## cat("\nadjusted = ", ADJ)
-            ##                 ## cat("\ninf = ", INF)
-            ##                 ## cat("\nacc = ", ACC)
+            ##                 cat("\nstat = ", STAT)
+            ##                 cat("\nadjusted = ", ADJ)
+            ##                 cat("\ninf = ", INF)
+            ##                 cat("\nacc = ", ACC)
+
+            ## ## |<---
 
             ## NO Aggregates:
 
@@ -87,6 +97,15 @@ test_that("get_csv_results produces data frame without duplicates", {
                        res_df$year == unique(res_df$year)[1] &
                        res_df$quantile == unique(res_df$quantile)[1], , drop = FALSE]),
                 1L)
+
+            ## ## UNCOMMENT FOR DEBUGGING: -->
+            ##             }
+            ##             }
+            ##         }
+            ##     }
+            ## }
+            ## ## |<---
+
         })
         parallel::stopCluster(cl)
 

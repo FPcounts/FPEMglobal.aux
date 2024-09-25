@@ -27,7 +27,7 @@
 get_195_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata",
-                         get_FPEMglobal_extdata_filenames()["countries_mwra_195"],
+                         get_FPEMglobal_extdata_filenames()[["countries_mwra_195"]],
                          package = "FPEMglobal")
     if (verbose) message("Reading '", fname, "'.")
     out <- readr::read_csv(fname, name_repair = "minimal")
@@ -52,7 +52,7 @@ get_195_countries <- function(clean_col_names = TRUE) {
 get_185_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata",
-                         get_FPEMglobal_extdata_filenames()["countries_unpd_185"],
+                         get_FPEMglobal_extdata_filenames()[["countries_unpd_185"]],
                          package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (clean_col_names) out <- clean_col_names(out)
@@ -76,7 +76,7 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
                                         clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
     fname <- system.file("extdata",
-                         get_FPEMglobal_extdata_filenames()["country_classifications"],
+                         get_FPEMglobal_extdata_filenames()[["country_classifications"]],
                          package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
     if (M49_region_names_names)
@@ -147,7 +147,7 @@ list_world_bank_aggregates_names <- function() {
 ## List of special aggregates
 list_special_aggregates_csv_filenames <- function() {
     ## This just has to be a hard-coded list of all possible special aggregate csv file names.
-    c("ECA_regions.csv",
+    unique(c("ECA_regions.csv",
       "ECE_regions.csv",
       "ECLAC_regions.csv",
       "ESCWA_regions.csv",
@@ -161,7 +161,8 @@ list_special_aggregates_csv_filenames <- function() {
       "UNFPA_regions.csv",
       "UNICEF_regions_level_1.csv",
       "UNICEF_regions_level_2.csv",
-      "WHO_regions.csv")
+      "WHO_regions.csv",
+      get_FPEMglobal_extdata_filenames(file_ext = TRUE)[["special_aggregates"]]))
 }
 
 make_special_aggregates_names <- function(csv_filenames) {
@@ -186,7 +187,7 @@ list_special_aggregates_names <- function() {
 get_used_special_aggregates <-
     function(output_dir = NULL,
              clean_col_names = TRUE) {
- warning("'get_used_special_aggregates()' needs updating: should be using 'FPEMglobal::pkg_files_included()`.")
+
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-

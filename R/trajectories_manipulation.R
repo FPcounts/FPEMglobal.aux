@@ -9,7 +9,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
     if (!all(c("iso", "name", "count", "year") %in% colnames(denominator_counts_df)))
         stop("'denominator_counts_df' must have column names ",
              toString(c("iso", "name", "count", "year")),
-             ". Use 'get_csv_denominators()' with 'clean_col_names = TRUE' and 'table_format = \"long\"'.")
+             ". Use 'get_used_csv_denominators()' with 'clean_col_names = TRUE' and 'table_format = \"long\"'.")
 
     ## Denominators must be for one country
     ## Subset on 'iso' if necessary
@@ -60,7 +60,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 ##' or area, the denominators must match. Argument \code{iso} can be
 ##' used to subset \code{denominator_counts_df} if needed. In that
 ##' case, the ISOs must be in column \code{"iso"}. See
-##' \code{\link{get_csv_denominators}}.
+##' \code{\link{get_used_csv_denominators}}.
 ##'
 ##' Ratio indicators for all women include ratios of married/unmarried
 ##' over all women. To compute these from an all women trajectory
@@ -77,7 +77,7 @@ assert_valid_denominator_counts <- function(traj_array, denominator_counts_df, i
 ##'     \code{convert_country_traj_to_ratios} only: trajectory array
 ##'     counts for married and unmarried women. See \dQuote{Details}.
 ##' @param denominator_counts_df Data frame of denominator counts (as
-##'     produced by \code{\link{get_csv_denominators}}). These
+##'     produced by \code{\link{get_used_csv_denominators}}). These
 ##'     \emph{must} in units of 1000!!
 ##' @param iso Numeric ISO code of the country to select from
 ##'     \code{denominator_counts_df}; see \dQuote{Details}.

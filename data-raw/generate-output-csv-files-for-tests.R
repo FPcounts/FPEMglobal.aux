@@ -11,7 +11,7 @@
 setwd(here::here("data-raw"))
 
 ## Need to know where results are kept on SharePoint. Use system environment variable.
-if (identical(Sys.getenv("SharePoint_DESA_POP_PDU"), "")) stop("Env. var. 'SharePoint_DESA_POP_PDU' is undefined.")
+if (identical(Sys.getenv("USERPROFILE"), "")) stop("Env. var. 'USERPROFILE' is undefined.")
 
 ## Check paths exist.
 valid_path <- function(...) {
@@ -23,10 +23,11 @@ valid_path <- function(...) {
 
 ## Results taken from here:
 FPEM_res_path_1519 <-
-    valid_path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Developing", "2022",
-              "20220627-1 (RES ONLY)")
+    valid_path(Sys.getenv("USERPROFILE"), "United Nations", "DESA-POP - PDU",
+               "FPEM", "Results", "Developing", "2022", "20220627-1 (RES ONLY)")
 FPEM_res_path_1549 <-
-    valid_path(Sys.getenv("SharePoint_DESA_POP_PDU"), "FPEM", "Results", "Released", "2022")
+    valid_path(Sys.getenv("USERPROFILE"), "United Nations", "DESA-POP - PDU",
+               "FPEM", "Results", "Released", "2022")
 
 ###-----------------------------------------------------------------------------
 ### * Paths
@@ -90,6 +91,8 @@ for (k in seq_along(src_paths)) {
             warning("File '", fpath, "' not found.")
         }
     }
+
+    ## NOTE: files in the "data" subdir are copied manually.
 
     ## mcmc array
     mcmc_file_path <- file.path(src_path, "mcmc.array.rda")

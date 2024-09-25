@@ -43,7 +43,7 @@ get_used_input_data <- function(output_dir = NULL,
 ##' (e.g., \file{res.country.rda}, \file{res.country.all.women.rda},
 ##' etc.). The output directory must have been post-processed
 ##' otherwise these files will not exist. If this is not the case, use
-##' \code{\link{get_csv_denominators}}. The result is a
+##' \code{\link{get_used_csv_denominators}}. The result is a
 ##' \code{\link[tibble]{tibble}} with columns \code{"iso"},
 ##' \code{"name"}, \code{"year"}, \code{"count"}.
 ##'
@@ -107,7 +107,7 @@ get_used_denominators <- function(output_dir = NULL,
 ##' Get the file path to the denominator population .csv file
 ##'
 ##' Returns the path to the \file{.csv} file containing the
-##' denominator counts that was used in the global run (including the extension). The path returned is
+##' denominator counts that were used in the global run (including the extension). The path returned is
 ##' relative to the directory containing \code{output_dir}; i.e., of
 ##' the form \file{<output-dir>/data/<filename>.csv}.
 ##'
@@ -136,12 +136,13 @@ get_used_csv_denominators_filepath <- function(output_dir = NULL) {
 
 ##' Get denominator counts from csv files
 ##'
-##' Reads the '.csv' file containing the married and unmarried
-##' denominator counts used in the run. The data frame returned has
-##' columns \code{"iso"}, \code{"name"}, \code{"year"},
-##' \code{"count"}. By default, the filename will be taken from the
-##' meta info of the run. Alternatively, a specific file can be read
-##' by specifying the path via \code{filename}.
+##' Reads a '.csv' file containing the married and unmarried
+##' denominator counts used in the FPEMglobal run stored in
+##' \code{output_dir}. The data frame returned has columns
+##' \code{"iso"}, \code{"name"}, \code{"year"}, \code{"count"}. By
+##' default, the filename will be taken from the meta info of the
+##' run. Alternatively, a specific file can be read by specifying the
+##' path via \code{filename}.
 ##'
 ##' One or more marital groups can be requested via argument
 ##' \code{marital_group}. Value \code{"default"} will read the
@@ -165,7 +166,7 @@ get_used_csv_denominators_filepath <- function(output_dir = NULL) {
 ##' output directory. These are read in using an unexported function
 ##' from \pkg{FPEMglobal}, which is a thin wrapper to \code{read.csv}.
 ##'
-##' @param filename Name of file with the counts (including extension,
+##' @param filename Name of file with the denominators (including extension,
 ##'     excluding any parent directories). If \code{NULL}, this will
 ##'     be inferred from the meta data (see
 ##'     \code{\link{get_global_mcmc_args}} and
@@ -192,7 +193,7 @@ get_used_csv_denominators_filepath <- function(output_dir = NULL) {
 ##'     storage format of year values.
 ##'
 ##' @export
-get_csv_denominators <- function(output_dir = NULL,
+get_used_csv_denominators <- function(output_dir = NULL,
                                   filename = NULL,
                                   marital_group = c("default", "married", "unmarried", "all_women"),
                                   age_group = NULL,
@@ -664,7 +665,7 @@ denominators_2_fpemdata <- function(output_dir = NULL) {
 
     ## -------* Get denominators
 
-    denom_csv <- get_csv_denominators(output_dir = output_dir,
+    denom_csv <- get_used_csv_denominators(output_dir = output_dir,
                                       clean_col_names = TRUE, table_format = "long",
                                       marital_group = c("married", "unmarried"),
                                       years_as_midyear = FALSE,
