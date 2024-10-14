@@ -18,6 +18,13 @@
 ##' that prevalence \emph{proportions} are stored in \file{.csv} files
 ##' with \dQuote{perc} in their names.
 ##'
+##' You can supply a vector to \code{stat} to request multiple result
+##' types in one go. In this case, however, you must also specify
+##' \code{table_format = "long"}. The output will have an additional
+##' column named \code{"stat"} indicating the result type for each
+##' row. This is required because the indicator names for the
+##' \code{"prop"} and \code{"count"} result types are the same.
+##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
 ##' the column names. This tidies up and standardizes column
 ##' names. \emph{Note:} An additional step is performed after calling
@@ -54,8 +61,7 @@
 ##'     in a message?
 ##' @param aggregate Name of the 'aggregate' to load. Note: use
 ##'     \code{aggregate = "country"} to load country results.
-##' @param stat Which statistics should be loaded? Allowable values
-##'     are \code{c("orig", "adj", "sub_adj")}.
+##' @param stat Which statistics should be loaded? See \dQuote{Details}.
 ##' @param indicator_name_format Character; the format to use for
 ##'     indicator names. It is highly recommended to use the first
 ##'     (default) option, maybe the second.
@@ -80,7 +86,6 @@
 ##' @param verbose Logical. Print lots of messages? See
 ##'     \code{\link{FPEMglobal.aux}} for a note about \pkg{readr}
 ##'     messages.
-##' @inheritParams get_output_dir
 ##'
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##'
@@ -105,22 +110,43 @@ get_csv_res <- function(output_dir = NULL,
                         table_format = c("long", "wide", "raw"),
                         sort = TRUE) {
 
-    ## -------* Set Up
-
-    ## -------** Check arguments
+    ## -------* Check arguments
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
-    stat <- match.arg(stat)
+    stat <- match.arg(stat, several.ok = TRUE)
     indicator_name_format <- match.arg(indicator_name_format)
     stopifnot(is.logical(years_as_midyear))
     adjusted <- match.arg(adjusted)
     table_format <- match.arg(table_format)
 
+    if (length(stat) > 1 && !identical(table_format, "long"))
+        stop("'stat' has more than one element; 'table_format' must be '\"long\"'.")
+
     if (add_country_classifications && !identical(aggregate, "country")) {
         warning("'add_country_classifications' only has an effect if 'aggregate' == '\"country\"'. No classifications will be added.")
         add_country_classifications <- FALSE
     }
+
+    ## -------* Multiple "stat"s requested?
+
+    if (length(stat) > 1) {
+        return(dplyr::bind_rows(lapply(stat, function(z) {
+            data.frame(get_csv_res(output_dir = output_dir,
+                            aggregate = aggregate,
+                            stat = z, ## <<<<<
+                            adjusted = adjusted,
+                            clean_col_names = clean_col_names,
+                            indicator_name_format = indicator_name_format,
+                            years_as_midyear = years_as_midyear,
+                            add_country_classifications = add_country_classifications,
+                            table_format = table_format,
+                            sort = sort),
+                       stat = z)
+        })))
+    }
+
+    ## -------* Set Up
 
     ## -------** Constants
 
@@ -470,16 +496,22 @@ get_csv_all_mar_res <- function(output_dir_list = NULL,
 ##' @family fpemdata converters
 ##' @seealso get_csv_res
 ##'
+##' @param stat Which statistics should be loaded? See
+##'     \code{\link{get_csv_res}} for details, but note that, unlike
+##'     with \code{\link{get_csv_res}}, you can only specifiy one
+##'     \dQuote{\code{stat}} at a time with this function.
 ##' @inheritParams get_csv_res
-##' @param ... passed to \code{\link{get_csv_res}}
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark C Wheldon
 ##' @export
 convert_csv_res_2_fpemdata <- function(output_dir = NULL,
-                               adjusted = c("orig", "adj", "sub_adj"),
-                               ...) {
+                                       stat = c("prop", "count", "ratio"),
+                               adjusted = c("orig", "adj", "sub_adj")) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
+
+    stat <- match.arg(stat, several.ok = FALSE)
+    adjusted <- match.arg(adjusted, several.ok = FALSE)
 
     output_dir <-
         output_dir_wrapper(output_dir = output_dir,
@@ -488,6 +520,7 @@ convert_csv_res_2_fpemdata <- function(output_dir = NULL,
                            adjusted_medians = any(c("adj", "sub_adj") %in% adjusted))
 
     out <- get_csv_res(output_dir = output_dir,
+                       stat = stat,
                        adjusted = adjusted,
                        table_format = "raw", clean_col_names = FALSE)
 

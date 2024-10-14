@@ -18,6 +18,18 @@ test_that("get_csv_results works with default argument values on a 15-49, marrie
                     "data.frame")
 })
 
+test_that("get_csv_results works with multiple 'stat's on a 15-49, married directory", {
+    ## Output directory
+    test_output_dir <-
+        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(dir.exists(test_output_dir))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = c("prop", "ratio", "count"))
+    expect_s3_class(res, "data.frame")
+    expect_true("stat" %in% colnames(res))
+})
+
 test_that("get_csv_results produces data frame without duplicates", {
 
     ## NOTE: This uses the _installed_ version of the package, so if
@@ -72,6 +84,7 @@ test_that("get_csv_results produces data frame without duplicates", {
             ## Long
             res_df <- get_csv_res(output_dir = test_output_dir,
                                   aggregate = "country",
+                                  stat = argvals_grid$STAT[i],
                                   adjusted = argvals_grid$ADJ[i],
                                   table_format = "long",
                                   indicator_name_format = argvals_grid$INF[i],
@@ -87,6 +100,7 @@ test_that("get_csv_results produces data frame without duplicates", {
             ## Wide
             res_df <- get_csv_res(output_dir = test_output_dir,
                                   aggregate = "country",
+                                  stat = argvals_grid$STAT[i],
                                   adjusted = argvals_grid$ADJ[i],
                                   table_format = "wide",
                                   indicator_name_format = argvals_grid$INF[i],
@@ -96,6 +110,46 @@ test_that("get_csv_results produces data frame without duplicates", {
                 res_df[res_df$iso == unique(res_df$iso)[1] &
                        res_df$year == unique(res_df$year)[1] &
                        res_df$quantile == unique(res_df$quantile)[1], , drop = FALSE]),
+                1L)
+
+            ## All '"stat"'s (must be "long" output format)
+            res_df <- get_csv_res(output_dir = test_output_dir,
+                                  aggregate = "country",
+                                  adjusted = argvals_grid$ADJ[i],
+                                  table_format = "long",
+                                  indicator_name_format = argvals_grid$INF[i],
+                                  add_country_classifications = argvals_grid$ACC[i])
+
+            expect_s3_class(res_df, "data.frame")
+
+            stat_1 <- unique(res_df$stat)[1]
+            expect_identical(nrow(
+                res_df[res_df$iso == unique(res_df$iso)[1] &
+                       res_df$year == unique(res_df$year)[1] &
+                       res_df$indicator == unique(res_df[res_df$stat == stat_1,]$indicator)[1] &
+                       res_df$quantile == unique(res_df$quantile)[1] &
+                       res_df$stat == stat_1, , # stat '1'
+                       drop = FALSE]),
+                1L)
+
+            stat_2 <- unique(res_df$stat)[2]
+            expect_identical(nrow(
+                res_df[res_df$iso == unique(res_df$iso)[1] &
+                       res_df$year == unique(res_df$year)[1] &
+                       res_df$indicator == unique(res_df[res_df$stat == stat_2,]$indicator)[1] &
+                       res_df$quantile == unique(res_df$quantile)[1] &
+                       res_df$stat == stat_2, , # stat '2'
+                       drop = FALSE]),
+                1L)
+
+            stat_3 <- unique(res_df$stat)[3]
+            expect_identical(nrow(
+                res_df[res_df$iso == unique(res_df$iso)[1] &
+                       res_df$year == unique(res_df$year)[1] &
+                       res_df$indicator == unique(res_df[res_df$stat == stat_3,]$indicator)[1] &
+                       res_df$quantile == unique(res_df$quantile)[1] &
+                       res_df$stat == stat_3, , # stat '3'
+                       drop = FALSE]),
                 1L)
 
             ## ## UNCOMMENT FOR DEBUGGING: -->

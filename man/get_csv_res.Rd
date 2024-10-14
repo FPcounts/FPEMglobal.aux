@@ -25,8 +25,7 @@ for \code{\link{get_output_dir}}.}
 \item{aggregate}{Name of the 'aggregate' to load. Note: use
 \code{aggregate = "country"} to load country results.}
 
-\item{stat}{Which statistics should be loaded? Allowable values
-are \code{c("orig", "adj", "sub_adj")}.}
+\item{stat}{Which statistics should be loaded? See \dQuote{Details}.}
 
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
@@ -79,6 +78,13 @@ ratio indicators, and number of users. These can be requested by,
 respectively, \code{"prop"}, \code{"ratio"}, \code{"count"}. Note
 that prevalence \emph{proportions} are stored in \file{.csv} files
 with \dQuote{perc} in their names.
+
+You can supply a vector to \code{stat} to request multiple result
+types in one go. In this case, however, you must also specify
+\code{table_format = "long"}. The output will have an additional
+column named \code{"stat"} indicating the result type for each
+row. This is required because the indicator names for the
+\code{"prop"} and \code{"count"} result types are the same.
 
 \code{clean_col_names} applies \code{\link{clean_col_names}} to
 the column names. This tidies up and standardizes column

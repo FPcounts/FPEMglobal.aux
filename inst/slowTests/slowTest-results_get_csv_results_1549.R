@@ -17,7 +17,11 @@ library(testthat)
 ## All options
 args_grid <-
     expand.grid(aggregate = c("country", "UNPDaggregate"),
-                stat = c("prop", "count", "ratio"),
+                stat = list("prop", "count", "ratio",
+                            c("prop", "count"),
+                            c("prop", "ratio"),
+                            c("count", "ratio"),
+                            c("prop", "count", "ratio")),
                 adjusted = c("orig", "adj", "sub_adj"),
                 clean_col_names = c(TRUE, FALSE),
                 indicator_name_format = c("clean", "traj_array", "csv_results_file_names"),
@@ -35,7 +39,8 @@ args_grid <-
 run_res <- function(z, args_grid) {
     library(testthat)
     library(FPEMglobal.aux)
-    out <- try(do.call("get_csv_res", args = do.call("list", args_grid[z, ])))
+    out <- try(do.call("get_csv_res",
+                       args = lapply(do.call("list", args_grid[z, ]), "unlist")))
     if (!inherits(out, "try-error")) return(NULL)
     else return(list(args = args_grid[z, ],
                      error = out))

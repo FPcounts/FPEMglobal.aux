@@ -6,8 +6,8 @@
 \usage{
 convert_csv_res_2_fpemdata(
   output_dir = NULL,
-  adjusted = c("orig", "adj", "sub_adj"),
-  ...
+  stat = c("prop", "count", "ratio"),
+  adjusted = c("orig", "adj", "sub_adj")
 )
 }
 \arguments{
@@ -15,11 +15,14 @@ convert_csv_res_2_fpemdata(
 Section \dQuote{Specifying results directory} in the help file
 for \code{\link{get_output_dir}}.}
 
+\item{stat}{Which statistics should be loaded? See
+\code{\link{get_csv_res}} for details, but note that, unlike
+with \code{\link{get_csv_res}}, you can only specifiy one
+\dQuote{\code{stat}} at a time with this function.}
+
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
 substituted with adjusted medians (\dQuote{sub_adj}).}
-
-\item{...}{passed to \code{\link{get_csv_res}}}
 }
 \value{
 A \code{\link[tibble]{tibble}}.

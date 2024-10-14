@@ -16,8 +16,7 @@ get_std_indicator_names(
 list_all_std_indicator_names()
 }
 \arguments{
-\item{stat}{Which statistics should be loaded? Allowable values
-are \code{c("orig", "adj", "sub_adj")}.}
+\item{stat}{Which statistics should be loaded? See \dQuote{Details}.}
 
 \item{marital_group}{Character; marital group for which names are
 required.}
