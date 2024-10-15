@@ -48,6 +48,7 @@
 get_JAGS_model_param_names <- function(output_dir = NULL,
                                        abbreviate = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
+
     if (is_all_women_run(output_dir = output_dir))
         stop("JAGS model parameter names cannot be extracted from an all women run; apply to a marital group run instead.")
     dmn <- dimnames(get_model_traj(output_dir = output_dir))[[3]]

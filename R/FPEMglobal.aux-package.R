@@ -1,4 +1,3 @@
-
 #' FPEMglobal.aux: Auxillary functions for FPEMglobal
 #'
 #' This package provides auxillary functions for reading and using the
@@ -11,14 +10,16 @@
 #' \code{"FPEMglobal.aux.verbose"} is \code{TRUE}. To turn these off,
 #' either set option \code{"FPEMglobal.aux.verbose"} to \code{FALSE}
 #' (the default), or set the options \code{"readr.show_progress"} and
-#' \code{"readr.show_col_types"} to \code{FALSE}. The former will also
-#' suppress function-specific messages, whereas the latter will only
+#' \code{"readr.show_col_types"} to \code{FALSE}. Using \code{"FPEMglobal.aux.verbose"} will also
+#' suppress all package-specific messages, whereas using the \codethe latter will only
 #' affect \pkg{readr} messages.
 #'
-#' @docType package
-#' @name FPEMglobal.aux
+#' @keywords internal
+"_PACKAGE"
 
+## usethis namespace: start
 #' @importFrom magrittr %>%
+## usethis namespace: end
 NULL
 
 #' @import dplyr
@@ -32,7 +33,3 @@ NULL
 
 #' @import tidyr
 NULL
-
-
-
-

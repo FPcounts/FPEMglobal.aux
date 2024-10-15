@@ -188,6 +188,11 @@ get_used_special_aggregates <-
     function(output_dir = NULL,
              clean_col_names = TRUE) {
 
+        stop("THIS ISN'T WORKING PROPERLY")
+        ## Problem with these because they are not exclusive
+        ## classifications; countries can be in more than one
+        ## aggregate within the classification.
+
         verbose <- getOption("FPEMglobal.aux.verbose")
 
         output_dir <-

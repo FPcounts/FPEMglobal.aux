@@ -7,9 +7,8 @@
 get_JAGS_model_param_names(output_dir = NULL, abbreviate = TRUE)
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
 \item{abbreviate}{Logical; should parameter names be abbreviated?
 See \dQuote{Details}. Note that the default is \code{TRUE}.}

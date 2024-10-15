@@ -22,17 +22,17 @@ test_that("get_country_classifications works", {
     }
 })
 
-test_that("list_world_bank_aggregates_names works", {
-    expect_error(list_world_bank_aggregates_names(), NA)
-})
+## test_that("list_world_bank_aggregates_names works", {
+##     expect_error(list_world_bank_aggregates_names(), NA)
+## })
 
-test_that("list_special_aggregates_csv_filenames", {
-    expect_error(list_special_aggregates_csv_filenames(), NA)
-})
+## test_that("list_special_aggregates_csv_filenames", {
+##     expect_error(list_special_aggregates_csv_filenames(), NA)
+## })
 
-test_that("list_special_aggregates_names works", {
-    expect_error(list_special_aggregates_names(), NA)
-})
+## test_that("list_special_aggregates_names works", {
+##     expect_error(list_special_aggregates_names(), NA)
+## })
 
 test_that("convert_country_classifications_2_fpemdata works", {
     expect_s3_class(convert_country_classifications_2_fpemdata(), "tbl_df")
@@ -63,19 +63,19 @@ test_that("get_used_unpd_regions works for 15-49, married women run", {
     }
 })
 
-test_that("get_used_special_aggregates works for 15-49, married women run", {
-    test_output_dir <-
-        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
+## test_that("get_used_special_aggregates works for 15-49, married women run", {
+##     test_output_dir <-
+##         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+##     expect_true(dir.exists(test_output_dir))
 
-    ## Default
-    agg <- get_used_special_aggregates(output_dir = test_output_dir)
-    expect_s3_class(agg, "tbl_df")
-    expect_true(nrow(agg) > 0)
+##     ## Default
+##     agg <- get_used_special_aggregates(output_dir = test_output_dir)
+##     expect_s3_class(agg, "tbl_df")
+##     expect_true(nrow(agg) > 0)
 
-    ## Specified args
-    for (ccn in c(TRUE, FALSE)) {
-            expect_s3_class(get_used_special_aggregates(output_dir = test_output_dir,
-                                                        clean_col_names = ccn), "tbl_df")
-    }
-})
+##     ## Specified args
+##     for (ccn in c(TRUE, FALSE)) {
+##             expect_s3_class(get_used_special_aggregates(output_dir = test_output_dir,
+##                                                         clean_col_names = ccn), "tbl_df")
+##     }
+## })

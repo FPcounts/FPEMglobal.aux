@@ -11,9 +11,8 @@ get_model_traj(
 )
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
 \item{add_cp_timing_param}{Logical; add the CP timing parameter? See \dQuote{Details}.}
 

@@ -30,6 +30,77 @@ test_that("get_csv_results works with multiple 'stat's on a 15-49, married direc
     expect_true("stat" %in% colnames(res))
 })
 
+test_that("get_csv_results works with multiple 'output_dir's on a 15-49, married and all women directories", {
+    ## Output directory
+    test_output_dir <-
+        c(married = system.file("data-test/15-49_married", package = "FPEMglobal.aux"),
+          all_women = system.file("data-test/15-49_all_women", package = "FPEMglobal.aux"))
+    expect_true(all(dir.exists(test_output_dir)))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = c("prop"))
+    expect_s3_class(res, "data.frame")
+    expect_true("marital_group" %in% colnames(res))
+})
+
+test_that("get_csv_results works with multiple 'stat's and 'output_dir's on a 15-49, married and all women directories", {
+    ## Output directory
+    test_output_dir <-
+        c(married = system.file("data-test/15-49_married", package = "FPEMglobal.aux"),
+          all_women = system.file("data-test/15-49_all_women", package = "FPEMglobal.aux"))
+    expect_true(all(dir.exists(test_output_dir)))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = c("prop", "count"))
+    expect_s3_class(res, "data.frame")
+    expect_true("marital_group" %in% colnames(res))
+    expect_true("stat" %in% colnames(res))
+})
+
+test_that("get_csv_results works with multiple 'stat's and 'aggregate's on a 15-49, married directory", {
+    ## Output directory
+    test_output_dir <- system.file("data-test/15-49_married", package = "FPEMglobal.aux")
+    expect_true(all(dir.exists(test_output_dir)))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = c("prop", "count"),
+                       aggregate = c("country", "UNPDaggregate"))
+    expect_s3_class(res, "data.frame")
+    expect_true("aggregate" %in% colnames(res))
+    expect_true("stat" %in% colnames(res))
+})
+
+test_that("get_csv_results works with multiple 'output_dir's and 'aggregate's on a 15-49, married and all women directories", {
+    ## Output directory
+    test_output_dir <-
+        c(married = system.file("data-test/15-49_married", package = "FPEMglobal.aux"),
+          all_women = system.file("data-test/15-49_all_women", package = "FPEMglobal.aux"))
+    expect_true(all(dir.exists(test_output_dir)))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = "prop",
+                       aggregate = c("country", "UNPDaggregate"))
+    expect_s3_class(res, "data.frame")
+    expect_true("marital_group" %in% colnames(res))
+    expect_true("aggregate" %in% colnames(res))
+})
+
+test_that("get_csv_results works with multiple 'stat's, 'output_dir's and 'aggregate's on a 15-49, married and all women directories", {
+    ## Output directory
+    test_output_dir <-
+        c(married = system.file("data-test/15-49_married", package = "FPEMglobal.aux"),
+          all_women = system.file("data-test/15-49_all_women", package = "FPEMglobal.aux"))
+    expect_true(all(dir.exists(test_output_dir)))
+
+    ## Defaults
+    res <- get_csv_res(output_dir = test_output_dir, stat = c("prop", "count"),
+                       aggregate = c("country", "UNPDaggregate"))
+    expect_s3_class(res, "data.frame")
+    expect_true("marital_group" %in% colnames(res))
+    expect_true("aggregate" %in% colnames(res))
+    expect_true("stat" %in% colnames(res))
+})
+
 test_that("get_csv_results produces data frame without duplicates", {
 
     ## NOTE: This uses the _installed_ version of the package, so if

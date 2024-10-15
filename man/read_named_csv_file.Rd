@@ -7,9 +7,8 @@
 read_named_csv_file(output_dir = NULL, file_name, ...)
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
 \item{file_name}{Name of file to read, \emph{including} any
 subdirectory and file extension; see \dQuote{Details}.}

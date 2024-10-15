@@ -17,9 +17,8 @@ get_used_csv_denominators(
 )
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
 \item{filename}{Name of file with the denominators (including extension,
 excluding any parent directories). If \code{NULL}, this will

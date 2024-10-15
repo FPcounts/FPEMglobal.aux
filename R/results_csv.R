@@ -7,9 +7,25 @@
 ##' \pkg{FPEMglobal} run for a single marital group. The geography
 ##' (countries or aggregates) and statistic(s) loaded (proportions,
 ##' counts, ratios) can be specified. The files are read using
-##' \code{\link[readr]{read_csv}}. The results directory is passed via
-##' the \code{output_dir} argument and must point to a set of results
-##' for a single marital group.
+##' \code{\link[readr]{read_csv}}. You need to supply the results
+##' directory via the \code{output_dir} argument. Arguments
+##' \code{output_dir}, \code{aggregate}, \code{stat} can be any
+##' combination of scalars and vectors to allow retrieval of results
+##' for multiple marital groups, aggregates, and statistics; see
+##' \dQuote{Details} for important requirements and restrictions.
+##'
+##' To get results for multiple marital groups, passing a named vector
+##' (or list) to \code{output_dir}. The names \emph{must} be taken
+##' from \code{get_std_marital_group_names(return_case = "lower",
+##' snake_case = TRUE, named = TRUE)}; any other names will result in
+##' an error. The directories are further checked to ensure they
+##' contain results for the marital group indicated.
+##'
+##' Argument \code{aggregate} also accepts a vector, in which case the
+##' result is a \code{\link[tibble]{tibble}} with all requested
+##' aggregates. A column \code{"aggregate"} is added to identify the
+##' aggregate of each row. This is necessary in the event that areas
+##' within aggregates have the same name.
 ##'
 ##' The \code{stat} argument specifies the type of results to
 ##' return. Results are stored separately for prevalence proportions,
@@ -18,11 +34,11 @@
 ##' that prevalence \emph{proportions} are stored in \file{.csv} files
 ##' with \dQuote{perc} in their names.
 ##'
-##' You can supply a vector to \code{stat} to request multiple result
-##' types in one go. In this case, however, you must also specify
-##' \code{table_format = "long"}. The output will have an additional
-##' column named \code{"stat"} indicating the result type for each
-##' row. This is required because the indicator names for the
+##' Finally, you can also supply a vector to \code{stat} to request
+##' multiple result types in one go. In this case, however, you must
+##' also specify \code{table_format = "long"}. The output will have an
+##' additional column named \code{"stat"} indicating the result type
+##' for each row. This is required because the indicator names for the
 ##' \code{"prop"} and \code{"count"} result types are the same.
 ##'
 ##' \code{clean_col_names} applies \code{\link{clean_col_names}} to
@@ -54,14 +70,15 @@
 ##' The default is \code{"long"}.
 ##' }
 ##'
-##' @param output_dir Path to directory containing outputs. See
-##'     Section \dQuote{Specifying results directory} in the help file
-##'     for \code{\link{get_output_dir}}.
+##' @param output_dir Path(s) to director(y/ies) containing
+##'     outputs. See \dQuote{Details}.
 ##' @param verbose Logical; report the path, filename, and object name
 ##'     in a message?
-##' @param aggregate Name of the 'aggregate' to load. Note: use
-##'     \code{aggregate = "country"} to load country results.
-##' @param stat Which statistics should be loaded? See \dQuote{Details}.
+##' @param aggregate Name of the aggregate(s) to return. Note: use
+##'     \code{aggregate = "country"} to load country results. See
+##'     \dQuote{Details}.
+##' @param stat Which statistic(s) should be loaded? See
+##'     \dQuote{Details}.
 ##' @param indicator_name_format Character; the format to use for
 ##'     indicator names. It is highly recommended to use the first
 ##'     (default) option, maybe the second.
@@ -114,34 +131,92 @@ get_csv_res <- function(output_dir = NULL,
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
-    stat <- match.arg(stat, several.ok = TRUE)
+    ## -------** Simple checks
+
     indicator_name_format <- match.arg(indicator_name_format)
     stopifnot(is.logical(years_as_midyear))
     adjusted <- match.arg(adjusted)
     table_format <- match.arg(table_format)
-
-    if (length(stat) > 1 && !identical(table_format, "long"))
-        stop("'stat' has more than one element; 'table_format' must be '\"long\"'.")
 
     if (add_country_classifications && !identical(aggregate, "country")) {
         warning("'add_country_classifications' only has an effect if 'aggregate' == '\"country\"'. No classifications will be added.")
         add_country_classifications <- FALSE
     }
 
-    ## -------* Multiple "stat"s requested?
+    ## -------** Checks for output_dir
+
+    mar_groups <-
+        get_std_marital_group_names(return_case = "lower", snake_case = TRUE, named = TRUE)
+    if (length(output_dir) > 1) {
+        if (!all(names(output_dir) %in% mar_groups))
+            stop("'output_dir' has multiple elements but wrong names; use names '",
+                 toString(mar_groups))
+        if (mar_groups["mwra"] %in% names(output_dir))
+            stopifnot(is_married_women_run(output_dir[mar_groups["mwra"]]))
+        if (mar_groups["uwra"] %in% names(output_dir))
+            stopifnot(is_unmarried_women_run(output_dir[mar_groups["uwra"]]))
+        if (mar_groups["wra"] %in% names(output_dir))
+            stopifnot(is_all_women_run(output_dir[mar_groups["wra"]]))
+    }
+
+    ## -------** Checks for stat
+
+    stat <- match.arg(stat, several.ok = TRUE)
+    if (length(stat) > 1 && !identical(table_format, "long"))
+        stop("'stat' has more than one element; 'table_format' must be '\"long\"'.")
+
+    ## -------* Recursive Calls
+
+    ## -------** Multiple output directories?
+
+    if (length(output_dir) > 1) {
+        return(dplyr::bind_rows(lapply(names(output_dir), function(z) {
+            data.frame(get_csv_res(output_dir = unlist(output_dir[z]), ## <<<
+                                   aggregate = aggregate,
+                                   stat = stat,
+                                   adjusted = adjusted,
+                                   clean_col_names = clean_col_names,
+                                   indicator_name_format = indicator_name_format,
+                                   years_as_midyear = years_as_midyear,
+                                   add_country_classifications = add_country_classifications,
+                                   table_format = table_format,
+                                   sort = sort),
+                       marital_group = z)
+        })))
+    }
+
+    ## -------** Multiple "aggregates"s requested?
+
+    if (length(aggregate) > 1) {
+        return(dplyr::bind_rows(lapply(aggregate, function(z) {
+            data.frame(get_csv_res(output_dir = output_dir,
+                                   aggregate = z,  ## <<<<<
+                                   stat = stat,
+                                   adjusted = adjusted,
+                                   clean_col_names = clean_col_names,
+                                   indicator_name_format = indicator_name_format,
+                                   years_as_midyear = years_as_midyear,
+                                   add_country_classifications = add_country_classifications,
+                                   table_format = table_format,
+                                   sort = sort),
+                       aggregate = z)
+        })))
+    }
+
+    ## -------** Multiple "stat"s requested?
 
     if (length(stat) > 1) {
         return(dplyr::bind_rows(lapply(stat, function(z) {
             data.frame(get_csv_res(output_dir = output_dir,
-                            aggregate = aggregate,
-                            stat = z, ## <<<<<
-                            adjusted = adjusted,
-                            clean_col_names = clean_col_names,
-                            indicator_name_format = indicator_name_format,
-                            years_as_midyear = years_as_midyear,
-                            add_country_classifications = add_country_classifications,
-                            table_format = table_format,
-                            sort = sort),
+                                   aggregate = aggregate,
+                                   stat = z, ## <<<<<
+                                   adjusted = adjusted,
+                                   clean_col_names = clean_col_names,
+                                   indicator_name_format = indicator_name_format,
+                                   years_as_midyear = years_as_midyear,
+                                   add_country_classifications = add_country_classifications,
+                                   table_format = table_format,
+                                   sort = sort),
                        stat = z)
         })))
     }
@@ -387,6 +462,10 @@ get_csv_res <- function(output_dir = NULL,
             get_used_unpd_regions(output_dir = output_dir,
                                   clean_col_names = FALSE)
 
+        ## Problem with these because they are not exclusive
+        ## classifications; countries can be in more than one
+        ## aggregate within the classification.
+        ##
         ## class_spec <-
         ##     get_used_special_aggregates(output_dir = output_dir,
         ##                                 clean_col_names = FALSE)
@@ -433,8 +512,6 @@ get_csv_res <- function(output_dir = NULL,
 ##' @section Specifying results directory:
 ##' See the section in \code{\link{get_csv_res}}.
 ##'
-##' @inheritParams get_output_dir
-##' @inheritParams get_csv_res
 ##' @param output_dir_list List of output directories for married,
 ##'     unmarried, and all women. Element names must be \dQuote{married},
 ##'     \dQuote{unmarried}, and \dQuote{all_women}.

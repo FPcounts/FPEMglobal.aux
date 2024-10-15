@@ -11,9 +11,8 @@ convert_csv_res_2_fpemdata(
 )
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
 \item{stat}{Which statistics should be loaded? See
 \code{\link{get_csv_res}} for details, but note that, unlike

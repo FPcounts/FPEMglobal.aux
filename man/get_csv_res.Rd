@@ -18,14 +18,15 @@ get_csv_res(
 )
 }
 \arguments{
-\item{output_dir}{Path to directory containing outputs. See
-Section \dQuote{Specifying results directory} in the help file
-for \code{\link{get_output_dir}}.}
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
 
-\item{aggregate}{Name of the 'aggregate' to load. Note: use
-\code{aggregate = "country"} to load country results.}
+\item{aggregate}{Name of the aggregate(s) to return. Note: use
+\code{aggregate = "country"} to load country results. See
+\dQuote{Details}.}
 
-\item{stat}{Which statistics should be loaded? See \dQuote{Details}.}
+\item{stat}{Which statistic(s) should be loaded? See
+\dQuote{Details}.}
 
 \item{adjusted}{Loads original results (\dQuote{orig}), adjusted
 medians only (\dQuote{adj}), or original results with medians
@@ -67,11 +68,27 @@ Reads \file{.csv} files from a results directory of an
 \pkg{FPEMglobal} run for a single marital group. The geography
 (countries or aggregates) and statistic(s) loaded (proportions,
 counts, ratios) can be specified. The files are read using
-\code{\link[readr]{read_csv}}. The results directory is passed via
-the \code{output_dir} argument and must point to a set of results
-for a single marital group.
+\code{\link[readr]{read_csv}}. You need to supply the results
+directory via the \code{output_dir} argument. Arguments
+\code{output_dir}, \code{aggregate}, \code{stat} can be any
+combination of scalars and vectors to allow retrieval of results
+for multiple marital groups, aggregates, and statistics; see
+\dQuote{Details} for important requirements and restrictions.
 }
 \details{
+To get results for multiple marital groups, passing a named vector
+(or list) to \code{output_dir}. The names \emph{must} be taken
+from \code{get_std_marital_group_names(return_case = "lower",
+snake_case = TRUE, named = TRUE)}; any other names will result in
+an error. The directories are further checked to ensure they
+contain results for the marital group indicated.
+
+Argument \code{aggregate} also accepts a vector, in which case the
+result is a \code{\link[tibble]{tibble}} with all requested
+aggregates. A column \code{"aggregate"} is added to identify the
+aggregate of each row. This is necessary in the event that areas
+within aggregates have the same name.
+
 The \code{stat} argument specifies the type of results to
 return. Results are stored separately for prevalence proportions,
 ratio indicators, and number of users. These can be requested by,
@@ -79,11 +96,11 @@ respectively, \code{"prop"}, \code{"ratio"}, \code{"count"}. Note
 that prevalence \emph{proportions} are stored in \file{.csv} files
 with \dQuote{perc} in their names.
 
-You can supply a vector to \code{stat} to request multiple result
-types in one go. In this case, however, you must also specify
-\code{table_format = "long"}. The output will have an additional
-column named \code{"stat"} indicating the result type for each
-row. This is required because the indicator names for the
+Finally, you can also supply a vector to \code{stat} to request
+multiple result types in one go. In this case, however, you must
+also specify \code{table_format = "long"}. The output will have an
+additional column named \code{"stat"} indicating the result type
+for each row. This is required because the indicator names for the
 \code{"prop"} and \code{"count"} result types are the same.
 
 \code{clean_col_names} applies \code{\link{clean_col_names}} to
