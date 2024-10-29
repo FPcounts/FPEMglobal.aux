@@ -1,6 +1,6 @@
 Package: FPEMglobal.aux
 Title: Auxillary Functions for FPEMglobal
-Version: 1.1.2
+Version: 1.1.3.9000
 Authors@R: 
     c(person(given = "Mark",
            family = "Wheldon",
