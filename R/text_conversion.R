@@ -77,7 +77,6 @@ convert_M49_region_names <- function(x, convert_to = c("M49_region_names", "FPEM
     if (x_fac) x <- as.character(x)
 
     convert_to <- match.arg(convert_to)
-    from_names <- c("M49_region_names", "FPEMglobal")
 
     names_df <-
         data.frame(M49_region_names = c("Reunion",

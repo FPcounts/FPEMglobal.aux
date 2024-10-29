@@ -130,6 +130,11 @@ get_csv_res <- function(output_dir = NULL,
     ## -------* Check arguments
 
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
     ## -------** Simple checks
 

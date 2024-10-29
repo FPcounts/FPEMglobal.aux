@@ -54,7 +54,7 @@ The timing parameter of the increase in contraceptive prevalence
 formulation of Alkema et al.\sspace{}(2013), where it was denoted
 \eqn{\Omega_c}{Omega_c}. This was replaced with the "set-level"
 parameter (\eqn{P_{c,t^*}}{P_c,t*}) in the update by Cahill et
-al.\sspace{}(2017) and maintained in Kantorová et
+al.\sspace{}(2017) and maintained in KantorovÃ¡ et
 al.\sspace{}(2020). If the output directory is from a run of a
 version of FPEMglobal that uses the Cahill et al.\sspace{}(2017)
 modification, the array returned by
@@ -70,7 +70,12 @@ expression (the calculation is applied to each trajectory):
 where
 \deqn{S_c^* = S_c - \epsilon_{c,1990}}{S_c^* = S_c - epsilon_c,1990}
 
-This expression is due to N. Cahill (pers. comm.); see also Dasgupta et al.\sspace{}(2022), Appendix A, Sect. 1.4.1.}
+This expression is due to N. Cahill (pers. comm.); see Cahill et al.\sspace{} (2017) and Dasgupta et al.\sspace{}(2022), Appendix A, Sect. 1.4.1.}
+}
+\references{
+Cahill, N., Sonneveldt, E., Stover, J., Weinberger, M., Williamson, J., Wei, C., Brown, W., & Alkema, L. (2017). Modern Contraceptive Use, Unmet Need, and Demand Satisfied Among Women of Reproductive Age Who Are Married or in a Union in the Focus Countries of the Family Planning 2020 Initiative: A Systematic Analysis Using the Family Planning Estimation Tool. \emph{The Lancet}, 391(10123), 870-882. \doi{10.1016/S0140-6736(17)33104-5}.
+
+Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. \emph{Demographic Research}, 46(4), 97-130. \doi{10.4054/DemRes.2022.46.4}.
 }
 \seealso{
 Other Trajectory functions: 

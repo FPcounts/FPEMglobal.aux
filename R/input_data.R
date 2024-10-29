@@ -18,6 +18,11 @@
 get_used_input_data <- function(output_dir = NULL,
                                 variant = c("raw", "preprocessed", "to_model")) {
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
     variant <- match.arg(variant)
 
@@ -440,6 +445,11 @@ read_named_csv_file <- function(output_dir = NULL,
                                 file_name, ...) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
     output_dir <-
         output_dir_wrapper(output_dir = output_dir,

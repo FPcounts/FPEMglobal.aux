@@ -138,6 +138,11 @@ get_model_meta_info <- function(output_dir = NULL) {
 get_country_index <- function(output_dir = NULL) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
     output_dir <-
         output_dir_wrapper(output_dir = output_dir,

@@ -4,14 +4,11 @@
 \alias{get_country_classifications}
 \title{Get country geographic classifications}
 \usage{
-get_country_classifications(
-  M49_region_names_names = TRUE,
-  clean_col_names = TRUE
-)
+get_country_classifications(M49_region_names = TRUE, clean_col_names = TRUE)
 }
 \arguments{
-\item{M49_region_names_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
+\item{M49_region_names}{Logical; should
+\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
 run to standardize country and area names?}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names

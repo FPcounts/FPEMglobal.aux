@@ -8,21 +8,28 @@ get_model_param_quantiles(
   output_dir = NULL,
   percentiles = c(2.5, 50, 97.5),
   add_cp_timing_param = FALSE,
-  name_dims = TRUE
+  name_dims = TRUE,
+  return_data_frame = FALSE
 )
 }
 \arguments{
 \item{output_dir}{Path(s) to director(y/ies) containing
 outputs. See \dQuote{Details}.}
 
-\item{percentiles}{Percentiles of parameter distributions to be included in the output.}
+\item{percentiles}{Percentiles of parameter distributions to be
+included in the output.q}
 
 \item{add_cp_timing_param}{Logical; add the CP timing parameter? See \dQuote{Details}.}
 
 \item{name_dims}{Logical; should the dimensions be given informative names? See \dQuote{Details}.}
+
+\item{return_data_frame}{Logical; should the function return an
+\code{\link{array}} (default) or a \code{\link{data.frame}}?}
 }
 \value{
-An array of quantiles.
+Parmaeter quantiles contained in a 3D array if
+\code{return_data_frame = FALSE} (default) otherwise a
+\code{\link{data.frame}}.
 }
 \description{
 Posterior distributions of a subset of the country-specific model
@@ -91,11 +98,11 @@ same subsection under \dQuote{Details} in the documentation for
 \code{\link{get_model_traj}}.}
 }
 \references{
-Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. The Lancet, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
+Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. \emph{The Lancet}, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
 
 Cahill, N., Sonneveldt, E., Stover, J., Weinberger, M., Williamson, J., Wei, C., Brown, W., & Alkema, L. (2017). Modern Contraceptive Use, Unmet Need, and Demand Satisfied Among Women of Reproductive Age Who Are Married or in a Union in the Focus Countries of the Family Planning 2020 Initiative: A Systematic Analysis Using the Family Planning Estimation Tool. \emph{The Lancet}, 391(10123), 870–882. \doi{10.1016/S0140-6736(17)33104-5}.
 
-Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. Demographic Research, 46(4), 97–130. \doi{10.4054/DemRes.2022.46.4}.
+Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. \emph{Demographic Research}, 46(4), 97–130. \doi{10.4054/DemRes.2022.46.4}.
 
 Kantorová, V., Wheldon, M. C., Ueffing, P., and Dasgupta, A. N. Z. (2020), Estimating progress towards meeting women’s contraceptive needs in 185 countries: A Bayesian hierarchical modelling study, \emph{PLOS Medicine}, 17, e1003026. \doi{10/ggk3cf}.
 }

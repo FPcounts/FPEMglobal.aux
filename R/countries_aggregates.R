@@ -26,6 +26,11 @@
 ##' @export
 get_195_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
     fname <- system.file("extdata",
                          get_FPEMglobal_extdata_filenames()[["countries_mwra_195"]],
                          package = "FPEMglobal")
@@ -51,6 +56,11 @@ get_195_countries <- function(clean_col_names = TRUE) {
 ##' @export
 get_185_countries <- function(clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
     fname <- system.file("extdata",
                          get_FPEMglobal_extdata_filenames()[["countries_unpd_185"]],
                          package = "FPEMglobal")
@@ -65,6 +75,7 @@ get_185_countries <- function(clean_col_names = TRUE) {
 ##' Returns a table of geographic country groupings. The file is read
 ##' using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
 ##' documentation for \code{\link{get_195_countries}}.
+##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_used_unpd_regions
 ##' @return A \code{\link[tibble]{tibble}} with the aggregates.
@@ -72,14 +83,19 @@ get_185_countries <- function(clean_col_names = TRUE) {
 ##'
 ##' @family Country and region/aggregate names
 ##' @export
-get_country_classifications <- function(M49_region_names_names = TRUE,
+get_country_classifications <- function(M49_region_names = TRUE,
                                         clean_col_names = TRUE) {
     verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
     fname <- system.file("extdata",
                          get_FPEMglobal_extdata_filenames()[["country_classifications"]],
                          package = "FPEMglobal")
     out <- readr::read_csv(fname, name_repair = "minimal")
-    if (M49_region_names_names)
+    if (M49_region_names)
             out[, "Country or area"] <-
                 convert_M49_region_names(out[, "Country or area"], "M49_region_names")
     if (clean_col_names) out <- clean_col_names(out)
@@ -92,8 +108,8 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
 ##' Loads the country classifications actually used in a model
 ##' run. The files are read using \code{\link[readr]{read_csv}}.
 ##'
-##' @param M49_region_names_names Logical; should
-##'     \code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
+##' @param M49_region_names Logical; should
+##'     \code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
 ##'     run to standardize country and area names?
 ##'
 ##' @inheritParams get_used_input_data
@@ -104,9 +120,14 @@ get_country_classifications <- function(M49_region_names_names = TRUE,
 ##' @export
 get_used_unpd_regions <-
     function(output_dir = NULL,
-             clean_col_names = TRUE, M49_region_names_names = TRUE) {
+             clean_col_names = TRUE, M49_region_names = TRUE) {
 
         verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
         output_dir <- output_dir_wrapper(output_dir = output_dir)
 
@@ -124,9 +145,9 @@ get_used_unpd_regions <-
         fname <- file.path(data_dir, file_name)
         if (verbose) message("Reading '", fname, "'.")
         out <- readr::read_csv(fname, name_repair = "minimal")
-        if (M49_region_names_names)
+        if (M49_region_names)
             out[, "Country or area"] <-
-                convert_M49_region_names(out[, "Country or area"], "M49_region_names")
+                convert_M49_region_names(out[, "Country or area"], convert_to = "M49_region_names")
         if (clean_col_names) out <- clean_col_names(out)
 
         return(out)
@@ -194,6 +215,11 @@ get_used_special_aggregates <-
         ## aggregate within the classification.
 
         verbose <- getOption("FPEMglobal.aux.verbose")
+    if (!verbose) {
+        op <- options(); force(op)
+        options(readr.show_col_types = FALSE)
+        on.exit(options(op), add = TRUE, after = FALSE)
+    }
 
         output_dir <-
             output_dir_wrapper(output_dir = output_dir)

@@ -7,15 +7,15 @@
 get_used_unpd_regions(
   output_dir = NULL,
   clean_col_names = TRUE,
-  M49_region_names_names = TRUE
+  M49_region_names = TRUE
 )
 }
 \arguments{
 \item{output_dir}{Path(s) to director(y/ies) containing
 outputs. See \dQuote{Details}.}
 
-\item{M49_region_names_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_from = "M49_region_names")} be
+\item{M49_region_names}{Logical; should
+\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
 run to standardize country and area names?}
 }
 \value{

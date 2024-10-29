@@ -70,19 +70,24 @@
 ##'
 ##' @references
 ##'
-##'Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. The Lancet, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
+##' Alkema, L., Kantorová, V., Menozzi, C., & Biddlecom, A. (2013). National, Regional, and Global Rates and Trends in Contraceptive Prevalence and Unmet Need for Family Planning Between 1990 and 2015: A Systematic and Comprehensive Analysis. \emph{The Lancet}, 381(9878), 1642–1652. \doi{10.1016/S0140-6736(12)62204-1}.
 ##'
 ##' Cahill, N., Sonneveldt, E., Stover, J., Weinberger, M., Williamson, J., Wei, C., Brown, W., & Alkema, L. (2017). Modern Contraceptive Use, Unmet Need, and Demand Satisfied Among Women of Reproductive Age Who Are Married or in a Union in the Focus Countries of the Family Planning 2020 Initiative: A Systematic Analysis Using the Family Planning Estimation Tool. \emph{The Lancet}, 391(10123), 870–882. \doi{10.1016/S0140-6736(17)33104-5}.
 ##'
-##' Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. Demographic Research, 46(4), 97–130. \doi{10.4054/DemRes.2022.46.4}.
+##' Dasgupta, A. N. Z., Wheldon, M., Kantorová, V., & Ueffing, P. (2022). Contraceptive Use and Fertility Transitions: The Distinctive Experience of Sub-Saharan Africa. \emph{Demographic Research}, 46(4), 97–130. \doi{10.4054/DemRes.2022.46.4}.
 ##'
 ##' Kantorová, V., Wheldon, M. C., Ueffing, P., and Dasgupta, A. N. Z. (2020), Estimating progress towards meeting women’s contraceptive needs in 185 countries: A Bayesian hierarchical modelling study, \emph{PLOS Medicine}, 17, e1003026. \doi{10/ggk3cf}.
 ##'
 ##' @inheritParams get_output_dir
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_model_traj
-##' @param percentiles Percentiles of parameter distributions to be included in the output.
-##' @return An array of quantiles.
+##' @param return_data_frame Logical; should the function return an
+##'     \code{\link{array}} (default) or a \code{\link{data.frame}}?
+##' @param percentiles Percentiles of parameter distributions to be
+##'     included in the output.q
+##' @return Parmaeter quantiles contained in a 3D array if
+##'     \code{return_data_frame = FALSE} (default) otherwise a
+##'     \code{\link{data.frame}}.
 ##' @author Mark Wheldon
 ##'
 ##' @family Get results from rda files
@@ -90,13 +95,19 @@
 ##' @export
 get_model_param_quantiles <- function(output_dir = NULL,
                                       percentiles = c(2.5, 50, 97.5), add_cp_timing_param = FALSE,
-                                      name_dims = TRUE) {
+                                      name_dims = TRUE, return_data_frame = FALSE) {
 
     ## -------* Sub-functions
 
-    name_dimnames <- function(x, name_dims) {
-        if (name_dims) names(dimnames(x)) <- c("name", "parameter", "percentile")
-        return(x)
+    if (return_data_frame) {
+        if (requireNamespace("plyr", quietly = TRUE) && requireNamespace("dplyr", quietly = TRUE)) {
+            if (!name_dims) {
+                name_dims <- TRUE
+                message("'return_data_frame' is 'TRUE'; 'name_dims' set to 'TRUE'.")
+            }
+        } else {
+            stop("'return_data_frame' requires the 'plyr' and 'dplyr' packages; please check that both are installed.")
+        }
     }
 
     add_cells <- function(param_names, percentiles, par_ciq, mcmc_array, na_rm = FALSE) {
@@ -185,6 +196,11 @@ get_model_param_quantiles <- function(output_dir = NULL,
     ## -------* Rename and return
 
     if (name_dims) names(dimnames(par_ciq)) <- c("name", "parameter", "percentile")
+    if (return_data_frame) {
+        par_ciq <-
+            plyr::adply(par_ciq, .margins = c(1:2), .id = c("name", "parameter")) |>
+        dplyr::mutate(name = as.character(name), parameter = as.character(parameter))
+    }
     return(par_ciq)
 }
 

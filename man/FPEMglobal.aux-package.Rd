@@ -18,7 +18,7 @@ csv files. This will result in lots of messages if option
 either set option \code{"FPEMglobal.aux.verbose"} to \code{FALSE}
 (the default), or set the options \code{"readr.show_progress"} and
 \code{"readr.show_col_types"} to \code{FALSE}. Using \code{"FPEMglobal.aux.verbose"} will also
-suppress all package-specific messages, whereas using the \codethe latter will only
+suppress all package-specific messages, whereas using the the latter will only
 affect \pkg{readr} messages.
 }
 
