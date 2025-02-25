@@ -9,6 +9,12 @@
 
 get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE) {
 
+    ## Verbose ........................................
+    ##
+    op <- options(FPEMglobal.verbose = getOption("FPEMglobal.aux.verbose"))
+    on.exit(options(op), add = TRUE, after = FALSE)
+    ## ................................................
+
     FPEMglobal_files <- FPEMglobal::pkg_files_included(result = "filename")
 
     out <-  list(countries_mwra_195 = FPEMglobal_files$post_process_inputs$countries_for_aggregates,
@@ -106,6 +112,12 @@ get_std_indicator_names <- function(stat = c("prop", "count", "ratio", "age_rati
                                     adjusted = c("orig", "adj"),
                                     aw_set = c("all", "only_common", "only_extra"),
                                     indicator_name_format = c("traj_array", "csv_results_file_names", "clean")) {
+
+    ## Verbose ........................................
+    ##
+    op <- options(FPEMglobal.verbose = getOption("FPEMglobal.aux.verbose"))
+    on.exit(options(op), add = TRUE, after = FALSE)
+    ## ................................................
 
     stat <- match.arg(stat)
     marital_group <- match.arg(marital_group)

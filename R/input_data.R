@@ -207,6 +207,12 @@ get_used_csv_denominators <- function(output_dir = NULL,
                                  years_as_midyear = TRUE,
                                  table_format = c("long", "raw"), ...) {
 
+    ## Verbose ........................................
+    ##
+    op <- options(FPEMglobal.verbose = getOption("FPEMglobal.aux.verbose"))
+    on.exit(options(op), add = TRUE, after = FALSE)
+    ## ................................................
+
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     ## -------* Sub-Functions

@@ -66,7 +66,15 @@ output_dir_wrapper <- function(run_name = NULL, output_dir = NULL,
                                made_results = FALSE,
                                adjusted_medians = FALSE,
                                age_ratios = FALSE) {
+
+    ## Verbose ........................................
+    ##
+    op <- options(FPEMglobal.verbose = getOption("FPEMglobal.aux.verbose"))
+    on.exit(options(op), add = TRUE, after = FALSE)
+    ## ................................................
+
     verbose <- getOption("FPEMglobal.aux.verbose")
+
     if (is.null(output_dir)) {
         if (is.null(run_name)) stop("Must supply 'run_name' or 'output_dir'; both are 'NULL'.")
         else if (grepl("/", run_name)) stop("'run_name' contains '/'; did you supply 'output_dir' to the 'run_name' argument?")

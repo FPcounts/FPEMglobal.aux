@@ -296,6 +296,12 @@ get_global_post_process_args <- function(output_dir = NULL) {
 ##' @export
 get_run_name <- function(output_dir = NULL) {
 
+    ## Verbose ........................................
+    ##
+    op <- options(FPEMglobal.verbose = getOption("FPEMglobal.aux.verbose"))
+    on.exit(options(op), add = TRUE, after = FALSE)
+    ## ................................................
+
     verbose <- getOption("FPEMglobal.aux.verbose")
 
     res_dir <- output_dir_wrapper(output_dir = output_dir,
