@@ -13,6 +13,8 @@ University of Massachusetts, Amherst, and [Track20](http://www.track20.org/) at
 Avenir Health. It was supported, in part, by grants nos. OPP1110679, OPP1183453, and INV-033016, Making Family
 Planning Count 1.0--3.0, from the Bill & Melinda Gates Foundation. 
 
+**Disclaimer:** The views expressed herein are those of the authors and do not necessarily reflect the views of the United Nations.
+
 
 ## Installation
 
