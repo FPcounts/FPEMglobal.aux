@@ -11,7 +11,7 @@ Authors@R:
            family = "Cahill",
            role = c("ctb"))
 	   )
-Description: Provides functions for working with files and objects associated with FPEMglobal. 
+Description: Provides functions for working with files and objects produced by the FPEMglobal package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
