@@ -14,7 +14,7 @@
 ##' for multiple marital groups, aggregates, and statistics; see
 ##' \dQuote{Details} for important requirements and restrictions.
 ##'
-##' To get results for multiple marital groups, passing a named vector
+##' To get results for multiple marital groups, pass in a named vector
 ##' (or list) to \code{output_dir}. The names \emph{must} be taken
 ##' from \code{get_std_marital_group_names(return_case = "lower",
 ##' snake_case = TRUE, named = TRUE)}; any other names will result in
@@ -578,6 +578,8 @@ get_csv_all_mar_res <- function(output_dir_list = NULL,
 ##' @family fpemdata converters
 ##' @seealso get_csv_res
 ##'
+##' @param output_dir Path(s) to director(y/ies) containing
+##'     outputs. See \code{\link{get_csv_res}} for details.
 ##' @param stat Which statistics should be loaded? See
 ##'     \code{\link{get_csv_res}} for details, but note that, unlike
 ##'     with \code{\link{get_csv_res}}, you can only specifiy one

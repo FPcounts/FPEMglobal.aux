@@ -12,7 +12,7 @@ convert_csv_res_2_fpemdata(
 }
 \arguments{
 \item{output_dir}{Path(s) to director(y/ies) containing
-outputs. See \dQuote{Details}.}
+outputs. See \code{\link{get_csv_res}} for details.}
 
 \item{stat}{Which statistics should be loaded? See
 \code{\link{get_csv_res}} for details, but note that, unlike
@@ -43,9 +43,6 @@ following columns:
 }
 \seealso{
 get_csv_res
-
-Other fpemdata converters: 
-\code{\link{convert_country_classifications_2_fpemdata}()}
 }
 \author{
 Mark C Wheldon

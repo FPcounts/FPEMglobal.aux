@@ -20,10 +20,28 @@ about \dQuote{percentile} vs. \dQuote{quantile}.}
 A \code{\link[tibble]{tibble}} with the aggregates.
 }
 \description{
-Returns a table of geographic country groupings. The file is read
-using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
-documentation for \code{\link{get_195_countries}}.
+Returns a table of geographic country groupings stored in the
+\pkg{FPEMglobal} package. The file is read using
+\code{\link[readr]{read_csv}}. See \dQuote{Note} in the documentation for
+\code{\link{get_195_countries}}.
 }
+\section{Note}{
+
+
+The country classifications file is considered to be an \dQuote{internal}
+file in \pkg{FPEMglobal}. As such, its filename is not passed in to the main
+user functions such as \code{\link[FPEMglobal]{do_global_mcmc}},
+\code{\link[FPEMglobal]{do_global_all_women_run()}}, etc. One consequence is
+that the filename is not stored in the argument lists retrieved by, e.g.,
+\code{\link{get_global_post_process_args}}. Contrast this with the main
+input file and the denominator counts file, for example. For this reason,
+there is no equivalent of \code{\link{get_used_csv_denominators_filepath}}
+for the country classifications. To retrieve the file names of internal
+files, including the country classifications,
+\code{\link[FPEMglobal]{pkg_files_included}} must be used, which is what
+this function does.
+}
+
 \seealso{
 Other Country and region/aggregate names: 
 \code{\link{get_185_countries}()},

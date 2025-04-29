@@ -34,9 +34,15 @@ test_that("get_country_classifications works", {
 ##     expect_error(list_special_aggregates_names(), NA)
 ## })
 
-test_that("convert_country_classifications_2_fpemdata works", {
-    expect_s3_class(convert_country_classifications_2_fpemdata(), "tbl_df")
-    })
+test_that("country_classifications_2_fpemdata works on a married women run", {
+    expect_s3_class(country_classifications_2_fpemdata(system.file("data-test/15-49_married", package = "FPEMglobal.aux")),
+                    "tbl_df")
+})
+
+test_that("country_classifications_2_fpemdata works on an all women run", {
+    expect_s3_class(country_classifications_2_fpemdata(system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")),
+                    "tbl_df")
+})
 
 
 ###-----------------------------------------------------------------------------

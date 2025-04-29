@@ -76,7 +76,7 @@ for multiple marital groups, aggregates, and statistics; see
 \dQuote{Details} for important requirements and restrictions.
 }
 \details{
-To get results for multiple marital groups, passing a named vector
+To get results for multiple marital groups, pass in a named vector
 (or list) to \code{output_dir}. The names \emph{must} be taken
 from \code{get_std_marital_group_names(return_case = "lower",
 snake_case = TRUE, named = TRUE)}; any other names will result in

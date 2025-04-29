@@ -22,6 +22,7 @@ called to get the input file.
 get_used_input_data
 
 Other FPEM data converters: 
+\code{\link{country_classifications_2_fpemdata}()},
 \code{\link{input_data_2_fpemdata}()}
 }
 \author{

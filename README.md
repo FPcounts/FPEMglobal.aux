@@ -23,6 +23,7 @@ Planning Count 1.0--3.0, from the Bill & Melinda Gates Foundation.
 2. Repeat the installation steps you took for FPEMglobal, replacing "FPEMglobal" with "FPEMglobal.aux". For example, using the "Straight from GitHub" method, 
 
     i.  Make sure you have installed the _R_ package [remotes](https://cran.r-project.org/package=remotes). 
+    
     ii.  In _R_, type:
   
          ```

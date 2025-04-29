@@ -72,9 +72,25 @@ get_185_countries <- function(clean_col_names = TRUE) {
 
 ##' Get country geographic classifications
 ##'
-##' Returns a table of geographic country groupings. The file is read
-##' using \code{\link[readr]{read_csv}}. See \dQuote{Note} in the
-##' documentation for \code{\link{get_195_countries}}.
+##' Returns a table of geographic country groupings stored in the
+##' \pkg{FPEMglobal} package. The file is read using
+##' \code{\link[readr]{read_csv}}. See \dQuote{Note} in the documentation for
+##' \code{\link{get_195_countries}}.
+##'
+##' @section Note:
+##'
+##' The country classifications file is considered to be an \dQuote{internal}
+##' file in \pkg{FPEMglobal}. As such, its filename is not passed in to the main
+##' user functions such as \code{\link[FPEMglobal]{do_global_mcmc}},
+##' \code{\link[FPEMglobal]{do_global_all_women_run()}}, etc. One consequence is
+##' that the filename is not stored in the argument lists retrieved by, e.g.,
+##' \code{\link{get_global_post_process_args}}. Contrast this with the main
+##' input file and the denominator counts file, for example. For this reason,
+##' there is no equivalent of \code{\link{get_used_csv_denominators_filepath}}
+##' for the country classifications. To retrieve the file names of internal
+##' files, including the country classifications,
+##' \code{\link[FPEMglobal]{pkg_files_included}} must be used, which is what
+##' this function does.
 ##'
 ##' @inheritParams get_csv_res
 ##' @inheritParams get_used_unpd_regions
@@ -100,6 +116,80 @@ get_country_classifications <- function(M49_region_names = TRUE,
                 convert_M49_region_names(out[, "Country or area"], "M49_region_names")
     if (clean_col_names) out <- clean_col_names(out)
     return(out)
+}
+
+
+##' Convert country classifications to fpemdata format
+##'
+##' Takes the country classifications file used in an \pkg{FPEMglobal} run and returns
+##' it in \pkg{fpemdata} format. \code{\link{get_country_classifications}} is
+##' called to get the classifications file.
+##'
+##' @inheritParams get_csv_res
+##' @return A \code{\link[tibble]{tibble}}.
+##' @author Mark Wheldon
+##'
+##' @family FPEM data converters
+##' @seealso get_country_classifications
+##'
+##' @importFrom gdata rename.vars
+##'
+##' @export
+country_classifications_2_fpemdata <- function(output_dir = NULL) {
+
+    verbose <- getOption("FPEMglobal.aux.verbose")
+
+    ## -------* Get input file
+
+    input_df <-
+        get_used_unpd_regions(output_dir = output_dir,
+                              M49_region_names = TRUE, clean_col_names = TRUE)
+
+    ## -------* Rename Columns
+
+    names_new_old <-
+        data.frame(
+            rbind(
+                c("division_numeric_code",                      "iso"),
+                c("region_numeric_code",                        "major_area_code"),
+                c("sub_region_numeric_code",                    "region_code"),
+                c("is_developed_region",                        "developed_region"),
+                c("is_less_developed_region",                   "less_developed_regions"),
+                c("is_least_developed_country",                 "least_developed_country"),
+                c("is_in_sub_saharan_africa",                   "sub_saharanafrica"),
+                c("is_unmarried_sexual_activity",               "sexual_activity_among_unmarried"),
+                c("is_low_population",                          "wpp_small_country"),
+                c("is_fp2020",                                  "fp2020_country")),
+            stringsAsFactors = FALSE)
+    names(names_new_old) <- c("new", "old")
+
+    names_old_idx <- !is.na(names_new_old$old) & names_new_old$old %in% colnames(input_df)
+
+    input_df <-
+        gdata::rename.vars(input_df,
+                           from = names_new_old$old[names_old_idx],
+                           to = names_new_old$new[names_old_idx],
+                           info = FALSE)
+
+    ## -------* Recode Variables
+
+    nm_Y_N <- c("is_developed_region", "is_less_developed_region", "is_least_developed_country",
+                 "is_in_sub_saharan_africa", "is_unmarried_sexual_activity", "is_low_population",
+                "is_fp2020")
+
+    idx <- input_df[, nm_Y_N] == "Yes"
+    input_df[, nm_Y_N][idx] <- "Y"
+
+    idx <- input_df[, nm_Y_N] == "No"
+    input_df[, nm_Y_N][idx] <- "N"
+
+    ## -------* Select and Order Columns
+
+    input_df <- input_df[, unique(names_new_old$new)]
+
+    ## -------* END
+
+    return(input_df)
 }
 
 
