@@ -25,7 +25,6 @@ Imports:
     gdata,
     magrittr,
     readr,
-    reshape2,
     tibble,
     tidyr,
     tools,
