@@ -34,8 +34,7 @@ Other Country and region/aggregate names:
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
 \code{\link{get_country_classifications}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()}
+\code{\link{get_used_special_aggregates}()}
 }
 \author{
 Mark Wheldon

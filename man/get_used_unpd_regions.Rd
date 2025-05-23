@@ -14,6 +14,11 @@ get_used_unpd_regions(
 \item{output_dir}{Path(s) to director(y/ies) containing
 outputs. See \dQuote{Details}.}
 
+\item{clean_col_names}{Logical; when \code{TRUE}, the column names
+of the result are \sQuote{cleaned} by applying
+\code{\link{clean_col_names}}. See \dQuote{Details} for a note
+about \dQuote{percentile} vs. \dQuote{quantile}.}
+
 \item{M49_region_names}{Logical; should
 \code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
 run to standardize country and area names?}
@@ -25,15 +30,11 @@ A \code{\link[tibble]{tibble}} with the requested results.
 Loads the country classifications actually used in a model
 run. The files are read using \code{\link[readr]{read_csv}}.
 }
-\seealso{
-Other Country and region/aggregate names: 
-\code{\link{get_185_countries}()},
-\code{\link{get_195_countries}()},
-\code{\link{get_aggregate_names}()},
-\code{\link{get_country_classifications}()},
-\code{\link{get_used_special_aggregates}()}
+\details{
+This function is deprecated. Please use
+\code{\link{get_country_classifications(..., type = "used")}}.
 }
 \author{
 Mark Wheldon
 }
-\concept{Country and region/aggregate names}
+\keyword{internal}

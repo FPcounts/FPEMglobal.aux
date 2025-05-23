@@ -2,29 +2,51 @@
 % Please edit documentation in R/countries_aggregates.R
 \name{get_195_countries}
 \alias{get_195_countries}
-\title{Read table of the \dQuote{195} countries}
+\title{Read table of the \dQuote{195} or \dQuote{185} countries}
 \usage{
-get_195_countries(clean_col_names = TRUE)
+get_195_countries(
+  output_dir = NULL,
+  M49_region_names = TRUE,
+  clean_col_names = TRUE,
+  type = c("recorded", "installed")
+)
 }
 \arguments{
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
+
+\item{M49_region_names}{Logical; should
+\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
+run to standardize country and area names?}
+
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
+
+\item{type}{Character; retrieve the country classifications from a completed FPEMglobal run the installed}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.
 }
 \description{
-These are the 195 countries in the original married women
-model. The file is read using \code{\link[readr]{read_csv}}.
+\code{get_195_countries} returns the 195 countries included in the original
+married women model. \code{get_185_countries} returns the 185 countries for
+which estimates are released by UNPD. The file that is used depends on the
+\code{type} argument. \code{type = "recorded"} refers to the country
+classifications recorded in the \file{data} folder of the run referenced by
+\code{output_dir} (which, therefore, must be specified). \code{type =
+"installed"} refers to the classifications file distributed with the version
+of \pkg{FPEMglobal} installed on the system (in which case,
+\code{output_dir} need not be specified, and is ignored in any case). Once
+identified, the file is read using \code{\link[readr]{read_csv}}.
 }
 \section{Note}{
 
-These are taken from the \pkg{FPEMglobal} package \emph{installed
-on your system}. As such, they \emph{may} not correspond to the
-aggregates used in a specific model run (although, as of
-2022-08-25, this is unlikely).
+
+Like the country classification file, the lists of 195 and 185 countries are
+\emph{internal} files to \pkg{FPEMglobal}. See the \dQuote{Note} in
+\code{\link{get_country_classifications}} for what this implies.
 }
 
 \seealso{
@@ -32,8 +54,7 @@ Other Country and region/aggregate names:
 \code{\link{get_185_countries}()},
 \code{\link{get_aggregate_names}()},
 \code{\link{get_country_classifications}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()}
+\code{\link{get_used_special_aggregates}()}
 }
 \author{
 Mark Wheldon

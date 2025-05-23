@@ -47,6 +47,8 @@ x[grep("^R.+nion$", x)] <- "R{\\'e}union"
 x[grep("^Saint Lucia", x)] <- "St. Lucia"
 x[grep("^Saint Vincent and the Grenadines", x)] <- "St. Vincent and the Grenadines"
 x[grep("^The former Yugoslav Republic of Macedonia", x)] <- "TFYR Macedonia"
+x[grep("^Turkey", x)] <- 'Republic of T{\\"u}rkiye'
+x[grep("^T.rkiye", x)] <- 'Republic of T{\\"u}rkiye'
 x[grep("^United Kingdom of Great Britain and Northern Ireland", x)] <- "United Kingdom"
 x[grep("^United Republic of Tanzania", x)] <- "United Rep. of Tanzania"
 x[grep("^Venezuela \\(Bolivarian Republic of\\)", x)] <- "Venezuela, Bolivarian Republic of"
@@ -92,7 +94,9 @@ convert_M49_region_names <- function(x, convert_to = c("M49_region_names", "FPEM
                                    "Micronesia (Fed. States of)",
                                    "United Kingdom",
                                    "North Macedonia",
-                                   NA
+                                   NA,
+                                   "Turkiye",
+                                   "Turkiye"
                                    ),
                    FPEMglobal = c("R.+union",
                             "Swaziland",
@@ -107,7 +111,10 @@ convert_M49_region_names <- function(x, convert_to = c("M49_region_names", "FPEM
                             "Micronesia (Federated States of)",
                             "United Kingdom of Great Britain and Northern Ireland",
                             "The former Yugoslav Republic of Macedonia",
-                            "Other non-specified areas"),
+                            "Other non-specified areas",
+                            "T.rkiye",
+                            "Turkey"
+                            ),
                    stringsAsFactors = FALSE)
 
     if (identical(convert_to, "M49_region_names")) {
@@ -117,6 +124,7 @@ convert_M49_region_names <- function(x, convert_to = c("M49_region_names", "FPEM
             }
         }
     } else if (identical(convert_to, "FPEMglobal")) {
+        names_df <- names_df[!names_df[["FPEMglobal"]] == "Turkey", ]
         for (i in 1:nrow(names_df)) {
             if (!is.na(names_df[i, "M49_region_names"])) {
                 x[grep(paste0("^", names_df[i, "M49_region_names"], "$"), x)] <- names_df[i, "FPEMglobal"]

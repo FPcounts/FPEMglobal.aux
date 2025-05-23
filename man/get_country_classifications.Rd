@@ -4,9 +4,17 @@
 \alias{get_country_classifications}
 \title{Get country geographic classifications}
 \usage{
-get_country_classifications(M49_region_names = TRUE, clean_col_names = TRUE)
+get_country_classifications(
+  output_dir = NULL,
+  M49_region_names = TRUE,
+  clean_col_names = TRUE,
+  type = c("used", "installed")
+)
 }
 \arguments{
+\item{output_dir}{Path(s) to director(y/ies) containing
+outputs. See \dQuote{Details}.}
+
 \item{M49_region_names}{Logical; should
 \code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
 run to standardize country and area names?}
@@ -15,15 +23,22 @@ run to standardize country and area names?}
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
+
+\item{type}{Character; retrieve the country classifications from a completed FPEMglobal run the installed}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the aggregates.
 }
 \description{
 Returns a table of geographic country groupings stored in the
-\pkg{FPEMglobal} package. The file is read using
-\code{\link[readr]{read_csv}}. See \dQuote{Note} in the documentation for
-\code{\link{get_195_countries}}.
+\pkg{FPEMglobal} package. The file that is used depends on the \code{type}
+argument. \code{type = "used"} refers to the country classifications used in
+the run referenced by \code{output_dir} (which, therefore, must be
+specified). \code{type = "installed"} refers to the classifications file
+distributed with the version of \pkg{FPEMglobal} installed on the system (in
+which case, \code{output_dir} need not be specified, and is ignored in any
+case). Once identified, the file is read using
+\code{\link[readr]{read_csv}}.
 }
 \section{Note}{
 
@@ -47,8 +62,7 @@ Other Country and region/aggregate names:
 \code{\link{get_185_countries}()},
 \code{\link{get_195_countries}()},
 \code{\link{get_aggregate_names}()},
-\code{\link{get_used_special_aggregates}()},
-\code{\link{get_used_unpd_regions}()}
+\code{\link{get_used_special_aggregates}()}
 }
 \author{
 Mark Wheldon

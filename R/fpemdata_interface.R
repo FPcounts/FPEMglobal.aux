@@ -50,6 +50,13 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
+    if (is_all_women_run(output_dir))
+        stop("Hierarchical medians are not available for all women runs.")
+
+    temp_env <- new.env()
+    return(get(load(file.path(output_dir, "data.global.rda"), envir = temp_env),
+               envir = temp_env, inherits = FALSE))
+
     ## -------* Get input file
 
     input_df <-
@@ -62,6 +69,9 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
         data.frame(
             rbind(
                 c("division_numeric_code",                      "iso"),
+                c("name_country",                               "name"),
+                c("name_region",                                "major_area"),
+                c("name_sub_region",                            "region"),
                 c("region_numeric_code",                        "major_area_code"),
                 c("sub_region_numeric_code",                    "region_code"),
                 c("is_developed_region",                        "developed_region"),
