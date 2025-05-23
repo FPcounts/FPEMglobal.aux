@@ -46,7 +46,7 @@ get_hierarchical_medians <- function(output_dir = NULL) {
 ##' @importFrom gdata rename.vars
 ##'
 ##' @export
-country_classifications_2_fpemdata <- function(output_dir = NULL) {
+convert_country_classifications_2_fpemdata <- function(output_dir = NULL) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -113,6 +113,16 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
     return(input_df)
 }
 
+country_classifications_2_fpemdata <- function(output_dir = NULL) {
+
+    lifecycle::deprecate_soft(
+                   when = "1.3.0",
+                   what = "country_classifications_2_fpemdata()",
+                   with = "convert_country_classifications_2_fpemdata()")
+
+    return(convert_country_classifications_2_fpemdata(output_dir = output_dir))
+}
+
 
 ##' Convert input file to fpemdata format
 ##'
@@ -130,7 +140,7 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
 ##' @importFrom gdata rename.vars
 ##'
 ##' @export
-input_data_2_fpemdata <- function(output_dir = NULL) {
+convert_input_data_2_fpemdata <- function(output_dir = NULL) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -306,6 +316,16 @@ input_data_2_fpemdata <- function(output_dir = NULL) {
     return(input_df)
 }
 
+input_data_2_fpemdata <- function(output_dir = NULL) {
+
+    lifecycle::deprecate_soft(
+                   when = "1.3.0",
+                   what = "input_data_2_fpemdata()",
+                   with = "convert_input_data_2_fpemdata()")
+
+    return(convert_input_data_2_fpemdata(output_dir = output_dir))
+}
+
 
 ##' Convert denominators to fpemdata format
 ##'
@@ -321,7 +341,7 @@ input_data_2_fpemdata <- function(output_dir = NULL) {
 ##' @seealso \code{\link{get_used_denominators}}, \code{\link{get_used_csv_denominators}}
 ##'
 ##' @export
-denominators_2_fpemdata <- function(output_dir = NULL) {
+convert_denominators_2_fpemdata <- function(output_dir = NULL) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -352,6 +372,16 @@ denominators_2_fpemdata <- function(output_dir = NULL) {
     ## -------* END
 
     return(denom_csv)
+}
+
+denominators_2_fpemdata <- function(output_dir = NULL) {
+
+    lifecycle::deprecate_soft(
+                   when = "1.3.0",
+                   what = "denominators_2_fpemdata()",
+                   with = "convert_denominators_2_fpemdata()")
+
+    return(convert_denominators_2_fpemdata(output_dir = output_dir))
 }
 
 
