@@ -1,4 +1,4 @@
-### Note that other scripts test `get_used_input_data` and the denominator importers.
+### Note that other scripts test `get_input_data` and the denominator importers.
 
 test_that("'input_data_2_fpemdata' works", {
     ## 15-19, Married

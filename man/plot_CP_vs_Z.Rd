@@ -22,7 +22,7 @@ plot_CP_vs_Z(
 }
 \arguments{
 \item{CP_data}{Data frame like that returned by
-\code{\link{get_used_input_data}}.}
+\code{\link{get_input_data}}.}
 }
 \value{
 Nothing; called for its side-effect of producing a plot.

@@ -20,8 +20,8 @@ of the result are \sQuote{cleaned} by applying
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
 \item{M49_region_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
-run to standardize country and area names?}
+\code{\link{convert_M49_region_names}(..., convert_to =
+    "M49_region_names")} be run to standardize country and area names?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.
@@ -32,7 +32,7 @@ run. The files are read using \code{\link[readr]{read_csv}}.
 }
 \details{
 This function is deprecated. Please use
-\code{\link{get_country_classifications(..., type = "used")}}.
+\code{\link{get_country_classifications(..., version = "used")}}.
 }
 \author{
 Mark Wheldon

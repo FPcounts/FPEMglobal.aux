@@ -8,7 +8,7 @@ get_195_countries(
   output_dir = NULL,
   M49_region_names = TRUE,
   clean_col_names = TRUE,
-  type = c("recorded", "installed")
+  version = c("recorded", "installed")
 )
 }
 \arguments{
@@ -16,15 +16,17 @@ get_195_countries(
 outputs. See \dQuote{Details}.}
 
 \item{M49_region_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
-run to standardize country and area names?}
+\code{\link{convert_M49_region_names}(..., convert_to =
+    "M49_region_names")} be run to standardize country and area names?}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{type}{Character; retrieve the country classifications from a completed FPEMglobal run the installed}
+\item{version}{Character; retrieve the country classifications from a completed
+FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
+installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.
@@ -33,9 +35,9 @@ A \code{\link[tibble]{tibble}} with the countries.
 \code{get_195_countries} returns the 195 countries included in the original
 married women model. \code{get_185_countries} returns the 185 countries for
 which estimates are released by UNPD. The file that is used depends on the
-\code{type} argument. \code{type = "recorded"} refers to the country
+\code{version} argument. \code{version = "recorded"} refers to the country
 classifications recorded in the \file{data} folder of the run referenced by
-\code{output_dir} (which, therefore, must be specified). \code{type =
+\code{output_dir} (which, therefore, must be specified). \code{version =
 "installed"} refers to the classifications file distributed with the version
 of \pkg{FPEMglobal} installed on the system (in which case,
 \code{output_dir} need not be specified, and is ignored in any case). Once

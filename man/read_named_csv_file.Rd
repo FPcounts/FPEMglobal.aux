@@ -27,7 +27,7 @@ subdirectories to \code{file_name} (e.g., \code{file_name =
 "table/obj/myFile.csv"}).
 }
 \seealso{
-get_used_input_data, get_csv_res
+get_input_data, get_csv_res
 }
 \author{
 Mark Wheldon

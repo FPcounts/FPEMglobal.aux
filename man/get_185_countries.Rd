@@ -8,7 +8,7 @@ get_185_countries(
   output_dir = NULL,
   M49_region_names = TRUE,
   clean_col_names = TRUE,
-  type = c("recorded", "installed")
+  version = c("recorded", "installed")
 )
 }
 \arguments{
@@ -16,15 +16,17 @@ get_185_countries(
 outputs. See \dQuote{Details}.}
 
 \item{M49_region_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
-run to standardize country and area names?}
+\code{\link{convert_M49_region_names}(..., convert_to =
+    "M49_region_names")} be run to standardize country and area names?}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{type}{Character; retrieve the country classifications from a completed FPEMglobal run the installed}
+\item{version}{Character; retrieve the country classifications from a completed
+FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
+installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.

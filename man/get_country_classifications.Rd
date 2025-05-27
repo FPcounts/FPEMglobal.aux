@@ -8,7 +8,7 @@ get_country_classifications(
   output_dir = NULL,
   M49_region_names = TRUE,
   clean_col_names = TRUE,
-  type = c("used", "installed")
+  version = c("used", "installed")
 )
 }
 \arguments{
@@ -16,28 +16,31 @@ get_country_classifications(
 outputs. See \dQuote{Details}.}
 
 \item{M49_region_names}{Logical; should
-\code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
-run to standardize country and area names?}
+\code{\link{convert_M49_region_names}(..., convert_to =
+    "M49_region_names")} be run to standardize country and area names?}
 
 \item{clean_col_names}{Logical; when \code{TRUE}, the column names
 of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{type}{Character; retrieve the country classifications from a completed FPEMglobal run the installed}
+\item{version}{Character; retrieve the country classifications from a completed
+FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
+installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the aggregates.
 }
 \description{
 Returns a table of geographic country groupings stored in the
-\pkg{FPEMglobal} package. The file that is used depends on the \code{type}
-argument. \code{type = "used"} refers to the country classifications used in
-the run referenced by \code{output_dir} (which, therefore, must be
-specified). \code{type = "installed"} refers to the classifications file
-distributed with the version of \pkg{FPEMglobal} installed on the system (in
-which case, \code{output_dir} need not be specified, and is ignored in any
-case). Once identified, the file is read using
+\pkg{FPEMglobal} package. The file that is used depends on the
+\code{version} argument. \code{version = "used"} refers to the country
+classifications used in the run referenced by \code{output_dir} (which,
+therefore, must be specified). \code{version = "installed"} refers to the
+classifications file distributed with the version of \pkg{FPEMglobal}
+installed on the system (in which case, \code{output_dir} need not be
+specified, and is ignored in any case). In both cases, the classifications
+are stored in \file{.csv} files. Once identified, the file is read using
 \code{\link[readr]{read_csv}}.
 }
 \section{Note}{

@@ -113,9 +113,7 @@ actual values in the column. This column is misnamed in the raw
 \file{.csv} output files.
 
 Country classifications are loaded via
-\code{\link{get_used_unpd_regions}},
-\code{\link{get_used_world_bank_regions}}, and
-\code{\link{get_used_special_aggregates}}.
+\code{\link{get_country_classifications}(..., version = "used")}.
 
 \code{table_format} determines the \dQuote{shape} of the output
 table. It takes values in c("long", "wide", "raw"),

@@ -5,7 +5,7 @@
 ##'
 ##' This is 'Figure 4' in the Appendix to Alkema at al. (2013).
 ##' @param CP_data Data frame like that returned by
-##'     \code{\link{get_used_input_data}}.
+##'     \code{\link{get_input_data}}.
 ##' @return Nothing; called for its side-effect of producing a plot.
 ##' @author Mark Wheldon
 ##' @export

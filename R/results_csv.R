@@ -51,9 +51,7 @@
 ##' \file{.csv} output files.
 ##'
 ##' Country classifications are loaded via
-##' \code{\link{get_used_unpd_regions}},
-##' \code{\link{get_used_world_bank_regions}}, and
-##' \code{\link{get_used_special_aggregates}}.
+##' \code{\link{get_country_classifications}(..., version = "used")}.
 ##'
 ##' \code{table_format} determines the \dQuote{shape} of the output
 ##' table. It takes values in c("long", "wide", "raw"),
@@ -464,8 +462,8 @@ get_csv_res <- function(output_dir = NULL,
     ## add classifications?
     if (add_country_classifications) {
         class_unpd_agg <-
-            get_used_unpd_regions(output_dir = output_dir,
-                                  clean_col_names = FALSE)
+            get_country_classifications(output_dir = output_dir,
+                                  clean_col_names = FALSE, version = "used")
 
         ## Problem with these because they are not exclusive
         ## classifications; countries can be in more than one

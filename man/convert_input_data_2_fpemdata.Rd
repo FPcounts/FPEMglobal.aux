@@ -15,11 +15,11 @@ A \code{\link[tibble]{tibble}}.
 }
 \description{
 Takes the raw input file from an \pkg{FPEMglobal} run and returns
-it in \pkg{fpemdata} format. \code{\link{get_used_input_data}} is
+it in \pkg{fpemdata} format. \code{\link{get_input_data}} is
 called to get the input file.
 }
 \seealso{
-\code{\link{get_used_input_data}}
+\code{\link{get_input_data}}
 
 Other FPEM data converters: 
 \code{\link{convert_country_classifications_2_fpemdata}()},

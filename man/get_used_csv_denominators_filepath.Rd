@@ -14,9 +14,9 @@ outputs. See \dQuote{Details}.}
 Character string containing the file path.
 }
 \description{
-Returns the path to the \file{.csv} file containing the
-denominator counts that were used in the global run (including the extension). The path returned is
-relative to the directory containing \code{output_dir}; i.e., of
+Returns the path to the \file{.csv} file (including the extension)
+containing the denominator counts that were used in the global run. The path
+returned is relative to the directory containing \code{output_dir}; i.e., of
 the form \file{<output-dir>/data/<filename>.csv}.
 }
 \author{

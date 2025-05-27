@@ -60,8 +60,9 @@ convert_country_classifications_2_fpemdata <- function(output_dir = NULL) {
     ## -------* Get input file
 
     input_df <-
-        get_used_unpd_regions(output_dir = output_dir,
-                              M49_region_names = TRUE, clean_col_names = TRUE)
+        get_country_classifications(output_dir = output_dir,
+                                    M49_region_names = TRUE, clean_col_names = TRUE,
+                                    version = "used")
 
     ## -------* Rename Columns
 
@@ -127,7 +128,7 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
 ##' Convert input file to fpemdata format
 ##'
 ##' Takes the raw input file from an \pkg{FPEMglobal} run and returns
-##' it in \pkg{fpemdata} format. \code{\link{get_used_input_data}} is
+##' it in \pkg{fpemdata} format. \code{\link{get_input_data}} is
 ##' called to get the input file.
 ##'
 ##' @inheritParams get_csv_res
@@ -135,7 +136,7 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
 ##' @author Mark Wheldon
 ##'
 ##' @family FPEM data converters
-##' @seealso \code{\link{get_used_input_data}}
+##' @seealso \code{\link{get_input_data}}
 ##'
 ##' @importFrom gdata rename.vars
 ##'
@@ -149,7 +150,7 @@ convert_input_data_2_fpemdata <- function(output_dir = NULL) {
 
     ## -------* Get input file
 
-    input_df <- get_used_input_data(output_dir = output_dir)
+    input_df <- get_input_data(output_dir = output_dir, version = "used")
 
     ## -------* Rename Columns
 
@@ -330,7 +331,7 @@ input_data_2_fpemdata <- function(output_dir = NULL) {
 ##' Convert denominators to fpemdata format
 ##'
 ##' Takes the raw input file from an \pkg{FPEMglobal} run and returns
-##' it in \pkg{fpemdata} format. \code{\link{get_used_input_data}} is
+##' it in \pkg{fpemdata} format. \code{\link{get_input_data}} is
 ##' called to get the input file.
 ##'
 ##' @inheritParams get_csv_res
@@ -338,7 +339,7 @@ input_data_2_fpemdata <- function(output_dir = NULL) {
 ##' @author Mark Wheldon
 ##'
 ##' @family FPEM data converters
-##' @seealso \code{\link{get_used_denominators}}, \code{\link{get_used_csv_denominators}}
+##' @seealso \code{\link{get_denominators}}
 ##'
 ##' @export
 convert_denominators_2_fpemdata <- function(output_dir = NULL) {
@@ -347,11 +348,12 @@ convert_denominators_2_fpemdata <- function(output_dir = NULL) {
 
     ## -------* Get denominators
 
-    denom_csv <- get_used_csv_denominators(output_dir = output_dir,
+    denom_csv <- get_denominators(output_dir = output_dir,
                                       clean_col_names = TRUE, table_format = "long",
                                       marital_group = c("married", "unmarried"),
                                       years_as_midyear = FALSE,
-                                      processed = FALSE)
+                                      processed = FALSE,
+                                      version = "used_csv")
 
     ## -------* Reformat
 

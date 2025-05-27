@@ -9,15 +9,16 @@ test_that("get_185_countries works", {
     expect_s3_class(get_185_countries(), "tbl_df")
 })
 
-test_that("get_country_classifications works", {
+test_that("get_country_classifications(..., version = \"installed\") works", {
     ## Defaults
-    expect_s3_class(get_country_classifications(), "tbl_df")
+    expect_s3_class(get_country_classifications(version = "installed"), "tbl_df")
 
     ## Specified args
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
                 expect_s3_class(get_country_classifications(M49_region_names = unl,
-                                                            clean_col_names = ccn), "tbl_df")
+                                                            clean_col_names = ccn,
+                                                            version = "installed"), "tbl_df")
         }
     }
 })
@@ -51,20 +52,20 @@ test_that("country_classifications_2_fpemdata works on an all women run", {
 ###-----------------------------------------------------------------------------
 ### *** Married Women
 
-test_that("get_used_unpd_regions works for 15-49, married women run", {
+test_that("get_country_classifications(..., version = \"used\") works for 15-49, married women run", {
     test_output_dir <-
         system.file("data-test/15-49_married", package = "FPEMglobal.aux")
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
-    expect_s3_class(get_used_unpd_regions(output_dir = test_output_dir), "tbl_df")
+    expect_s3_class(get_country_classifications(output_dir = test_output_dir, version = "used"), "tbl_df")
 
     ## Specified args
     for (unl in c(TRUE, FALSE)) {
         for (ccn in c(TRUE, FALSE)) {
-                expect_s3_class(get_used_unpd_regions(output_dir = test_output_dir,
+                expect_s3_class(get_country_classifications(output_dir = test_output_dir,
                                                       M49_region_names = unl,
-                                                      clean_col_names = ccn), "tbl_df")
+                                                      clean_col_names = ccn, version = "used"), "tbl_df")
         }
     }
 })

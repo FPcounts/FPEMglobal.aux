@@ -40,3 +40,4 @@ Config/testthat/parallel: true
 Config/testthat/start-first: results_get_csv_results_1549
 Depends: 
     R (>= 3.5)
+

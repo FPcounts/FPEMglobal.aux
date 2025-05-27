@@ -7,13 +7,14 @@
 ##' Get country geographic classifications
 ##'
 ##' Returns a table of geographic country groupings stored in the
-##' \pkg{FPEMglobal} package. The file that is used depends on the \code{type}
-##' argument. \code{type = "used"} refers to the country classifications used in
-##' the run referenced by \code{output_dir} (which, therefore, must be
-##' specified). \code{type = "installed"} refers to the classifications file
-##' distributed with the version of \pkg{FPEMglobal} installed on the system (in
-##' which case, \code{output_dir} need not be specified, and is ignored in any
-##' case). Once identified, the file is read using
+##' \pkg{FPEMglobal} package. The file that is used depends on the
+##' \code{version} argument. \code{version = "used"} refers to the country
+##' classifications used in the run referenced by \code{output_dir} (which,
+##' therefore, must be specified). \code{version = "installed"} refers to the
+##' classifications file distributed with the version of \pkg{FPEMglobal}
+##' installed on the system (in which case, \code{output_dir} need not be
+##' specified, and is ignored in any case). In both cases, the classifications
+##' are stored in \file{.csv} files. Once identified, the file is read using
 ##' \code{\link[readr]{read_csv}}.
 ##'
 ##' @section Note:
@@ -32,11 +33,13 @@
 ##' this function does.
 ##'
 ##' @inheritParams get_csv_res
-##' @inheritParams get_used_input_data
+##' @inheritParams get_input_data
 ##' @param M49_region_names Logical; should
-##'     \code{\link{convert_M49_region_names}(..., convert_to = "M49_region_names")} be
-##'     run to standardize country and area names?
-##' @param type Character; retrieve the country classifications from a completed FPEMglobal run the installed
+##'     \code{\link{convert_M49_region_names}(..., convert_to =
+##'     "M49_region_names")} be run to standardize country and area names?
+##' @param version Character; retrieve the country classifications from a completed
+##'     FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
+##'     installed (\code{"installed"})?
 ##' @return A \code{\link[tibble]{tibble}} with the aggregates.
 ##' @author Mark Wheldon
 ##'
@@ -45,12 +48,12 @@
 get_country_classifications <- function(output_dir = NULL,
                                         M49_region_names = TRUE,
                                         clean_col_names = TRUE,
-                                        type = c("used", "installed")) {
+                                        version = c("used", "installed")) {
 
     ## Argument check
-    type <- match.arg(type)
-    if ((is.null(output_dir) || missing(output_dir)) && identical(type, "used"))
-        stop("'output_dir' has not been specified: 'type' must be '\"installed\"'.")
+    version <- match.arg(version)
+    if ((is.null(output_dir) || missing(output_dir)) && identical(version, "used"))
+        stop("'output_dir' has not been specified: 'version' must be '\"installed\"'.")
 
     verbose <- getOption("FPEMglobal.aux.verbose")
 
@@ -62,7 +65,7 @@ get_country_classifications <- function(output_dir = NULL,
 
     ## -------* Used
 
-    if (identical(type, "used")) {
+    if (identical(version, "used")) {
 
         output_dir <- output_dir_wrapper(output_dir = output_dir)
 
@@ -105,9 +108,9 @@ get_country_classifications <- function(output_dir = NULL,
 ##' \code{get_195_countries} returns the 195 countries included in the original
 ##' married women model. \code{get_185_countries} returns the 185 countries for
 ##' which estimates are released by UNPD. The file that is used depends on the
-##' \code{type} argument. \code{type = "recorded"} refers to the country
+##' \code{version} argument. \code{version = "recorded"} refers to the country
 ##' classifications recorded in the \file{data} folder of the run referenced by
-##' \code{output_dir} (which, therefore, must be specified). \code{type =
+##' \code{output_dir} (which, therefore, must be specified). \code{version =
 ##' "installed"} refers to the classifications file distributed with the version
 ##' of \pkg{FPEMglobal} installed on the system (in which case,
 ##' \code{output_dir} need not be specified, and is ignored in any case). Once
@@ -129,12 +132,12 @@ get_country_classifications <- function(output_dir = NULL,
 get_195_countries <- function(output_dir = NULL,
                               M49_region_names = TRUE,
                               clean_col_names = TRUE,
-                              type = c("recorded", "installed")) {
+                              version = c("recorded", "installed")) {
 
     get_XXX_countries("195", output_dir = output_dir,
                              M49_region_names = M49_region_names,
                              clean_col_names = clean_col_names,
-                      type = type)
+                      version = version)
 }
 
 
@@ -155,12 +158,12 @@ get_195_countries <- function(output_dir = NULL,
 get_185_countries <- function(output_dir = NULL,
                               M49_region_names = TRUE,
                               clean_col_names = TRUE,
-                              type = c("recorded", "installed")) {
+                              version = c("recorded", "installed")) {
 
     get_XXX_countries("185", output_dir = output_dir,
                       M49_region_names = M49_region_names,
                       clean_col_names = clean_col_names,
-                      type = type)
+                      version = version)
 }
 
 
@@ -170,14 +173,14 @@ get_XXX_countries <- function(XXX,
                               output_dir = NULL,
                               M49_region_names = TRUE,
                               clean_col_names = TRUE,
-                              type = c("recorded", "installed")) {
+                              version = c("recorded", "installed")) {
 
     id_name <- paste0("countries_unpd_", XXX)
 
     ## Argument check
-    type <- match.arg(type)
-    if ((is.null(output_dir) || missing(output_dir)) && identical(type, "recorded"))
-        stop("'output_dir' has not been specified: 'type' must be '\"installed\"'.")
+    version <- match.arg(version)
+    if ((is.null(output_dir) || missing(output_dir)) && identical(version, "recorded"))
+        stop("'output_dir' has not been specified: 'version' must be '\"installed\"'.")
 
     verbose <- getOption("FPEMglobal.aux.verbose")
     if (!verbose) {
@@ -188,7 +191,7 @@ get_XXX_countries <- function(XXX,
 
     ## -------* Recorded
 
-    if (identical(type, "recorded")) {
+    if (identical(version, "recorded")) {
 
         output_dir <- output_dir_wrapper(output_dir = output_dir)
 
@@ -201,7 +204,7 @@ get_XXX_countries <- function(XXX,
         fname <- file.path(data_dir, file_name)
 
         if (!file.exists(fname))
-            stop("File '", fname, "' does not exist. Try using 'type = \"installed\"' instead.")
+            stop("File '", fname, "' does not exist. Try using 'version = \"installed\"' instead.")
 
     } else {
 
@@ -228,7 +231,7 @@ get_XXX_countries <- function(XXX,
 ##' run. The files are read using \code{\link[readr]{read_csv}}.
 ##'
 ##' This function is deprecated. Please use
-##' \code{\link{get_country_classifications(..., type = "used")}}.
+##' \code{\link{get_country_classifications(..., version = "used")}}.
 ##'
 ##' @inheritParams get_country_classifications
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
@@ -243,11 +246,12 @@ get_used_unpd_regions <-
         lifecycle::deprecate_soft(
                        when = "1.3.0",
                        what = "get_used_unpd_regions()",
-                       with = "get_country_classifications()")
+                       with = "get_country_classifications(..., version = \"used\")")
 
         return(get_country_classifications(output_dir = output_dir,
                                            M49_region_names = M49_region_names,
-                                           clean_col_names = clean_col_names))
+                                           clean_col_names = clean_col_names,
+                                           version = "used"))
     }
 
 
@@ -297,7 +301,7 @@ list_special_aggregates_names <- function() {
 ##' the results. The files are read using
 ##' \code{\link[readr]{read_csv}}.
 ##'
-##' @inheritParams get_used_input_data
+##' @inheritParams get_input_data
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'
@@ -314,7 +318,7 @@ get_used_special_aggregates <-
 
         ## !! If you ever fix this, you'll need to make it consistent with the
         ## !! other 'get_' functions in this file by, e.g., maybe by adding a
-        ## !! 'type' argument and the M49 conversion argument.
+        ## !! 'version' argument and the M49 conversion argument.
 
         verbose <- getOption("FPEMglobal.aux.verbose")
     if (!verbose) {
