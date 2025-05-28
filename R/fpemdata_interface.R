@@ -37,6 +37,7 @@ get_hierarchical_medians <- function(output_dir = NULL) {
 ##' called to get the classifications file.
 ##'
 ##' @inheritParams get_csv_res
+##' @inheritParams get_country_classifications
 ##' @return A \code{\link[tibble]{tibble}}.
 ##' @author Mark Wheldon
 ##'
@@ -46,23 +47,18 @@ get_hierarchical_medians <- function(output_dir = NULL) {
 ##' @importFrom gdata rename.vars
 ##'
 ##' @export
-convert_country_classifications_2_fpemdata <- function(output_dir = NULL) {
+convert_country_classifications_2_fpemdata <-
+    function(output_dir = NULL,
+             version = c("used", "installed")) {
 
     verbose <- getOption("FPEMglobal.aux.verbose")
-
-    if (is_all_women_run(output_dir))
-        stop("Hierarchical medians are not available for all women runs.")
-
-    temp_env <- new.env()
-    return(get(load(file.path(output_dir, "data.global.rda"), envir = temp_env),
-               envir = temp_env, inherits = FALSE))
 
     ## -------* Get input file
 
     input_df <-
         get_country_classifications(output_dir = output_dir,
                                     M49_region_names = TRUE, clean_col_names = TRUE,
-                                    version = "used")
+                                    version = version)
 
     ## -------* Rename Columns
 
@@ -119,9 +115,9 @@ country_classifications_2_fpemdata <- function(output_dir = NULL) {
     lifecycle::deprecate_soft(
                    when = "1.3.0",
                    what = "country_classifications_2_fpemdata()",
-                   with = "convert_country_classifications_2_fpemdata()")
+                   with = "convert_country_classifications_2_fpemdata(..., version = \"used\")")
 
-    return(convert_country_classifications_2_fpemdata(output_dir = output_dir))
+    return(convert_country_classifications_2_fpemdata(output_dir = output_dir, version = "used"))
 }
 
 

@@ -4,12 +4,17 @@
 
 ##' Get country input data actually used
 ##'
-##' Reads the '.csv' file containing the prevalence data used in the
-##' run. The file is read using \code{\link[readr]{read_csv}}.
+##' Reads the '.csv' file containing the prevalence data used in a completed run
+##' of FPEMglobal (\code{version = "used"}) or distributed with the installed
+##' version of \pkg{FPEMglobal} (version = "installed"). The file is read using
+##' \code{\link[readr]{read_csv}}.
 ##'
 ##' @inheritParams get_csv_res
-##' @param variant Which variant of the input file to load?
-##' @param version Not currently used.
+##' @param variant Which variant of the input file to load? Only relevant if
+##'     \code{version = "used"}.
+##' @param version Character; retrieve the country classifications from a
+##'     completed FPEMglobal run (\code{"used"}), or the version of
+##'     \pkg{FPEMglobal} installed (\code{"installed"})?
 ##' @return A \code{\link[tibble]{tibble}} with the requested results.
 ##' @author Mark Wheldon
 ##'
@@ -17,14 +22,25 @@
 ##'
 ##' @export
 get_input_data <- function(output_dir = NULL,
-                                variant = c("raw", "preprocessed", "to_model"),
-                                version = "used") {
+                           variant = c("raw", "preprocessed", "to_model"),
+                           version = c("used", "installed")) {
+
+    ## Argument check
+    version <- match.arg(version)
+    if ((is.null(output_dir) || missing(output_dir)) && identical(version, "used"))
+        stop("'output_dir' has not been specified: 'version' must be '\"installed\"'.")
+
     verbose <- getOption("FPEMglobal.aux.verbose")
+
     if (!verbose) {
         op <- options(); force(op)
         options(readr.show_col_types = FALSE)
         on.exit(options(op), add = TRUE, after = FALSE)
     }
+
+    ## -------* Used
+
+    if (identical(version, "used")) {
 
     variant <- match.arg(variant)
 
@@ -37,9 +53,23 @@ get_input_data <- function(output_dir = NULL,
                     to_model = "dataCPmodel_input_to_model.csv",
                     stop("'variant' is invalid"))
 
+        fname <- file.path(output_dir, fname)
+
+    }  else {
+
+    ## -------* Installed
+
+    fname <- system.file("extdata",
+                         get_FPEMglobal_extdata_filenames()[["input_data_1549"]],
+                         package = "FPEMglobal")
+
+    }
+
     if (verbose) message("Reading '", file.path(output_dir, fname), "'.")
-    readr::read_csv(file.path(output_dir, fname),
-                    name_repair = "minimal")
+    out <- readr::read_csv(fname,
+                           name_repair = "minimal")
+
+    return(out)
 }
 
 get_used_input_data <- function(output_dir = NULL,
@@ -47,8 +77,8 @@ get_used_input_data <- function(output_dir = NULL,
     lifecycle::deprecate_soft(
                    when = "1.3.0",
                    what = "get_used_input_data()",
-                   with = "get_input_data()")
-    return(get_input_data(output_dir = output_dir, variant = variant, type = "used"))
+                   with = "get_input_data(..., version = \"used\")")
+    return(get_input_data(output_dir = output_dir, variant = variant, version = "used"))
 }
 
 

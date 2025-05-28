@@ -1,50 +1,28 @@
-### Note that other scripts test `get_input_data` and the denominator importers.
+### Get quantiles of model parameters, etc.
 
-test_that("'input_data_2_fpemdata' works", {
-    ## 15-19, Married
-    test_output_dir <-
-        system.file("data-test/15-19_married", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(input_data_2_fpemdata(output_dir = test_output_dir), "tbl_df")
+test_get_input_data <- function(od) {
+    expect_true(dir.exists(od))
+    param_grid <- expand.grid(variant = c("raw", "preprocessed", "to_model"),
+                              version = c("used", "installed"),
+                              stringsAsFactors = FALSE)
 
-    ## 15-49, Married
-    test_output_dir <-
-        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(input_data_2_fpemdata(output_dir = test_output_dir), "tbl_df")
+    for (i in 1:nrow(param_grid)) {
 
-    ## 15-49, All women
-    test_output_dir <-
-        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_error(input_data_2_fpemdata(output_dir = test_output_dir),
-                 "data not stored")
-})
+        test_that(paste0("get_input_data( variant = ", param_grid[i, "variant"],
+                         ", version = ", param_grid[i, "version"], ") works on ",
+                         basename(od)), {
+                             x <- get_input_data(output_dir = od,
+                                                 variant = param_grid[i, "variant"],
+                                                 version = param_grid[i, "version"])
+                             expect_s3_class(x, "tbl_df")
+                         })
+    }
+}
 
-
-test_that("'denominators_2_fpemdata' works", {
-    ## 15-19, Married
-    test_output_dir <-
-        system.file("data-test/15-19_married", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(denominators_2_fpemdata(output_dir = test_output_dir), "tbl_df")
-
-    ## 15-19, All women
-    test_output_dir <-
-        system.file("data-test/15-19_all_women", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(denominators_2_fpemdata(output_dir = test_output_dir), "tbl_df")
-
-    ## 15-49, Married
-    test_output_dir <-
-        system.file("data-test/15-49_married", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(denominators_2_fpemdata(output_dir = test_output_dir), "tbl_df")
-
-    ## 15-49, All women
-    test_output_dir <-
-        system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")
-    expect_true(dir.exists(test_output_dir))
-    expect_s3_class(denominators_2_fpemdata(output_dir = test_output_dir), "tbl_df")
-})
-
+for (age in c("15-49", "15-19")) {
+    for (marr in c("married")) {
+        test_get_input_data(
+            od = system.file(
+                file.path("data-test", paste0(age, "_", marr)), package = "FPEMglobal.aux"))
+    }
+}

@@ -20,6 +20,7 @@ get_FPEMglobal_extdata_filenames <- function(file_ext = TRUE) {
     out <-  list(countries_mwra_195 = FPEMglobal_files$post_process_inputs$countries_for_aggregates,
               countries_unpd_185 = FPEMglobal_files$post_process_inputs$countries_for_output_unpd_185,
               country_classifications = FPEMglobal_files$model_run_inputs$region_information,
+              input_data_1549 = FPEMglobal_files$model_run_inputs$input_data_1549,
               number_of_women_15_49 = FPEMglobal_files$post_process_inputs$denominator_counts_1549,
               special_aggregates = FPEMglobal_files$special_aggregates)
 

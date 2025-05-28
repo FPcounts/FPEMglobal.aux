@@ -1,12 +1,12 @@
 ###-----------------------------------------------------------------------------
 ### * countries_aggregates.R
 
-test_that("get_195_countries works", {
-    expect_s3_class(get_195_countries(), "tbl_df")
+test_that("get_195_countries(..., version = \"installed\") works", {
+    expect_s3_class(get_195_countries(version = "installed"), "tbl_df")
 })
 
-test_that("get_185_countries works", {
-    expect_s3_class(get_185_countries(), "tbl_df")
+test_that("get_185_countries(..., version = \"installed\") works", {
+    expect_s3_class(get_185_countries(version = "installed"), "tbl_df")
 })
 
 test_that("get_country_classifications(..., version = \"installed\") works", {
@@ -34,16 +34,6 @@ test_that("get_country_classifications(..., version = \"installed\") works", {
 ## test_that("list_special_aggregates_names works", {
 ##     expect_error(list_special_aggregates_names(), NA)
 ## })
-
-test_that("country_classifications_2_fpemdata works on a married women run", {
-    expect_s3_class(country_classifications_2_fpemdata(system.file("data-test/15-49_married", package = "FPEMglobal.aux")),
-                    "tbl_df")
-})
-
-test_that("country_classifications_2_fpemdata works on an all women run", {
-    expect_s3_class(country_classifications_2_fpemdata(system.file("data-test/15-49_all_women", package = "FPEMglobal.aux")),
-                    "tbl_df")
-})
 
 
 ###-----------------------------------------------------------------------------

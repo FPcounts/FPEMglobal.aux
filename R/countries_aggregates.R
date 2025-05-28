@@ -37,9 +37,6 @@
 ##' @param M49_region_names Logical; should
 ##'     \code{\link{convert_M49_region_names}(..., convert_to =
 ##'     "M49_region_names")} be run to standardize country and area names?
-##' @param version Character; retrieve the country classifications from a completed
-##'     FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
-##'     installed (\code{"installed"})?
 ##' @return A \code{\link[tibble]{tibble}} with the aggregates.
 ##' @author Mark Wheldon
 ##'
@@ -169,13 +166,16 @@ get_185_countries <- function(output_dir = NULL,
 
 ## This is used inside `get_195_countries()` and `get_185_countries()`.
 ##
-get_XXX_countries <- function(XXX,
+get_XXX_countries <- function(XXX = c("195", "185"),
                               output_dir = NULL,
                               M49_region_names = TRUE,
                               clean_col_names = TRUE,
                               version = c("recorded", "installed")) {
 
-    id_name <- paste0("countries_unpd_", XXX)
+    XXX <- match.arg(XXX)
+
+    if (identical(XXX, "195")) id_name <- paste0("countries_mwra_", XXX)
+    else id_name <- paste0("countries_unpd_", XXX)
 
     ## Argument check
     version <- match.arg(version)
@@ -217,10 +217,10 @@ get_XXX_countries <- function(XXX,
 
     if (verbose) message("Reading '", fname, "'.")
     out <- readr::read_csv(fname, name_repair = "minimal")
+    if (clean_col_names) out <- clean_col_names(out)
     if (M49_region_names)
         out[, "name"] <-
             convert_M49_region_names(out[, "name"], convert_to = "M49_region_names")
-    if (clean_col_names) out <- clean_col_names(out)
     return(out)
 }
 
