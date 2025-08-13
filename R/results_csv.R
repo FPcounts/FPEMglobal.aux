@@ -27,12 +27,17 @@
 ##' aggregate of each row. This is necessary in the event that areas
 ##' within aggregates have the same name.
 ##'
-##' The \code{stat} argument specifies the type of results to
-##' return. Results are stored separately for prevalence proportions,
-##' ratio indicators, and number of users. These can be requested by,
-##' respectively, \code{"prop"}, \code{"ratio"}, \code{"count"}. Note
-##' that prevalence \emph{proportions} are stored in \file{.csv} files
-##' with \dQuote{perc} in their names.
+##' The \code{stat} argument specifies the type of results to return. Results
+##' are stored separately for prevalence proportions, ratio indicators, and
+##' number of users. These can be requested by, respectively, \code{"prop"},
+##' \code{"ratio"}, \code{"count"}. Note that prevalence \emph{proportions} are
+##' stored in \file{.csv} files with \dQuote{perc} in their names. Counts are
+##' stored in \file{.csv} files with \dQuote{count} in their names. No scaling
+##' is done; if the counts in the results files are on the unit scale, the
+##' results returned will be too. The results are generated using the
+##' \pkg{FPEMglobal} package, which (as of 2025-08-13) was ambivalent towards
+##' the scale used for counts, although since at least the 2022 revision these
+##' have always been in units of 1. See also \code{link{get_denominators}}.
 ##'
 ##' Finally, you can also supply a vector to \code{stat} to request
 ##' multiple result types in one go. In this case, however, you must

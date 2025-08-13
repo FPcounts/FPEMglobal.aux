@@ -7,23 +7,28 @@
 get_input_data(
   output_dir = NULL,
   variant = c("raw", "preprocessed", "to_model"),
-  version = "used"
+  version = c("used", "installed")
 )
 }
 \arguments{
 \item{output_dir}{Path(s) to director(y/ies) containing
 outputs. See \dQuote{Details}.}
 
-\item{variant}{Which variant of the input file to load?}
+\item{variant}{Which variant of the input file to load? Only relevant if
+\code{version = "used"}.}
 
-\item{version}{Not currently used.}
+\item{version}{Character; retrieve the country classifications from a
+completed FPEMglobal run (\code{"used"}), or the version of
+\pkg{FPEMglobal} installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the requested results.
 }
 \description{
-Reads the '.csv' file containing the prevalence data used in the
-run. The file is read using \code{\link[readr]{read_csv}}.
+Reads the '.csv' file containing the prevalence data used in a completed run
+of FPEMglobal (\code{version = "used"}) or distributed with the installed
+version of \pkg{FPEMglobal} (version = "installed"). The file is read using
+\code{\link[readr]{read_csv}}.
 }
 \seealso{
 Other Input data functions: 

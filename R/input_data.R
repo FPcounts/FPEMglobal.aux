@@ -138,9 +138,13 @@ get_used_input_data <- function(output_dir = NULL,
 ##' format as the original counts files, which have one column per
 ##' year.
 ##'
-##' The counts appear in the \file{.csv} files in units of 1 and, by
-##' default, are returned as such (\code{units = "unit"}). Use
-##' \code{units = "thousands"} to return counts in multiples of 1000.
+##' It is assumed that the counts appear in the \file{.csv} files in units of 1
+##' and, by default, are returned as such (\code{units = "unit"}). Use
+##' \code{units = "thousands"} to return counts in multiples of 1000. Note that
+##' the source files are part of the \pkg{FPEMglobal} package, which (as of
+##' 2025-08-13) was ambivalent towards the scale used for counts, although since
+##' at least the 2022 revision these have always been in units of 1. See also
+##' \code{link{get_csv_res}}.
 ##'
 ##' \subsection{Technical Note}{
 ##' The poulation denominators are stored in \file{.csv} files in the

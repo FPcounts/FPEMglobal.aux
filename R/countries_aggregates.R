@@ -104,7 +104,9 @@ get_country_classifications <- function(output_dir = NULL,
 ##'
 ##' \code{get_195_countries} returns the 195 countries included in the original
 ##' married women model. \code{get_185_countries} returns the 185 countries for
-##' which estimates are released by UNPD. The file that is used depends on the
+##' which estimates are released by UNPD.
+##'
+##' The file that is used depends on the
 ##' \code{version} argument. \code{version = "recorded"} refers to the country
 ##' classifications recorded in the \file{data} folder of the run referenced by
 ##' \code{output_dir} (which, therefore, must be specified). \code{version =
@@ -120,6 +122,7 @@ get_country_classifications <- function(output_dir = NULL,
 ##' \code{\link{get_country_classifications}} for what this implies.
 ##'
 ##' @inheritParams get_country_classifications
+##' @param version See \dQuote{Details}.
 ##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'
@@ -146,6 +149,7 @@ get_195_countries <- function(output_dir = NULL,
 ##' \code{\link{get_195_countries}}.
 ##'
 ##' @inheritParams get_country_classifications
+##' @inheritParams get_195_countries
 ##' @return A \code{\link[tibble]{tibble}} with the countries.
 ##' @author Mark Wheldon
 ##'

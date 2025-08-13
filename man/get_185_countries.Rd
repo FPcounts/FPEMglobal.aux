@@ -24,9 +24,9 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{version}{Character; retrieve the country classifications from a completed
-FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
-installed (\code{"installed"})?}
+\item{version}{Character; retrieve the country classifications from a
+completed FPEMglobal run (\code{"used"}), or the version of
+\pkg{FPEMglobal} installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.

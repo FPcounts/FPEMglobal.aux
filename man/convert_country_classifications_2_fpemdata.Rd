@@ -4,11 +4,18 @@
 \alias{convert_country_classifications_2_fpemdata}
 \title{Convert country classifications to fpemdata format}
 \usage{
-convert_country_classifications_2_fpemdata(output_dir = NULL)
+convert_country_classifications_2_fpemdata(
+  output_dir = NULL,
+  version = c("used", "installed")
+)
 }
 \arguments{
 \item{output_dir}{Path(s) to director(y/ies) containing
 outputs. See \dQuote{Details}.}
+
+\item{version}{Character; retrieve the country classifications from a
+completed FPEMglobal run (\code{"used"}), or the version of
+\pkg{FPEMglobal} installed (\code{"installed"})?}
 }
 \value{
 A \code{\link[tibble]{tibble}}.

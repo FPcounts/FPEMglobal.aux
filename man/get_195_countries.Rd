@@ -24,9 +24,7 @@ of the result are \sQuote{cleaned} by applying
 \code{\link{clean_col_names}}. See \dQuote{Details} for a note
 about \dQuote{percentile} vs. \dQuote{quantile}.}
 
-\item{version}{Character; retrieve the country classifications from a completed
-FPEMglobal run (\code{"used"}), or the version of \pkg{FPEMglobal}
-installed (\code{"installed"})?}
+\item{version}{See \dQuote{Details}.}
 }
 \value{
 A \code{\link[tibble]{tibble}} with the countries.
@@ -34,7 +32,10 @@ A \code{\link[tibble]{tibble}} with the countries.
 \description{
 \code{get_195_countries} returns the 195 countries included in the original
 married women model. \code{get_185_countries} returns the 185 countries for
-which estimates are released by UNPD. The file that is used depends on the
+which estimates are released by UNPD.
+}
+\details{
+The file that is used depends on the
 \code{version} argument. \code{version = "recorded"} refers to the country
 classifications recorded in the \file{data} folder of the run referenced by
 \code{output_dir} (which, therefore, must be specified). \code{version =
