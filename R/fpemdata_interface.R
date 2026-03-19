@@ -348,7 +348,6 @@ convert_denominators_2_fpemdata <- function(output_dir = NULL) {
                                       clean_col_names = TRUE, table_format = "long",
                                       marital_group = c("married", "unmarried"),
                                       years_as_midyear = FALSE,
-                                      processed = FALSE,
                                       version = "used_csv")
 
     ## -------* Reformat

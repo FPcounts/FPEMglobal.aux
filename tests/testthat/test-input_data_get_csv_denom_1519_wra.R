@@ -23,7 +23,7 @@ test_that("get_denominators(..., used = \"used_csv\") works with default argumen
     expect_true(dir.exists(test_output_dir))
 
     ## Defaults
-    expect_s3_class(get_denominators(output_dir = test_output_dir, used = "used_csv"),
+    expect_s3_class(get_denominators(output_dir = test_output_dir, version = "used_csv"),
                     "data.frame")
 })
 
@@ -45,7 +45,7 @@ test_that("get_denominators(..., used = \"used_csv\") works with specified argum
                                                              clean_col_names = ccn,
                                                              units = un,
                                                              years_as_midyear = yrs_as_mid,
-                                                         table_format = tbl_fmt, used = "used_csv"),
+                                                         table_format = tbl_fmt, version = "used_csv"),
                                         "data.frame")
                     }
                 }
